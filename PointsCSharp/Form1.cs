@@ -2,7 +2,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Collections;
+using System.Linq;
 
 
 namespace DotsGame
@@ -17,21 +17,20 @@ namespace DotsGame
         public TextBox txtDbg;
 #endif
 
-        public int iBoardSize = 10;//- количество клеток квадрата в длинну 
+        public int iScaleCoef = 1;//- коэффициент масштаба
+        public int iBoardSize = 10 ;//- количество клеток квадрата в длинну
+        public int iMapSize;//- количество клеток квадрата в длинну
+
+
         private float startX = -0.5f, startY = -0.5f;
 
         private ArrayDots aDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
-        private ArrayDots aTemp ;// временный массив точек
-        private ArrayDots aBlocked;
-        private ArrayDots path;
-        private ArrayList paths;
-        Dot firstDot;//точка от которой ищется контур
-        int levelRecursion;
         private Links[] lnks; //массив где хранятся связи между точками, учавствует в отрисовке
         private Links[] temp_lnks; //массив где хранятся связи между точками, если связи не окружили точку - обнуляется, если да, то добавляется в lnks
+        private Point[] pts;
 
-        private Color colorGamer1 = Color.FromArgb(255,255,100,0),
-                           colorGamer2 = Color.FromArgb(255,100, 150, 150),
+        private Color colorGamer1 = Color.FromArgb(255,255,120,100),
+                           colorGamer2 = Color.FromArgb(255,120, 150, 180),
                            colorCursor = Color.DarkOrange;
         private float PointWidth = 0.25f;
         private Pen boardPen = new Pen(Color.DarkSlateBlue, 0.05f);
@@ -45,8 +44,10 @@ namespace DotsGame
         private int nRelation = 0;
 
         //statistic
-        private float s1;
+        private float s1;//площадь занятая игроком1
         private float s2;
+        private int count_blocked;//счетчик количества окруженных точек
+        private int count_dot1, count_dot2;//количество поставленных точек
 
         public Form1()
         {
@@ -70,6 +71,25 @@ namespace DotsGame
             toolStripTextBox1.Text = iBoardSize.ToString();
         }
 
+        private void newGame()
+        {
+            iMapSize=iBoardSize * iScaleCoef;
+            aDots = new ArrayDots(iMapSize);
+            lnks = new Links[0];
+            temp_lnks = null;
+            pts = null;
+            count_dot1 = 0; count_dot2 = 0;
+
+            startX = -0.5f;
+            startY = -0.5f;
+            nRelation = 0;
+            s1 = 0; s2 = 0;
+#if DEBUG
+            lstDbg1.Items.Clear();
+            lstDbg2.Items.Clear();
+#endif
+            pbxBoard.Invalidate();
+        }
 
         public Point TranslateCoordinates(Point MousePos)
         {
@@ -81,24 +101,6 @@ namespace DotsGame
             return p;
         }
 
-        private Dot HodComp(Dot lastDotGamer)
-        {
-            int x, y;
-            Random rnd = new Random();
-        r:
-            x = lastDotGamer.x + (int)((10 * rnd.NextDouble()) - 6);
-            if (x < 0) { x = 0; }
-            else if (x > iBoardSize) { x = iBoardSize; }
-            y = lastDotGamer.y + (int)((10 * rnd.NextDouble()) - 3);
-            if (y < 0) { y = 0; }
-            else if (y > iBoardSize) { y = iBoardSize; }
-
-            if (aDots.Contains(x, y) >= 0) { goto r; }
-
-            Dot dot = new Dot(x, y, Dot.Owner.Player2, null);
-            aDots.Add(dot);
-            return dot;
-        }
 
         private void pbxBoard_Paint(object sender, PaintEventArgs e)
         {
@@ -108,8 +110,10 @@ namespace DotsGame
                 gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             }
             //Устанавливаем масштаб
+            //SetScale(gr, pbxBoard.ClientSize.Width, pbxBoard.ClientSize.Height,
+            //    startX, startX + iBoardSize + 1.0f, startY, iBoardSize + startY + 1.0f);
             SetScale(gr, pbxBoard.ClientSize.Width, pbxBoard.ClientSize.Height,
-                startX, startX + iBoardSize + 1.0f, startY, iBoardSize + startY + 1.0f);
+                startX, startX + iBoardSize , startY, iBoardSize + startY );
             //Рисуем доску
             DrawBoard();
             //Рисуем точки
@@ -125,7 +129,7 @@ namespace DotsGame
             if (aDots != null)
             {
                 SolidBrush drBrush = new SolidBrush(Color.DarkMagenta);
-                Font drFont = new Font("Arial", 0.25f);
+                Font drFont = new Font("Arial", 0.2f);
                 foreach (Dot d in aDots)
                 {
                     gr.DrawString(d.IndexDot.ToString(), drFont, drBrush, d.x, d.y);
@@ -170,38 +174,20 @@ namespace DotsGame
 #if DEBUG                         
                     x = (lnks[i].Dot2.x - lnks[i].Dot1.x) / 2.0f + lnks[i].Dot1.x;
                     y = (lnks[i].Dot2.y - lnks[i].Dot1.y) / 2.0f + lnks[i].Dot1.y;
-                    gr.DrawString(lnks[i].Dot1.IndexRelation.ToString(), drawFont, new SolidBrush(Color.Teal), x, y);
+                    gr.DrawString(lnks[i].Dot1.IndexRelation.ToString(), drawFont, new SolidBrush(Color.Navy), x, y);
 #endif 
                 }
             }
         }
         private void DrawRegion(int DotOwn)
         {
-            if (path.Count>3)
-            {
-                Pen PenGamer = DotOwn == 1 ? new Pen(colorGamer1, 0.05f) : new Pen(colorGamer2, 0.05f);
-                
-                for (int i = 0; i < path.Count; i++ )
-                {
-                    if (i < path.Count - 1)
-                    {
-                        gr.DrawLine(PenGamer, path[i].x, path[i].y, path[i + 1].x, path[i + 1].y);
-                    }
-                    else
-                    {
-                        gr.DrawLine(PenGamer, path[i].x, path[i].y, path[0].x, path[0].y);
-                    }
 
-                }
+            if (pts!=null)
+            {
+                // gr.DrawPolygon(PenGamer, pnt);
+                //gr.FillPolygon(new SolidBrush(Color.FromArgb(130, colorGamer1)), pts, System.Drawing.Drawing2D.FillMode.Winding);
 
             }
-
-
-            //#if DEBUG                         
-            //                    x = (lnks[i].Dot2.x - lnks[i].Dot1.x) / 2.0f + lnks[i].Dot1.x;
-            //                    y = (lnks[i].Dot2.y - lnks[i].Dot1.y) / 2.0f + lnks[i].Dot1.y;
-            //                    gr.DrawString(lnks[i].Dot1.IndexRelation.ToString(), drawFont, new SolidBrush(Color.Teal), x, y);
-            //#endif 
         }
 
         private void DrawPoints()
@@ -209,31 +195,50 @@ namespace DotsGame
             //отрисовываем поставленные точки
             if (aDots.Count > 0)
             {
-                Color c;
                 foreach (Dot p in aDots)
                 {
                     switch (p.Own)
                     {
                         case 1:
-                            c = p.Blocked == true ? Color.FromArgb(130, colorGamer1) : colorGamer1;
-                            gr.FillEllipse(new SolidBrush(c), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                            SetColorAndDrawDots(colorGamer1, p);
                             break;
                         case 2:
-                            c = p.Blocked == true ? Color.FromArgb(130, colorGamer2) : colorGamer2;
-                            gr.FillEllipse(new SolidBrush(c), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                            SetColorAndDrawDots(colorGamer2, p);
                             break;
                     }
+//#if DEBUG
+//                    SolidBrush drB = p.InRegion ? new SolidBrush(Color.Magenta) : drawBrush;
+//                    gr.DrawString(p.InRegion.ToString(), drawFont,drB , p.x, p.y - 0.35f);
+                   
+//#endif 
+
                 }
             }
         }
+
+        private void SetColorAndDrawDots(Color colorGamer, Dot p) //Вспомогательная функция для DrawPoints. Выбор цвета точки в зависимости от ее состояния и рисование элипса
+        {
+            if (p.Blocked)
+            {
+                gr.FillEllipse(new SolidBrush(Color.FromArgb(130, colorGamer)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+            }
+            else
+            {
+                colorGamer = p.InRegion == true ? Color.FromArgb(255, colorGamer.R, colorGamer.G - 50, colorGamer.B) : colorGamer;
+                gr.FillEllipse(new SolidBrush(colorGamer), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.DrawEllipse(new Pen(colorGamer, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+            }
+        }
+
         private void DrawBoard()
         {
             //рисуем доску из клеток
 
             Pen pen = new Pen(new SolidBrush(Color.MediumSeaGreen), 0.15f);// 0
-            gr.DrawLine(pen, 0, 0, 0, iBoardSize);
-            gr.DrawLine(pen, 0, 0, iBoardSize, 0);
-
+            gr.DrawLine(pen, 0, 0, 0, iMapSize - 1);
+            gr.DrawLine(pen, 0, 0, iMapSize - 1, 0);
+            gr.DrawLine(pen, 0, iMapSize - 1, iMapSize - 1, iMapSize - 1);
+            gr.DrawLine(pen, iMapSize - 1, iMapSize - 1, iMapSize - 1, 0);
             for (float i = 0; i <= iBoardSize; i++)
             {
                 SolidBrush drB = i == 0 ? new SolidBrush(Color.MediumSeaGreen) : drawBrush;
@@ -241,10 +246,6 @@ namespace DotsGame
                 gr.DrawString("x" + (i + startX + 0.5f).ToString(), drawFont, drB, i + startX + 0.5f - 0.2f, startY);
                 gr.DrawLine(boardPen, i + startX + 0.5f, startY + 0.5f, i + startX + 0.5f, iBoardSize + startY + 0.5f);
                 gr.DrawLine(boardPen, startX + 0.5f, i + startY + 0.5f, iBoardSize + startX + 0.5f, i + startY + 0.5f);
-
-                //gr.DrawLine(boardPen, i, startX + 0.5f, i, iBoardSize);
-                //gr.DrawLine(boardPen, startX + 0.5f, i, iBoardSize,i );
-
             }
         }
         private void FindNeiborDots(Dot Parent_dot)
@@ -258,24 +259,13 @@ namespace DotsGame
             Relate(Parent_dot, Parent_dot.x, Parent_dot.y - 1);
             Relate(Parent_dot, Parent_dot.x + 1, Parent_dot.y - 1);
         }
-        private Dot GetDot(int x, int y)//получаем точку из массива. Если в массиве ее нет, вернется пустая точка
-        {
-            int i = aDots.Contains(x, y);
-            return i >= 0 ? aDots[i] : new Dot(x, y);
-        }
-        private Dot GetDot(Point Point)//получаем точку из массива. Если в массиве ее нет, вернется пустая точка
-        {
-            int i = aDots.Contains(Point.X, Point.Y);
-            return i >= 0 ? aDots[i] : new Dot(Point.X, Point.Y);
-        }
         private void Relate(Dot new_dot, int x, int y)//устанавливает связь между соседними точками
         {
-            int i = aDots.Contains(x, y);
-            if (i >= 0)
+            if (aDots.Contains(x, y))
             {
-                if (aDots[i].Own == new_dot.Own)
+                if (aDots[x, y].Own == new_dot.Own)
                 {
-                    Dot neibor_dot = aDots[i];
+                    Dot neibor_dot = aDots[x, y];
                     if (neibor_dot.IndexRelation == 0)
                     {
                         nRelation += 1;
@@ -299,200 +289,34 @@ namespace DotsGame
                 }
             }
         }
-        private bool DotsEquals(Dot d1, Dot d2)//Проверяет равенство точек по координатам
+        private bool DotIsFree(Dot dot)//проверяет заблокирована ли точка
         {
-            return (d1.x == d2.x) & (d1.y == d2.y);
-        }
-
-        private bool NeiborDots(Dot NewDot, Dot ExistDot)/*возвращает истину если соседние точки рядом. 
-                                               Устанавливает связь, если точки принадлежат одному из игроков*/
-        {
-            if (ExistDot.Blocked | NewDot.Blocked | NewDot.Own != ExistDot.Own)
-            {
-                return false;
-            }
-            return Math.Abs(NewDot.x - ExistDot.x) <= 1 & Math.Abs(NewDot.y - ExistDot.y) <= 1;
-        }
-        private int FindAllCycles(Dot lastDot)
-        {
-            foreach (Dot d in aDots)
-            {
-                if ((d.Own == lastDot.Own) & (d.IndexRelation == lastDot.IndexRelation))
-                {
-                    aDots.UnmarkAllDots();
-                    levelRecursion = 0;
-                    if(FindRegion(d))
-                    {
-                        ArrayDots ad = new ArrayDots();
-                        ad.AddArrayDots(path);
-                        paths.Add(ad);
-                        path.Clear();
-                    }
-                    
-                }
-            }
-            ArrayDots max_path = new ArrayDots();
-            foreach (ArrayDots a in paths)
-            {
-                if (max_path.Count < a.Count)
-                {
-                    max_path = a;
-                }
-            }
-            Array.Resize(ref temp_lnks, max_path.Count);
-            temp_lnks = max_path.Count > 3 ? LinkDots(max_path) : null;
-            paths.Clear();
-            return max_path.Count;
-        }
-        private bool FindRegion(Dot dot)//Ищет замкнутый цикл точек
-        {
-            if (dot.CountRelations < 2 | dot.Marked==true | dot.Blocked == true)
-            {
-                return false;
-            }
-            firstDot = levelRecursion == 0 ? dot : firstDot;
-            dot.IndexDot = levelRecursion;
-            levelRecursion += 1;
             dot.Marked = true;
-            if (NeiborDots(dot, firstDot) & levelRecursion>3)
+            if (dot.x == 0 | dot.y == 0 | dot.x == iMapSize-1 | dot.y == iMapSize-1)
             {
-                path.Add(dot);
-                //LinkDots(dot, firstDot);
                 return true;
             }
-            for (int i = 0; i < dot.CountRelations; i++)
+            Dot[] d = new Dot[4] { aDots[dot.x + 1, dot.y], aDots[dot.x - 1, dot.y], aDots[dot.x, dot.y + 1], aDots[dot.x, dot.y - 1] };
+            for (int i = 0; i < 4; i++)
             {
-                if (dot[i].Marked == false)
+                if (d[i].Marked == false) 
                 {
-                    dot[i].Parent = dot;
-                    if (FindRegion(dot[i]))
-                    {
-                        //LinkDots(dot, dot[i]);
-                        dot.InRegion = true;
-                        dot[i].InRegion = true;
-                        path.Add(dot);
-                        levelRecursion -= 1;
-                        return true;
-                    }
-                }
-            }
-            levelRecursion -= 1;
-            return false;
-        }
-        private bool FindRegion(Dot dot, ArrayDots path_dots)//Ищет замкнутый цикл точек
-        {
-            if (path_dots.Count == 0)
-            {
-                dot.FirstDot = true;
-                dot.Parent = null;
-                path_dots.Add(dot);
-            }
-            if (dot.CountRelations < 2 | dot.Marked == true | dot.Blocked == true)
-            {
-                path_dots.Remove(dot);
-                return false;
-            }
-            dot.Marked = true;
-            for (int i = 0; i < dot.CountRelations; i++)
-            {
-                if (dot[i].FirstDot == true & path_dots.Count > 0)
-                {
-                    dot[i].InRegion = true;
-                    return true;
-                }
-                if (dot[i].Marked == false)
-                {
-                    dot[i].Parent = dot;
-                    if (FindRegion(dot[i]))
-                    {
-                        dot[i].InRegion = true;
-                        path_dots.Add(dot[i]);
-                        return true;
-                    }
-                }
-            }
-            path_dots.Remove(dot);
-            return false;
-        }
-        private int ScanRegion(int IndexRelation)//сканирует замкнутый регион по индексу связи, возвращает количество окруженных точек противника, пустые не считает
-        {
-            ArrayDots arr_dots= new ArrayDots();
-            Dot.Owner Owner; 
-
-            foreach (Dot d in aDots)
-            {
-                if((d.IndexRelation == IndexRelation) & (d.InRegion==true))
-                    {
-                        arr_dots.Add(d);
-                    }
-            }
-            
-            if (arr_dots.Count==0)
-            {
-                return 0;
-            }
-            else
-            {
-                Owner = (Dot.Owner) arr_dots[0].Own;
-            }
-            Dot[] arr_d = new Dot[arr_dots.Count];
-            arr_dots.Sort(ref arr_d);
-            int min_x = arr_d[0].x, max_x = arr_d[arr_d.Length - 1].x;
-            int count_blocked=0;
-            for (int i = min_x+1; i < max_x; i++)
-            {
-                int min_y, max_y;
-                ArrayDots y_line = new ArrayDots();
-                for (int j = 0; j < arr_d.Length; j++)
-                {
-                    if (arr_d[j].x==i)
-                    {
-                        y_line.Add(new Dot(arr_d[j].x, arr_d[j].y));                   
-                    }
-                }
-                min_y = y_line[0].y;
-                max_y = y_line[y_line.Count-1].y;
-                for (int k = min_y+1; k < max_y; k++)
-                {
-                    Dot bd = GetDot(i, k);
-                    if (bd.Own != (int)Owner)
-                    {
-                        bd.Blocked = true;
-                        count_blocked += bd.Own != (int)Dot.Owner.None ? 1 : 0;
-                        if (aBlocked.Contains(bd)==-1)
+                    if (d[i].Own == 0 | d[i].Own == flg_own | d[i].Own != flg_own & d[i].Blocked)
+                    { 
+                        if (DotIsFree(d[i]))
                         {
-                            aBlocked.Add(bd);
+                            return true;
                         }
                     }
-                    
                 }
             }
-            return count_blocked;
-        }
-
-        private int LinkExist(Links[] arr_lnks, Links l)
-        {
-            if (arr_lnks!=null)
-            {
-                for (int i = 0; i < arr_lnks.Length; i++)
-                {
-                    if ((l.Dot1.x == arr_lnks[i].Dot1.x) & (l.Dot1.y == arr_lnks[i].Dot1.y) &
-                       ((l.Dot2.x == arr_lnks[i].Dot2.x) & (l.Dot2.y == arr_lnks[i].Dot2.y)) |
-                        ((l.Dot2.x == arr_lnks[i].Dot1.x) & (l.Dot2.y == arr_lnks[i].Dot1.y) &
-                       ((l.Dot1.x == arr_lnks[i].Dot2.x) & (l.Dot1.y == arr_lnks[i].Dot2.y))))
-                    {
-                       return i;
-                    }
-                }
-
-            }
-            return -1;
+            return false;
         }
         private Links LinkDots(Dot dot1, Dot dot2)//устанавливает связь между двумя точками и добавляет в коллекцию 
         {
             
             Links l = new Links(dot1, dot2);
-            if (LinkExist(temp_lnks, l) >= 0)
+            if (l.LinkExist(temp_lnks) >= 0)
             {
                 return l;
             }
@@ -507,26 +331,30 @@ namespace DotsGame
             temp_lnks[temp_lnks.Length - 1] = l;
             return l;
         }
-        private Links[] LinkDots(ArrayDots dots)//устанавливает связь между двумя точками и добавляет в коллекцию 
+        private Links[] LinkDots(Dot[] dots)//устанавливает связь между двумя точками и возвращает массив связей 
         {
-            Links[] arr_l = new Links[dots.Count];
+            Links[] arr_l = new Links[0];
             Links l;
-            for (int i = 0; i < dots.Count; i++)
+            int j = 0;
+            foreach (Dot d in dots)
             {
-                if(i < dots.Count-1)
+                for (int i = 0; i < dots.Length; i++)
                 {
-                    l = new Links(dots[i], dots[i + 1]);
+                    if (d.DotsEquals(dots[i])==false & d.NeiborDots(dots[i]))
+                    {
+                        l = new Links(dots[i], d);
+                        if (l.LinkExist(arr_l) == -1)
+                        {
+                            Array.Resize(ref arr_l, j + 1);
+                            arr_l[j] = l;
+                            j += 1;
+                        }
+                    }
+                    
                 }
-                else
-                {
-                    l = new Links(dots[i], dots[0]);
-                }
-                arr_l[i] = l;
             }
             return arr_l;
         }
-
-
         private void SetScale(Graphics gr, int gr_width, int gr_height, float left_x, float right_x, float top_y, float bottom_y)
         {
             // Set transformations for the Graphics object so its coordinate system matches the one specified.
@@ -541,106 +369,124 @@ namespace DotsGame
         {
             MousePos = TranslateCoordinates(e.Location);
             Dot dot = new Dot(MousePos);
+            int res;
             if (MousePos.X > startX-0.5f & MousePos.Y > startY -0.5f)
             {
                 switch (e.Button)
                 {
                     case MouseButtons.Left:
-                        dot = new Dot(MousePos.X, MousePos.Y, Dot.Owner.Player1, null);
-                        s1+=Hod(dot);
+                        res = LinkPath(new Dot(MousePos.X, MousePos.Y, Dot.Owner.Player1, null));
+                        s1 += res;
+                        count_dot1 += 1;
                         break;
                     case MouseButtons.Right:
                         //============Ход компьютера=================
-                        dot = new Dot(MousePos.X, MousePos.Y, Dot.Owner.Player2, null);
-                        s2+=Hod(dot);
+                        res = LinkPath(new Dot(MousePos.X, MousePos.Y, Dot.Owner.Player2, null));
+                        s2 += res;
+                        count_dot2 += 1;
+                        
                         break;
                 }
-                txtDbg.Text = "Игрок1 окружил точек: " + GetCountBlockedDots(Dot.Owner.Player1, false) + "; \r\n" +
+                txtDbg.Text = "Игрок1 окружил точек: " + 0 + "; \r\n" +
                               "Захваченая площадь: " + s1.ToString() + "; \r\n" +
-                              "Игрок2 окружил точек: " + GetCountBlockedDots(Dot.Owner.Player2, false) + "; \r\n" +
-                              "Захваченая площадь: " + s2.ToString() + "; \r\n";
+                              "Игрок2 окружил точек: " + 0+ "; \r\n" +
+                              "Захваченая площадь: " + s2.ToString() + "; \r\n" +
+                              "Игрок1 точек поставил: " + count_dot1.ToString() + "; \r\n" +
+                              "Игрок2 точек поставил: " + count_dot2.ToString() + "; \r\n";
                 pbxBoard.Invalidate();
 
             }
-#if DEBUG
-            lstDbg1.Items.Clear();
-                foreach (Dot p in aDots)
-                {
-                    lstDbg1.Items.Add(p.x + ":" + p.y + "; IR-" + p.IndexRelation + 
-                        "; InRegion-" + p.InRegion);
-                }
-            #endif
         }
 
-        private float Hod(Dot dot)//Ход игрока. Точка ставится либо компом либо игроком
+        private int LinkPath(Dot dot)
         {
-            if (aDots.Contains(dot) == -1)
+            int res = Hod(dot);
+            
+            if (count_blocked - res != 0)
+            {
+                var qry = from Dot d in aDots
+                        where d.InRegion == true
+                        select d;
+                Dot[] dts = qry.ToArray();
+                lnks = LinkDots(dts);
+                if (dts.Length > 3)
+                {
+                    pts = new Point[dts.Length];
+                    int i = 0;
+                    foreach (Dot d in dts)
+                    {
+                        pts[i].X = d.x;
+                        pts[i].Y = d.y;
+                        i += 1;
+                    }
+
+                }
+
+            }
+            count_blocked = res;
+            return res;
+        }
+
+   
+        int flg_own;
+        private int Hod(Dot dot)//Ход игрока. Точка ставится либо компом либо игроком
+        {
+            int counter=0;
+            if (aDots[dot.x,dot.y].Own == 0)//если точка не занята
             {
                 aDots.Add(dot);
-                FindNeiborDots(dot);
-                if (FindAllCycles(dot) > 0)
+                FindNeiborDots(dot);//проверяем соседние точки и устанавливаем IndexRelation
+                foreach (Dot d in aDots)
                 {
-                    //int cb = GetCountBlockedDots((Dot.Owner)dot.Own, false);
-                    int dr = ScanRegion(dot.IndexRelation);
-                    //cb += dr;
-                    if (dr != 0)
+                    flg_own = d.Own;
+                    if (flg_own > 0)
                     {
-                        Array.Resize(ref lnks, temp_lnks.Length + lnks.Length);
-                        temp_lnks.CopyTo(lnks, lnks.Length- temp_lnks.Length);
-#if DEBUG
-                    lstDbg2.Items.Clear();
-                    foreach (Links l in lnks)
-                    {
-                        lstDbg2.Items.Add(l.Dot1.x  + ":" + l.Dot1.y + " - " + l.Dot2.x + ":" + l.Dot2.y + "; IR-" + l.Dot1.IndexRelation +
-                        "; InR-" + l.Dot1.InRegion);
+                        aDots.UnmarkAllDots();
+                        if (DotIsFree(d) == false)
+                        {
+                            d.Blocked = true;
+                            aDots.UnmarkAllDots();
+                            MarkDotsInRegion(d);
+                            counter += 1; 
+                        }
                     }
-#endif
-                    return SquarePolygon(aDots.CountDotsInRegion(dot.Own),dr); 
-
-                    }
-                    else
-                    {
-                        temp_lnks = null; //обнуляет связи которые не окружили ни одной точки
-                    }
-
                 }
             }
-            return 0;
-        }
-        private int GetCountBlockedDots(Dot.Owner Owner, bool allDots)/*возвращает количество окруженных точек, 
-            если задать allDots-то в том числе будут и не занятые точки*/
-
-        {
-            int counter = 0;
-            switch (allDots)
-            {
-                case true:
-                    for (int i = 0; i < aBlocked.Count; i++)
-                    {
-                        counter += aBlocked[i].Own != (int)Owner ? 1 : 0;
-                    }
-                    break;
-                case false:
-                    for (int i = 0; i < aBlocked.Count; i++)
-                    {
-                        counter += aBlocked[i].Own != (int)Owner & aBlocked[i].Own != (int)Dot.Owner.None ? 1 : 0;
-                    }
-                    break;
-            }
             return counter;
         }
 
-
-        private int SumLinks(Links[] l)
+        private void MarkDotsInRegion(Dot dot)//Ставит InRegion=true точкам которые окружили заданную в параметре точку
         {
-            if (l== null) { return 0; }
-            int counter=0;
-            foreach (Links itemLink in l)
+            dot.Marked = true;
+            Dot[] dts = new Dot[8] {aDots[dot.x + 1, dot.y], aDots[dot.x - 1, dot.y],
+                                  aDots[dot.x, dot.y + 1], aDots[dot.x, dot.y - 1],
+                                  aDots[dot.x + 1, dot.y + 1], aDots[dot.x - 1, dot.y - 1],
+                                  aDots[dot.x + 1, dot.y - 1], aDots[dot.x - 1, dot.y + 1]};
+            foreach (Dot _d in dts)
             {
-                counter += (int)itemLink.CostLink;
+                if (_d.Own != 0 & _d.Own != flg_own)
+                {
+                    _d.InRegion = true;
+                }
             }
-            return counter;
-        }
+            for (int i=0; i<4; i++)
+            {
+                if (aDots.Contains(dts[i]))
+                    if (dts[i].Marked == false)
+                    {
+                        if (dts[i].Own == 0 | dts[i].Own == flg_own)
+                        {
+                            MarkDotsInRegion(dts[i]);
+                        }
+                        else
+                        {
+                            dts[i].InRegion = true;
+                        }
+                    }
+                }
+            
+           }//Маркирует точки InRegion true которые блокируют заданную точку
+
         private void pbxBoard_MouseMove(object sender, MouseEventArgs e)
         {
             
@@ -669,7 +515,8 @@ namespace DotsGame
             }
            
 #if DEBUG
-            lblStatus.Text = p.X + " : " + p.Y + "; IndexRelation " + GetDot(p).IndexRelation;
+            if (aDots.Contains(p.X, p.Y))
+                lblStatus.Text = p.X + " : " + p.Y + "; IndexR -" + aDots[p.X, p.Y].IndexRelation + " InReg -" + aDots[p.X, p.Y].InRegion;
             Text = startX + " : " + startY; 
 #else
                 lblStatus.Text = p.X + " : " + p.Y;
@@ -707,7 +554,7 @@ namespace DotsGame
             lblStatus.Left = 10;
             lblStatus.Top = pbxBoard.Top + pbxBoard.Height + 2;
             numericUpDown1.Top = lblStatus.Top;
-            numericUpDown1.Left = pbxBoard.Width/2;
+            numericUpDown1.Left = pbxBoard.Width*2/3;
             menuStrip.Invalidate();
             pbxBoard.Invalidate();
             #if DEBUG
@@ -752,29 +599,7 @@ namespace DotsGame
         }
         private void создатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            aDots=null;
             newGame();
-        }
-        private void newGame() 
-        {
-            aDots = new ArrayDots();  
-            aTemp = new ArrayDots();
-            aBlocked = new ArrayDots();
-            path = new ArrayDots();  
-            lnks = new Links[0];
-            temp_lnks = null;
-            paths = new ArrayList(); 
-
-
-            startX = -0.5f;
-            startY = -0.5f;
-            nRelation = 0;
-            s1 = 0; s2 = 0;
-#if DEBUG
-            lstDbg1.Items.Clear();
-            lstDbg2.Items.Clear();
-#endif 
-            pbxBoard.Invalidate();  
         }
         private void антиалToolStripMenuItem_Click(object sender, EventArgs e)
         {

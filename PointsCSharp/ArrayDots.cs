@@ -23,14 +23,26 @@ namespace DotsGame
     }
     public class ArrayDots : IEnumerator, IEnumerable
     {
-        private Dot[] Dots;
+        private Dot[,] Dots;
         int position = -1;
-        public ArrayDots()
+        private int nSize;
+        public ArrayDots(int size)
 
         {
-            Dots = new Dot[0]; 
-            //Count = 0;
+            int counter=0;
+            Dots = new Dot[size, size];
+            nSize = size; 
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    Dots[i,j]=new Dot(i, j);
+                    Dots[i,j].IndexDot = counter;
+                    counter += 1;
+                }
+            }
         }
+
         public int Count
         {
             get
@@ -38,111 +50,73 @@ namespace DotsGame
                 return Dots.Length;
             }
         }
-        public int CountDotsInRegion (int Owner)
-        {
-            int j = 0;
-            for (int i = 0; i < Count; i++)
-            {
-                if(Dots[i].Own == Owner)
-                {
-                    j += Dots[i].InRegion == true ? 1 : 0;
-                }
-                    
-            }
-            return  j;
-        }
-
-        public Dot this[int i]//Индексатор возвращает элемент из массива по его индексу
+        public Dot this[int i, int j]//Индексатор возвращает элемент из массива по его индексу
         {
             get
             {
-                return Dots[i];
+                return Dots[i,j];
             }
             set
             {
-                Dots[i] = value;
+                Dots[i,j] = value;
             }
         }
 
         public void Add(Dot Dot)//добавляет точку в массив
         {
-            if (Contains(Dot) == -1)
+            if (Contains(Dot))
             {
-                Array.Resize(ref Dots, Count + 1);
-                Dots[Count - 1] = Dot;
+                Dot.IndexDot= Dots[Dot.x, Dot.y].IndexDot; 
+                Dots[Dot.x, Dot.y] = Dot; 
             }
         }
-        public void AddArrayDots(ArrayDots array_dots)//добавляет точку в массив
-        {
-            foreach (Dot p in array_dots)
-            {
-                Add(p);
-            }
 
-        }
-
-        public void Sort(ref Dot[] arrDots)//принимает пустой массив, в который возвращает отсортированный массив по Х и У
-        {
-            arrDots=(Dot[])Dots.Clone();
-            ComparerDots cmp = new ComparerDots();
-            Array.Sort(arrDots, cmp);
-        }
+        //public void Sort(ref Dot[] arrDots)//принимает пустой массив, в который возвращает отсортированный массив по Х и У
+        //{
+        //    arrDots=(Dot[])Dots.Clone();
+        //    ComparerDots cmp = new ComparerDots();
+        //    Array.Sort(arrDots, cmp);
+        //}
         public void Remove(Dot Dot)//удаляет точку из массива
         {
-            int res = Contains(Dot);
-            Dot[] Temp;
-            Temp = new Dot[Count-1];
-            int j=0;
-            if (res>=0)
-            {
-                for (int i = 0; i < Count; i++)
-                {
-                    if (Dots[i].x == Dot.x & Dots[i].y == Dot.y)
-                    {
-                    //сдесь делаем пропуск, чтобы элемент не попал в новый массив
-                    }
-                    else
-                    {
-                        Temp[j] = Dots[i];
-                        j += 1;
-                    }
-                }
-                Dots = Temp;
-            }
+            Dots[Dot.x, Dot.y] = new Dot(Dot.x, Dot.y);
         }
-        public int Contains(Dot Dot)//проверяет, есть ли точка с такими координатами в массиве
+        public bool Contains(Dot Dot)//проверяет, есть ли точка с такими координатами в массиве
         {
-            for (int i = 0; i < Count; i++)
-            {
-                if (Dots[i].x == Dot.x & Dots[i].y == Dot.y)
+                if (Dot.x >=0 & Dot.x<nSize & Dot.y >= 0 & Dot.y<nSize )
                 {
-                    return i;
+                    return true;
                 } 
-            }
-            return -1;
+            return false;
         }
-        public int Contains(int x, int y)//проверяет, есть ли точка с такими координатами в массиве
+        public bool Contains(int x, int y)//проверяет, есть ли точка с такими координатами в массиве
         {
-            for (int i = 0; i < Count; i++)
+            if (x >= 0 & x < nSize & y >= 0 & y < nSize)
             {
-                if (Dots[i].x == x & Dots[i].y == y)
-                {
-                    return i;
-                }
+                return true;
             }
-            return -1;
+            return false;
         }
+
         public void UnmarkAllDots()
         {
-            for (int i = 0; i < Count; i++)
+            foreach (Dot d in Dots)
             {
-                Dots[i].Marked = false;
-                Dots[i].FirstDot = false;
+                d.Marked = false;
             }
         }
         public void Clear()
         {
-            Dots = new Dot[0];
+            foreach (Dot d in Dots)
+            {
+                d.Own = 0;
+                d.IndexRelation = 0;
+                d.Parent = null;
+                d.Marked = false;
+                d.InRegion=false;
+                d.IndexRelation=0;
+                d.Blocked  = false;
+            }
         }
         //IEnumerator and IEnumerable require these methods.
         public IEnumerator GetEnumerator()
@@ -162,7 +136,7 @@ namespace DotsGame
         //IEnumerable
         public object Current
         {
-            get {return Dots[position];}
+            get {return Dots[position/nSize,position%nSize];}
         }
     }
 }

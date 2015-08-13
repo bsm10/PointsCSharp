@@ -45,27 +45,61 @@ namespace DotsGame
                 cost = 0.5f;
             }
         }
+        public int LinkExist(Links[] arr_lnks)
+        {
+            if (arr_lnks != null)
+            {
+                for (int i = 0; i < arr_lnks.Length; i++)
+                {
+                    if(arr_lnks[i]!=null)
+                    {
+                        if ((Dot1.x == arr_lnks[i].Dot1.x) & (Dot1.y == arr_lnks[i].Dot1.y) &
+                           ((Dot2.x == arr_lnks[i].Dot2.x) & (Dot2.y == arr_lnks[i].Dot2.y)) |
+                            ((Dot2.x == arr_lnks[i].Dot1.x) & (Dot2.y == arr_lnks[i].Dot1.y) &
+                           ((Dot1.x == arr_lnks[i].Dot2.x) & (Dot1.y == arr_lnks[i].Dot2.y))))
+                        {
+                            return i;
+                        }
 
+                    }
+                }
+
+            }
+            return -1;
+        }
     }
     public class Dot
     {
         public int x, y, Own;
-        public bool Blocked = false;
-        private int IndexRel;
+        private bool _Blocked = false;
+        private int _IndexRel;
         private int _IndexDot;
+        public bool Blocked
+        {
+            get { return _Blocked; }
+            set
+            {
+                _Blocked = value;
+                IndexRelation=0;
+                InRegion=false;
+               // RelatedDots=null;
+            }
+
+        }
+
         public int IndexRelation
         {
-            get {return IndexRel;}
+            get {return _IndexRel;}
             set {
-                IndexRel = value;
+                _IndexRel = value;
                     if (RelatedDots != null)
                     {
                         for (int i = 0; i < RelatedDots.Length; i++)
                         {
-                            if (RelatedDots[i].IndexRelation != IndexRel)
-                                {
-                                    RelatedDots[i].IndexRelation = IndexRel;
-                                }
+                            if (RelatedDots[i].IndexRelation != _IndexRel & RelatedDots[i].Blocked == false & _IndexRel!=0)
+                            {
+                               RelatedDots[i].IndexRelation = _IndexRel;
+                            }
                         }
                     }
                 }
@@ -154,7 +188,7 @@ namespace DotsGame
             }
             set
             {
-                _IndexDot=value; 
+                _IndexDot = value;
             }
         }
         private int r=0;
@@ -177,7 +211,7 @@ namespace DotsGame
             Own = (int)OwnerDot;
             IndexRelation = 0;
             _ParentDot=ParentDot;
-            _IndexDot+=1;
+            //_IndexDot+=1;
         }
         public Dot(int x, int y, int IndexOwner, Dot ParentDot)
         {
@@ -186,7 +220,7 @@ namespace DotsGame
             Own = IndexOwner;
             IndexRelation = 0;
             _ParentDot = ParentDot;
-            _IndexDot += 1;
+            //_IndexDot += 1;
 
         }
         public Dot(int x, int y)
@@ -196,7 +230,7 @@ namespace DotsGame
             Own = (int)Owner.None;
             IndexRelation = 0;
             _ParentDot = null;
-            _IndexDot += 1;
+            //_IndexDot += 1;
         }
         public Dot(Point Point)
         {
@@ -205,14 +239,29 @@ namespace DotsGame
             Own = (int)Owner.None;
             IndexRelation = 0;
             _ParentDot = null;
-            _IndexDot += 1;
+            //_IndexDot += 1;
         }
 
         public void AddRelationDot(Dot RelationDot)
         {
+        if(RelationDot.Blocked==false)
+            {  
             Array.Resize(ref RelatedDots, r+1);
             RelatedDots[r] = RelationDot;
             r+=1;
+            }
+        }
+        public bool DotsEquals(Dot dot)//Проверяет равенство точек по координатам
+        {
+            return (x == dot.x) & (y == dot.y);
+        }
+        public bool NeiborDots(Dot dot)//возвращает истину если соседние точки рядом. 
+        {
+            if (dot.Blocked | dot.Blocked | dot.Own != Own)
+            {
+                return false;
+            }
+            return Math.Abs(x - dot.x) <= 1 & Math.Abs(y - dot.y) <= 1;
         }
     }
 }
