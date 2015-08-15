@@ -22,5 +22,41 @@ namespace DotsGame.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("128, 64, 0")]
+        public global::System.Drawing.Color Color_Cursor {
+            get {
+                return ((global::System.Drawing.Color)(this["Color_Cursor"]));
+            }
+            set {
+                this["Color_Cursor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255, 128, 128")]
+        public global::System.Drawing.Color Color_Gamer1 {
+            get {
+                return ((global::System.Drawing.Color)(this["Color_Gamer1"]));
+            }
+            set {
+                this["Color_Gamer1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0, 192")]
+        public global::System.Drawing.Color Color_Gamer2 {
+            get {
+                return ((global::System.Drawing.Color)(this["Color_Gamer2"]));
+            }
+            set {
+                this["Color_Gamer2"] = value;
+            }
+        }
     }
 }

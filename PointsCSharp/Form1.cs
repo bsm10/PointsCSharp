@@ -29,9 +29,9 @@ namespace DotsGame
         private Links[] temp_lnks; //массив где хранятся связи между точками, если связи не окружили точку - обнуляется, если да, то добавляется в lnks
         private Point[] pts;
 
-        private Color colorGamer1 = Color.FromArgb(255,255,120,100),
-                           colorGamer2 = Color.FromArgb(255,120, 150, 180),
-                           colorCursor = Color.DarkOrange;
+        private Color colorGamer1 = Properties.Settings.Default.Color_Gamer1,
+                           colorGamer2 = Properties.Settings.Default.Color_Gamer2,
+                           colorCursor = Properties.Settings.Default.Color_Cursor;
         private float PointWidth = 0.25f;
         private Pen boardPen = new Pen(Color.DarkSlateBlue, 0.05f);
         private SolidBrush drawBrush = new SolidBrush(Color.MediumPurple);
@@ -40,7 +40,6 @@ namespace DotsGame
 
         private Point MousePos;
         private Point t;
-        private Graphics gr;
         private int nRelation = 0;
 
         //statistic
@@ -104,7 +103,11 @@ namespace DotsGame
 
         private void pbxBoard_Paint(object sender, PaintEventArgs e)
         {
-            gr = e.Graphics;
+            DrawGame(e.Graphics);
+        }
+
+        private void DrawGame(Graphics gr)
+        {
             if (антиалToolStripMenuItem.Checked)
             {
                 gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
@@ -113,18 +116,17 @@ namespace DotsGame
             //SetScale(gr, pbxBoard.ClientSize.Width, pbxBoard.ClientSize.Height,
             //    startX, startX + iBoardSize + 1.0f, startY, iBoardSize + startY + 1.0f);
             SetScale(gr, pbxBoard.ClientSize.Width, pbxBoard.ClientSize.Height,
-                startX, startX + iBoardSize , startY, iBoardSize + startY );
+                startX, startX + iBoardSize, startY, iBoardSize + startY);
             //Рисуем доску
-            DrawBoard();
+            DrawBoard(gr);
             //Рисуем точки
-            DrawPoints();
+            DrawPoints(gr);
             //Отрисовка курсора
             gr.DrawEllipse(new Pen(colorCursor, 0.05f), MousePos.X - PointWidth, MousePos.Y - PointWidth, PointWidth * 2, PointWidth * 2);
             //Отрисовка замкнутого региона игрока1
-            DrawLinks(drawFont);
+            DrawLinks(gr);
+
             //DrawRegion(1);
-
-
 #if DEBUG
             if (aDots != null)
             {
@@ -136,31 +138,27 @@ namespace DotsGame
                 }
             }
 #endif
+
         }
-        private float SquarePolygon(Links[] l)
+        private void DrawBoard(Graphics gr)
         {
-            if (l == null) { return 0; }
-            int s1 = 0, s2 = 0;
-            for (int i = 0; i < l.Length; i++)
+            //рисуем доску из клеток
+
+            Pen pen = new Pen(new SolidBrush(Color.MediumSeaGreen), 0.15f);// 0
+            gr.DrawLine(pen, 0, 0, 0, iMapSize - 1);
+            gr.DrawLine(pen, 0, 0, iMapSize - 1, 0);
+            gr.DrawLine(pen, 0, iMapSize - 1, iMapSize - 1, iMapSize - 1);
+            gr.DrawLine(pen, iMapSize - 1, iMapSize - 1, iMapSize - 1, 0);
+            for (float i = 0; i <= iBoardSize; i++)
             {
-                if (i < l.Length - 1)
-                {
-                    s1 += l[i].Dot1.x * l[i + 1].Dot1.y;
-                    s2 += l[i].Dot1.y * l[i + 1].Dot1.x;
-                }
-                else
-                {
-                    s1 += l[i].Dot1.x * l[0].Dot1.y;
-                    s2 += l[i].Dot1.y * l[0].Dot1.x;
-                }
+                SolidBrush drB = i == 0 ? new SolidBrush(Color.MediumSeaGreen) : drawBrush;
+                gr.DrawString("y" + (i + startY + 0.5f).ToString(), drawFont, drB, startX, i + startY + 0.5f - 0.2f);
+                gr.DrawString("x" + (i + startX + 0.5f).ToString(), drawFont, drB, i + startX + 0.5f - 0.2f, startY);
+                gr.DrawLine(boardPen, i + startX + 0.5f, startY + 0.5f, i + startX + 0.5f, iBoardSize + startY + 0.5f);
+                gr.DrawLine(boardPen, startX + 0.5f, i + startY + 0.5f, iBoardSize + startX + 0.5f, i + startY + 0.5f);
             }
-            return Math.Abs(s1 - s2) / 2.0f;
         }
-        private float SquarePolygon(int dotsRegion, int dotsInRegion)
-        {
-            return dotsInRegion + dotsRegion / 2.0f - 1;//Формула Пика
-        }
-        private void DrawLinks(Font drawFont)
+        private void DrawLinks(Graphics gr)
         {
             if (lnks != null)
             {
@@ -189,8 +187,7 @@ namespace DotsGame
 
             }
         }
-
-        private void DrawPoints()
+        private void DrawPoints(Graphics gr)
         {
             //отрисовываем поставленные точки
             if (aDots.Count > 0)
@@ -200,54 +197,32 @@ namespace DotsGame
                     switch (p.Own)
                     {
                         case 1:
-                            SetColorAndDrawDots(colorGamer1, p);
+                            SetColorAndDrawDots(gr,colorGamer1, p);
                             break;
                         case 2:
-                            SetColorAndDrawDots(colorGamer2, p);
+                            SetColorAndDrawDots(gr,colorGamer2, p);
                             break;
                     }
-//#if DEBUG
-//                    SolidBrush drB = p.InRegion ? new SolidBrush(Color.Magenta) : drawBrush;
-//                    gr.DrawString(p.InRegion.ToString(), drawFont,drB , p.x, p.y - 0.35f);
-                   
-//#endif 
-
                 }
             }
         }
 
-        private void SetColorAndDrawDots(Color colorGamer, Dot p) //Вспомогательная функция для DrawPoints. Выбор цвета точки в зависимости от ее состояния и рисование элипса
+        private void SetColorAndDrawDots(Graphics gr,Color colorGamer, Dot p) //Вспомогательная функция для DrawPoints. Выбор цвета точки в зависимости от ее состояния и рисование элипса
         {
+            Color c;
             if (p.Blocked)
             {
                 gr.FillEllipse(new SolidBrush(Color.FromArgb(130, colorGamer)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
             }
             else
             {
-                colorGamer = p.InRegion == true ? Color.FromArgb(255, colorGamer.R, colorGamer.G - 50, colorGamer.B) : colorGamer;
+                int G = colorGamer.G > 50 ? colorGamer.G - 50 : 120;
+                c = p.InRegion == true ? Color.FromArgb(255, colorGamer.R, G , colorGamer.B) : colorGamer;
                 gr.FillEllipse(new SolidBrush(colorGamer), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
-                gr.DrawEllipse(new Pen(colorGamer, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.DrawEllipse(new Pen(c, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
             }
         }
 
-        private void DrawBoard()
-        {
-            //рисуем доску из клеток
-
-            Pen pen = new Pen(new SolidBrush(Color.MediumSeaGreen), 0.15f);// 0
-            gr.DrawLine(pen, 0, 0, 0, iMapSize - 1);
-            gr.DrawLine(pen, 0, 0, iMapSize - 1, 0);
-            gr.DrawLine(pen, 0, iMapSize - 1, iMapSize - 1, iMapSize - 1);
-            gr.DrawLine(pen, iMapSize - 1, iMapSize - 1, iMapSize - 1, 0);
-            for (float i = 0; i <= iBoardSize; i++)
-            {
-                SolidBrush drB = i == 0 ? new SolidBrush(Color.MediumSeaGreen) : drawBrush;
-                gr.DrawString("y" + (i + startY + 0.5f).ToString(), drawFont, drB, startX, i + startY + 0.5f - 0.2f);
-                gr.DrawString("x" + (i + startX + 0.5f).ToString(), drawFont, drB, i + startX + 0.5f - 0.2f, startY);
-                gr.DrawLine(boardPen, i + startX + 0.5f, startY + 0.5f, i + startX + 0.5f, iBoardSize + startY + 0.5f);
-                gr.DrawLine(boardPen, startX + 0.5f, i + startY + 0.5f, iBoardSize + startX + 0.5f, i + startY + 0.5f);
-            }
-        }
         private void FindNeiborDots(Dot Parent_dot)
         {
             Relate(Parent_dot, Parent_dot.x + 1, Parent_dot.y + 1);
@@ -397,6 +372,29 @@ namespace DotsGame
 
             }
         }
+        private float SquarePolygon(Links[] l)
+        {
+            if (l == null) { return 0; }
+            int s1 = 0, s2 = 0;
+            for (int i = 0; i < l.Length; i++)
+            {
+                if (i < l.Length - 1)
+                {
+                    s1 += l[i].Dot1.x * l[i + 1].Dot1.y;
+                    s2 += l[i].Dot1.y * l[i + 1].Dot1.x;
+                }
+                else
+                {
+                    s1 += l[i].Dot1.x * l[0].Dot1.y;
+                    s2 += l[i].Dot1.y * l[0].Dot1.x;
+                }
+            }
+            return Math.Abs(s1 - s2) / 2.0f;
+        }
+        private float SquarePolygon(int dotsRegion, int dotsInRegion)
+        {
+            return dotsInRegion + dotsRegion / 2.0f - 1;//Формула Пика
+        }
 
         private int LinkPath(Dot dot)
         {
@@ -431,6 +429,7 @@ namespace DotsGame
         int flg_own;
         private int Hod(Dot dot)//Ход игрока. Точка ставится либо компом либо игроком
         {
+            if (aDots.Contains(dot) == false) return 0;
             int counter=0;
             if (aDots[dot.x,dot.y].Own == 0)//если точка не занята
             {
@@ -618,6 +617,8 @@ namespace DotsGame
         {
             ChangeBoardSize(numericUpDown1.Value.ToString() );
         }
+
+
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
             switch (e.Button)
@@ -639,6 +640,8 @@ namespace DotsGame
                     break;
             }
         }
+
+
         private void опрограммеToolStripMenuItem_Click(object sender, EventArgs e)
         {
             const string message = "Dots v.";
@@ -661,7 +664,29 @@ namespace DotsGame
             ColorDialog MyDialog = new ColorDialog();
             if (MyDialog.ShowDialog() == DialogResult.OK)
                 colorCursor = MyDialog.Color;
+            Properties.Settings.Default.Color_Cursor = colorCursor;
+            Properties.Settings.Default.Save();
             pbxBoard.Invalidate();  
         }
+        private void цветИгрокаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog MyDialog = new ColorDialog();
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+                colorGamer1 = MyDialog.Color;
+            Properties.Settings.Default.Color_Gamer1 = colorGamer1;
+            Properties.Settings.Default.Save();
+            pbxBoard.Invalidate();
+        }
+        private void цветПротивникаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog MyDialog = new ColorDialog();
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+                colorGamer2 = MyDialog.Color;
+            Properties.Settings.Default.Color_Gamer2 = colorGamer2;
+            Properties.Settings.Default.Save();
+            pbxBoard.Invalidate();
+        }
+
+
     }
 }

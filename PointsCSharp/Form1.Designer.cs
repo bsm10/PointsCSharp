@@ -57,6 +57,8 @@
             this.опрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.цветИгрокаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.цветПротивникаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -201,7 +203,9 @@
             this.boardToolStripMenuItem,
             this.networkToolStripMenuItem,
             this.антиалToolStripMenuItem,
-            this.цветКурсораToolStripMenuItem});
+            this.цветКурсораToolStripMenuItem,
+            this.цветИгрокаToolStripMenuItem,
+            this.цветПротивникаToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(68, 24);
             this.optionsToolStripMenuItem.Text = "&Опции";
@@ -308,6 +312,20 @@
             0});
             this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
+            // цветИгрокаToolStripMenuItem
+            // 
+            this.цветИгрокаToolStripMenuItem.Name = "цветИгрокаToolStripMenuItem";
+            this.цветИгрокаToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.цветИгрокаToolStripMenuItem.Text = "Цвет игрока...";
+            this.цветИгрокаToolStripMenuItem.Click += new System.EventHandler(this.цветИгрокаToolStripMenuItem_Click);
+            // 
+            // цветПротивникаToolStripMenuItem
+            // 
+            this.цветПротивникаToolStripMenuItem.Name = "цветПротивникаToolStripMenuItem";
+            this.цветПротивникаToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.цветПротивникаToolStripMenuItem.Text = "Цвет противника...";
+            this.цветПротивникаToolStripMenuItem.Click += new System.EventHandler(this.цветПротивникаToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -365,6 +383,8 @@
         private System.Windows.Forms.ToolStripMenuItem цветКурсораToolStripMenuItem;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.ToolStripMenuItem цветИгрокаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem цветПротивникаToolStripMenuItem;
     }
 }
 
