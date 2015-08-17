@@ -70,6 +70,10 @@ namespace DotsGame
                 Dots[Dot.x, Dot.y] = Dot; 
             }
         }
+        public void Add(int x, int y, int own)//меняет владельца точки
+        {
+            Dots[x, y].Own = own;
+        }
 
         //public void Sort(ref Dot[] arrDots)//принимает пустой массив, в который возвращает отсортированный массив по Х и У
         //{
