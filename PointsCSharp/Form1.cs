@@ -58,15 +58,30 @@ namespace DotsGame
                 {
                     case MouseButtons.Left:
                        //own=1;//игрок1
-                        res = game.MakeMove(new Dot(game.MousePos.X, game.MousePos.Y, 1, null));
-                        break;
-                    case MouseButtons.Right:
+                       res = game.MakeMove(new Dot(game.MousePos.X, game.MousePos.Y, 1, null));
+                       pbxBoard.Invalidate();
+                       if (game.GameOver())
+                        {
+                            MessageBox.Show("Game over!");
+                            game.newGame();
+                            return;
+                        }
                         //============Ход компьютера=================
-                        //Dot move = game.PickComputerMove();
+                        Dot move = game.PickComputerMove();
                         //own=2;//игрок2
-                        //move.Own=2;
-                        //res = game.MakeMove(move);
-                        res = game.MakeMove(new Dot(game.MousePos.X, game.MousePos.Y, 2, null));
+                        move.Own = 2;
+                        res = game.MakeMove(move);
+                       if (game.GameOver())
+                        {
+                            MessageBox.Show("Game over!");
+                            game.newGame();
+                            return;
+                        }
+                        break;
+
+                    case MouseButtons.Right:
+                        //============Ход компьютера  в ручном режиме=================
+                        //res = game.MakeMove(new Dot(game.MousePos.X, game.MousePos.Y, 2, null));
                         break;
                 }
                 //res = game.MakeMove(new Dot(game.MousePos.X, game.MousePos.Y, own, null));
@@ -76,7 +91,7 @@ namespace DotsGame
                               "Захваченая площадь: " + game.square2.ToString() + "; \r\n" +
                               "Игрок1 точек поставил: " + game.count_dot1.ToString() + "; \r\n" +
                               "Игрок2 точек поставил: " + game.count_dot2.ToString() + "; \r\n";
-                pbxBoard.Invalidate();
+
 
             }
         }

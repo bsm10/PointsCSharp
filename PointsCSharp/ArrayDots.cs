@@ -24,6 +24,7 @@ namespace DotsGame
     public class ArrayDots : IEnumerator, IEnumerable
     {
         private Dot[,] Dots;
+        private Dot[,] _Dots;
         int position = -1;
         private int nSize;
         public ArrayDots(int size)
@@ -108,6 +109,15 @@ namespace DotsGame
             {
                 d.Marked = false;
             }
+        }
+        public void Save()//сохраняет текущее состояние массива
+        {
+            _Dots=(Dot[,])Dots.Clone();
+        }
+        public void Restore()//сохраняет текущее состояние массива
+        {
+            Dots = null;
+            Dots =(Dot[,])_Dots.Clone();
         }
         public void Clear()
         {

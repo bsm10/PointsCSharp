@@ -17,10 +17,6 @@ namespace DotsGame
         private const int PLAYER_HUMAN = 1;
         private const int PLAYER_COMPUTER = 2;
         private const int NUM_PLAYERS = 2;
-        //private Dot NextPlayer;
-        //private int Player1;
-        //private int PlayerO;
-        //  are either PLAYER_HUMAN or PLAYER_COMPUTER.
         //  Values of board positions
         private const int VALUE_HIGH = 5;
         private const int VALUE_WIN = 4;
@@ -30,13 +26,12 @@ namespace DotsGame
         private const int VALUE_LOW = 0;
         //  Variables for precomputed moves and responses.
         private const int NUM_PATTERNS = 10;
-        //private int[,,] pattern;
-        //private int[,] pat_move;
-        //private int ShowTrials;
-        public int SkillLevel = 10;
+        private Dot[] pattern;
+        private Dot[] pat_move;
+        public int SkillLevel = 100;
         //-------------------------------------------------
         public int iScaleCoef = 1;//- коэффициент масштаба
-        public int iBoardSize = 5;//- количество клеток квадрата в длинну
+        public int iBoardSize = 10;//- количество клеток квадрата в длинну
         public int iMapSize;//- количество клеток квадрата в длинну
 
         public float startX = -0.5f, startY = -0.5f;
@@ -84,7 +79,7 @@ namespace DotsGame
         //  ************************************************
         //private void InitializePatterns()
         //{
-        //    int pat;
+        //    Dot pat;
         //    int i;
         //    //  Blank all the patterns.
         //    for (pat = 1; (pat <= NUM_PATTERNS); pat++)
@@ -155,28 +150,16 @@ namespace DotsGame
             //  The best move's value.
             best_move = null;
             best_value = VALUE_LOW;
-            //  See if we recognize a pattern
-            //CheckPatterns(best_move);
-
+            int depth=0;
             //  If we did not find a pattern, look for the best
             //  possible move.
             if ((best_move ==null))
             {
-                BoardValue(best_move, best_value, PLAYER_COMPUTER, PLAYER_HUMAN, 0);
+                BoardValue(ref best_move, ref best_value, PLAYER_COMPUTER, PLAYER_HUMAN, ref depth);
             }
-            if (best_dot==null)
-            {
-                var qry = from Dot d in aDots
-                          where d.Own == 0
-                          select d;
-                best_dot=qry.First();
-            }
-            return best_dot;
-            //  Take the square.
-            //DrawSquare;
-            //best_move;
-            //  Update the display.
+            return best_move;
         }
+
         //  ************************************************
         //  Return the player who has won. If it is a draw,
         //  return PLAYER_DRAW. If the game is not yet over,
@@ -184,32 +167,40 @@ namespace DotsGame
         //  ************************************************
         private int Winner()
         {
+            var count_bl1 = from Dot d in aDots // сколько точек окружил игрок1
+                      where d.Blocked == true & d.Own==2
+                      select d;
+            
+            var count_bl2 = from Dot d in aDots // сколько точек окружил комп
+                                 where d.Blocked == true & d.Own == 1
+                                 select d;
+            int bl1 = count_bl1.Count();
+            int bl2 = count_bl2.Count();   
+            CheckBlocked();//проверяем сколько точек окружено после сделанного хода
             //выбираем блокированные точки игроком1
             var qry = from Dot d in aDots
                       where d.Blocked == true & d.Own!=1
                       select d;
-            if(count_blocked1-qry.Count()!=0)
+            if (bl1 - qry.Count() != 0)
             {
                 return PLAYER_HUMAN;  
             }
             var qry1 = from Dot d in aDots
                       where d.Blocked == true & d.Own != 2
                       select d;
-            if (count_blocked2 - qry.Count() != 0)
+            if (bl2 - qry1.Count() != 0)
             {
                 return PLAYER_COMPUTER;
             }
             return PLAYER_NONE;
         }
-        private Dot best_dot;
-        private void BoardValue(Dot best_move, int best_value, int pl1,int pl2, int depth)
+        private void BoardValue(ref Dot best_move, ref int best_value, int pl1, int pl2, ref int depth)
         {
             int pl;
-            //int i;
             Dot good_i;
             int good_value;
-            //Dot enemy_i;
-            int enemy_value;
+            Dot enemy_i = null;//=new Dot(0,0);
+            int enemy_value = 0;
             Application.DoEvents();
             if ((depth >= SkillLevel))
             {
@@ -233,65 +224,61 @@ namespace DotsGame
                 }
                 return;
             }
+            good_i = null;//-1;
+            good_value = VALUE_HIGH;
 
             var qry = from Dot d in aDots
                       where d.Own == PLAYER_NONE
                       select d;
-
-            //if(pl==
-            int i = qry.Count();
-            if (i!=0)
+            
+            Dot[] ad;
+            ad = qry.ToArray();
+            int i = ad.Length;
+            if (i != 0)
             {
-                foreach (Dot d in qry)
+                foreach (Dot d in ad)
                 {
-                    //делаем ход 
-                    d.Own=pl1;
-                    int res = CheckBlocked(d);
-                    var q = from Dot dt in aDots
-                              where dt.Own != d.Own & dt.Own != 0 & dt.Blocked
-                              select dt;
-                    if (count_blocked1 - q.Count() != 0)
-                    {
-                        best_dot = d;
-                        break;
-                    }
-                    enemy_value = 1;
+                    //делаем ход
+                    d.Own = pl1;
+                    pbxBoard.Invalidate();
+                    System.Threading.Thread.Sleep(10);
+                    depth++;
                     //теперь ходит другой игрок
-                    BoardValue(d, enemy_value, pl2, pl1, (depth + 1));
+                    BoardValue(ref enemy_i, ref enemy_value, pl2, pl1, ref depth);
                     //отменить ход
                     d.Own = PLAYER_NONE;
+                    Unblocked();
                     //  See if this is lower than the previous best.
-                    //if ((enemy_value < good_value))
-                    //{
-                        
-                    //    good_value = enemy_value;
-                    //    //  If we will win, things can get no better
-                    //    //  so take the move.
-                    //    if ((good_value <= VALUE_LOSE))
-                    //    {
-                    //        break;
-                    //    }
-                    //}
-                    //  End if Board(i) = PLAYER_NONE ...
-                    //4
-                    //  Translate the opponent's value into ours.
-                    //if ((good_value == VALUE_WIN))
-                    //{
-                    //    //  Opponent wins, we lose.
-                    //    best_value = VALUE_LOSE;
-                    //}
-                    //else if ((enemy_value == VALUE_LOSE))
-                    //{
-                    //    //  Opponent loses, we win.
-                    //    best_value = VALUE_WIN;
-                    //}
-                    //else
-                    //{
-                    //    //  DRAW and UNKNOWN are the same for both players.
-                    //    best_value = good_value;
-                    //}
-                    //best_move = good_i;
+                    if (enemy_value < good_value)
+                    {
+                        good_i = d;
+                        good_value = enemy_value;
+                        //  If we will win, things can get no better
+                        //  so take the move.
+                        if (good_value <= VALUE_LOSE)
+                        {
+                            break;
+                        }
+                    }
                 }
+                //  Translate the opponent's value into ours.
+                if (good_value == VALUE_WIN)
+                {
+                    //  Opponent wins, we lose.
+                    best_value = VALUE_LOSE;
+                }
+                else if (enemy_value == VALUE_LOSE)
+                {
+                    //  Opponent loses, we win.
+                    best_value = VALUE_WIN;
+                }
+                else
+                {
+                    //  DRAW and UNKNOWN are the same for both players.
+                    best_value = good_value;
+                }
+                best_move = good_i;
+
             }
         }
 
@@ -307,15 +294,24 @@ namespace DotsGame
             startY = -0.5f;
             nRelation = 0;
             square1 = 0; square2 = 0;
+            count_blocked1=0;count_blocked2=0;
+            count_blocked=0;
             
 #if DEBUG
-            aDots.Add(0, 0, 2); aDots.Add(1, 0, 1); aDots.Add(2, 0, 2);
-            aDots.Add(0, 1, 2); aDots.Add(1, 1, 1);
-            aDots.Add(0, 2, 1); aDots.Add(1, 3, 1);
-            aDots.Add(0, 3, 2); aDots.Add(1, 4, 2);
-            aDots.Add(0, 4, 2); 
+            //aDots.Add(0, 0, 2); aDots.Add(1, 0, 1); aDots.Add(2, 0, 2); aDots.Add(3, 0, 2); aDots.Add(4, 0, 2);
+            //aDots.Add(0, 1, 2); aDots.Add(1, 1, 0); aDots.Add(2, 1, 2); aDots.Add(3, 1, 1);
+            //aDots.Add(0, 2, 1); aDots.Add(1, 3, 1); aDots.Add(3, 2, 2); aDots.Add(4, 2, 2);
+            //aDots.Add(0, 3, 2); aDots.Add(1, 4, 2); aDots.Add(3, 3, 1);
+            //aDots.Add(0, 4, 2); aDots.Add(3, 4, 2); aDots.Add(4, 4, 2);
 #endif
             pbxBoard.Invalidate();
+        }
+        public bool GameOver()
+        {
+            var qry = from Dot d in aDots
+                      where d.Own == PLAYER_NONE
+                      select d;
+            return (qry.Count()==0);
         }
         public Point TranslateCoordinates(Point MousePos)
         {
@@ -650,6 +646,42 @@ namespace DotsGame
             }
             return counter;
         }
+        private int CheckBlocked()
+        {
+            int counter = 0;
+            foreach (Dot d in aDots)
+            {
+                flg_own = d.Own;
+                if (flg_own > 0)
+                {
+                    aDots.UnmarkAllDots();
+                    if (DotIsFree(d) == false)
+                    {
+                        d.Blocked = true;
+                        aDots.UnmarkAllDots();
+                        counter += 1;
+                    }
+                }
+            }
+            return counter;
+        }
+        private void Unblocked()
+        {
+            foreach (Dot d in aDots)
+            {
+                if (d.Own > 0 & d.Blocked)
+                {
+                    aDots.UnmarkAllDots();
+                    if (DotIsFree(d))
+                    {
+                        d.Blocked = false;
+                        //aDots.UnmarkAllDots();
+                    }
+                }
+            }
+        }
+
+
         private void MarkDotsInRegion(Dot dot)//Ставит InRegion=true точкам которые окружили заданную в параметре точку
         {
             dot.Marked = true;
@@ -681,6 +713,5 @@ namespace DotsGame
             }
 
         }//Маркирует точки InRegion true которые блокируют заданную точку
-
     }
 }

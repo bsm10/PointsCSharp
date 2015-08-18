@@ -73,6 +73,7 @@ namespace DotsGame
         public int x, y;
         private int _Own;
         private bool _Blocked = false;
+        private bool _BlockedCheck = false;
         private int _IndexRel;
         private int _IndexDot;
         public bool Blocked
@@ -89,6 +90,20 @@ namespace DotsGame
             }
 
         }
+        public bool BlockedCheck
+        {
+            get { return _BlockedCheck; }
+            set
+            {
+                _BlockedCheck = value;
+                if (_BlockedCheck)
+                {
+                    IndexRelation = 0;
+                    InRegion = false;
+                }
+            }
+        }
+
         public int Own
         {
             get { return _Own; }
