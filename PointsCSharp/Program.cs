@@ -15,5 +15,9 @@ namespace DotsGame
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
         }
+        static class DebugData
+        {
+            public static string Value { get; set; }
+        }
     }
 }

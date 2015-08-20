@@ -28,56 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lstPoints = new System.Windows.Forms.ListBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lstRPoints = new System.Windows.Forms.ListBox();
+            this.lstDbg1 = new System.Windows.Forms.ListBox();
+            this.lstDbg2 = new System.Windows.Forms.ListBox();
             this.txtDebug = new System.Windows.Forms.TextBox();
+            this.txtDotStatus = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // lstPoints
+            // lstDbg1
             // 
-            this.lstPoints.AccessibleName = "lstPoints";
-            this.lstPoints.FormattingEnabled = true;
-            this.lstPoints.HorizontalScrollbar = true;
-            this.lstPoints.ItemHeight = 16;
-            this.lstPoints.Location = new System.Drawing.Point(16, 37);
-            this.lstPoints.Margin = new System.Windows.Forms.Padding(4);
-            this.lstPoints.Name = "lstPoints";
-            this.lstPoints.Size = new System.Drawing.Size(264, 228);
-            this.lstPoints.TabIndex = 0;
-            this.lstPoints.SelectedIndexChanged += new System.EventHandler(this.lstPoints_SelectedIndexChanged);
+            this.lstDbg1.AccessibleName = "";
+            this.lstDbg1.FormattingEnabled = true;
+            this.lstDbg1.HorizontalScrollbar = true;
+            this.lstDbg1.ItemHeight = 16;
+            this.lstDbg1.Location = new System.Drawing.Point(16, 37);
+            this.lstDbg1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstDbg1.Name = "lstDbg1";
+            this.lstDbg1.Size = new System.Drawing.Size(199, 116);
+            this.lstDbg1.TabIndex = 0;
             // 
-            // label1
+            // lstDbg2
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 17);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 17);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "aPoints";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(289, 17);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(99, 17);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "RelationPoints";
-            // 
-            // lstRPoints
-            // 
-            this.lstRPoints.FormattingEnabled = true;
-            this.lstRPoints.HorizontalScrollbar = true;
-            this.lstRPoints.ItemHeight = 16;
-            this.lstRPoints.Location = new System.Drawing.Point(289, 37);
-            this.lstRPoints.Margin = new System.Windows.Forms.Padding(4);
-            this.lstRPoints.Name = "lstRPoints";
-            this.lstRPoints.Size = new System.Drawing.Size(264, 228);
-            this.lstRPoints.TabIndex = 2;
+            this.lstDbg2.AccessibleName = "lstDbg2";
+            this.lstDbg2.FormattingEnabled = true;
+            this.lstDbg2.HorizontalScrollbar = true;
+            this.lstDbg2.ItemHeight = 16;
+            this.lstDbg2.Location = new System.Drawing.Point(223, 37);
+            this.lstDbg2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstDbg2.Name = "lstDbg2";
+            this.lstDbg2.Size = new System.Drawing.Size(218, 116);
+            this.lstDbg2.TabIndex = 2;
+            this.lstDbg2.SelectedIndexChanged += new System.EventHandler(this.lstDbg2_SelectedIndexChanged);
             // 
             // txtDebug
             // 
@@ -85,23 +65,36 @@
             this.txtDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtDebug.Font = new System.Drawing.Font("Trebuchet MS", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtDebug.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.txtDebug.Location = new System.Drawing.Point(16, 272);
+            this.txtDebug.Location = new System.Drawing.Point(15, 160);
+            this.txtDebug.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtDebug.Multiline = true;
             this.txtDebug.Name = "txtDebug";
-            this.txtDebug.Size = new System.Drawing.Size(537, 227);
+            this.txtDebug.Size = new System.Drawing.Size(426, 150);
             this.txtDebug.TabIndex = 4;
+            // 
+            // txtDotStatus
+            // 
+            this.txtDotStatus.BackColor = System.Drawing.SystemColors.Info;
+            this.txtDotStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtDotStatus.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtDotStatus.ForeColor = System.Drawing.Color.Navy;
+            this.txtDotStatus.Location = new System.Drawing.Point(15, 315);
+            this.txtDotStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtDotStatus.Multiline = true;
+            this.txtDotStatus.Name = "txtDotStatus";
+            this.txtDotStatus.Size = new System.Drawing.Size(427, 269);
+            this.txtDotStatus.TabIndex = 5;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(569, 516);
+            this.ClientSize = new System.Drawing.Size(456, 594);
+            this.Controls.Add(this.txtDotStatus);
             this.Controls.Add(this.txtDebug);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.lstRPoints);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.lstPoints);
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Controls.Add(this.lstDbg2);
+            this.Controls.Add(this.lstDbg1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Form2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form2";
@@ -113,10 +106,9 @@
 
         #endregion
 
-        private System.Windows.Forms.ListBox lstPoints;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ListBox lstRPoints;
+        public System.Windows.Forms.ListBox lstDbg2;
         public System.Windows.Forms.TextBox txtDebug;
+        public System.Windows.Forms.TextBox txtDotStatus;
+        public System.Windows.Forms.ListBox lstDbg1;
     }
 }

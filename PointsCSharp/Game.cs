@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//#define DEBUG
+using System;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 
 namespace DotsGame
 {
-    class Game
+    public partial class Game
     {
         //private const int NUM_SQUARES = 9;
         //private int GameInProgress;
@@ -28,10 +27,11 @@ namespace DotsGame
         private const int NUM_PATTERNS = 10;
         private Dot[] pattern;
         private Dot[] pat_move;
-        public int SkillLevel = 100;
+        private Dot last_move;
+        public int SkillLevel = 10000;
         //-------------------------------------------------
         public int iScaleCoef = 1;//- коэффициент масштаба
-        public int iBoardSize = 10;//- количество клеток квадрата в длинну
+        public int iBoardSize = 5;//- количество клеток квадрата в длинну
         public int iMapSize;//- количество клеток квадрата в длинну
 
         public float startX = -0.5f, startY = -0.5f;
@@ -39,7 +39,7 @@ namespace DotsGame
         private Links[] lnks; //массив где хранятся связи между точками, учавствует в отрисовке
         private Links[] temp_lnks; //массив где хранятся связи между точками, если связи не окружили точку - обнуляется, если да, то добавляется в lnks
         private Point[] pts;
-
+        
         public Color colorGamer1 = Properties.Settings.Default.Color_Gamer1,
                            colorGamer2 = Properties.Settings.Default.Color_Gamer2,
                            colorCursor = Properties.Settings.Default.Color_Cursor;
@@ -61,16 +61,22 @@ namespace DotsGame
        
         private PictureBox pbxBoard;
 
+#if DEBUG
+        public Form f = new Form2();
+        public ListBox lstDbg1;
+        public ListBox lstDbg2;
+        public TextBox txtDbg;
+        public TextBox txtDot;
+#endif
+
         public Game(PictureBox CanvasGame)
         {
             pbxBoard = CanvasGame;
             newGame();
         }
-
         /*1) Забить паттерны в массив, поик паттернов в аДотс, расстановка веса позиции
 
         */
-
         //  ************************************************
         //  Initialize patterns. The moves and replies were
         //  obtained by letting the program run through the
@@ -153,13 +159,25 @@ namespace DotsGame
             int depth=0;
             //  If we did not find a pattern, look for the best
             //  possible move.
-            if ((best_move ==null))
+            #if DEBUG
+                lstDbg1.Items.Clear();
+            #endif
+            if (best_move ==null)
             {
                 BoardValue(ref best_move, ref best_value, PLAYER_COMPUTER, PLAYER_HUMAN, ref depth);
             }
+            if (best_move == null)
+            {
+                var qry = from Dot d in aDots
+                          where d.Own == PLAYER_NONE
+                          select d;
+
+                    best_move=qry.First();
+                
+            }
+            CheckBlocked();
             return best_move;
         }
-
         //  ************************************************
         //  Return the player who has won. If it is a draw,
         //  return PLAYER_DRAW. If the game is not yet over,
@@ -175,25 +193,29 @@ namespace DotsGame
                                  where d.Blocked == true & d.Own == 1
                                  select d;
             int bl1 = count_bl1.Count();
-            int bl2 = count_bl2.Count();   
-            CheckBlocked();//проверяем сколько точек окружено после сделанного хода
+            int bl2 = count_bl2.Count();
+            //проверяем сколько точек окружено после сделанного хода
+            if (CheckBlocked() == 0) return PLAYER_NONE;
             //выбираем блокированные точки игроком1
             var qry = from Dot d in aDots
                       where d.Blocked == true & d.Own!=1
                       select d;
             if (bl1 - qry.Count() != 0)
             {
-                return PLAYER_HUMAN;  
+                //MessageBox.Show("Human");
+                return PLAYER_HUMAN; 
             }
             var qry1 = from Dot d in aDots
                       where d.Blocked == true & d.Own != 2
                       select d;
             if (bl2 - qry1.Count() != 0)
             {
+               // MessageBox.Show("Computer"); 
                 return PLAYER_COMPUTER;
             }
             return PLAYER_NONE;
         }
+
         private void BoardValue(ref Dot best_move, ref int best_value, int pl1, int pl2, ref int depth)
         {
             int pl;
@@ -228,9 +250,9 @@ namespace DotsGame
             good_value = VALUE_HIGH;
 
             var qry = from Dot d in aDots
-                      where d.Own == PLAYER_NONE
+                      where d.Own == PLAYER_NONE// & d.Blocked == false
                       select d;
-            
+
             Dot[] ad;
             ad = qry.ToArray();
             int i = ad.Length;
@@ -240,14 +262,23 @@ namespace DotsGame
                 {
                     //делаем ход
                     d.Own = pl1;
-                    pbxBoard.Invalidate();
-                    System.Threading.Thread.Sleep(10);
+                    
+                    //-----показывает проверяемые ходы--------
+                        
+                        #if DEBUG
+                            //Pause(1000);
+                            
+                            if (d.Own == 2) lstDbg1.Items.Add(d.Own + " - " + d.x  + ":" + d.y) ;
+                        #endif
+                    //-----------------------------------
                     depth++;
                     //теперь ходит другой игрок
                     BoardValue(ref enemy_i, ref enemy_value, pl2, pl1, ref depth);
                     //отменить ход
                     d.Own = PLAYER_NONE;
-                    Unblocked();
+                    //Unblocked();
+                    //ScanForBlocked();
+                    if (enemy_value == VALUE_UNKNOWN) break;
                     //  See if this is lower than the previous best.
                     if (enemy_value < good_value)
                     {
@@ -257,7 +288,7 @@ namespace DotsGame
                         //  so take the move.
                         if (good_value <= VALUE_LOSE)
                         {
-                            break;
+                            //break;
                         }
                     }
                 }
@@ -278,10 +309,39 @@ namespace DotsGame
                     best_value = good_value;
                 }
                 best_move = good_i;
-
             }
         }
+        public void Statistic()
+        {
+            txtDbg.Text = "Игрок1 окружил точек: " + 0 + "; \r\n" +
+              "Захваченая площадь: " + square1.ToString() + "; \r\n" +
+              "Игрок2 окружил точек: " + 0 + "; \r\n" +
+              "Захваченая площадь: " + square2.ToString() + "; \r\n" +
+              "Игрок1 точек поставил: " + count_dot1.ToString() + "; \r\n" +
+              "Игрок2 точек поставил: " + count_dot2.ToString() + "; \r\n";
+        }
+        public void Statistic(int x, int y)
+        {
+            if (aDots.Contains(x, y))
+            {
+                txtDot.Text = "Blocked: " + aDots[x, y].Blocked + "\r\n" +
+                              "CountRelations: " + aDots[x, y].CountRelations + "\r\n" +
+                              "FirstDot: " + aDots[x, y].FirstDot + "\r\n" +
+                              "Fixed: " + aDots[x, y].Fixed + "\r\n" +
+                              "IndexDot: " + aDots[x, y].IndexDot + "\r\n" +
+                              "IndexRelation: " + aDots[x, y].IndexRelation + "\r\n" +
+                              "InRegion: " + aDots[x, y].InRegion + "\r\n" +
+                              "Own: " + aDots[x, y].Own + "\r\n" +
+                              "X: " + aDots[x, y].x + "; Y: " + aDots[x, y].y;
+            }
 
+        }
+
+        private void Pause(int ms)
+        {
+            pbxBoard.Invalidate();
+            System.Threading.Thread.Sleep(ms);
+        }
         public void newGame()
         {
             iMapSize = iBoardSize * iScaleCoef;
@@ -296,13 +356,22 @@ namespace DotsGame
             square1 = 0; square2 = 0;
             count_blocked1=0;count_blocked2=0;
             count_blocked=0;
-            
+
 #if DEBUG
-            //aDots.Add(0, 0, 2); aDots.Add(1, 0, 1); aDots.Add(2, 0, 2); aDots.Add(3, 0, 2); aDots.Add(4, 0, 2);
-            //aDots.Add(0, 1, 2); aDots.Add(1, 1, 0); aDots.Add(2, 1, 2); aDots.Add(3, 1, 1);
-            //aDots.Add(0, 2, 1); aDots.Add(1, 3, 1); aDots.Add(3, 2, 2); aDots.Add(4, 2, 2);
-            //aDots.Add(0, 3, 2); aDots.Add(1, 4, 2); aDots.Add(3, 3, 1);
-            //aDots.Add(0, 4, 2); aDots.Add(3, 4, 2); aDots.Add(4, 4, 2);
+            aDots.Add(0, 0, 2); aDots.Add(1, 0, 1); aDots.Add(2, 0, 2); aDots.Add(3, 0, 2); aDots.Add(4, 0, 2);
+            aDots.Add(0, 1, 2); aDots.Add(1, 1, 0); aDots.Add(2, 1, 2); aDots.Add(3, 1, 1);
+            aDots.Add(0, 2, 1); aDots.Add(1, 3, 1); aDots.Add(3, 2, 2); aDots.Add(4, 2, 2);
+            aDots.Add(0, 3, 2); aDots.Add(1, 4, 2); aDots.Add(3, 3, 1);
+            aDots.Add(0, 4, 2); aDots.Add(3, 4, 2); aDots.Add(4, 4, 2);
+
+            f.Show();
+            //MoveDebugWindow();
+
+            lstDbg1 = (ListBox)f.Controls.Find("lstDbg1", false)[0];
+            lstDbg2 = (ListBox)f.Controls.Find("lstDbg2", false)[0];
+            txtDbg = (TextBox)f.Controls.Find("txtDebug", false)[0];
+            txtDot = (TextBox)f.Controls.Find("txtDotStatus", false)[0];
+
 #endif
             pbxBoard.Invalidate();
         }
@@ -602,6 +671,7 @@ namespace DotsGame
             switch (dot.Own)//подсчитать кол-во поставленых точек
             {
                 case 1:
+                    last_move=dot;
                     square1 += res;
                     count_dot1 += 1;
                     break;
@@ -623,48 +693,48 @@ namespace DotsGame
                 aDots.Add(dot);
                 FindNeiborDots(dot);//проверяем соседние точки и устанавливаем IndexRelation
             }
-            return CheckBlocked(dot);
-        }
-
-        private int CheckBlocked(Dot dot)
-        {
-            int counter=0;
-            foreach (Dot d in aDots)
-            {
-                flg_own = d.Own;
-                if (flg_own > 0)
-                {
-                    aDots.UnmarkAllDots();
-                    if (DotIsFree(d) == false)
-                    {
-                        d.Blocked = true;
-                        aDots.UnmarkAllDots();
-                        MarkDotsInRegion(d);
-                        counter += 1;
-                    }
-                }
-            }
-            return counter;
+            return CheckBlocked();//CheckBlocked(dot);
         }
         private int CheckBlocked()
+        {
+            int counter=0;
+                foreach (Dot d in aDots)
+                {
+                    flg_own = d.Own;
+                    if (flg_own > 0)
+                    {
+                        aDots.UnmarkAllDots();
+                        if (DotIsFree(d) == false)
+                        {
+                            d.Blocked = true;
+                            aDots.UnmarkAllDots();
+                            MarkDotsInRegion(d);
+                            counter += 1;
+                        }
+                        else
+                        {
+                            d.Blocked = false;
+                        }   
+                    }
+                }
+             return counter;
+        }
+        private int ScanForBlocked()
         {
             int counter = 0;
             foreach (Dot d in aDots)
             {
-                flg_own = d.Own;
-                if (flg_own > 0)
-                {
-                    aDots.UnmarkAllDots();
-                    if (DotIsFree(d) == false)
-                    {
-                        d.Blocked = true;
-                        aDots.UnmarkAllDots();
-                        counter += 1;
-                    }
-                }
+               aDots.UnmarkAllDots();
+               if (DotIsFree(d) == false)
+               {
+                    d.Blocked = true;
+                    counter += 1;
+               }
+               else d.Blocked = false;
             }
             return counter;
         }
+
         private void Unblocked()
         {
             foreach (Dot d in aDots)
@@ -672,16 +742,10 @@ namespace DotsGame
                 if (d.Own > 0 & d.Blocked)
                 {
                     aDots.UnmarkAllDots();
-                    if (DotIsFree(d))
-                    {
-                        d.Blocked = false;
-                        //aDots.UnmarkAllDots();
-                    }
+                    if (DotIsFree(d)) d.Blocked = false;
                 }
             }
         }
-
-
         private void MarkDotsInRegion(Dot dot)//Ставит InRegion=true точкам которые окружили заданную в параметре точку
         {
             dot.Marked = true;
@@ -694,6 +758,10 @@ namespace DotsGame
                 if (_d.Own != 0 & _d.Own != flg_own)
                 {
                     _d.InRegion = true;
+                }
+                else
+                {
+                    _d.Blocked=true;
                 }
             }
             for (int i = 0; i < 4; i++)
@@ -712,6 +780,15 @@ namespace DotsGame
                     }
             }
 
-        }//Маркирует точки InRegion true которые блокируют заданную точку
+        }
+#if DEBUG
+        public void MoveDebugWindow(int top, int left, int width)
+        {
+            f.Top = top;
+            f.Left = left + width;
+        }
+#endif
+        //Маркирует точки InRegion true которые блокируют заданную точку
     }
+
 }

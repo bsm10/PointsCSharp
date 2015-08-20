@@ -37,8 +37,10 @@ namespace DotsGame
             {
                 for (int j = 0; j < size; j++)
                 {
+                    
                     Dots[i,j]=new Dot(i, j);
                     Dots[i,j].IndexDot = counter;
+                    if(i==0 | i == (size-1) | j == 0 | j==(size-1)) Dots[i,j].Fixed=true;
                     counter += 1;
                 }
             }
@@ -67,8 +69,8 @@ namespace DotsGame
         {
             if (Contains(Dot))
             {
-                Dot.IndexDot= Dots[Dot.x, Dot.y].IndexDot; 
-                Dots[Dot.x, Dot.y] = Dot; 
+                //Dot.IndexDot= Dots[Dot.x, Dot.y].IndexDot; 
+                Dots[Dot.x, Dot.y].Own = Dot.Own; 
             }
         }
         public void Add(int x, int y, int own)//меняет владельца точки
@@ -110,11 +112,11 @@ namespace DotsGame
                 d.Marked = false;
             }
         }
-        public void Save()//сохраняет текущее состояние массива
+        public void Save()//сохраняет текущее состояние массива БЕТА!
         {
             _Dots=(Dot[,])Dots.Clone();
         }
-        public void Restore()//сохраняет текущее состояние массива
+        public void Restore()//восстанавливает состояние массива БЕТА!
         {
             Dots = null;
             Dots =(Dot[,])_Dots.Clone();

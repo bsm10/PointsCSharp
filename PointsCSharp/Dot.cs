@@ -76,16 +76,20 @@ namespace DotsGame
         private bool _BlockedCheck = false;
         private int _IndexRel;
         private int _IndexDot;
+        private bool _Fixed;
         public bool Blocked
         {
             get { return _Blocked; }
             set
             {
-                _Blocked = value;
-                if(_Blocked)
+                if (Fixed==false) 
                 {
-                    IndexRelation=0;
-                    InRegion=false;
+                    _Blocked = value;
+                    if(_Blocked)
+                    {
+                        IndexRelation=0;
+                        InRegion=false;
+                    }
                 }
             }
 
@@ -103,7 +107,23 @@ namespace DotsGame
                 }
             }
         }
-
+        public bool Fixed
+        {
+            get { return _Fixed; }
+            set { 
+                _Fixed = value;
+                if (RelatedDots != null)
+                {
+                    for (int i = 0; i < RelatedDots.Length; i++)
+                    {
+                        if (_Fixed == true)
+                        {
+                            RelatedDots[i].Fixed = _Fixed;
+                        }
+                    }
+                }
+            }
+        }
         public int Own
         {
             get { return _Own; }
@@ -244,7 +264,6 @@ namespace DotsGame
             Own = (int)OwnerDot;
             IndexRelation = 0;
             _ParentDot=ParentDot;
-            //_IndexDot+=1;
         }
         public Dot(int x, int y, int IndexOwner, Dot ParentDot)
         {
@@ -253,8 +272,6 @@ namespace DotsGame
             Own = IndexOwner;
             IndexRelation = 0;
             _ParentDot = ParentDot;
-            //_IndexDot += 1;
-
         }
         public Dot(int x, int y)
         {
@@ -263,7 +280,6 @@ namespace DotsGame
             Own = (int)Owner.None;
             IndexRelation = 0;
             _ParentDot = null;
-            //_IndexDot += 1;
         }
         public Dot(Point Point)
         {
@@ -272,7 +288,6 @@ namespace DotsGame
             Own = (int)Owner.None;
             IndexRelation = 0;
             _ParentDot = null;
-            //_IndexDot += 1;
         }
 
         public void AddRelationDot(Dot RelationDot)
