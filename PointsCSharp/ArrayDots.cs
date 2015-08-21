@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+
 namespace DotsGame
 {
     public class ComparerDots : IComparer<Dot>
@@ -25,6 +25,7 @@ namespace DotsGame
     {
         private Dot[,] Dots;
         private Dot[,] _Dots;
+        
         int position = -1;
         private int nSize;
         public ArrayDots(int size)
@@ -37,8 +38,10 @@ namespace DotsGame
             {
                 for (int j = 0; j < size; j++)
                 {
+                    
                     Dots[i,j]=new Dot(i, j);
                     Dots[i,j].IndexDot = counter;
+                    if(i==0 | i == (size-1) | j == 0 | j==(size-1)) Dots[i,j].Fixed=true;
                     counter += 1;
                 }
             }
@@ -62,30 +65,40 @@ namespace DotsGame
                 Dots[i,j] = value;
             }
         }
-
         public void Add(Dot Dot)//добавляет точку в массив
         {
             if (Contains(Dot))
             {
-                Dot.IndexDot= Dots[Dot.x, Dot.y].IndexDot; 
-                Dots[Dot.x, Dot.y] = Dot; 
+                Dots[Dot.x, Dot.y].Own = Dot.Own;
+                Dots[Dot.x, Dot.y].Blocked = false;
             }
         }
         public void Add(int x, int y, int own)//меняет владельца точки
         {
             Dots[x, y].Own = own;
+            Dots[x, y].Blocked = false;
         }
-
         //public void Sort(ref Dot[] arrDots)//принимает пустой массив, в который возвращает отсортированный массив по Х и У
         //{
         //    arrDots=(Dot[])Dots.Clone();
         //    ComparerDots cmp = new ComparerDots();
         //    Array.Sort(arrDots, cmp);
         //}
-        public void Remove(Dot Dot)//удаляет точку из массива
+        public void Remove(Dot dot)//удаляет точку из массива
         {
-            Dots[Dot.x, Dot.y] = new Dot(Dot.x, Dot.y);
+            int i = Dots[dot.x, dot.y].IndexDot;
+            Dots[dot.x, dot.y] = new Dot(dot.x, dot.y);
+            Dots[dot.x, dot.y].IndexDot=i;
+
         }
+        public void Remove(int x, int y)//удаляет точку из массива
+        {
+            int i = Dots[x, y].IndexDot;
+            Dots[x, y] = new Dot(x, y);
+            Dots[x, y].IndexDot = i;
+
+        }
+
         public bool Contains(Dot Dot)//проверяет, есть ли точка с такими координатами в массиве
         {
                 if (Dot.x >=0 & Dot.x<nSize & Dot.y >= 0 & Dot.y<nSize )
@@ -102,7 +115,6 @@ namespace DotsGame
             }
             return false;
         }
-
         public void UnmarkAllDots()
         {
             foreach (Dot d in Dots)
@@ -110,11 +122,14 @@ namespace DotsGame
                 d.Marked = false;
             }
         }
-        public void Save()//сохраняет текущее состояние массива
+        public void Save()//сохраняет текущее состояние массива БЕТА!
         {
-            _Dots=(Dot[,])Dots.Clone();
+            Dot[,] tmp = new Dot[nSize, nSize];
+            tmp=(Dot[,])Dots.Clone();
+            _Dots=tmp;
+            //Array.Copy(tmp, 0, _Dots, 0, nSize * nSize);
         }
-        public void Restore()//сохраняет текущее состояние массива
+        public void Restore()//восстанавливает состояние массива БЕТА!
         {
             Dots = null;
             Dots =(Dot[,])_Dots.Clone();

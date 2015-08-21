@@ -1,24 +1,23 @@
-﻿#define DEBUG
+﻿//#define DEBUG
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Linq;
-using DotsGame;
 
 namespace DotsGame
 {
-    
+
     public partial class Form1 : Form
     {
-#if DEBUG
-        Form f = new Form2();
-        public ListBox lstDbg1;
-        public ListBox lstDbg2;
-        public TextBox txtDbg;
-#endif
+//#if DEBUG
+//        public Form f = new Form2();
+//        public ListBox lstDbg1;
+//        public ListBox lstDbg2;
+//        public TextBox txtDbg;
+//        public TextBox txtDot;
+//#endif
     Game game;
     private Point t;
-    private int own;
+   // private int own;
 
         public Form1()
         {
@@ -30,13 +29,15 @@ namespace DotsGame
             Height = 2 * Yres / 3;
             Width = Height;
 
-#if DEBUG
-            f.Show(this);
-            MoveDebugWindow();
-            lstDbg1 = (ListBox)f.Controls.Find("lstPoints", false)[0];
-            lstDbg2 = (ListBox)f.Controls.Find("lstRPoints", false)[0];
-            txtDbg = (TextBox)f.Controls.Find("txtDebug", false)[0];
-#endif
+//#if DEBUG
+//            f.Show(this);
+
+//            MoveDebugWindow();
+//            //lstDbg1 = (ListBox)f.Controls.Find("lstDbg1", false)[0];
+//            //lstDbg2 = (ListBox)f.Controls.Find("lstDbg2", false)[0];
+//            txtDbg = (TextBox)f.Controls.Find("txtDebug", false)[0];
+//            txtDot = (TextBox)f.Controls.Find("txtDotStatus", false)[0];
+//#endif
             game = new Game(pbxBoard);
 
             toolStripTextBox1.Text = game.iBoardSize.ToString();
@@ -67,30 +68,33 @@ namespace DotsGame
                             return;
                         }
                         //============Ход компьютера=================
-                        Dot move = game.PickComputerMove();
-                        //own=2;//игрок2
-                        move.Own = 2;
-                        res = game.MakeMove(move);
-                       if (game.GameOver())
-                        {
-                            MessageBox.Show("Game over!");
-                            game.newGame();
-                            return;
-                        }
+                        //Dot move = game.PickComputerMove();
+                        //move.Own = 2;
+                        //res = game.MakeMove(move);
+                        //pbxBoard.Invalidate();
+                        //if (game.GameOver())
+                        //{
+                        //    MessageBox.Show("Game over!");
+                        //    game.newGame();
+                        //    return;
+                        //}
                         break;
 
                     case MouseButtons.Right:
                         //============Ход компьютера  в ручном режиме=================
-                        //res = game.MakeMove(new Dot(game.MousePos.X, game.MousePos.Y, 2, null));
+                        res = game.MakeMove(new Dot(game.MousePos.X, game.MousePos.Y, 2, null));
+                        break;
+                    case MouseButtons.Middle:
+                        game.UndoMove(dot.x,dot.y);
                         break;
                 }
                 //res = game.MakeMove(new Dot(game.MousePos.X, game.MousePos.Y, own, null));
-                txtDbg.Text = "Игрок1 окружил точек: " + 0 + "; \r\n" +
-                              "Захваченая площадь: " + game.square1.ToString() + "; \r\n" +
-                              "Игрок2 окружил точек: " + 0+ "; \r\n" +
-                              "Захваченая площадь: " + game.square2.ToString() + "; \r\n" +
-                              "Игрок1 точек поставил: " + game.count_dot1.ToString() + "; \r\n" +
-                              "Игрок2 точек поставил: " + game.count_dot2.ToString() + "; \r\n";
+                //txtDbg.Text = "Игрок1 окружил точек: " + 0 + "; \r\n" +
+                //              "Захваченая площадь: " + game.square1.ToString() + "; \r\n" +
+                //              "Игрок2 окружил точек: " + 0+ "; \r\n" +
+                //              "Захваченая площадь: " + game.square2.ToString() + "; \r\n" +
+                //              "Игрок1 точек поставил: " + game.count_dot1.ToString() + "; \r\n" +
+                //              "Игрок2 точек поставил: " + game.count_dot2.ToString() + "; \r\n";
 
 
             }
@@ -121,15 +125,14 @@ namespace DotsGame
                 
                     break;
             }
-           
+
 #if DEBUG
-            if (game.aDots.Contains(p.X, p.Y))
-                lblStatus.Text = p.X + " : " + p.Y + "; IndexR -" + game.aDots[p.X, p.Y].IndexRelation + " InReg -" + game.aDots[p.X, p.Y].InRegion;
-            Text = game.startX + " : " + game.startY; 
+            game.Statistic(p.X,p.Y);
 #else
-                lblStatus.Text = p.X + " : " + p.Y;
+               
 #endif
-            pbxBoard.Invalidate(); 
+           lblStatus.Text = p.X + " : " + p.Y;
+           pbxBoard.Invalidate(); 
         }
         private void pbxBoard_MouseDown(object sender, MouseEventArgs e)
         {
@@ -165,23 +168,23 @@ namespace DotsGame
             numericUpDown1.Left = pbxBoard.Width*2/3;
             menuStrip.Invalidate();
             pbxBoard.Invalidate();
-            #if DEBUG
-                MoveDebugWindow();
-            #endif
+#if DEBUG
+            if (game!=null) game.MoveDebugWindow(Top, Left, Width);
+#endif
         }
         private void Form1_Move(object sender, EventArgs e)
         {
         #if DEBUG
-            MoveDebugWindow();
+            game.MoveDebugWindow(Top,Left,Width);
         #endif
         }
-        #if DEBUG
-            private void MoveDebugWindow()
-        {
-            f.Top = Top;
-            f.Left = Left + Width;
-        }
-        #endif
+//#if DEBUG
+//        private void MoveDebugWindow()
+//        {
+//            f.Top = Top;
+//            f.Left = Left + Width;
+//        }
+//#endif
         private void toolStripTextBox1_TextChanged(object sender, EventArgs e)
         {
             ChangeBoardSize(toolStripTextBox1.Text);

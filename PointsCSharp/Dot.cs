@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Drawing;
-
+using System.Collections.Generic;
 namespace DotsGame
 {
     public class Links
@@ -73,37 +73,59 @@ namespace DotsGame
         public int x, y;
         private int _Own;
         private bool _Blocked = false;
-        private bool _BlockedCheck = false;
         private int _IndexRel;
         private int _IndexDot;
+        private bool _Fixed;
         public bool Blocked
         {
             get { return _Blocked; }
             set
             {
-                _Blocked = value;
-                if(_Blocked)
+                if (Fixed==false) 
                 {
-                    IndexRelation=0;
-                    InRegion=false;
+                    _Blocked = value;
+                    if(_Blocked)
+                    {
+                        IndexRelation=0;
+                        InRegion=false;
+                    }
+                    else
+                    {
+                        _WhoBlocking.Clear();
+                        //if(_WhoBlocking.Count>0) 
+                        //{
+                        //    foreach (Dot d in _WhoBlocking)
+                        //    {
+                        //        d.BlokingDots.Remove(d);
+                        //    }
+                        //}
+                    }
                 }
             }
 
         }
-        public bool BlockedCheck
+        private List<Dot> _BlokingDots;
+        public List<Dot> BlokingDots//Список точек, которые блокируются этой точкой
         {
-            get { return _BlockedCheck; }
-            set
-            {
-                _BlockedCheck = value;
-                if (_BlockedCheck)
+            get { return _BlokingDots; }
+        }
+        public bool Fixed
+        {
+            get { return _Fixed; }
+            set { 
+                _Fixed = value;
+                if (RelatedDots != null)
                 {
-                    IndexRelation = 0;
-                    InRegion = false;
+                    for (int i = 0; i < RelatedDots.Length; i++)
+                    {
+                        if (_Fixed == true)
+                        {
+                            RelatedDots[i].Fixed = _Fixed;
+                        }
+                    }
                 }
             }
         }
-
         public int Own
         {
             get { return _Own; }
@@ -119,24 +141,28 @@ namespace DotsGame
             }
 
         }
+        private List<Dot> _WhoBlocking;
+        public List<Dot> WhoBlocking//Список точек, которые блокируют точку
+        {
+            get { return _WhoBlocking; }
+        }
 
         public int IndexRelation
         {
             get {return _IndexRel;}
             set {
                 _IndexRel = value;
-                    if (RelatedDots != null)
+                if (RelatedDots != null)
+                {
+                    for (int i = 0; i < RelatedDots.Length; i++)
                     {
-                        for (int i = 0; i < RelatedDots.Length; i++)
+                        if (RelatedDots[i].IndexRelation != _IndexRel & RelatedDots[i].Blocked == false & _IndexRel!=0)
                         {
-                            if (RelatedDots[i].IndexRelation != _IndexRel & RelatedDots[i].Blocked == false & _IndexRel!=0)
-                            {
-                               RelatedDots[i].IndexRelation = _IndexRel;
-                            }
+                            RelatedDots[i].IndexRelation = _IndexRel;
                         }
                     }
                 }
-
+            }
         }
         private Dot _ParentDot;
         public Dot Parent
@@ -172,19 +198,6 @@ namespace DotsGame
                 _FirstDot = value;
             }
         }
-        private bool _NuberOfPath;
-        public bool NuberOfPath
-        {
-            get
-            {
-                return _NuberOfPath;
-            }
-            set
-            {
-                _NuberOfPath = value;
-            }
-        }
-
         private bool _InRegion;
         public bool InRegion
         {
@@ -241,40 +254,42 @@ namespace DotsGame
         {
             this.x = x;
             this.y = y;
+            _BlokingDots = new List<Dot>();
+            _WhoBlocking = new List<Dot>();
             Own = (int)OwnerDot;
             IndexRelation = 0;
             _ParentDot=ParentDot;
-            //_IndexDot+=1;
         }
         public Dot(int x, int y, int IndexOwner, Dot ParentDot)
         {
             this.x = x;
             this.y = y;
+            _BlokingDots = new List<Dot>();
+            _WhoBlocking = new List<Dot>();
             Own = IndexOwner;
             IndexRelation = 0;
             _ParentDot = ParentDot;
-            //_IndexDot += 1;
-
         }
         public Dot(int x, int y)
         {
             this.x = x;
             this.y = y;
+            _BlokingDots = new List<Dot>();
+            _WhoBlocking = new List<Dot>();
             Own = (int)Owner.None;
             IndexRelation = 0;
             _ParentDot = null;
-            //_IndexDot += 1;
         }
         public Dot(Point Point)
         {
             x = Point.X;
             y = Point.Y;
+            _BlokingDots = new List<Dot>();
+            _WhoBlocking = new List<Dot>();
             Own = (int)Owner.None;
             IndexRelation = 0;
             _ParentDot = null;
-            //_IndexDot += 1;
         }
-
         public void AddRelationDot(Dot RelationDot)
         {
         if(RelationDot.Blocked==false)
@@ -284,6 +299,7 @@ namespace DotsGame
             r+=1;
             }
         }
+
         public bool DotsEquals(Dot dot)//Проверяет равенство точек по координатам
         {
             return (x == dot.x) & (y == dot.y);
