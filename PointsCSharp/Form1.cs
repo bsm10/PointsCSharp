@@ -67,18 +67,21 @@ namespace DotsGame
                             game.newGame();
                             return;
                         }
-                        //============Ход компьютера=================
-                        //Dot move = game.PickComputerMove();
-                        //move.Own = 2;
-                        //res = game.MakeMove(move);
-                        //pbxBoard.Invalidate();
-                        //if (game.GameOver())
-                        //{
-                        //    MessageBox.Show("Game over!");
-                        //    game.newGame();
-                        //    return;
-                        //}
-                        break;
+                    //============Ход компьютера=================
+                    move_again:
+                        Dot move = game.PickComputerMove();
+                        move.Own = 2;
+                        res = game.MakeMove(move);
+                        pbxBoard.Invalidate();
+                        if (game.GameOver())
+                        {
+                            MessageBox.Show("Game over!");
+                            game.newGame();
+                            return;
+                        }
+                        if (res != 0) goto move_again;
+
+                            break;
 
                     case MouseButtons.Right:
                         //============Ход компьютера  в ручном режиме=================
@@ -224,7 +227,7 @@ namespace DotsGame
         }
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            ChangeBoardSize(numericUpDown1.Value.ToString() );
+            game.pause=(int)numericUpDown1.Value;
         }
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {

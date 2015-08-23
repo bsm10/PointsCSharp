@@ -51,14 +51,14 @@
             this.networkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.антиалToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.цветКурсораToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.цветИгрокаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.цветПротивникаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.содержаниеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.опрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.цветИгрокаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.цветПротивникаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -268,6 +268,20 @@
             this.цветКурсораToolStripMenuItem.Text = "Цвет курсора...";
             this.цветКурсораToolStripMenuItem.Click += new System.EventHandler(this.цветКурсораToolStripMenuItem_Click);
             // 
+            // цветИгрокаToolStripMenuItem
+            // 
+            this.цветИгрокаToolStripMenuItem.Name = "цветИгрокаToolStripMenuItem";
+            this.цветИгрокаToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.цветИгрокаToolStripMenuItem.Text = "Цвет игрока...";
+            this.цветИгрокаToolStripMenuItem.Click += new System.EventHandler(this.цветИгрокаToolStripMenuItem_Click);
+            // 
+            // цветПротивникаToolStripMenuItem
+            // 
+            this.цветПротивникаToolStripMenuItem.Name = "цветПротивникаToolStripMenuItem";
+            this.цветПротивникаToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.цветПротивникаToolStripMenuItem.Text = "Цвет противника...";
+            this.цветПротивникаToolStripMenuItem.Click += new System.EventHandler(this.цветПротивникаToolStripMenuItem_Click);
+            // 
             // справкаToolStripMenuItem
             // 
             this.справкаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -299,32 +313,29 @@
             // numericUpDown1
             // 
             this.numericUpDown1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numericUpDown1.CausesValidation = false;
             this.numericUpDown1.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown1.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.numericUpDown1.Location = new System.Drawing.Point(787, 528);
+            this.numericUpDown1.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Location = new System.Drawing.Point(727, 528);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(59, 23);
+            this.numericUpDown1.Size = new System.Drawing.Size(119, 23);
             this.numericUpDown1.TabIndex = 3;
             this.numericUpDown1.Value = new decimal(new int[] {
-            10,
+            100,
             0,
             0,
             0});
             this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
-            // 
-            // цветИгрокаToolStripMenuItem
-            // 
-            this.цветИгрокаToolStripMenuItem.Name = "цветИгрокаToolStripMenuItem";
-            this.цветИгрокаToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
-            this.цветИгрокаToolStripMenuItem.Text = "Цвет игрока...";
-            this.цветИгрокаToolStripMenuItem.Click += new System.EventHandler(this.цветИгрокаToolStripMenuItem_Click);
-            // 
-            // цветПротивникаToolStripMenuItem
-            // 
-            this.цветПротивникаToolStripMenuItem.Name = "цветПротивникаToolStripMenuItem";
-            this.цветПротивникаToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
-            this.цветПротивникаToolStripMenuItem.Text = "Цвет противника...";
-            this.цветПротивникаToolStripMenuItem.Click += new System.EventHandler(this.цветПротивникаToolStripMenuItem_Click);
             // 
             // Form1
             // 

@@ -29,18 +29,16 @@ namespace DotsGame
         private Dot[] pattern;
         private Dot[] pat_move;
         private Dot last_move;
-        public int SkillLevel = 10000;
+        public int SkillLevel = 1000;
         //-------------------------------------------------
         public int iScaleCoef = 1;//- коэффициент масштаба
-        public int iBoardSize = 5;//- количество клеток квадрата в длинну
+        public int iBoardSize = 10;//- количество клеток квадрата в длинну
         public int iMapSize;//- количество клеток квадрата в длинну
 
         public float startX = -0.5f, startY = -0.5f;
         public ArrayDots aDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
-        private Links[] lnks1; //массив где хранятся связи между точками, учавствует в отрисовке
         private List<Links> lnks;
         private Links[] temp_lnks; //массив где хранятся связи между точками, если связи не окружили точку - обнуляется, если да, то добавляется в lnks
-        private Point[] pts;
         public List<Dot> dots_in_region;//записывает сюда точки, которые окружают точку противника
 
         public Color colorGamer1 = Properties.Settings.Default.Color_Gamer1,
@@ -63,7 +61,7 @@ namespace DotsGame
         public int count_dot1, count_dot2;//количество поставленных точек
        
         private PictureBox pbxBoard;
-
+        private int _pause;
 #if DEBUG
         public Form f = new Form2();
         public ListBox lstDbg1;
@@ -167,7 +165,7 @@ namespace DotsGame
             if (best_move ==null)
             {
                 int c=0;
-                BoardValue(ref best_move, ref best_value, PLAYER_COMPUTER, PLAYER_HUMAN, ref depth,0,ref c);
+                BoardValue(ref best_move, ref best_value, PLAYER_COMPUTER, PLAYER_HUMAN, ref depth, 0, ref c);
             }
             if (best_move == null)
             {
@@ -178,7 +176,7 @@ namespace DotsGame
                     best_move=qry.First();
                 
             }
-            CheckBlocked();
+            //CheckBlocked();
             return best_move;
         }
         //  ************************************************
@@ -222,18 +220,18 @@ namespace DotsGame
         {
             if (own == 1 & res_last_move!=0)
             {
-                //Pause(2000);
+               // Pause(2000);
                 return PLAYER_HUMAN;
             }
             if (own == 2 & res_last_move != 0)
             {
-                //Pause(2000);
+               // Pause(2000);
                 return PLAYER_COMPUTER;
             }
             return PLAYER_NONE;
         }
 
-        private int BoardValue(ref Dot best_move, ref int best_value,
+        private int BoardValue1(ref Dot best_move, ref int best_value,
                                int pl1, int pl2, ref int depth, 
                                int result_last_move, ref int counter)
         {
@@ -243,7 +241,7 @@ namespace DotsGame
             Dot enemy_i = null;//=new Dot(0,0);
             int enemy_value = 0;
             Application.DoEvents();
-            if ((depth >= SkillLevel))
+            if ((counter >= SkillLevel))
             {
                 best_value = VALUE_UNKNOWN;
                 return 0;
@@ -287,7 +285,7 @@ namespace DotsGame
                     int res_last_move = MakeMove(d);
                     //-----показывает проверяемые ходы--------
                         #if DEBUG
-                           Pause(100);
+                           //Pause();
                            lstDbg1.Items.Add(d.Own + " - " + d.x  + ":" + d.y) ;
                            txtDbg.Text="Общее число ходов: " + depth.ToString() + 
                                        "\r\n Глубина просчета: " + counter.ToString();
@@ -338,6 +336,71 @@ namespace DotsGame
             }
             return 0;
         }
+        private int BoardValue(ref Dot best_move, ref int best_value,
+                       int pl1, int pl2, ref int depth,
+                       int result_last_move, ref int counter)
+        {
+            Dot enemy_i = null;
+            int enemy_value = 0;
+            if (counter >= SkillLevel)
+            {
+                best_value = VALUE_UNKNOWN;
+                return 0;
+            }
+            var qry = from Dot d in aDots
+                      where d.Own == PLAYER_NONE// & d.Blocked == false
+                      select d;
+            Dot[] ad;
+            ad = qry.ToArray();
+            int i = ad.Length;
+            if (i != 0)
+            {
+                Dot move=null;
+                foreach (Dot d in ad)
+                {
+                    //делаем ход
+                    d.Own = pl1;
+                    result_last_move = MakeMove(d);
+                    move = new Dot(d.x,d.y, pl1,null);
+                    depth++;
+                    //-----показывает проверяемые ходы--------
+#if DEBUG
+                    //Pause();
+                    lstDbg1.Items.Add(d.Own + " - " + d.x + ":" + d.y);
+                    txtDbg.Text = "Общее число ходов: " + depth.ToString() +
+                                "\r\n Глубина просчета: " + counter.ToString();
+#endif
+                    //-----------------------------------
+                    if (result_last_move != 0 & d.Own == 2)
+                    {
+                        best_move = d;
+                        UndoMove(d);
+                        return 2;
+                    }
+                    else if (result_last_move != 0 & d.Own == 1)
+                    {
+                        best_move = d;
+                        UndoMove(d);
+                        return 1;
+                    }
+                    UndoMove(d);
+                }
+                result_last_move = MakeMove(move);
+                
+                counter++;
+                //теперь ходит другой игрок
+                BoardValue(ref enemy_i, ref enemy_value, pl2, pl1, ref depth, result_last_move, ref counter);
+                //отменить ход
+                UndoMove(move);
+                counter--;
+#if DEBUG
+                lstDbg1.Items.RemoveAt(lstDbg1.Items.Count - 1);
+#endif
+            }
+            best_move = enemy_i;
+            return 0;
+        }
+
         public void Statistic()
         {
             txtDbg.Text = "Игрок1 окружил точек: " + 0 + "; \r\n" +
@@ -359,10 +422,22 @@ namespace DotsGame
                               "X: " + aDots[x, y].x + "; Y: " + aDots[x, y].y;
             }
         }
-        private void Pause(int ms)
+        public int pause
+           {
+            get
+                {
+                 return _pause;
+                }
+            set
+            {
+                _pause = value;
+            }
+            }
+        private void Pause()
         {
+            Application.DoEvents();
             pbxBoard.Invalidate();
-            System.Threading.Thread.Sleep(ms);
+            System.Threading.Thread.Sleep(_pause);
         }
         public void newGame()
         {
@@ -372,7 +447,6 @@ namespace DotsGame
             lnks = new List<Links>();
             dots_in_region = new List<Dot>();
             temp_lnks = null;
-            pts = null;
             count_dot1 = 0; count_dot2 = 0;
             startX = -0.5f;
             startY = -0.5f;
@@ -382,11 +456,11 @@ namespace DotsGame
             count_blocked=0;
 
 #if DEBUG
-            aDots.Add(0, 0, 2); aDots.Add(1, 0, 1); aDots.Add(2, 0, 2); aDots.Add(3, 0, 2); aDots.Add(4, 0, 2);
-            aDots.Add(0, 1, 2); aDots.Add(1, 1, 0); aDots.Add(2, 1, 2); aDots.Add(3, 1, 1);
-            aDots.Add(0, 2, 1); aDots.Add(1, 3, 1); aDots.Add(3, 2, 2); aDots.Add(4, 2, 2);
-            aDots.Add(0, 3, 2); aDots.Add(1, 4, 2); aDots.Add(3, 3, 1);
-            aDots.Add(0, 4, 2); aDots.Add(3, 4, 2); aDots.Add(4, 4, 2);
+            //aDots.Add(0, 0, 2); aDots.Add(1, 0, 1); aDots.Add(2, 0, 2); aDots.Add(3, 0, 2); aDots.Add(4, 0, 2);
+            //aDots.Add(0, 1, 2); aDots.Add(1, 1, 0); aDots.Add(2, 1, 2); aDots.Add(3, 1, 1);
+            //aDots.Add(0, 2, 1); aDots.Add(1, 3, 1); aDots.Add(3, 2, 2); aDots.Add(4, 2, 2);
+            //aDots.Add(0, 3, 2); aDots.Add(1, 4, 2); aDots.Add(3, 3, 1);
+            //aDots.Add(0, 4, 2); aDots.Add(3, 4, 2); aDots.Add(4, 4, 2);
 
             f.Show();
             //MoveDebugWindow();
@@ -561,11 +635,8 @@ namespace DotsGame
             }
         }
         //------------------------------------------------------------------------------------------------
-        //private int flg_own;//эту переменную надо установить перед вызовом DotIsFree, как обозначение владельца первой точки перед рекурсией 
         private bool DotIsFree(Dot dot,int flg_own)//проверяет заблокирована ли точка. Перед использованием функции надо установить flg_own-владелец начальной точки
         {
-            
-            
             dot.Marked = true;
             if (dot.x == 0 | dot.y == 0 | dot.x == iMapSize - 1 | dot.y == iMapSize - 1)
             {
