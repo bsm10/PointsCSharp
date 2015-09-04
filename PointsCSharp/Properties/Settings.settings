@@ -6,10 +6,10 @@
       <Value Profile="(Default)">128, 64, 0</Value>
     </Setting>
     <Setting Name="Color_Gamer1" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">255, 128, 128</Value>
+      <Value Profile="(Default)">200, 100, 50</Value>
     </Setting>
     <Setting Name="Color_Gamer2" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">0, 0, 192</Value>
+      <Value Profile="(Default)">80, 100, 200</Value>
     </Setting>
   </Settings>
 </SettingsFile>

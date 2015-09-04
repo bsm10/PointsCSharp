@@ -11,7 +11,8 @@
     <RootNamespace>DotsGame</RootNamespace>
     <AssemblyName>Dots</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>C:\Users\Boris\Google Диск\</PublishUrl>
@@ -92,6 +93,7 @@
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
     <Compile Include="Game.cs" />
+    <Compile Include="Patterns.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -115,6 +117,7 @@
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="PointsCSharp_TemporaryKey.pfx" />
+    <None Include="Properties\DataSources\Game.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

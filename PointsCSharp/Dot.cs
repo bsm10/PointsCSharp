@@ -8,6 +8,20 @@ namespace DotsGame
         public Dot Dot1;
         public Dot Dot2;
         private float cost;
+        public override string ToString()
+        {
+            string s;
+            if (Dot1.Own == 1) s = " Player";
+            else s = " Computer";
+            return Dot1.x + ":" + Dot1.y + "-" + Dot2.x + ":" + Dot2.y + s;
+        }
+        public bool Blocked{get;set;}
+        //{
+        //    get
+        //    {
+        //        return Dot1.Blocked & Dot2.Blocked;    
+        //    }
+        //}
         public float CostLink
         {
             get
@@ -72,60 +86,26 @@ namespace DotsGame
     {
         public int x, y;
         private int _Own;
-        private bool _Blocked = false;
-        private int _IndexRel;
-        private int _IndexDot;
-        private bool _Fixed;
-        public bool Blocked
-        {
-            get { return _Blocked; }
-            set
-            {
-                if (Fixed==false) 
-                {
-                    _Blocked = value;
-                    if(_Blocked)
-                    {
-                        IndexRelation=0;
-                        InRegion=false;
-                    }
-                    else
-                    {
-                        _WhoBlocking.Clear();
-                        //if(_WhoBlocking.Count>0) 
-                        //{
-                        //    foreach (Dot d in _WhoBlocking)
-                        //    {
-                        //        d.BlokingDots.Remove(d);
-                        //    }
-                        //}
-                    }
-                }
-            }
-
-        }
+        public bool Blocked { get; set; }
         private List<Dot> _BlokingDots;
-        public List<Dot> BlokingDots//Список точек, которые блокируются этой точкой
-        {
-            get { return _BlokingDots; }
-        }
-        public bool Fixed
-        {
-            get { return _Fixed; }
-            set { 
-                _Fixed = value;
-                if (RelatedDots != null)
-                {
-                    for (int i = 0; i < RelatedDots.Length; i++)
-                    {
-                        if (_Fixed == true)
-                        {
-                            RelatedDots[i].Fixed = _Fixed;
-                        }
-                    }
+        public List<Dot> BlokingDots 
+            {
+                get
+                { 
+                    return _BlokingDots;//Список точек, которые блокируются этой точкой
                 }
             }
+        public List<Dot> _NeiborDots = new List<Dot>();
+        public List<Dot> NeiborDots
+        {
+            get
+            {
+                return _NeiborDots;//Список точек, которые блокируются этой точкой
+            }
         }
+
+        public bool Fixed { get; set; }
+        public bool Selected { get; set; }
         public int Own
         {
             get { return _Own; }
@@ -134,183 +114,81 @@ namespace DotsGame
                 _Own = value;
                 if (_Own==0)
                 {
-                    IndexRelation = 0;
-                    InRegion = false;
                     Blocked = false;
                 }
             }
 
         }
-        private List<Dot> _WhoBlocking;
-        public List<Dot> WhoBlocking//Список точек, которые блокируют точку
+        //public enum _Rating { None = 0, Crit = 1, Bad = 2, Mid = 3, Good = 4, Nice = 5 }
+        private int rating;
+        public int Rating 
         {
-            get { return _WhoBlocking; }
+            get
+            {
+                return rating;
+            }
+            set
+            {
+                rating = value;
+                foreach(Dot d in NeiborDots)
+                {
+                    if(rating<d.rating) d.Rating=rating;
+                }
+            }
         }
 
-        public int IndexRelation
-        {
-            get {return _IndexRel;}
-            set {
-                _IndexRel = value;
-                if (RelatedDots != null)
-                {
-                    for (int i = 0; i < RelatedDots.Length; i++)
-                    {
-                        if (RelatedDots[i].IndexRelation != _IndexRel & RelatedDots[i].Blocked == false & _IndexRel!=0)
-                        {
-                            RelatedDots[i].IndexRelation = _IndexRel;
-                        }
-                    }
-                }
-            }
-        }
-        private Dot _ParentDot;
-        public Dot Parent
-        {
-            get { return _ParentDot; }
-            set
-            {
-                _ParentDot = value;
-            }
 
-        }//родительский узел
-        private bool _Marked;
-        public bool Marked
-        {
-            get
-            {
-                return _Marked;
-            }
-            set
-            {
-                _Marked=value;
-            }
-        }
-        private bool _FirstDot;
-        public bool FirstDot
-        {
-            get
-            {
-                return _FirstDot;
-            }
-            set
-            {
-                _FirstDot = value;
-            }
-        }
-        private bool _InRegion;
-        public bool InRegion
-        {
-            get
-            {
-                return _InRegion;
-            }
-            set
-            {
-                _InRegion = value;
-            }
-        }
-        public Dot[] RelatedDots;
-        public int CountRelations
-        {
-            get
-            {
-                if (RelatedDots==null)
-                {
-                    return 0;
-                }
-                else
-                {
-                    return RelatedDots.Length;
-                }
-                
-            }
-        }
-        public int IndexDot
-        {
-            get
-            {
-                return _IndexDot;
-            }
-            set
-            {
-                _IndexDot = value;
-            }
-        }
-        private int r=0;
+        public bool Marked { get; set; }
+        public int IndexDot { get; set; }
         public enum Owner : int {None = 0,Player1 = 1,Player2 = 2}
-        public Dot this[int i]//Индексатор возвращает элемент из массива по его индексу(в данном случае - связанные точки)
-        {
-            get
-            {
-                return RelatedDots[i];
-            }
-            set
-            {
-                RelatedDots[i] = value;
-            }
-        }
         public Dot (int x,int y, Owner OwnerDot,Dot ParentDot)
         {
             this.x = x;
             this.y = y;
             _BlokingDots = new List<Dot>();
-            _WhoBlocking = new List<Dot>();
             Own = (int)OwnerDot;
-            IndexRelation = 0;
-            _ParentDot=ParentDot;
         }
-        public Dot(int x, int y, int IndexOwner, Dot ParentDot)
+        public Dot(int x, int y, int Owner, Dot ParentDot)
         {
             this.x = x;
             this.y = y;
             _BlokingDots = new List<Dot>();
-            _WhoBlocking = new List<Dot>();
-            Own = IndexOwner;
-            IndexRelation = 0;
-            _ParentDot = ParentDot;
+            Own = Owner;
         }
         public Dot(int x, int y)
         {
             this.x = x;
             this.y = y;
             _BlokingDots = new List<Dot>();
-            _WhoBlocking = new List<Dot>();
             Own = (int)Owner.None;
-            IndexRelation = 0;
-            _ParentDot = null;
         }
         public Dot(Point Point)
         {
             x = Point.X;
             y = Point.Y;
             _BlokingDots = new List<Dot>();
-            _WhoBlocking = new List<Dot>();
             Own = (int)Owner.None;
-            IndexRelation = 0;
-            _ParentDot = null;
         }
-        public void AddRelationDot(Dot RelationDot)
-        {
-        if(RelationDot.Blocked==false)
-            {  
-            Array.Resize(ref RelatedDots, r+1);
-            RelatedDots[r] = RelationDot;
-            r+=1;
+        public override string ToString() 
+            {
+            string s;
+            if (Own == 1) s = " Player";
+            else if (Own == 2) s = " Computer";
+            else s = " None";
+                return x + ":" + y + s;
             }
-        }
-
         public bool DotsEquals(Dot dot)//Проверяет равенство точек по координатам
         {
             return (x == dot.x) & (y == dot.y);
         }
-        public bool NeiborDots(Dot dot)//возвращает истину если соседние точки рядом. 
+        public bool IsNeiborDots(Dot dot)//возвращает истину если соседние точки рядом. 
         {
             if (dot.Blocked | dot.Blocked | dot.Own != Own)
             {
                 return false;
             }
             return Math.Abs(x - dot.x) <= 1 & Math.Abs(y - dot.y) <= 1;
+
         }
     }
 }
