@@ -82,7 +82,7 @@ namespace DotsGame
             return -1;
         }
     }
-    public class Dot
+    public class Dot: IEquatable<Dot>
     {
         public int x, y;
         private int _Own;
@@ -177,7 +177,17 @@ namespace DotsGame
             else s = " None";
                 return x + ":" + y + s;
             }
-        public bool DotsEquals(Dot dot)//Проверяет равенство точек по координатам
+        //public override int GetHashCode(Dot dot)
+        //{
+        //    int hCode = dot.x ^ dot.y;
+        //    return hCode.GetHashCode();
+        //}
+
+        //public override bool Equals(Dot d1, Dot d2)
+        //{
+        //    return Default.Equals(d1, d2);
+        //}
+        public bool Equals(Dot dot)//Проверяет равенство точек по координатам
         {
             return (x == dot.x) & (y == dot.y);
         }
