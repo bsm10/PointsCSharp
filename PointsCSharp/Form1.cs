@@ -104,8 +104,8 @@ namespace DotsGame
                         game.ListMoves.Add(pl2_move);
                         break;
                     case MouseButtons.Middle:
-                        game.UndoMove(dot.x,dot.y);
                         game.ListMoves.Remove(game.aDots[dot.x,dot.y]);
+                        game.UndoMove(dot.x, dot.y);
                         break;
                 }
             }
