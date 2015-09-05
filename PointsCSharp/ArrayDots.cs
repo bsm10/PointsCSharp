@@ -46,6 +46,19 @@ namespace DotsGame
                 }
             }
         }
+        public class DotEq : EqualityComparer<Dot>
+        {
+            public override int GetHashCode(Dot dot)
+            {
+                int hCode = dot.x ^ dot.y;
+                return hCode.GetHashCode();
+            }
+
+            public override bool Equals(Dot d1, Dot d2)
+            {
+                return Default.Equals(d1, d2);
+            }
+        }
 
         public int Count
         {
@@ -115,7 +128,7 @@ namespace DotsGame
                     Dots[dot.x+1,dot.y].Rating=0;
                 }
             }
-            else if (dot.x == nSize-1)
+            else if (dot.x == nSize-2)
             {
                 if (Dots[dot.x - 1, dot.y].Own == dot.Own)
                 {
@@ -133,7 +146,7 @@ namespace DotsGame
                     Dots[dot.x, dot.y+1].Rating = 0;
                 }
             }
-            else if (dot.y == nSize - 1)
+            else if (dot.y == nSize -2)
             {
                 if (Dots[dot.x, dot.y - 1].Own == dot.Own)
                 {
@@ -160,6 +173,7 @@ namespace DotsGame
         public void Remove(Dot dot)//удаляет точку из массива
         {
             int i = Dots[dot.x, dot.y].IndexDot;
+            RemoveNeibor(dot);
             Dots[dot.x, dot.y] = new Dot(dot.x, dot.y);
             Dots[dot.x, dot.y].IndexDot=i;
             MakeRating();
@@ -168,6 +182,7 @@ namespace DotsGame
         {
             if (Contains(x, y))
             {
+                RemoveNeibor(Dots[x,y]);
                 int i = Dots[x, y].IndexDot;
                 Dots[x, y] = new Dot(x, y);
                 Dots[x, y].IndexDot = i;
@@ -186,6 +201,7 @@ namespace DotsGame
                 } 
             return false;
         }
+
         public bool Contains(int x, int y)//проверяет, есть ли точка с такими координатами в массиве
         {
             if (x >= 0 & x < nSize & y >= 0 & y < nSize)
@@ -201,6 +217,7 @@ namespace DotsGame
                 d.Marked = false;
             }
         }
+
         public Dot[] NotBlockedDots()
         {
             var q = from Dot d in Dots where d.Blocked==false select d;
@@ -239,6 +256,7 @@ namespace DotsGame
             }
            
         }
+
         //IEnumerator and IEnumerable require these methods.
         public IEnumerator GetEnumerator()
         {
