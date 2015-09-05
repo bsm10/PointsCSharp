@@ -101,7 +101,7 @@ namespace DotsGame
             AddNeibor(Dots[x, y]);
             
         }
-        private void AddNeibor(Dot dot)
+        private void AddNeibor(Dot dot, bool c)
         {
             if (dot.x > 0 & dot.y > 0 & dot.x < nSize-1 & dot.y < nSize-1)
             {    
@@ -156,6 +156,65 @@ namespace DotsGame
                 }
             }
         }
+        private void AddNeibor(Dot dot)
+        {
+            if (dot.x > 0 & dot.y > 0 & dot.x < nSize - 1 & dot.y < nSize - 1)
+            {
+                Dot[] dts = new Dot[8] {Dots[dot.x + 1, dot.y], Dots[dot.x - 1, dot.y],
+                                        Dots[dot.x, dot.y + 1], Dots[dot.x, dot.y - 1],
+                                        Dots[dot.x+1, dot.y + 1], Dots[dot.x-1, dot.y - 1],
+                                        Dots[dot.x+1, dot.y - 1 ], Dots[dot.x-1, dot.y + 1]};
+
+                var q = from Dot d in dts where d.Blocked == false & d.Own == dot.Own select d;
+
+                foreach (Dot d in q)
+                {
+                    if (dot.Rating > d.Rating) dot.Rating = d.Rating;
+                    if (dot.NeiborDots.Contains(d) == false) dot.NeiborDots.Add(d);
+                    if (d.NeiborDots.Contains(dot) == false) d.NeiborDots.Add(dot);
+                }
+            }
+
+            int iterator = 0;
+            if (dot.x == 0) iterator = 1;
+            if (dot.x == nSize - 2) iterator = -1;
+            if (Dots[dot.x + iterator, dot.y].Own == dot.Own)
+            {
+                dot.NeiborDots.Add(Dots[dot.x + 1, dot.y]);
+                Dots[dot.x + iterator, dot.y].NeiborDots.Add(dot);
+                Dots[dot.x + iterator, dot.y].Rating = 0;
+                return;
+            }
+
+            if (dot.y == 0) iterator = 1;
+            if (dot.y == nSize - 2) iterator = -1;
+            if (Dots[dot.x, dot.y + iterator].Own == dot.Own)
+            {
+                dot.NeiborDots.Add(Dots[dot.x + 1, dot.y]);
+                Dots[dot.x, dot.y + iterator].NeiborDots.Add(dot);
+                Dots[dot.x, dot.y + iterator].Rating = 0;
+                return;
+            }
+            else if (dot.y == 0)
+            {
+                if (Dots[dot.x, dot.y + 1].Own == dot.Own)
+                {
+                    dot.NeiborDots.Add(Dots[dot.x, dot.y + 1]);
+                    Dots[dot.x, dot.y + 1].NeiborDots.Add(dot);
+                    Dots[dot.x, dot.y + 1].Rating = 0;
+                }
+            }
+            else if (dot.y == nSize - 2)
+            {
+                if (Dots[dot.x, dot.y - 1].Own == dot.Own)
+                {
+                    dot.NeiborDots.Add(Dots[dot.x, dot.y - 1]);
+                    Dots[dot.x, dot.y - 1].NeiborDots.Add(dot);
+                    Dots[dot.x, dot.y - 1].Rating = 0;
+                }
+            }
+        }
+
         private void RemoveNeibor(Dot dot)
         {
             foreach(Dot d in Dots)

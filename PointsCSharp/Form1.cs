@@ -9,9 +9,11 @@ namespace DotsGame
     {
     Game game;
     private Point t;
+
         public Form1()
         {
             InitializeComponent();
+
 
             int Xres = Screen.PrimaryScreen.WorkingArea.Width;
             int Yres = Screen.PrimaryScreen.WorkingArea.Height;
@@ -113,6 +115,15 @@ namespace DotsGame
             lstMoves.DataSource = game.ListMoves;
             if(lstMoves.Items.Count>0) lstMoves.SetSelected(lstMoves.Items.Count-1, true);
         }
+        public void pbxBoard_MouseWheel(object sender, MouseEventArgs e)
+        {
+            int d = e.Delta;
+            /*if (e.Delta > 0)
+                textBox1.Text = "Вверх";
+            else
+                textBox1.Text = "Вниз";*/
+        }
+
         private void pbxBoard_MouseMove(object sender, MouseEventArgs e)
         {
             Point p = game.TranslateCoordinates(e.Location);
@@ -127,8 +138,8 @@ namespace DotsGame
                     break;
                 case MouseButtons.Middle:
                     //тягает поле, раскоментить если нужна прокрутка поля
-//                    game.startX = (t.X - (e.X / (pbxBoard.ClientSize.Width / (game.iBoardSize + 1)))) - 0.5f;
-//                    game.startY = (t.Y - (e.Y / (pbxBoard.ClientSize.Height / (game.iBoardSize + 1)))) - 0.5f;
+                    //game.startX = (t.X - (e.X / (pbxBoard.ClientSize.Width / (game.iBoardSize + 1)))) - 0.5f;
+                    //game.startY = (t.Y - (e.Y / (pbxBoard.ClientSize.Height / (game.iBoardSize + 1)))) - 0.5f;
                     break;
                 case MouseButtons.XButton1:
                     break;

@@ -95,7 +95,7 @@ namespace DotsGame
                     return _BlokingDots;//Список точек, которые блокируются этой точкой
                 }
             }
-        public List<Dot> _NeiborDots = new List<Dot>();
+        private List<Dot> _NeiborDots = new List<Dot>();
         public List<Dot> NeiborDots
         {
             get
@@ -132,12 +132,15 @@ namespace DotsGame
                 rating = value;
                 foreach(Dot d in NeiborDots)
                 {
-                    if(rating<d.rating) d.Rating=rating;
+                    if(Math.Sqrt(Math.Pow(Math.Abs(d.x - x),2) + Math.Pow(Math.Abs(d.y - y),2))==1)
+                    {
+                        if (rating < d.rating) d.Rating = rating;
+                        else rating = d.Rating;
+                    }
+                    
                 }
             }
         }
-
-
         public bool Marked { get; set; }
         public int IndexDot { get; set; }
         public enum Owner : int {None = 0,Player1 = 1,Player2 = 2}
@@ -177,16 +180,6 @@ namespace DotsGame
             else s = " None";
                 return x + ":" + y + s;
             }
-        //public override int GetHashCode(Dot dot)
-        //{
-        //    int hCode = dot.x ^ dot.y;
-        //    return hCode.GetHashCode();
-        //}
-
-        //public override bool Equals(Dot d1, Dot d2)
-        //{
-        //    return Default.Equals(d1, d2);
-        //}
         public bool Equals(Dot dot)//Проверяет равенство точек по координатам
         {
             return (x == dot.x) & (y == dot.y);

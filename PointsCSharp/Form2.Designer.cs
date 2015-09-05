@@ -41,7 +41,7 @@
             this.lstDbg1.HorizontalScrollbar = true;
             this.lstDbg1.ItemHeight = 16;
             this.lstDbg1.Location = new System.Drawing.Point(16, 37);
-            this.lstDbg1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstDbg1.Margin = new System.Windows.Forms.Padding(4);
             this.lstDbg1.Name = "lstDbg1";
             this.lstDbg1.Size = new System.Drawing.Size(199, 116);
             this.lstDbg1.TabIndex = 0;
@@ -53,7 +53,7 @@
             this.lstDbg2.HorizontalScrollbar = true;
             this.lstDbg2.ItemHeight = 16;
             this.lstDbg2.Location = new System.Drawing.Point(223, 37);
-            this.lstDbg2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstDbg2.Margin = new System.Windows.Forms.Padding(4);
             this.lstDbg2.Name = "lstDbg2";
             this.lstDbg2.Size = new System.Drawing.Size(218, 116);
             this.lstDbg2.TabIndex = 2;
@@ -94,7 +94,7 @@
             this.Controls.Add(this.txtDebug);
             this.Controls.Add(this.lstDbg2);
             this.Controls.Add(this.lstDbg1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form2";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form2";

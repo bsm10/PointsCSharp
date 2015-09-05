@@ -24,7 +24,7 @@ namespace DotsGame
         public int SkillNumSq = 3;
         //-------------------------------------------------
         public int iScaleCoef = 1;//- коэффициент масштаба
-        public int iBoardSize = 10;//- количество клеток квадрата в длинну
+        public int iBoardSize = 3;//- количество клеток квадрата в длинну
         public int iMapSize;//- количество клеток квадрата в длинну
 
         public float startX = -0.5f, startY = -0.5f;
@@ -118,7 +118,7 @@ namespace DotsGame
 #endif
                 Dot dot1 = null, dot2 =null;
                 //PLAYER_HUMAN - ставим в параметр - первым ходит игрок1(человек)
-                BoardValue(ref best_move,  dot1,dot2, PLAYER_HUMAN, ref depth, ref c1, lm, ref c_root);//раскоментировать для поиска без цикла - вокруг последнего хода
+                Play(ref best_move,  dot1,dot2, PLAYER_HUMAN, ref depth, ref c1, lm, ref c_root);//раскоментировать для поиска без цикла - вокруг последнего хода
                                                                                                        // BoardValue(ref best_move, PLAYER_COMPUTER, PLAYER_HUMAN, ref depth, ref c1, d, ref c2);
                                                                                                        // FindMove(ref best_move, lm);
                                                                                                        //}
@@ -185,7 +185,7 @@ namespace DotsGame
  //==================================================================================================================
         List<Dot> lst_best_move=new List<Dot>();//сюда заносим лучшие ходы
 //===================================================================================================================
-        private int BoardValue(ref Dot best_move, Dot move1, Dot move2, int player, ref int count_moves, 
+        private int Play(ref Dot best_move, Dot move1, Dot move2, int player, ref int count_moves, 
                                ref int recursion_depth, Dot lm, ref int counter_root)//возвращает Owner кто побеждает в результате хода
         {
             recursion_depth++;
@@ -193,13 +193,12 @@ namespace DotsGame
             {
                 return 0;
             }
-
             Dot enemy_move = null;
             //var random = new Random(DateTime.Now.Millisecond);
             var qry = from Dot d in aDots
                       where d.Own == PLAYER_NONE & d.Blocked==false & Math.Abs(d.x - lm.x) <SkillNumSq
                                                                     & Math.Abs(d.y - lm.y) <SkillNumSq
-                      orderby  Math.Sqrt(Math.Abs(d.x - lm.x)* Math.Abs(d.x - lm.x) + Math.Abs(d.y - lm.y)* Math.Abs(d.y - lm.y)) //(random.Next())
+                      orderby Math.Sqrt(Math.Pow(Math.Abs(d.x - lm.x), 2) + Math.Pow(Math.Abs(d.y - lm.y), 2)) //Math.Sqrt(Math.Abs(d.x - lm.x)* Math.Abs(d.x - lm.x) + Math.Abs(d.y - lm.y)* Math.Abs(d.y - lm.y)) //(random.Next())
                       select d;
             Dot[] ad = qry.ToArray();
             int i = ad.Length;
@@ -254,8 +253,8 @@ namespace DotsGame
                         if (recursion_depth < counter_root)
                         {
                             counter_root = recursion_depth;
-                            best_move = new Dot(d.x,d.y);
-                            //best_move = new Dot(move1.x, move1.y);
+                            //best_move = new Dot(d.x,d.y);
+                            best_move = new Dot(move1.x, move1.y);
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
 #if DEBUG
@@ -284,7 +283,7 @@ namespace DotsGame
                     count_moves++;
                     
                     //теперь ходит другой игрок 
-                    int result = BoardValue(ref enemy_move, move1,move2, player, ref count_moves, ref recursion_depth, lm, ref counter_root);
+                    int result = Play(ref enemy_move, move1,move2, player, ref count_moves, ref recursion_depth, lm, ref counter_root);
                     //отменить ход
                     UndoMove(d);
                     recursion_depth--;
@@ -770,7 +769,7 @@ namespace DotsGame
                    if (DotIsFree(d, d.Own) == false)
                    {
                        lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
-                       d.Blocked = true;
+                       if(d.Own!=0) d.Blocked = true;
                        aDots.UnmarkAllDots();
                        //MarkDotsInRegion(d, d.Own);
                        MarkDotsInRegion(d);
@@ -839,7 +838,7 @@ namespace DotsGame
                 }
                 else
                 {
-                    //_d.Blocked = true;
+                    _d.Blocked = true;
                     if (_d.Marked == false & _d.Fixed == false)
                     {
                         MarkDotsInRegion(_d);
