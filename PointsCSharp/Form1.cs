@@ -119,13 +119,13 @@ namespace DotsGame
         public void pbxBoard_MouseWheel(object sender, MouseEventArgs e)
         {
             int d = e.Delta / 120;
-
-            game.iBoardSize += d;
+            game.iScaleCoef -= d;
+            game.iBoardSize -= d;
             if (game.iBoardSize < Game.iBoardSizeMin)
                 game.iBoardSize = Game.iBoardSizeMin;
             if (game.iBoardSize > Game.iBoardSizeMax)
                 game.iBoardSize = Game.iBoardSizeMax;
-            game.iMapSize = game.iBoardSize * game.iScaleCoef;
+            //game.iMapSize = game.iBoardSize * game.iScaleCoef;
             Invalidate(pbxBoard.Region);
         }
         private void pbxBoard_MouseMove(object sender, MouseEventArgs e)
@@ -142,8 +142,8 @@ namespace DotsGame
                     break;
                 case MouseButtons.Middle:
                     //тягает поле, раскоментить если нужна прокрутка поля
-                    //game.startX = (t.X - (e.X / (pbxBoard.ClientSize.Width / (game.iBoardSize + 1)))) - 0.5f;
-                    //game.startY = (t.Y - (e.Y / (pbxBoard.ClientSize.Height / (game.iBoardSize + 1)))) - 0.5f;
+                    game.startX = (t.X - (e.X / (pbxBoard.ClientSize.Width / (game.iBoardSize + 1)))) - 0.5f;
+                    game.startY = (t.Y - (e.Y / (pbxBoard.ClientSize.Height / (game.iBoardSize + 1)))) - 0.5f;
                     break;
                 case MouseButtons.XButton1:
                     break;
