@@ -73,6 +73,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.rtbStat = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -93,7 +94,7 @@
             this.pbxBoard.Location = new System.Drawing.Point(13, 32);
             this.pbxBoard.Margin = new System.Windows.Forms.Padding(4);
             this.pbxBoard.Name = "pbxBoard";
-            this.pbxBoard.Size = new System.Drawing.Size(558, 496);
+            this.pbxBoard.Size = new System.Drawing.Size(588, 496);
             this.pbxBoard.TabIndex = 0;
             this.pbxBoard.TabStop = false;
             this.pbxBoard.Click += new System.EventHandler(this.pbxBoard_Click);
@@ -334,7 +335,7 @@
             0,
             0,
             0});
-            this.numericUpDown1.Location = new System.Drawing.Point(588, 505);
+            this.numericUpDown1.Location = new System.Drawing.Point(668, 505);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             5000,
@@ -362,10 +363,10 @@
             this.lstMoves.ForeColor = System.Drawing.Color.Teal;
             this.lstMoves.FormattingEnabled = true;
             this.lstMoves.ItemHeight = 18;
-            this.lstMoves.Location = new System.Drawing.Point(587, 32);
+            this.lstMoves.Location = new System.Drawing.Point(609, 32);
             this.lstMoves.Margin = new System.Windows.Forms.Padding(4);
             this.lstMoves.Name = "lstMoves";
-            this.lstMoves.Size = new System.Drawing.Size(128, 234);
+            this.lstMoves.Size = new System.Drawing.Size(186, 126);
             this.lstMoves.TabIndex = 4;
             this.lstMoves.SelectedIndexChanged += new System.EventHandler(this.lstMoves_SelectedIndexChanged);
             // 
@@ -384,7 +385,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(584, 478);
+            this.label1.Location = new System.Drawing.Point(664, 478);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(89, 20);
@@ -398,7 +399,7 @@
             this.numericUpDown2.CausesValidation = false;
             this.numericUpDown2.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.numericUpDown2.Location = new System.Drawing.Point(587, 357);
+            this.numericUpDown2.Location = new System.Drawing.Point(667, 357);
             this.numericUpDown2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             1000,
@@ -427,7 +428,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.label2.Location = new System.Drawing.Point(579, 340);
+            this.label2.Location = new System.Drawing.Point(659, 340);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(136, 17);
@@ -440,7 +441,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.label3.Location = new System.Drawing.Point(585, 290);
+            this.label3.Location = new System.Drawing.Point(665, 290);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(88, 18);
@@ -454,7 +455,7 @@
             this.numericUpDown3.CausesValidation = false;
             this.numericUpDown3.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.numericUpDown3.Location = new System.Drawing.Point(587, 313);
+            this.numericUpDown3.Location = new System.Drawing.Point(667, 313);
             this.numericUpDown3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             10000,
@@ -483,7 +484,7 @@
             this.chkMove.AutoSize = true;
             this.chkMove.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.chkMove.ForeColor = System.Drawing.Color.Navy;
-            this.chkMove.Location = new System.Drawing.Point(587, 451);
+            this.chkMove.Location = new System.Drawing.Point(667, 451);
             this.chkMove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkMove.Name = "chkMove";
             this.chkMove.Size = new System.Drawing.Size(71, 24);
@@ -498,7 +499,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label4.ForeColor = System.Drawing.Color.Green;
-            this.label4.Location = new System.Drawing.Point(585, 391);
+            this.label4.Location = new System.Drawing.Point(665, 391);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(88, 18);
@@ -512,7 +513,7 @@
             this.numericUpDown4.CausesValidation = false;
             this.numericUpDown4.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.numericUpDown4.Location = new System.Drawing.Point(587, 414);
+            this.numericUpDown4.Location = new System.Drawing.Point(667, 414);
             this.numericUpDown4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown4.Minimum = new decimal(new int[] {
             2,
@@ -539,7 +540,7 @@
             this.statusStrip1.Location = new System.Drawing.Point(0, 555);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 13, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(728, 28);
+            this.statusStrip1.Size = new System.Drawing.Size(808, 28);
             this.statusStrip1.TabIndex = 13;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -557,11 +558,24 @@
             this.toolStripStatusLabel2.Size = new System.Drawing.Size(182, 23);
             this.toolStripStatusLabel2.Text = "toolStripStatusLabel2";
             // 
+            // rtbStat
+            // 
+            this.rtbStat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbStat.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtbStat.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbStat.Location = new System.Drawing.Point(608, 180);
+            this.rtbStat.Name = "rtbStat";
+            this.rtbStat.ReadOnly = true;
+            this.rtbStat.Size = new System.Drawing.Size(187, 107);
+            this.rtbStat.TabIndex = 14;
+            this.rtbStat.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(728, 583);
+            this.ClientSize = new System.Drawing.Size(808, 583);
+            this.Controls.Add(this.rtbStat);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.numericUpDown3);
@@ -647,6 +661,7 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        public System.Windows.Forms.RichTextBox rtbStat;
     }
 }
 

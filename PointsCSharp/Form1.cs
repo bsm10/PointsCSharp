@@ -114,6 +114,7 @@ namespace DotsGame
             lstMoves.DataSource=null;
             lstMoves.DataSource = game.ListMoves;
             if(lstMoves.Items.Count>0) lstMoves.SetSelected(lstMoves.Items.Count-1, true);
+            rtbStat.Text = game.Statistic();
         }
         public void pbxBoard_MouseWheel(object sender, MouseEventArgs e)
         {

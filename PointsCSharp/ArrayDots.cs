@@ -101,7 +101,7 @@ namespace DotsGame
             AddNeibor(Dots[x, y]);
             
         }
-        private void AddNeibor(Dot dot, bool c)
+        private void AddNeibor(Dot dot)
         {
             if (dot.x > 0 & dot.y > 0 & dot.x < nSize-1 & dot.y < nSize-1)
             {    
@@ -156,7 +156,7 @@ namespace DotsGame
                 }
             }
         }
-        private void AddNeibor(Dot dot)
+        private void AddNeibor(Dot dot, bool c)
         {
             if (dot.x > 0 & dot.y > 0 & dot.x < nSize - 1 & dot.y < nSize - 1)
             {
@@ -176,24 +176,19 @@ namespace DotsGame
             }
 
             int iterator = 0;
-            if (dot.x == 0) iterator = 1;
-            if (dot.x == nSize - 2) iterator = -1;
+            if (dot.x == 0 | dot.y == 0) iterator = 1;
+            if (dot.x == nSize - 2 | dot.y == nSize - 2) iterator = -2;
             if (Dots[dot.x + iterator, dot.y].Own == dot.Own)
             {
                 dot.NeiborDots.Add(Dots[dot.x + 1, dot.y]);
                 Dots[dot.x + iterator, dot.y].NeiborDots.Add(dot);
                 Dots[dot.x + iterator, dot.y].Rating = 0;
-                return;
             }
-
-            if (dot.y == 0) iterator = 1;
-            if (dot.y == nSize - 2) iterator = -1;
             if (Dots[dot.x, dot.y + iterator].Own == dot.Own)
             {
                 dot.NeiborDots.Add(Dots[dot.x + 1, dot.y]);
                 Dots[dot.x, dot.y + iterator].NeiborDots.Add(dot);
                 Dots[dot.x, dot.y + iterator].Rating = 0;
-                return;
             }
             else if (dot.y == 0)
             {
