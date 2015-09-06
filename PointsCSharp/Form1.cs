@@ -118,13 +118,16 @@ namespace DotsGame
         }
         public void pbxBoard_MouseWheel(object sender, MouseEventArgs e)
         {
-            int d = e.Delta;
-            /*if (e.Delta > 0)
-                textBox1.Text = "Вверх";
-            else
-                textBox1.Text = "Вниз";*/
-        }
+            int d = e.Delta / 120;
 
+            game.iBoardSize += d;
+            if (game.iBoardSize < Game.iBoardSizeMin)
+                game.iBoardSize = Game.iBoardSizeMin;
+            if (game.iBoardSize > Game.iBoardSizeMax)
+                game.iBoardSize = Game.iBoardSizeMax;
+            game.iMapSize = game.iBoardSize * game.iScaleCoef;
+            Invalidate(pbxBoard.Region);
+        }
         private void pbxBoard_MouseMove(object sender, MouseEventArgs e)
         {
             Point p = game.TranslateCoordinates(e.Location);

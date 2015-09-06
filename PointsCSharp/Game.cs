@@ -26,6 +26,8 @@ namespace DotsGame
         public int iScaleCoef = 1;//- коэффициент масштаба
         public int iBoardSize = 10;//- количество клеток квадрата в длинну
         public int iMapSize;//- количество клеток квадрата в длинну
+        public const int iBoardSizeMin = 5;
+        public const int iBoardSizeMax = 20;
 
         public float startX = -0.5f, startY = -0.5f;
         public ArrayDots aDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
