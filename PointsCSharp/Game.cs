@@ -690,6 +690,13 @@ namespace DotsGame
                 return true;
             }
             Dot[] d = new Dot[4] { aDots[dot.x + 1, dot.y], aDots[dot.x - 1, dot.y], aDots[dot.x, dot.y + 1], aDots[dot.x, dot.y - 1] };
+            //--------------------------------------------------------------------------------
+            if(flg_own==0)// если точка не принадлежит никому и рядом есть незаблокированные точки - эта точка считается свободной(незаблокированной)
+            {
+                var q = from Dot fd in d where fd.Blocked == false select fd;
+                if(q.Count()>0) return true;
+            }
+            //----------------------------------------------------------------------------------
             for (int i = 0; i < 4; i++)
             {
                 if (d[i].Marked == false)
@@ -784,15 +791,15 @@ namespace DotsGame
                     lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
                     if (d.Own != 0) d.Blocked = true;
                     aDots.UnmarkAllDots();
-                    //MarkDotsInRegion(d, d.Own);
-                    MarkDotsInRegion(d);
+                    MarkDotsInRegion(d, d.Own);
+                    //MarkDotsInRegion(d);
                     counter += 1;
                     foreach (Dot dr in lst_in_region_dots)
                     {
                         foreach (Dot bd in lst_blocked_dots)
                         {
-                            //if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0) dr.BlokingDots.Add(bd);
-                            if (dr.BlokingDots.Contains(bd) == false) dr.BlokingDots.Add(bd);
+                           if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0) dr.BlokingDots.Add(bd);
+                           // if (dr.BlokingDots.Contains(bd) == false) dr.BlokingDots.Add(bd);
                         }
                     }
                 }
@@ -806,37 +813,9 @@ namespace DotsGame
         }
         private List<Dot> lst_blocked_dots = new List<Dot>();//список блокированных точек
         private List<Dot> lst_in_region_dots = new List<Dot>();//список блокирующих точек
-        //private void MarkDotsInRegion(Dot blocked_dot,int flg_own)//Ставит InRegion=true точкам которые блокируют заданную в параметре точку
-        //{
-        //    blocked_dot.Marked = true;
-        //    Dot[] dts = new Dot[4] {aDots[blocked_dot.x + 1, blocked_dot.y], aDots[blocked_dot.x - 1, blocked_dot.y],
-        //                          aDots[blocked_dot.x, blocked_dot.y + 1], aDots[blocked_dot.x, blocked_dot.y - 1]};
-        //    //добавим точки которые попали в окружение
-        //    if (lst_blocked_dots.Contains(blocked_dot) == false)
-        //    {
-        //        lst_blocked_dots.Add(blocked_dot);
-        //    }
-        //    foreach (Dot _d in dts)
-        //    {
-        //        if (_d.Own != 0 & _d.Own != flg_own)//_d-точка которая окружает
-        //        {
-        //            //добавим в коллекцию точки которые окружают
-        //            if (lst_in_region_dots.Contains(_d) == false) lst_in_region_dots.Add(_d);
-        //        }
-        //        else
-        //        {
-        //            _d.Blocked = true;
-        //            if (_d.Marked == false & _d.Fixed == false)
-        //            {
-        //                MarkDotsInRegion(_d, flg_own);
-        //            }
-        //        }
-        //    }
-        //}
-        private void MarkDotsInRegion(Dot blocked_dot)//Ставит InRegion=true точкам которые блокируют заданную в параметре точку
+        private void MarkDotsInRegion(Dot blocked_dot, int flg_own)//Ставит InRegion=true точкам которые блокируют заданную в параметре точку
         {
             blocked_dot.Marked = true;
-            blocked_dot.Blocked = true;
             Dot[] dts = new Dot[4] {aDots[blocked_dot.x + 1, blocked_dot.y], aDots[blocked_dot.x - 1, blocked_dot.y],
                                   aDots[blocked_dot.x, blocked_dot.y + 1], aDots[blocked_dot.x, blocked_dot.y - 1]};
             //добавим точки которые попали в окружение
@@ -846,7 +825,7 @@ namespace DotsGame
             }
             foreach (Dot _d in dts)
             {
-                if (_d.Own != 0 & _d.Blocked==false)//_d-точка которая окружает
+                if (_d.Own != 0 & _d.Own != flg_own)//_d-точка которая окружает
                 {
                     //добавим в коллекцию точки которые окружают
                     if (lst_in_region_dots.Contains(_d) == false) lst_in_region_dots.Add(_d);
@@ -856,11 +835,39 @@ namespace DotsGame
                     _d.Blocked = true;
                     if (_d.Marked == false & _d.Fixed == false)
                     {
-                        MarkDotsInRegion(_d);
+                        MarkDotsInRegion(_d, flg_own);
                     }
                 }
             }
         }
+        //private void MarkDotsInRegion(Dot blocked_dot)//Ставит InRegion=true точкам которые блокируют заданную в параметре точку
+        //{
+        //    blocked_dot.Marked = true;
+        //    blocked_dot.Blocked = true;
+        //    Dot[] dts = new Dot[4] {aDots[blocked_dot.x + 1, blocked_dot.y], aDots[blocked_dot.x - 1, blocked_dot.y],
+        //                          aDots[blocked_dot.x, blocked_dot.y + 1], aDots[blocked_dot.x, blocked_dot.y - 1]};
+        //    //добавим точки которые попали в окружение
+        //    if (lst_blocked_dots.Contains(blocked_dot) == false)
+        //    {
+        //        lst_blocked_dots.Add(blocked_dot);
+        //    }
+        //    foreach (Dot _d in dts)
+        //    {
+        //        if (_d.Own != 0 & _d.Own != blocked_dot.Own & _d.Blocked==false)//_d-точка которая окружает
+        //        {
+        //            //добавим в коллекцию точки которые окружают
+        //            if (lst_in_region_dots.Contains(_d) == false) lst_in_region_dots.Add(_d);
+        //        }
+        //        else
+        //        {
+        //            _d.Blocked = true;
+        //            if (_d.Marked == false & _d.Fixed == false)
+        //            {
+        //                MarkDotsInRegion(_d);
+        //            }
+        //        }
+        //    }
+        //}
 
         public void UndoMove(int x, int y)//поле отмена хода
         {
