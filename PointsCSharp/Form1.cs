@@ -106,7 +106,7 @@ namespace DotsGame
                         game.ListMoves.Add(pl2_move);
                         break;
                     case MouseButtons.Middle:
-                        game.ListMoves.Remove(game.aDots[dot.x,dot.y]);
+                        game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
                         game.UndoMove(dot.x, dot.y);
                         break;
                 }
@@ -159,7 +159,6 @@ namespace DotsGame
 #else
                
 #endif
-           //lblStatus
            toolStripStatusLabel1.Text = p.X + " : " + p.Y;
            pbxBoard.Invalidate(); 
         }
@@ -365,19 +364,5 @@ namespace DotsGame
             //game.SkillLevel = (int)toolStripComboBox1.Selected.ToString;
         }
 
-        //private void toolStripStatusLabel2_Click(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //private void toolStripMenuItem3_Click(object sender, EventArgs e)
-        //{
-        //    game.ShowMoves = toolStripMenuItem3.Checked ? true : false;
-        //}
-
-        //private void toolStripMenuItem3_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    game.ShowMoves = toolStripMenuItem3.Checked ? true : false;
-        //}
     }
 }
