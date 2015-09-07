@@ -104,6 +104,7 @@ namespace DotsGame
                         pl2_move=new Dot(dot.x, dot.y, 2, null);
                         res = game.MakeMove(pl2_move);
                         game.ListMoves.Add(pl2_move);
+                        
                         break;
                     case MouseButtons.Middle:
                         game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
@@ -352,11 +353,6 @@ namespace DotsGame
 
         private void lstMoves_SelectedIndexChanged(object sender, EventArgs e)
         {
-        }
-
-        private void pbxBoard_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void toolStripComboBox1_Click(object sender, EventArgs e)

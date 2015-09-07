@@ -88,7 +88,6 @@ namespace DotsGame
             {
                 Dots[Dot.x, Dot.y].Own = Dot.Own;
                 Dots[Dot.x, Dot.y].Blocked = false;
-                MakeRating();
                 AddNeibor(Dots[Dot.x, Dot.y]);
                 
             }
@@ -97,9 +96,7 @@ namespace DotsGame
         {
             Dots[x, y].Own = own;
             Dots[x, y].Blocked = false;
-            MakeRating();
             AddNeibor(Dots[x, y]);
-            
         }
         private void AddNeibor(Dot dot)
         {
@@ -230,7 +227,6 @@ namespace DotsGame
             RemoveNeibor(dot);
             Dots[dot.x, dot.y] = new Dot(dot.x, dot.y);
             Dots[dot.x, dot.y].IndexDot=i;
-            MakeRating();
         }
         public void Remove(int x, int y)//удаляет точку из массива
         {
@@ -240,7 +236,6 @@ namespace DotsGame
                 int i = Dots[x, y].IndexDot;
                 Dots[x, y] = new Dot(x, y);
                 Dots[x, y].IndexDot = i;
-                MakeRating();
             }
         }
         public float Distance(Dot dot1, Dot dot2)//расстояние между точками
@@ -277,26 +272,6 @@ namespace DotsGame
             var q = from Dot d in Dots where d.Blocked==false select d;
             return q.ToArray();
         }
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        public void MakeRating()//возвращает массив вражеских точек вокруг заданной точки
-        {
-            int res = 0;
-            var qd = from Dot dt in Dots where dt.Own!=0 select dt;
-            foreach (Dot dot in qd)
-            {
-                if (dot.x > 0 & dot.y > 0 & dot.x < nSize-1 & dot.y < nSize-1)
-                {    
-                    Dot[] dts = new  Dot[8] {Dots[dot.x + 1, dot.y], Dots[dot.x - 1, dot.y],
-                                        Dots[dot.x, dot.y + 1], Dots[dot.x, dot.y - 1],
-                                        Dots[dot.x+1, dot.y + 1], Dots[dot.x-1, dot.y - 1],
-                                        Dots[dot.x+1, dot.y - 1 ], Dots[dot.x-1, dot.y + 1]};                                       
-                    var q = from Dot d in dts where d.Own!=0 & d.Own != dot.Own select d;
-                    res = q.Count();
-                    dot.Rating = res;
-                }
-            }
-        }
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         
         public void Clear()
         {

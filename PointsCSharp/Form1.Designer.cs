@@ -96,7 +96,6 @@
             this.pbxBoard.Size = new System.Drawing.Size(442, 403);
             this.pbxBoard.TabIndex = 0;
             this.pbxBoard.TabStop = false;
-            this.pbxBoard.Click += new System.EventHandler(this.pbxBoard_Click);
             this.pbxBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxBoard_Paint);
             this.pbxBoard.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pbxBoard_MouseClick);
             this.pbxBoard.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbxBoard_MouseDown);

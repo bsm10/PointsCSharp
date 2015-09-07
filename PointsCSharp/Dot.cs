@@ -132,11 +132,11 @@ namespace DotsGame
                 rating = value;
                 foreach(Dot d in NeiborDots)
                 {
-                    if(Math.Sqrt(Math.Pow(Math.Abs(d.x - x),2) + Math.Pow(Math.Abs(d.y - y),2))==1)
-                    {
+                    //if(Math.Sqrt(Math.Pow(Math.Abs(d.x - x),2) + Math.Pow(Math.Abs(d.y - y),2))==1)
+                    //{
                         if (rating < d.rating) d.Rating = rating;
                         else rating = d.Rating;
-                    }
+                    //}
                     
                 }
             }

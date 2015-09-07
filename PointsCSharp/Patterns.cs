@@ -77,10 +77,10 @@ namespace DotsGame
                                               aDots[d.x - 1, d.y - 1].Own == enemy_own &
                                               aDots[d.x - 1, d.y + 1].Own == enemy_own &
                                               aDots[d.x + 1, d.y + 1].Own == 0 &
-                                              aDots[d.x - 1, d.y ].Own == 0 &
-                                              aDots[d.x + 1, d.y ].Own == 0 &
-                                              aDots[d.x , d.y + 1 ].Own == 0 &
-                                              aDots[d.x , d.y - 1 ].Own == 0 
+                                              aDots[d.x - 1, d.y ].Own != Owner &
+                                              aDots[d.x + 1, d.y ].Own != Owner &
+                                              aDots[d.x , d.y + 1 ].Own != Owner &
+                                              aDots[d.x , d.y - 1 ].Own != Owner
                        select d;
             if (pat3.Count() > 0) return new Dot(pat3.First().x + 1, pat3.First().y + 1);
             // паттерн на конструкцию    *     *      точка окружена через две точки
@@ -91,10 +91,10 @@ namespace DotsGame
                                                 aDots[d.x - 1, d.y - 1].Own == enemy_own &
                                                 aDots[d.x - 1, d.y + 1].Own == 0 &
                                                 aDots[d.x + 1, d.y + 1].Own == enemy_own
-                                              & aDots[d.x - 1, d.y ].Own == 0 &
-                                              aDots[d.x + 1, d.y ].Own == 0 &
-                                              aDots[d.x , d.y + 1 ].Own == 0 &
-                                              aDots[d.x , d.y - 1 ].Own == 0 
+                                              & aDots[d.x - 1, d.y ].Own != Owner &
+                                              aDots[d.x + 1, d.y ].Own != Owner &
+                                              aDots[d.x , d.y + 1 ].Own != Owner &
+                                              aDots[d.x , d.y - 1 ].Own != Owner
 
                          select d;
             if (pat3_1.Count() > 0) return new Dot(pat3_1.First().x - 1, pat3_1.First().y + 1);
@@ -106,10 +106,10 @@ namespace DotsGame
                                                 aDots[d.x - 1, d.y - 1].Own == 0 &
                                                 aDots[d.x - 1, d.y + 1].Own == enemy_own &
                                                 aDots[d.x + 1, d.y + 1].Own == enemy_own
-                                              & aDots[d.x - 1, d.y].Own == 0 &
-                                              aDots[d.x + 1, d.y].Own == 0 &
-                                              aDots[d.x, d.y + 1].Own == 0 &
-                                              aDots[d.x, d.y - 1].Own == 0 
+                                              & aDots[d.x - 1, d.y].Own != Owner &
+                                              aDots[d.x + 1, d.y].Own != Owner &
+                                              aDots[d.x, d.y + 1].Own != Owner &
+                                              aDots[d.x, d.y - 1].Own != Owner
 
                          select d;
             if (pat3_2.Count() > 0) return new Dot(pat3_2.First().x - 1, pat3_2.First().y - 1);
@@ -121,10 +121,10 @@ namespace DotsGame
                                                 aDots[d.x - 1, d.y - 1].Own == enemy_own &
                                                 aDots[d.x - 1, d.y + 1].Own == enemy_own &
                                                 aDots[d.x + 1, d.y + 1].Own == enemy_own
-                                              & aDots[d.x - 1, d.y].Own == 0 &
-                                              aDots[d.x + 1, d.y].Own == 0 &
-                                              aDots[d.x, d.y + 1].Own == 0 &
-                                              aDots[d.x, d.y - 1].Own == 0 
+                                              & aDots[d.x - 1, d.y].Own != Owner &
+                                              aDots[d.x + 1, d.y].Own != Owner &
+                                              aDots[d.x, d.y + 1].Own != Owner &
+                                              aDots[d.x, d.y - 1].Own != Owner
 
                          select d;
             if (pat3_3.Count() > 0) return new Dot(pat3_3.First().x + 1, pat3_3.First().y - 1);
@@ -137,10 +137,10 @@ namespace DotsGame
                                                 aDots[d.x - 1, d.y - 1].Own == enemy_own &
                                                 aDots[d.x - 1, d.y + 1].Own == enemy_own &
                                                 aDots[d.x + 1, d.y + 1].Own == enemy_own
-                                              & aDots[d.x - 1, d.y].Own == 0 &
-                                              aDots[d.x + 1, d.y].Own == 0 &
-                                              aDots[d.x, d.y + 1].Own == 0 &
-                                              aDots[d.x, d.y - 1].Own == 0 
+                                              & aDots[d.x - 1, d.y].Own != Owner &
+                                              aDots[d.x + 1, d.y].Own != Owner &
+                                              aDots[d.x, d.y + 1].Own != Owner &
+                                              aDots[d.x, d.y - 1].Own != Owner
 
                          select d;
             if (pat3_4.Count() > 0) return new Dot(pat3_4.First().x + 1, pat3_4.First().y - 1);

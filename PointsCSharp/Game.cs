@@ -136,7 +136,7 @@ namespace DotsGame
             }
             if (best_move == null)
             {
-                MessageBox.Show("best_move == null");
+                //MessageBox.Show("best_move == null");
                 
 
                 // //паттерн на точку находящуюся в двух клетках 
@@ -724,7 +724,6 @@ namespace DotsGame
             {
                 for (int i = 0; i < dts.Length; i++)
                 {
-                    //if (d.DotsEquals(dts[i]) == false & d.IsNeiborDots(dts[i]) & d.Blocked==false & dts[i].Blocked==false)
                     if (d.Equals(dts[i]) == false & d.IsNeiborDots(dts[i]) & d.Blocked == false & dts[i].Blocked == false)
                     {
                         l = new Links(dts[i], d);
@@ -775,6 +774,7 @@ namespace DotsGame
             //}
             count_blocked -= dif;
             last_move = dot;//зафиксировать последний ход
+            MakeRating();//пересчитать рейтинг
             return dif;
         }
         private int CheckBlocked()//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
@@ -792,7 +792,6 @@ namespace DotsGame
                     if (d.Own != 0) d.Blocked = true;
                     aDots.UnmarkAllDots();
                     MarkDotsInRegion(d, d.Own);
-                    //MarkDotsInRegion(d);
                     counter += 1;
                     foreach (Dot dr in lst_in_region_dots)
                     {
@@ -840,34 +839,23 @@ namespace DotsGame
                 }
             }
         }
-        //private void MarkDotsInRegion(Dot blocked_dot)//Ставит InRegion=true точкам которые блокируют заданную в параметре точку
-        //{
-        //    blocked_dot.Marked = true;
-        //    blocked_dot.Blocked = true;
-        //    Dot[] dts = new Dot[4] {aDots[blocked_dot.x + 1, blocked_dot.y], aDots[blocked_dot.x - 1, blocked_dot.y],
-        //                          aDots[blocked_dot.x, blocked_dot.y + 1], aDots[blocked_dot.x, blocked_dot.y - 1]};
-        //    //добавим точки которые попали в окружение
-        //    if (lst_blocked_dots.Contains(blocked_dot) == false)
-        //    {
-        //        lst_blocked_dots.Add(blocked_dot);
-        //    }
-        //    foreach (Dot _d in dts)
-        //    {
-        //        if (_d.Own != 0 & _d.Own != blocked_dot.Own & _d.Blocked==false)//_d-точка которая окружает
-        //        {
-        //            //добавим в коллекцию точки которые окружают
-        //            if (lst_in_region_dots.Contains(_d) == false) lst_in_region_dots.Add(_d);
-        //        }
-        //        else
-        //        {
-        //            _d.Blocked = true;
-        //            if (_d.Marked == false & _d.Fixed == false)
-        //            {
-        //                MarkDotsInRegion(_d);
-        //            }
-        //        }
-        //    }
-        //}
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        private void MakeRating()//возвращает массив вражеских точек вокруг заданной точки
+        {
+            int res = 0;
+            var qd = from Dot dt in aDots where dt.Own != 0 & dt.Blocked==false select dt;
+            foreach (Dot dot in qd)
+            {
+                if (dot.x > 0 & dot.y > 0 & dot.x < iMapSize - 1 & dot.y < iMapSize - 1)
+                {
+                    Dot[] dts = new Dot[4] {aDots[dot.x + 1, dot.y], aDots[dot.x - 1, dot.y],aDots[dot.x, dot.y + 1], aDots[dot.x, dot.y - 1]};
+                    var q = from Dot d in dts where d.Own != 0 & d.Own != dot.Own select d;
+                    res = q.Count();
+                    dot.Rating = res;
+                }
+            }
+        }
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         public void UndoMove(int x, int y)//поле отмена хода
         {
