@@ -210,3 +210,7 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+BuildProcessTemplates/AzureContinuousDeployment.11.xaml
+BuildProcessTemplates/DefaultTemplate.11.1.xaml
+PointsCSharp/Properties/DataSources/Game.datasource
+*.xaml

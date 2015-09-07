@@ -211,8 +211,7 @@ namespace DotsGame
                     //**************делаем ход***********************************
                     d.Own = player == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     int res_last_move = MakeMove(d);
-                    count_moves++;
-                    Dot dt = CheckMove(player,false);
+                    Dot dt = CheckMove(player, false);//проверить не замыкается ли регион
                     count_moves++;
                     if (dt != null)
                     {
@@ -286,7 +285,7 @@ namespace DotsGame
                     }
                     count_moves++;
                     
-                    //теперь ходит другой игрок 
+                    //теперь ходит другой игрок =========================================================================================
                     int result = Play(ref enemy_move, move1,move2, player, ref count_moves, ref recursion_depth, lm, ref counter_root);
                     //отменить ход
                     UndoMove(d);
@@ -294,13 +293,15 @@ namespace DotsGame
 #if DEBUG
                     if (lstDbg1.Items.Count>0) lstDbg1.Items.RemoveAt(lstDbg1.Items.Count-1);
 #endif
-
-                    if (count_moves > SkillLevel * 100) return PLAYER_NONE;
-                    if (enemy_move==null & recursion_depth > 1) break;
+                    if (enemy_move == null & recursion_depth > 1)
+                        break;
+                    if (count_moves > SkillLevel * 100)
+                        return PLAYER_NONE;
                 }
             }
             return PLAYER_NONE;
         }
+        //**************************************************************************************************************
         //+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
         private int FindMove(ref Dot move, Dot last_mv)//возвращает Owner кто побеждает в результате хода
         {
@@ -431,9 +432,9 @@ namespace DotsGame
         //проверяет ход в результате которого окружение.Возвращает ход который завершает окружение
         private Dot CheckMove(int Owner, bool AllBoard=true)
         {
-            var qry = from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked==false select d;
-
-            //if (AllBoard==false & qry.Count() > iBoardSize * iBoardSize / 2) return null;
+            var qry = AllBoard ? from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked==false select d :
+                                            from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked == false & 
+                                            Math.Abs(d.x - LastMove.x) < 2 & Math.Abs(d.y - LastMove.y) < 2 select d;
             Dot[] ad = qry.ToArray();
             if (ad.Length != 0)
             {
@@ -772,11 +773,8 @@ namespace DotsGame
         private int CheckBlocked()//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
         {
             int counter=0;
-            var q = from Dot dots in aDots
-                    where dots.Own != 0
+            var q = from Dot dots in aDots where dots.Own != 0 | dots.Own == 0 & dots.Blocked
                     select dots;
-            //lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
-
             foreach (Dot d in q)
             {
                 aDots.UnmarkAllDots();
@@ -793,7 +791,8 @@ namespace DotsGame
                     {
                         foreach (Dot bd in lst_blocked_dots)
                         {
-                            if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0) dr.BlokingDots.Add(bd);
+                            //if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0) dr.BlokingDots.Add(bd);
+                            if (dr.BlokingDots.Contains(bd) == false) dr.BlokingDots.Add(bd);
                         }
                     }
                 }
