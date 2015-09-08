@@ -17,8 +17,6 @@ namespace DotsGame
         private const int PLAYER_NONE = 0;
         private const int PLAYER_HUMAN = 1;
         private const int PLAYER_COMPUTER = 2;
-
-
         public int SkillLevel = 5;
         public int SkillDepth = 20;
         public int SkillNumSq = 3;
@@ -586,7 +584,7 @@ namespace DotsGame
             //Отрисовка курсора
             gr.FillEllipse(new SolidBrush(Color.FromArgb(30, colorCursor)), MousePos.X - PointWidth, MousePos.Y - PointWidth, PointWidth * 2, PointWidth * 2);
             gr.FillEllipse(new SolidBrush(Color.FromArgb(130, Color.WhiteSmoke)), MousePos.X - PointWidth/2, MousePos.Y - PointWidth/2, PointWidth , PointWidth);
-            gr.DrawEllipse(new Pen(Color.FromArgb(50, colorCursor), 0.1f), MousePos.X - PointWidth, MousePos.Y - PointWidth, PointWidth * 2, PointWidth * 2);
+            gr.DrawEllipse(new Pen(Color.FromArgb(50, colorCursor), 0.05f), MousePos.X - PointWidth, MousePos.Y - PointWidth, PointWidth * 2, PointWidth * 2);
             //Отрисовка замкнутого региона игрока1
             DrawLinks(gr);
 
