@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using System.Windows.Forms;
 
 namespace DotsGame
 {
@@ -257,5 +259,29 @@ namespace DotsGame
             //если никаких паттернов не найдено возвращаем нуль
             return null;
         }
+
+        public string path_pat = Application.CommonAppDataPath + @"\patterns.dat";
+        public void SavePattern()
+        {
+            try
+            {
+                // создаем объект BinaryWriter
+                using (BinaryWriter writer = new BinaryWriter(File.Open(path_savegame, FileMode.Create)))
+                {
+
+                    for (int i = 0; i < list_moves.Count; i++)
+                    {
+                        writer.Write((byte)list_moves[i].x);
+                        writer.Write((byte)list_moves[i].y);
+                        writer.Write((byte)list_moves[i].Own);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
     }
 }

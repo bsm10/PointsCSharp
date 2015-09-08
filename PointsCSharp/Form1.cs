@@ -38,7 +38,7 @@ namespace DotsGame
             game.MousePos = game.TranslateCoordinates(e.Location);
             Dot dot = new Dot(game.MousePos);
             Dot pl2_move, pl1_move=null;
-            int res;
+            //int res;
             if (game.MousePos.X > game.startX - 0.5f & game.MousePos.Y > game.startY - 0.5f)
             {
                 switch (e.Button)
@@ -52,7 +52,7 @@ namespace DotsGame
 
                         if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
                         {
-                            res = game.MakeMove(pl1_move);
+                            game.MakeMove(pl1_move);
                             game.ListMoves.Add(pl1_move);//добавим в реестр ходов
                             pbxBoard.Invalidate();
                             if (game.GameOver())
@@ -63,7 +63,7 @@ namespace DotsGame
                             }
                            break;
                        }
-                       res = game.MakeMove(pl1_move);
+                       game.MakeMove(pl1_move);
                        game.ListMoves.Add(pl1_move);//добавим в реестр ходов
                        player_move = 1;
                        toolStripStatusLabel2.ForeColor=game.colorGamer2;
@@ -84,7 +84,7 @@ namespace DotsGame
                         {
                             pl2_move = game.PickComputerMove(pl1_move);
                             pl2_move.Own = 2;
-                            res = game.MakeMove(pl2_move);
+                            game.MakeMove(pl2_move);
                             game.ListMoves.Add(pl2_move);
                             player_move = 2;
                             pbxBoard.Invalidate();
@@ -102,7 +102,7 @@ namespace DotsGame
                     case MouseButtons.Right:
                         //============Ход компьютера  в ручном режиме=================
                         pl2_move=new Dot(dot.x, dot.y, 2, null);
-                        res = game.MakeMove(pl2_move);
+                        game.MakeMove(pl2_move);
                         game.ListMoves.Add(pl2_move);
                         
                         break;
