@@ -88,6 +88,7 @@ namespace DotsGame
         //  ************************************************
         public Dot PickComputerMove(Dot enemy_move)
         {
+            float s1 = square1; float s2 = square2;
             best_move=null;
             int depth=0;
             var t1 = DateTime.Now.Millisecond;
@@ -179,6 +180,8 @@ namespace DotsGame
             "\r\n время просчета " + stopWatch.ElapsedMilliseconds.ToString() + " мс";
             best_move.Own = 2;
             stopWatch.Reset();
+            square1=s1; square2=s2;
+
             //list_moves.Add(best_move);//добавим в реестр ходов
             return new Dot(best_move.x,best_move.y); //так надо чтобы best_move не ссылался на точку в aDots
         }
@@ -208,7 +211,7 @@ namespace DotsGame
                 {
                     //**************делаем ход***********************************
                     d.Own = player == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
-                    int res_last_move = MakeMove(d);
+                    int res_last_move = (int)MakeMove(d);
                     Dot dt = CheckMove(player, false);//проверить не замыкается ли регион
                     count_moves++;
                     if (dt != null)
@@ -367,7 +370,7 @@ namespace DotsGame
                         }
                         //ход делает комп, если последним ходил игрок
                         d.Own = own;
-                        int res_last_move = MakeMove(d);
+                        int res_last_move = (int)MakeMove(d);
                         mvs.Add(d); 
                         //-----показывает проверяемые ходы-----------------------------------------------
                         if (ShowMoves) Pause();
@@ -440,7 +443,7 @@ namespace DotsGame
                 {
                     //делаем ход
                     d.Own = Owner;
-                    int result_last_move = MakeMove(d);
+                    int result_last_move = (int)MakeMove(d);
                     if (ShowMoves) Pause();
                     //-----------------------------------
                     if (result_last_move != 0 & aDots[d.x, d.y].Blocked == false)
@@ -456,28 +459,15 @@ namespace DotsGame
         
         public string Statistic()
         {
-            int c1, c2, d1, d2;
-            float s1, s2;
-
-            var q1 = from Dot d in aDots where d.Own!=1 & d.Blocked select d;//выбрать точки блокированные игроком1
-            c1=q1.Count();
-            var q2 = from Dot d in aDots where d.Own != 2 & d.Blocked select d; //выбрать точки блокированные игроком2 - компьютером
-            c2 = q2.Count();
-            var q3 = from Dot d in aDots where d.Own == 1 & d.BlokingDots.Count>0 select d;//выбрать точки игрока1 которые окружают
-            d1 = q3.Count();
-            var q4 = from Dot d in aDots where d.Own == 2 & d.BlokingDots.Count > 0 select d;//выбрать точки компьютера которые окружают
-            d2 = q4.Count();
-            s1 = SquarePolygon(c1, d1);
-            s2 = SquarePolygon(c2, d2);
             var q5 = from Dot d in aDots where d.Own == 1 select d;
             count_dot1 = q5.Count();
             var q6 = from Dot d in aDots where d.Own == 2 select d;
             count_dot2 = q5.Count();
 
-            return "Игрок1 окружил точек: " + c1 + "; \r\n" +
-              "Захваченая площадь: " + s1 + "; \r\n" +
-              "Игрок2 окружил точек: " + c2 + "; \r\n" +
-              "Захваченая площадь: " + s2 + "; \r\n" +
+            return "Игрок1 окружил точек: " + count_blocked1 + "; \r\n" +
+              "Захваченая площадь: " + square1 + "; \r\n" +
+              "Игрок2 окружил точек: " + count_blocked2 + "; \r\n" +
+              "Захваченая площадь: " + square2 + "; \r\n" +
               "Игрок1 точек поставил: " + count_dot1.ToString() + "; \r\n" +
               "Игрок2 точек поставил: " + count_dot2.ToString() + "; \r\n";
         }
@@ -747,33 +737,41 @@ namespace DotsGame
         {
             return nBlockedDots + nRegionDots / 2.0f - 1;//Формула Пика
         }
-        public int MakeMove(Dot dot)//Основная функция - ход игрока - возвращает количество блокированных точек - функция оболочка для CheckBlocked, 
+        //=================================================================================================
+        public float MakeMove(Dot dot)//Основная функция - ход игрока - возвращает захваченую площадь, 
         {
             if (aDots.Contains(dot) == false) return 0;
             if (aDots[dot.x, dot.y].Own == 0)//если точка не занята
             {
                 aDots.Add(dot);
-                //list_moves.Add(aDots[dot.x,dot.y]);//добавим в реестр ходов
             }
-            int res = CheckBlocked();
+            int lst_in_r = lst_in_region_dots.Count;
+            int lst_bl_d = lst_blocked_dots.Count;
+            float s=0;
+            int res = CheckBlocked(dot.Own);
             int dif=count_blocked - res;
-            if (dif!= 0) LinkDots();
-            //switch (dot.Own)//подсчитать кол-во поставленых точек
-            //{
-            //    case 1:
-            //        last_move=dot;
-            //        square1 += res;
-            //        count_dot1 += 1;
-            //        break;
-            //    case 2:
-            //        square2 += res;
-            //        count_dot2 += 1;
-            //        break;
-            //}
+            int lst_i_r = lst_in_region_dots.Count - lst_in_r;//количество точек окружающих новый регион
+            int lst_b_d = lst_blocked_dots.Count - lst_bl_d;//количество блокир точек
+            if (dif!= 0) 
+                {
+                    switch (dot.Own)//подсчитать кол-во поставленых точек
+                    {
+                        case 1:
+                            square1 += SquarePolygon(lst_b_d, lst_i_r);
+                            s=square1;
+                            break;
+                        case 2:
+                            square2 += SquarePolygon(lst_b_d, lst_i_r);
+                            s=square2;
+                            break;
+                    }
+                    LinkDots();
+                }
+            
             count_blocked -= dif;
             last_move = dot;//зафиксировать последний ход
             MakeRating();//пересчитать рейтинг
-            return dif;
+            return s;//dif;
         }
         private int CheckBlocked()//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
         {
@@ -783,7 +781,6 @@ namespace DotsGame
             foreach (Dot d in q)
             {
                 aDots.UnmarkAllDots();
-
                 if (DotIsFree(d, d.Own) == false)
                 {
                     lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
@@ -808,6 +805,48 @@ namespace DotsGame
 
             return counter;
         }
+        private int CheckBlocked(int last_moveOwner=0)//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
+        {
+            int counter = 0;
+            var q = from Dot dots in aDots where dots.Own != 0 | dots.Own == 0 & dots.Blocked select dots;
+            Dot[] arrDot = q.ToArray();
+            switch (last_moveOwner)
+            {
+                case 1:
+                    IEnumerable<Dot> query1 = arrDot.OrderBy(dot => dot.Own==1);
+                    arrDot=query1.ToArray();
+                    break;
+                case 2:
+                    IEnumerable<Dot> query2 = arrDot.OrderBy(dot => dot.Own == 2);
+                    arrDot = query2.ToArray();
+                    break;
+            }
+            foreach (Dot d in arrDot)
+            {
+                aDots.UnmarkAllDots();
+                if (DotIsFree(d, d.Own) == false)
+                {
+                    lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
+                    if (d.Own != 0) d.Blocked = true;
+                    aDots.UnmarkAllDots();
+                    MarkDotsInRegion(d, d.Own);
+                    counter += 1;
+                    foreach (Dot dr in lst_in_region_dots)
+                    {
+                        foreach (Dot bd in lst_blocked_dots)
+                        {
+                            if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0) dr.BlokingDots.Add(bd);
+                        }
+                    }
+                }
+                else
+                {
+                    d.Blocked = false;
+                }
+            }
+            return counter;
+        }
+
         private List<Dot> lst_blocked_dots = new List<Dot>();//список блокированных точек
         private List<Dot> lst_in_region_dots = new List<Dot>();//список блокирующих точек
         private void MarkDotsInRegion(Dot blocked_dot, int flg_own)//Ставит InRegion=true точкам которые блокируют заданную в параметре точку
