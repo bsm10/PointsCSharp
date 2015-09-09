@@ -74,6 +74,7 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.rtbStat = new System.Windows.Forms.RichTextBox();
+            this.autoplayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -92,7 +93,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxBoard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbxBoard.Location = new System.Drawing.Point(13, 32);
-            this.pbxBoard.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pbxBoard.Margin = new System.Windows.Forms.Padding(4);
             this.pbxBoard.Name = "pbxBoard";
             this.pbxBoard.Size = new System.Drawing.Size(589, 496);
             this.pbxBoard.TabIndex = 0;
@@ -117,7 +118,7 @@
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(211, 28);
+            this.menuStrip.Size = new System.Drawing.Size(326, 28);
             this.menuStrip.TabIndex = 2;
             // 
             // файлToolStripMenuItem
@@ -216,7 +217,8 @@
             this.антиалToolStripMenuItem,
             this.цветКурсораToolStripMenuItem,
             this.цветИгрокаToolStripMenuItem,
-            this.цветПротивникаToolStripMenuItem});
+            this.цветПротивникаToolStripMenuItem,
+            this.autoplayToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(68, 24);
             this.optionsToolStripMenuItem.Text = "&Опции";
@@ -363,7 +365,7 @@
             this.lstMoves.FormattingEnabled = true;
             this.lstMoves.ItemHeight = 18;
             this.lstMoves.Location = new System.Drawing.Point(609, 32);
-            this.lstMoves.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstMoves.Margin = new System.Windows.Forms.Padding(4);
             this.lstMoves.Name = "lstMoves";
             this.lstMoves.Size = new System.Drawing.Size(187, 108);
             this.lstMoves.TabIndex = 4;
@@ -570,6 +572,13 @@
             this.rtbStat.TabIndex = 14;
             this.rtbStat.Text = "";
             // 
+            // autoplayToolStripMenuItem
+            // 
+            this.autoplayToolStripMenuItem.Name = "autoplayToolStripMenuItem";
+            this.autoplayToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.autoplayToolStripMenuItem.Text = "Autoplay";
+            this.autoplayToolStripMenuItem.Click += new System.EventHandler(this.autoplayToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -591,7 +600,7 @@
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Dots";
@@ -662,6 +671,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         public System.Windows.Forms.RichTextBox rtbStat;
+        private System.Windows.Forms.ToolStripMenuItem autoplayToolStripMenuItem;
     }
 }
 

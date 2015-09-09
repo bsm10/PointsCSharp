@@ -164,7 +164,8 @@ namespace DotsGame
                                                                                 Math.Abs(d.y - enemy_move.y) < 2*/
                               select d;
 
-                    best_move = q.First();
+                    if (q.Count() > 0) best_move = q.First();
+                    else return null;
                 }
             }
             
