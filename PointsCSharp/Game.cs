@@ -166,7 +166,6 @@ namespace DotsGame
 
                     best_move = q.First();
                 }
-
             }
             
 #if DEBUG
@@ -880,16 +879,24 @@ namespace DotsGame
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         private void MakeRating()//возвращает массив вражеских точек вокруг заданной точки
         {
-            int res = 0;
+            int res;
             var qd = from Dot dt in aDots where dt.Own != 0 & dt.Blocked==false select dt;
             foreach (Dot dot in qd)
             {
                 if (dot.x > 0 & dot.y > 0 & dot.x < iMapSize - 1 & dot.y < iMapSize - 1)
                 {
                     Dot[] dts = new Dot[4] {aDots[dot.x + 1, dot.y], aDots[dot.x - 1, dot.y],aDots[dot.x, dot.y + 1], aDots[dot.x, dot.y - 1]};
-                    var q = from Dot d in dts where d.Own != 0 & d.Own != dot.Own select d;
-                    res = q.Count();
-                    dot.Rating = res;
+                    res = 0;
+                    foreach (Dot item in dts)
+                    {
+                        if (item.Own != 0 & item.Own != dot.Own) res++;
+                        else if (item.Own == dot.Own & item.Rating == 0)
+                        {
+                            res = -1;
+                            break;
+                        }
+                    }
+                    dot.Rating = res+1;//точка без связей получает рейт 1
                 }
             }
         }
