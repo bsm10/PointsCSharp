@@ -87,13 +87,14 @@
             // 
             // pbxBoard
             // 
-            this.pbxBoard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxBoard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxBoard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbxBoard.Location = new System.Drawing.Point(10, 26);
+            this.pbxBoard.Location = new System.Drawing.Point(13, 32);
+            this.pbxBoard.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pbxBoard.Name = "pbxBoard";
-            this.pbxBoard.Size = new System.Drawing.Size(442, 403);
+            this.pbxBoard.Size = new System.Drawing.Size(589, 496);
             this.pbxBoard.TabIndex = 0;
             this.pbxBoard.TabStop = false;
             this.pbxBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxBoard_Paint);
@@ -115,8 +116,8 @@
             this.справкаToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(164, 24);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(211, 28);
             this.menuStrip.TabIndex = 2;
             // 
             // файлToolStripMenuItem
@@ -133,7 +134,7 @@
             this.toolStripSeparator2,
             this.выходToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
-            this.файлToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.файлToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
             this.файлToolStripMenuItem.Text = "&Файл";
             // 
             // создатьToolStripMenuItem
@@ -141,7 +142,7 @@
             this.создатьToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.создатьToolStripMenuItem.Name = "создатьToolStripMenuItem";
             this.создатьToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.создатьToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.создатьToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
             this.создатьToolStripMenuItem.Text = "&Создать";
             this.создатьToolStripMenuItem.Click += new System.EventHandler(this.создатьToolStripMenuItem_Click);
             // 
@@ -150,59 +151,59 @@
             this.открытьToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
             this.открытьToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
             this.открытьToolStripMenuItem.Text = "&Открыть";
             this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(226, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(283, 6);
             // 
             // сохранитьToolStripMenuItem
             // 
             this.сохранитьToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
             this.сохранитьToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
             this.сохранитьToolStripMenuItem.Text = "&Сохранить";
             this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
             // 
             // сохранитькакToolStripMenuItem
             // 
             this.сохранитькакToolStripMenuItem.Name = "сохранитькакToolStripMenuItem";
-            this.сохранитькакToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.сохранитькакToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
             this.сохранитькакToolStripMenuItem.Text = "Сохранить &как";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(226, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(283, 6);
             // 
             // печатьToolStripMenuItem
             // 
             this.печатьToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.печатьToolStripMenuItem.Name = "печатьToolStripMenuItem";
             this.печатьToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.печатьToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.печатьToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
             this.печатьToolStripMenuItem.Text = "&Печать";
             // 
             // предварительныйпросмотрToolStripMenuItem
             // 
             this.предварительныйпросмотрToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.предварительныйпросмотрToolStripMenuItem.Name = "предварительныйпросмотрToolStripMenuItem";
-            this.предварительныйпросмотрToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.предварительныйпросмотрToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
             this.предварительныйпросмотрToolStripMenuItem.Text = "Предварительный про&смотр";
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(226, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(283, 6);
             // 
             // выходToolStripMenuItem
             // 
             this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
-            this.выходToolStripMenuItem.Size = new System.Drawing.Size(229, 22);
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(286, 26);
             this.выходToolStripMenuItem.Text = "Вы&ход";
             this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
             // 
@@ -217,7 +218,7 @@
             this.цветИгрокаToolStripMenuItem,
             this.цветПротивникаToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(68, 24);
             this.optionsToolStripMenuItem.Text = "&Опции";
             // 
             // levelToolStripMenuItem
@@ -225,7 +226,7 @@
             this.levelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem2});
             this.levelToolStripMenuItem.Name = "levelToolStripMenuItem";
-            this.levelToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.levelToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
             this.levelToolStripMenuItem.Text = "&Сложность";
             // 
             // toolStripMenuItem2
@@ -237,7 +238,7 @@
             "4",
             "5"});
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 21);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 28);
             this.toolStripMenuItem2.Text = "1";
             // 
             // boardToolStripMenuItem
@@ -245,13 +246,13 @@
             this.boardToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTextBox1});
             this.boardToolStripMenuItem.Name = "boardToolStripMenuItem";
-            this.boardToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.boardToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
             this.boardToolStripMenuItem.Text = "&Размер доски";
             // 
             // toolStripTextBox1
             // 
             this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 21);
+            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 27);
             this.toolStripTextBox1.Text = "10";
             this.toolStripTextBox1.ToolTipText = "Enter decimal number";
             this.toolStripTextBox1.TextChanged += new System.EventHandler(this.toolStripTextBox1_TextChanged);
@@ -259,7 +260,7 @@
             // networkToolStripMenuItem
             // 
             this.networkToolStripMenuItem.Name = "networkToolStripMenuItem";
-            this.networkToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.networkToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
             this.networkToolStripMenuItem.Text = "&Настройки сети";
             // 
             // антиалToolStripMenuItem
@@ -267,28 +268,28 @@
             this.антиалToolStripMenuItem.Checked = true;
             this.антиалToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.антиалToolStripMenuItem.Name = "антиалToolStripMenuItem";
-            this.антиалToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.антиалToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
             this.антиалToolStripMenuItem.Text = "&Smoothing mode(Антиалиасинг)";
             this.антиалToolStripMenuItem.Click += new System.EventHandler(this.антиалToolStripMenuItem_Click);
             // 
             // цветКурсораToolStripMenuItem
             // 
             this.цветКурсораToolStripMenuItem.Name = "цветКурсораToolStripMenuItem";
-            this.цветКурсораToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.цветКурсораToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
             this.цветКурсораToolStripMenuItem.Text = "Цвет курсора...";
             this.цветКурсораToolStripMenuItem.Click += new System.EventHandler(this.цветКурсораToolStripMenuItem_Click);
             // 
             // цветИгрокаToolStripMenuItem
             // 
             this.цветИгрокаToolStripMenuItem.Name = "цветИгрокаToolStripMenuItem";
-            this.цветИгрокаToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.цветИгрокаToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
             this.цветИгрокаToolStripMenuItem.Text = "Цвет игрока...";
             this.цветИгрокаToolStripMenuItem.Click += new System.EventHandler(this.цветИгрокаToolStripMenuItem_Click);
             // 
             // цветПротивникаToolStripMenuItem
             // 
             this.цветПротивникаToolStripMenuItem.Name = "цветПротивникаToolStripMenuItem";
-            this.цветПротивникаToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.цветПротивникаToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
             this.цветПротивникаToolStripMenuItem.Text = "Цвет противника...";
             this.цветПротивникаToolStripMenuItem.Click += new System.EventHandler(this.цветПротивникаToolStripMenuItem_Click);
             // 
@@ -299,25 +300,25 @@
             this.toolStripSeparator5,
             this.опрограммеToolStripMenuItem});
             this.справкаToolStripMenuItem.Name = "справкаToolStripMenuItem";
-            this.справкаToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.справкаToolStripMenuItem.Size = new System.Drawing.Size(79, 24);
             this.справкаToolStripMenuItem.Text = "Спра&вка";
             // 
             // содержаниеToolStripMenuItem
             // 
             this.содержаниеToolStripMenuItem.Name = "содержаниеToolStripMenuItem";
-            this.содержаниеToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.содержаниеToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
             this.содержаниеToolStripMenuItem.Text = "&Содержание";
             this.содержаниеToolStripMenuItem.Click += new System.EventHandler(this.содержаниеToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(158, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(185, 6);
             // 
             // опрограммеToolStripMenuItem
             // 
             this.опрограммеToolStripMenuItem.Name = "опрограммеToolStripMenuItem";
-            this.опрограммеToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.опрограммеToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
             this.опрограммеToolStripMenuItem.Text = "&О программе...";
             this.опрограммеToolStripMenuItem.Click += new System.EventHandler(this.опрограммеToolStripMenuItem_Click);
             // 
@@ -333,15 +334,15 @@
             0,
             0,
             0});
-            this.numericUpDown1.Location = new System.Drawing.Point(501, 410);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown1.Location = new System.Drawing.Point(668, 505);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             5000,
             0,
             0,
             0});
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(46, 20);
+            this.numericUpDown1.Size = new System.Drawing.Size(61, 23);
             this.numericUpDown1.TabIndex = 3;
             this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDown1.Value = new decimal(new int[] {
@@ -360,10 +361,11 @@
             this.lstMoves.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lstMoves.ForeColor = System.Drawing.Color.Teal;
             this.lstMoves.FormattingEnabled = true;
-            this.lstMoves.ItemHeight = 14;
-            this.lstMoves.Location = new System.Drawing.Point(457, 26);
+            this.lstMoves.ItemHeight = 18;
+            this.lstMoves.Location = new System.Drawing.Point(609, 32);
+            this.lstMoves.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lstMoves.Name = "lstMoves";
-            this.lstMoves.Size = new System.Drawing.Size(140, 98);
+            this.lstMoves.Size = new System.Drawing.Size(187, 108);
             this.lstMoves.TabIndex = 4;
             this.lstMoves.SelectedIndexChanged += new System.EventHandler(this.lstMoves_SelectedIndexChanged);
             // 
@@ -382,9 +384,10 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(498, 388);
+            this.label1.Location = new System.Drawing.Point(664, 478);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 16);
+            this.label1.Size = new System.Drawing.Size(89, 20);
             this.label1.TabIndex = 5;
             this.label1.Text = "Pause ms";
             // 
@@ -395,8 +398,8 @@
             this.numericUpDown2.CausesValidation = false;
             this.numericUpDown2.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.numericUpDown2.Location = new System.Drawing.Point(500, 290);
-            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown2.Location = new System.Drawing.Point(667, 357);
+            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -408,7 +411,7 @@
             0,
             0});
             this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(46, 20);
+            this.numericUpDown2.Size = new System.Drawing.Size(61, 23);
             this.numericUpDown2.TabIndex = 6;
             this.numericUpDown2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDown2.Value = new decimal(new int[] {
@@ -424,9 +427,10 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.label2.Location = new System.Drawing.Point(494, 276);
+            this.label2.Location = new System.Drawing.Point(659, 340);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(103, 13);
+            this.label2.Size = new System.Drawing.Size(136, 17);
             this.label2.TabIndex = 7;
             this.label2.Text = "Глубина рекурсии";
             // 
@@ -436,9 +440,10 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.label3.Location = new System.Drawing.Point(499, 236);
+            this.label3.Location = new System.Drawing.Point(665, 290);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 14);
+            this.label3.Size = new System.Drawing.Size(88, 18);
             this.label3.TabIndex = 9;
             this.label3.Text = "SkillLevel";
             // 
@@ -449,8 +454,8 @@
             this.numericUpDown3.CausesValidation = false;
             this.numericUpDown3.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.numericUpDown3.Location = new System.Drawing.Point(500, 254);
-            this.numericUpDown3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown3.Location = new System.Drawing.Point(667, 313);
+            this.numericUpDown3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -462,7 +467,7 @@
             0,
             0});
             this.numericUpDown3.Name = "numericUpDown3";
-            this.numericUpDown3.Size = new System.Drawing.Size(46, 20);
+            this.numericUpDown3.Size = new System.Drawing.Size(61, 23);
             this.numericUpDown3.TabIndex = 8;
             this.numericUpDown3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDown3.Value = new decimal(new int[] {
@@ -478,10 +483,10 @@
             this.chkMove.AutoSize = true;
             this.chkMove.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.chkMove.ForeColor = System.Drawing.Color.Navy;
-            this.chkMove.Location = new System.Drawing.Point(494, 366);
-            this.chkMove.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chkMove.Location = new System.Drawing.Point(667, 451);
+            this.chkMove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkMove.Name = "chkMove";
-            this.chkMove.Size = new System.Drawing.Size(59, 20);
+            this.chkMove.Size = new System.Drawing.Size(71, 24);
             this.chkMove.TabIndex = 10;
             this.chkMove.Text = "ходы";
             this.chkMove.UseVisualStyleBackColor = true;
@@ -493,9 +498,10 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label4.ForeColor = System.Drawing.Color.Green;
-            this.label4.Location = new System.Drawing.Point(499, 318);
+            this.label4.Location = new System.Drawing.Point(665, 391);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(77, 14);
+            this.label4.Size = new System.Drawing.Size(88, 18);
             this.label4.TabIndex = 12;
             this.label4.Text = "SkillNumSq";
             // 
@@ -506,15 +512,15 @@
             this.numericUpDown4.CausesValidation = false;
             this.numericUpDown4.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.numericUpDown4.Location = new System.Drawing.Point(500, 336);
-            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown4.Location = new System.Drawing.Point(667, 414);
+            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown4.Minimum = new decimal(new int[] {
             2,
             0,
             0,
             0});
             this.numericUpDown4.Name = "numericUpDown4";
-            this.numericUpDown4.Size = new System.Drawing.Size(46, 20);
+            this.numericUpDown4.Size = new System.Drawing.Size(61, 23);
             this.numericUpDown4.TabIndex = 11;
             this.numericUpDown4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.numericUpDown4.Value = new decimal(new int[] {
@@ -530,10 +536,10 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.toolStripStatusLabel2});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 451);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 555);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(606, 23);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 13, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(808, 28);
             this.statusStrip1.TabIndex = 13;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -542,33 +548,33 @@
             this.toolStripStatusLabel1.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripStatusLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 18);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 23);
             // 
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(140, 18);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(182, 23);
             this.toolStripStatusLabel2.Text = "toolStripStatusLabel2";
             // 
             // rtbStat
             // 
             this.rtbStat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.rtbStat.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtbStat.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbStat.Location = new System.Drawing.Point(456, 146);
-            this.rtbStat.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rtbStat.Font = new System.Drawing.Font("Arial Narrow", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.rtbStat.Location = new System.Drawing.Point(608, 180);
+            this.rtbStat.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rtbStat.Name = "rtbStat";
             this.rtbStat.ReadOnly = true;
-            this.rtbStat.Size = new System.Drawing.Size(140, 87);
+            this.rtbStat.Size = new System.Drawing.Size(187, 107);
             this.rtbStat.TabIndex = 14;
             this.rtbStat.Text = "";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(606, 474);
+            this.ClientSize = new System.Drawing.Size(808, 583);
             this.Controls.Add(this.rtbStat);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.label4);
@@ -585,6 +591,7 @@
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Dots";
