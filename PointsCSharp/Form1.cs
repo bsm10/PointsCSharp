@@ -142,8 +142,8 @@ namespace DotsGame
                     break;
                 case MouseButtons.Middle:
                     //тягает поле, раскоментить если нужна прокрутка поля
-                    game.startX = (t.X - (e.X / (pbxBoard.ClientSize.Width / (game.iBoardSize + 1)))) - 0.5f;
-                    game.startY = (t.Y - (e.Y / (pbxBoard.ClientSize.Height / (game.iBoardSize + 1)))) - 0.5f;
+                    //game.startX = (t.X - (e.X / (pbxBoard.ClientSize.Width / (game.iBoardSize + 1)))) - 0.5f;
+                    //game.startY = (t.Y - (e.Y / (pbxBoard.ClientSize.Height / (game.iBoardSize + 1)))) - 0.5f;
                     break;
                 case MouseButtons.XButton1:
                     break;
@@ -372,12 +372,12 @@ namespace DotsGame
             toolStripStatusLabel2.Text = "Ход компьютера...";
             do
             {
-                Application.DoEvents();
                 pl2_move = game.PickComputerMove(pl1_move);
                 pl2_move.Own = 2;
                 game.MakeMove(pl2_move);
                 game.ListMoves.Add(pl2_move);
                 player_move = 2;
+                Application.DoEvents();
                 pbxBoard.Invalidate();
                 toolStripStatusLabel2.ForeColor = game.colorGamer1;
                 toolStripStatusLabel2.Text = "Ход игрока";
@@ -391,6 +391,7 @@ namespace DotsGame
                 game.MakeMove(pl1_move);
                 game.ListMoves.Add(pl1_move);
                 player_move = 1;
+                Application.DoEvents();
                 pbxBoard.Invalidate();
                 toolStripStatusLabel2.ForeColor = game.colorGamer2;
                 toolStripStatusLabel2.Text = "Ход компьютера...";
@@ -399,6 +400,11 @@ namespace DotsGame
                     MessageBox.Show("Game over!");
                     break;
                 }
+                lstMoves.DataSource = null;
+                lstMoves.DataSource = game.ListMoves;
+                if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
+                rtbStat.Text = game.Statistic();
+
             }
             while (true);
             return;
