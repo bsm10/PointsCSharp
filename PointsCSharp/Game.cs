@@ -861,15 +861,13 @@ namespace DotsGame
             }
             foreach (Dot _d in dts)
             {
-                //if (_d.Own != 0 & _d.Own != flg_own)//_d-точка которая окружает
-                if (_d.Own != 0 & _d.Blocked == false)//_d-точка которая окружает
+                if (_d.Own != 0 & _d.Blocked == false & _d.Own != flg_own)//_d-точка которая окружает
                 {
                     //добавим в коллекцию точки которые окружают
                     if (lst_in_region_dots.Contains(_d) == false ) lst_in_region_dots.Add(_d);
                 }
                 else
                 {
-                    _d.Blocked = true;
                     if (_d.Marked == false & _d.Fixed == false)
                     {
                         MarkDotsInRegion(_d, flg_own);
@@ -935,7 +933,6 @@ namespace DotsGame
                 foreach (Dot d in aDots[x, y].BlokingDots)
                 {
                     bl_dot.Add(d);
-
                 }
             }
 
