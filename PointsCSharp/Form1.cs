@@ -363,8 +363,12 @@ namespace DotsGame
         {
             do
             {
+                Application.DoEvents();
                 if (MakeMove_APlay(1) > 0) break;
+                //game.Pause(1000); 
+                Application.DoEvents();
                 if (MakeMove_APlay(2) > 0) break;
+                //game.Pause(1000);
             }
             while (true);
             return;
@@ -377,9 +381,8 @@ namespace DotsGame
             pl_move.Own = Player;
             game.MakeMove(pl_move);
             game.ListMoves.Add(pl_move);
-            Application.DoEvents();
             pbxBoard.Invalidate();
-            toolStripStatusLabel2.ForeColor = game.colorGamer2;
+            toolStripStatusLabel2.ForeColor = Color.BurlyWood;
             toolStripStatusLabel2.Text = "Ход игрока" + Player;
             if (game.GameOver())
             {

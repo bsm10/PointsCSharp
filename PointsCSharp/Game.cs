@@ -45,8 +45,8 @@ namespace DotsGame
                 if(last_move==null)//когда выбирается первая точка для хода
                 {
                     var random = new Random(DateTime.Now.Millisecond);
-                    var q = from Dot d in aDots where d.x < iBoardSize / 2 & d.x > iBoardSize / 4 
-                                                    & d.y < iBoardSize / 2 & d.y > iBoardSize / 4
+                    var q = from Dot d in aDots where d.x <= iBoardSize / 2 & d.x > iBoardSize / 4 
+                                                    & d.y <= iBoardSize / 2 & d.y > iBoardSize / 4
                                                     orderby (random.Next())
                                                     select d;
                     
@@ -99,18 +99,29 @@ namespace DotsGame
         public Dot PickComputerMove(Dot enemy_move)
         {
             float s1 = square1; float s2 = square2;
+            int pl1=0; int pl2=0;
+            if (enemy_move.Own == PLAYER_HUMAN) { pl1 = PLAYER_HUMAN; pl2 = PLAYER_COMPUTER; }
+            else if (enemy_move.Own == PLAYER_COMPUTER) { pl1 = PLAYER_COMPUTER; pl2 = PLAYER_HUMAN; }
             best_move=null;
             int depth=0;
             var t1 = DateTime.Now.Millisecond;
             stopWatch.Start();
             Dot lm = new Dot(last_move.x, last_move.y);//точка последнего хода
             //проверяем ход который ведет сразу к окружению
-            best_move = CheckMove(PLAYER_COMPUTER);
-            if (best_move == null) best_move = CheckMove(PLAYER_HUMAN);
+            //best_move = CheckMove(PLAYER_COMPUTER);
+            //if (best_move == null) best_move = CheckMove(PLAYER_HUMAN);
+
+            ////проверяем паттерны
+            //if (best_move==null) best_move = CheckPattern(PLAYER_COMPUTER);
+            //if (best_move==null) best_move = CheckPattern(PLAYER_HUMAN);  // проверяем ходы
+            best_move = CheckMove(pl2);
+            if (best_move == null) best_move = CheckMove(pl1);
 
             //проверяем паттерны
-            if (best_move==null) best_move = CheckPattern(PLAYER_COMPUTER);
-            if (best_move==null) best_move = CheckPattern(PLAYER_HUMAN);  // проверяем ходы
+            if (best_move == null) best_move = CheckPattern(pl2);
+            if (best_move == null) best_move = CheckPattern(pl1);  // проверяем ходы
+
+
             int c1=0 , c_root=1000;// , dpth=0;
             if (best_move ==null)
             {
@@ -188,7 +199,7 @@ namespace DotsGame
             "\r\n Глубина просчета: " + c_root.ToString() +
             "\r\n Ход на " + best_move.x + ":" + best_move.y +
             "\r\n время просчета " + stopWatch.ElapsedMilliseconds.ToString() + " мс";
-            best_move.Own = 2;
+            //best_move.Own = 2;
             stopWatch.Reset();
             square1=s1; square2=s2;
 
@@ -244,7 +255,7 @@ namespace DotsGame
                     if (move1 == null & player == 1 & recursion_depth <= 2) move1 = d;
                     if (move2 == null & player == 2 & recursion_depth <= 2) move2 = d;
                     //-----показывает проверяемые ходы--------
-                    if (ShowMoves) Pause();
+                    if (ShowMoves) Pause(); //делает паузу если значение поля pause>0
                     #if DEBUG
                         //Application.DoEvents();
                         lstDbg1.Items.Add(d.Own + " - " + d.x  + ":" + d.y) ;
@@ -514,7 +525,7 @@ namespace DotsGame
                 System.Threading.Thread.Sleep(pause);
             }
         }
-        private void Pause(int ms)
+        public void Pause(int ms)
         {
             Application.DoEvents();
             pbxBoard.Invalidate();
@@ -773,6 +784,7 @@ namespace DotsGame
             count_blocked -= dif;
             last_move = dot;//зафиксировать последний ход
             MakeRating();//пересчитать рейтинг
+            ScanBlockedFreeDots();
             return s;//dif;
         }
         //private int CheckBlocked()//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
@@ -906,7 +918,27 @@ namespace DotsGame
                 }
             }
         }
+
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        public void ScanBlockedFreeDots()//сканирует не занятые узлы на предмет блокировки
+        {
+            var q= from Dot d in aDots where d.Own==PLAYER_NONE select d;
+
+            foreach(Dot dot in q)
+            {
+                Dot[] dts = new Dot[4] {aDots[dot.x + 1, dot.y], aDots[dot.x - 1, dot.y],
+                                        aDots[dot.x, dot.y + 1], aDots[dot.x, dot.y - 1]};
+                foreach(Dot _dot in dts)
+                {
+                    if(_dot.Blocked) 
+                    {
+                        dot.Blocked=true;
+                        break;
+                    }
+                }
+            }
+
+        }
 
         public void UndoMove(int x, int y)//поле отмена хода
         {
