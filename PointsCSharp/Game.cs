@@ -828,14 +828,18 @@ namespace DotsGame
                 {
                     lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
                     if (d.Own != 0) d.Blocked = true;
-                    aDots.UnmarkAllDots();
-                    MarkDotsInRegion(d, d.Own);
-                    counter += 1;
-                    foreach (Dot dr in lst_in_region_dots)
+                    var q1 = from Dot dots in aDots where dots.BlokingDots.Contains(d) select dots;
+                    if (q1.Count()==0)
                     {
-                        foreach (Dot bd in lst_blocked_dots)
+                        aDots.UnmarkAllDots();
+                        MarkDotsInRegion(d, d.Own);
+                        counter += 1;
+                        foreach (Dot dr in lst_in_region_dots)
                         {
-                            if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0 & dr.Own!=bd.Own) dr.BlokingDots.Add(bd);
+                            foreach (Dot bd in lst_blocked_dots)
+                            {
+                                if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0 & dr.Own != bd.Own) dr.BlokingDots.Add(bd);
+                            }
                         }
                     }
                 }
@@ -870,6 +874,7 @@ namespace DotsGame
                 {
                     if (_d.Marked == false & _d.Fixed == false)
                     {
+                        _d.Blocked = true;
                         MarkDotsInRegion(_d, flg_own);
                     }
                 }
