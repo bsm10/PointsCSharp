@@ -361,53 +361,36 @@ namespace DotsGame
 
         private void autoplayToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Dot pl2_move = null;
-            Dot pl1_move = game.aDots[game.iBoardSize / 2, game.iBoardSize / 2 + 1];
-            pl1_move.Own = 1;
-            game.MakeMove(pl1_move);
-            game.ListMoves.Add(pl1_move);
-            player_move = 1;
-            pbxBoard.Invalidate();
-            toolStripStatusLabel2.ForeColor = game.colorGamer2;
-            toolStripStatusLabel2.Text = "Ход компьютера...";
             do
             {
-                pl2_move = game.PickComputerMove(pl1_move);
-                pl2_move.Own = 2;
-                game.MakeMove(pl2_move);
-                game.ListMoves.Add(pl2_move);
-                player_move = 2;
-                Application.DoEvents();
-                pbxBoard.Invalidate();
-                toolStripStatusLabel2.ForeColor = game.colorGamer1;
-                toolStripStatusLabel2.Text = "Ход игрока";
-                if (game.GameOver())
-                {
-                    MessageBox.Show("Game over!");
-                    break;
-                }
-                pl1_move = game.PickComputerMove(pl2_move);
-                pl1_move.Own = 1;
-                game.MakeMove(pl1_move);
-                game.ListMoves.Add(pl1_move);
-                player_move = 1;
-                Application.DoEvents();
-                pbxBoard.Invalidate();
-                toolStripStatusLabel2.ForeColor = game.colorGamer2;
-                toolStripStatusLabel2.Text = "Ход компьютера...";
-                if (game.GameOver())
-                {
-                    MessageBox.Show("Game over!");
-                    break;
-                }
-                lstMoves.DataSource = null;
-                lstMoves.DataSource = game.ListMoves;
-                if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
-                rtbStat.Text = game.Statistic();
-
+                if (MakeMove_APlay(1) > 0) break;
+                if (MakeMove_APlay(2) > 0) break;
             }
             while (true);
             return;
+        }
+
+        private int MakeMove_APlay(int Player)
+        {
+            Dot pl_move;
+            pl_move = game.PickComputerMove(game.LastMove);
+            pl_move.Own = Player;
+            game.MakeMove(pl_move);
+            game.ListMoves.Add(pl_move);
+            Application.DoEvents();
+            pbxBoard.Invalidate();
+            toolStripStatusLabel2.ForeColor = game.colorGamer2;
+            toolStripStatusLabel2.Text = "Ход игрока" + Player;
+            if (game.GameOver())
+            {
+                MessageBox.Show("Game over!");
+                return 1;
+            }
+            lstMoves.DataSource = null;
+            lstMoves.DataSource = game.ListMoves;
+            if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
+            rtbStat.Text = game.Statistic();
+            return 0;
         }
 
     }  

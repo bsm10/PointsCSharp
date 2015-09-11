@@ -42,6 +42,16 @@ namespace DotsGame
         {
             get
             {
+                if(last_move==null)//когда выбирается первая точка для хода
+                {
+                    var random = new Random(DateTime.Now.Millisecond);
+                    var q = from Dot d in aDots where d.x < iBoardSize / 2 & d.x > iBoardSize / 4 
+                                                    & d.y < iBoardSize / 2 & d.y > iBoardSize / 4
+                                                    orderby (random.Next())
+                                                    select d;
+                    
+                    last_move = q.First();//это для того чтобы поставить первую точку                
+                }
                 return last_move;
             }
         }
@@ -119,7 +129,7 @@ namespace DotsGame
 #endif
                 Dot dot1 = null, dot2 =null;
                 //PLAYER_HUMAN - ставим в параметр - первым ходит игрок1(человек)
-                Play(ref best_move,  dot1,dot2, PLAYER_HUMAN, ref depth, ref c1, lm, ref c_root);//раскоментировать для поиска без цикла - вокруг последнего хода
+                Play(ref best_move, dot1, dot2, PLAYER_HUMAN, ref depth, ref c1, lm, ref c_root);//раскоментировать для поиска без цикла - вокруг последнего хода
                                                                                                        // BoardValue(ref best_move, PLAYER_COMPUTER, PLAYER_HUMAN, ref depth, ref c1, d, ref c2);
                                                                                                        // FindMove(ref best_move, lm);
                                                                                                        //}
@@ -129,7 +139,7 @@ namespace DotsGame
                 }
                else
                 {
-                    FindMove(ref best_move, lm);
+                    FindMove(ref best_move, last_move);
                 }
                 
             }
@@ -189,7 +199,7 @@ namespace DotsGame
         List<Dot> lst_best_move=new List<Dot>();//сюда заносим лучшие ходы
 //===================================================================================================================
         private int Play(ref Dot best_move, Dot move1, Dot move2, int player, ref int count_moves, 
-                               ref int recursion_depth, Dot lm, ref int counter_root)//возвращает Owner кто побеждает в результате хода
+                               ref int recursion_depth, Dot lastmove, ref int counter_root)//возвращает Owner кто побеждает в результате хода
         {
             recursion_depth++;
             if (recursion_depth >= SkillDepth)
@@ -199,9 +209,9 @@ namespace DotsGame
             Dot enemy_move = null;
             //var random = new Random(DateTime.Now.Millisecond);
             var qry = from Dot d in aDots
-                      where d.Own == PLAYER_NONE & d.Blocked==false & Math.Abs(d.x - lm.x) <SkillNumSq
-                                                                    & Math.Abs(d.y - lm.y) <SkillNumSq
-                      orderby Math.Sqrt(Math.Pow(Math.Abs(d.x - lm.x), 2) + Math.Pow(Math.Abs(d.y - lm.y), 2)) //Math.Sqrt(Math.Abs(d.x - lm.x)* Math.Abs(d.x - lm.x) + Math.Abs(d.y - lm.y)* Math.Abs(d.y - lm.y)) //(random.Next())
+                      where d.Own == PLAYER_NONE & d.Blocked==false & Math.Abs(d.x - lastmove.x) <SkillNumSq
+                                                                    & Math.Abs(d.y - lastmove.y) <SkillNumSq
+                      orderby Math.Sqrt(Math.Pow(Math.Abs(d.x - lastmove.x), 2) + Math.Pow(Math.Abs(d.y - lastmove.y), 2)) //Math.Sqrt(Math.Abs(d.x - lm.x)* Math.Abs(d.x - lm.x) + Math.Abs(d.y - lm.y)* Math.Abs(d.y - lm.y)) //(random.Next())
                       select d;
             Dot[] ad = qry.ToArray();
             int i = ad.Length;
@@ -240,7 +250,7 @@ namespace DotsGame
                         lstDbg1.Items.Add(d.Own + " - " + d.x  + ":" + d.y) ;
                            txtDbg.Text="Общее число ходов: " + count_moves.ToString() + 
                                        "\r\n Глубина просчета: " + recursion_depth.ToString() +
-                                       "\r\n проверка вокруг точки " + lm +
+                                       "\r\n проверка вокруг точки " + lastmove +
                                        "\r\n move1 " + move1 +
                                        "\r\n move2 " + move2 +
                                        "\r\n время поиска " + stopWatch.ElapsedMilliseconds; 
@@ -287,7 +297,7 @@ namespace DotsGame
                     count_moves++;
                     
                     //теперь ходит другой игрок =========================================================================================
-                    int result = Play(ref enemy_move, move1,move2, player, ref count_moves, ref recursion_depth, lm, ref counter_root);
+                    int result = Play(ref enemy_move, move1,move2, player, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
                     //отменить ход
                     UndoMove(d);
                     recursion_depth--;
@@ -524,15 +534,7 @@ namespace DotsGame
             count_blocked1=0;count_blocked2=0;
             count_blocked=0;
 #if DEBUG
-            //aDots.Add(0, 0, 2); aDots.Add(1, 0, 1); aDots.Add(2, 0, 2); aDots.Add(3, 0, 2); aDots.Add(4, 0, 2);
-            //aDots.Add(0, 1, 2); aDots.Add(1, 1, 0); aDots.Add(2, 1, 2); aDots.Add(3, 1, 1);
-            //aDots.Add(0, 2, 1); aDots.Add(1, 3, 1); aDots.Add(3, 2, 2); aDots.Add(4, 2, 2);
-            //aDots.Add(0, 3, 2); aDots.Add(1, 4, 2); aDots.Add(3, 3, 1);
-            //aDots.Add(0, 4, 2); aDots.Add(3, 4, 2); aDots.Add(4, 4, 2);
-            //aDots.Add(1, 1, 1); aDots.Add(0, 2, 1); aDots.Add(1, 2, 2);
             f.Show();
-            //MoveDebugWindow();
-
             lstDbg1 = (ListBox)f.Controls.Find("lstDbg1", false)[0];
             lstDbg2 = (ListBox)f.Controls.Find("lstDbg2", false)[0];
             txtDbg = (TextBox)f.Controls.Find("txtDebug", false)[0];
