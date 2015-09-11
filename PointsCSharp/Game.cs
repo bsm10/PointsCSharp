@@ -773,38 +773,38 @@ namespace DotsGame
             MakeRating();//пересчитать рейтинг
             return s;//dif;
         }
-        private int CheckBlocked()//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
-        {
-            int counter=0;
-            var q = from Dot dots in aDots where dots.Own != 0 | dots.Own == 0 & dots.Blocked
-                    select dots;
-            foreach (Dot d in q)
-            {
-                aDots.UnmarkAllDots();
-                if (DotIsFree(d, d.Own) == false)
-                {
-                    lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
-                    if (d.Own != 0) d.Blocked = true;
-                    aDots.UnmarkAllDots();
-                    MarkDotsInRegion(d, d.Own);
-                    counter += 1;
-                    foreach (Dot dr in lst_in_region_dots)
-                    {
-                        foreach (Dot bd in lst_blocked_dots)
-                        {
-                           if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0) dr.BlokingDots.Add(bd);
-                           // if (dr.BlokingDots.Contains(bd) == false) dr.BlokingDots.Add(bd);
-                        }
-                    }
-                }
-                else
-                {
-                    d.Blocked = false;
-                }
-            }
+        //private int CheckBlocked()//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
+        //{
+        //    int counter=0;
+        //    var q = from Dot dots in aDots where dots.Own != 0 | dots.Own == 0 & dots.Blocked
+        //            select dots;
+        //    foreach (Dot d in q)
+        //    {
+        //        aDots.UnmarkAllDots();
+        //        if (DotIsFree(d, d.Own) == false)
+        //        {
+        //            lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
+        //            if (d.Own != 0) d.Blocked = true;
+        //            aDots.UnmarkAllDots();
+        //            MarkDotsInRegion(d, d.Own);
+        //            counter += 1;
+        //            foreach (Dot dr in lst_in_region_dots)
+        //            {
+        //                foreach (Dot bd in lst_blocked_dots)
+        //                {
+        //                   if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0) dr.BlokingDots.Add(bd);
+        //                   // if (dr.BlokingDots.Contains(bd) == false) dr.BlokingDots.Add(bd);
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            d.Blocked = false;
+        //        }
+        //    }
 
-            return counter;
-        }
+        //    return counter;
+        //}
         private int CheckBlocked(int last_moveOwner=0)//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
         {
             int counter = 0;
