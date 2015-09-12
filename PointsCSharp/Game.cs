@@ -108,12 +108,6 @@ namespace DotsGame
             stopWatch.Start();
             Dot lm = new Dot(last_move.x, last_move.y);//точка последнего хода
             //проверяем ход который ведет сразу к окружению
-            //best_move = CheckMove(PLAYER_COMPUTER);
-            //if (best_move == null) best_move = CheckMove(PLAYER_HUMAN);
-
-            ////проверяем паттерны
-            //if (best_move==null) best_move = CheckPattern(PLAYER_COMPUTER);
-            //if (best_move==null) best_move = CheckPattern(PLAYER_HUMAN);  // проверяем ходы
             best_move = CheckMove(pl2);
             if (best_move == null) best_move = CheckMove(pl1);
 
@@ -157,41 +151,18 @@ namespace DotsGame
             if (best_move == null)
             {
                 //MessageBox.Show("best_move == null");
-                
+                var random = new Random(DateTime.Now.Millisecond);
+                var q = from Dot d in aDots//любая точка
+                        where d.Blocked == false & d.Own == PLAYER_NONE 
+                        orderby random.Next()
+                        select d;
 
-                // //паттерн на точку находящуюся в двух клетках 
-                var qry = from Dot d in aDots
-                          where d.Blocked == false & d.Own == PLAYER_NONE & aDots[d.x + 2, d.y].Own == PLAYER_COMPUTER |
-                                d.Blocked == false & d.Own == PLAYER_NONE & aDots[d.x - 2, d.y].Own == PLAYER_COMPUTER |
-                                d.Blocked == false & d.Own == PLAYER_NONE & aDots[d.x, d.y + 2].Own == PLAYER_COMPUTER |
-                                d.Blocked == false & d.Own == PLAYER_NONE & aDots[d.x, d.y - 2].Own == PLAYER_COMPUTER |
-                                d.Blocked == false & d.Own == PLAYER_NONE & aDots[d.x + 2, d.y + 1].Own == PLAYER_COMPUTER |
-                                d.Blocked == false & d.Own == PLAYER_NONE & aDots[d.x + 2, d.y - 1].Own == PLAYER_COMPUTER |
-                                d.Blocked == false & d.Own == PLAYER_NONE & aDots[d.x - 2, d.y + 1].Own == PLAYER_COMPUTER |
-                                d.Blocked == false & d.Own == PLAYER_NONE & aDots[d.x - 2, d.y - 1].Own == PLAYER_COMPUTER |
-                                d.Blocked == false & d.Own == PLAYER_NONE & aDots[d.x + 1, d.y - 2].Own == PLAYER_COMPUTER |
-                                d.Blocked == false & d.Own == PLAYER_NONE & aDots[d.x - 1, d.y - 2].Own == PLAYER_COMPUTER |
-                                d.Blocked == false & d.Own == PLAYER_NONE & aDots[d.x + 1, d.y + 2].Own == PLAYER_COMPUTER |
-                                d.Blocked == false & d.Own == PLAYER_NONE & aDots[d.x - 1, d.y + 2].Own == PLAYER_COMPUTER
-                          select d;
-                if (qry.Count() > 0)
-                {
-                    best_move = qry.First();
-                }
-                else
-                {
-                    var q = from Dot d in aDots//любая точка
-                              where d.Blocked == false & d.Own == PLAYER_NONE /* & Math.Abs(d.x - enemy_move.x) < 2 &
-                                                                                Math.Abs(d.y - enemy_move.y) < 2*/
-                              select d;
-
-                    if (q.Count() > 0) best_move = q.First();
-                    else return null;
-                }
+                if (q.Count() > 0) best_move = q.First();
+                else return null;
             }
-            
+
 #if DEBUG
-    lstDbg1.EndUpdate();
+            lstDbg1.EndUpdate();
 #endif
             //stopWatch.Stop();
            
