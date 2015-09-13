@@ -211,24 +211,32 @@ namespace DotsGame
                         if (recursion_depth < counter_root)
                         {
                             counter_root = recursion_depth;
-                            best_move = dt;
+                            if (recursion_depth == 1)
+                            {
+                                best_move = dt;
+                            }
+                            else
+                            {
+                                best_move = player == 1 ? move1 : move2;
+                            }
+                            //best_move = dt;
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
 #if DEBUG
-                            lstDbg2.Items.Add(recursion_depth + "ход на " + best_move.x + ":" + best_move.y + "; win HUMAN");
+                            lstDbg2.Items.Add(recursion_depth + " CheckMove " + best_move.x + ":" + best_move.y + "; win player " + player);
 #endif
                             UndoMove(d);
                             return player;
                         }
                     }
 
+                    count_moves++;
                     player = d.Own;
-                    if (move1 == null & player == 1 & recursion_depth <= 2) move1 = d;
-                    if (move2 == null & player == 2 & recursion_depth <= 2) move2 = d;
+                    if (move1 == null & player == 1 | recursion_depth < 2) move1 = d;
+                    if (move2 == null & player == 2 | recursion_depth < 3) move2 = d;
                     //-----показывает проверяемые ходы--------
                     if (ShowMoves) Pause(); //делает паузу если значение поля pause>0
                     #if DEBUG
-                        //Application.DoEvents();
                         lstDbg1.Items.Add(d.Own + " - " + d.x  + ":" + d.y) ;
                            txtDbg.Text="Общее число ходов: " + count_moves.ToString() + 
                                        "\r\n Глубина просчета: " + recursion_depth.ToString() +
@@ -265,8 +273,8 @@ namespace DotsGame
                         if (recursion_depth < counter_root)
                         {
                             counter_root = recursion_depth;
-                            //best_move =  new Dot(d.x, d.y);
-                            best_move = new Dot(move2.x, move2.y);
+                           // best_move =  new Dot(d.x, d.y);
+                           best_move = new Dot(move2.x, move2.y);
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
 #if DEBUG
@@ -276,8 +284,8 @@ namespace DotsGame
                         UndoMove(d);
                         return PLAYER_COMPUTER;//побеждает компьютер
                     }
-                    count_moves++;
-                    
+                    //count_moves++;
+
                     //теперь ходит другой игрок =========================================================================================
                     int result = Play(ref enemy_move, move1,move2, player, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
                     //отменить ход
@@ -985,6 +993,7 @@ namespace DotsGame
             //list_moves.Remove(aDots[x, y]);
             aDots.Remove(x, y);
             count_blocked = CheckBlocked();
+            ScanBlockedFreeDots();
             LinkDots(); 
         }
 

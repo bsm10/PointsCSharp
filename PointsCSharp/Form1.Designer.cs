@@ -53,6 +53,7 @@
             this.цветКурсораToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.цветИгрокаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.цветПротивникаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoplayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.содержаниеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -74,7 +75,7 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.rtbStat = new System.Windows.Forms.RichTextBox();
-            this.autoplayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.выделитьШаблонToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -218,7 +219,8 @@
             this.цветКурсораToolStripMenuItem,
             this.цветИгрокаToolStripMenuItem,
             this.цветПротивникаToolStripMenuItem,
-            this.autoplayToolStripMenuItem});
+            this.autoplayToolStripMenuItem,
+            this.выделитьШаблонToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(68, 24);
             this.optionsToolStripMenuItem.Text = "&Опции";
@@ -294,6 +296,13 @@
             this.цветПротивникаToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
             this.цветПротивникаToolStripMenuItem.Text = "Цвет противника...";
             this.цветПротивникаToolStripMenuItem.Click += new System.EventHandler(this.цветПротивникаToolStripMenuItem_Click);
+            // 
+            // autoplayToolStripMenuItem
+            // 
+            this.autoplayToolStripMenuItem.Name = "autoplayToolStripMenuItem";
+            this.autoplayToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.autoplayToolStripMenuItem.Text = "Autoplay";
+            this.autoplayToolStripMenuItem.Click += new System.EventHandler(this.autoplayToolStripMenuItem_Click);
             // 
             // справкаToolStripMenuItem
             // 
@@ -572,12 +581,12 @@
             this.rtbStat.TabIndex = 14;
             this.rtbStat.Text = "";
             // 
-            // autoplayToolStripMenuItem
+            // выделитьШаблонToolStripMenuItem
             // 
-            this.autoplayToolStripMenuItem.Name = "autoplayToolStripMenuItem";
-            this.autoplayToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
-            this.autoplayToolStripMenuItem.Text = "Autoplay";
-            this.autoplayToolStripMenuItem.Click += new System.EventHandler(this.autoplayToolStripMenuItem_Click);
+            this.выделитьШаблонToolStripMenuItem.Name = "выделитьШаблонToolStripMenuItem";
+            this.выделитьШаблонToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.выделитьШаблонToolStripMenuItem.Text = "Выделить шаблон";
+            this.выделитьШаблонToolStripMenuItem.Click += new System.EventHandler(this.выделитьШаблонToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -672,6 +681,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         public System.Windows.Forms.RichTextBox rtbStat;
         private System.Windows.Forms.ToolStripMenuItem autoplayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem выделитьШаблонToolStripMenuItem;
     }
 }
 

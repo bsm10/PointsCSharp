@@ -396,5 +396,9 @@ namespace DotsGame
             return 0;
         }
 
+        private void выделитьШаблонToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }  
 }
