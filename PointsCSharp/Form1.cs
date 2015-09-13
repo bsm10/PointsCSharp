@@ -37,8 +37,6 @@ namespace DotsGame
         {
             game.MousePos = game.TranslateCoordinates(e.Location);
             Dot dot = new Dot(game.MousePos);
-            Dot pl2_move, pl1_move = null;
-            //int res;
             if (game.MousePos.X > game.startX - 0.5f & game.MousePos.Y > game.startY - 0.5f)
             {
                 switch (e.Button)
@@ -47,63 +45,24 @@ namespace DotsGame
                         if (game.aDots[game.MousePos.X, game.MousePos.Y].Own > 0) break;//предовращение хода если клик был по занятой точке
                         if (player_move == 2 | player_move == 0)
                         {
-                            pl1_move = new Dot(game.MousePos.X, game.MousePos.Y, 1, null);
-
-
                             if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
                             {
-                                game.MakeMove(pl1_move);
-                                game.ListMoves.Add(pl1_move);//добавим в реестр ходов
-                                pbxBoard.Invalidate();
-                                if (game.GameOver())
-                                {
-                                    MessageBox.Show("Game over!");
-                                    game.NewGame();
-                                    return;
-                                }
+                                MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null));
                                 break;
                             }
-                            game.MakeMove(pl1_move);
-                            game.ListMoves.Add(pl1_move);//добавим в реестр ходов
+                            MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null));
                             player_move = 1;
-                            toolStripStatusLabel2.ForeColor = game.colorGamer2;
-                            toolStripStatusLabel2.Text = "Ход компьютера...";
-                            statusStrip1.Refresh();
-                            pbxBoard.Refresh();
-                            pbxBoard.Invalidate();
-
-                            if (game.GameOver())
-                            {
-                                MessageBox.Show("Game over!");
-                                game.NewGame();
-                                return;
-                            }
                         }
                         //============Ход компьютера=================
                         if (player_move == 1)
                         {
-                            pl2_move = game.PickComputerMove(pl1_move);
-                            pl2_move.Own = 2;
-                            game.MakeMove(pl2_move);
-                            game.ListMoves.Add(pl2_move);
+                            MoveGamer(2);
                             player_move = 2;
-                            pbxBoard.Invalidate();
-                            if (game.GameOver())
-                            {
-                                MessageBox.Show("Game over!");
-                                game.NewGame();
-                                return;
-                            }
-                            toolStripStatusLabel2.ForeColor = game.colorGamer1;
-                            toolStripStatusLabel2.Text = "Ход игрока";
                         }
                         break;
                     case MouseButtons.Right:
                         //============Ход компьютера  в ручном режиме=================
-                        pl2_move = new Dot(dot.x, dot.y, 2, null);
-                        game.MakeMove(pl2_move);
-                        game.ListMoves.Add(pl2_move);
-
+                        MoveGamer(2, new Dot(dot.x, dot.y, 2, null));
                         break;
                     case MouseButtons.Middle:
                         game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
@@ -364,24 +323,24 @@ namespace DotsGame
             do
             {
                 Application.DoEvents();
-                if (MakeMove_APlay(1) > 0) break;
+                if (MoveGamer(1) > 0) break;
                 //game.Pause(1000); 
                 Application.DoEvents();
-                if (MakeMove_APlay(2) > 0) break;
+                if (MoveGamer(2) > 0) break;
                 //game.Pause(1000);
             }
             while (true);
             return;
         }
 
-        private int MakeMove_APlay(int Player)
+        private int MoveGamer(int Player, Dot pl_move=null)
         {
-            Dot pl_move;
-            pl_move = game.PickComputerMove(game.LastMove);
+            if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove);
             pl_move.Own = Player;
             game.MakeMove(pl_move);
             game.ListMoves.Add(pl_move);
             pbxBoard.Invalidate();
+            statusStrip1.Refresh();
             toolStripStatusLabel2.ForeColor = Color.BurlyWood;
             toolStripStatusLabel2.Text = "Ход игрока" + Player;
             if (game.GameOver())
