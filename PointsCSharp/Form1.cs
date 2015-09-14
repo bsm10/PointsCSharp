@@ -57,13 +57,14 @@ namespace DotsGame
                                 MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null));
                                 break;
                             }
-                            MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null));
+
+                            if (MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null)) > 0) break;
                             player_move = 1;
                         }
                         //============Ход компьютера=================
                         if (player_move == 1)
                         {
-                            MoveGamer(2);
+                            if (MoveGamer(2) > 0) break;
                             player_move = 2;
                         }
                         #endregion
