@@ -68,7 +68,7 @@ namespace DotsGame
                            colorGamer2 = Properties.Settings.Default.Color_Gamer2,
                            colorCursor = Properties.Settings.Default.Color_Cursor;
         private float PointWidth = 0.25f;
-        public Pen boardPen = new Pen(Color.DarkSlateBlue, 0.05f);
+        public Pen boardPen = new Pen(Color.FromArgb(150,150,150), 0.05f);//(Color.DarkSlateBlue, 0.05f);
         private SolidBrush drawBrush = new SolidBrush(Color.MediumPurple);
         public Font drawFont = new Font("Arial", 0.22f);
         //===============================================================================
@@ -688,12 +688,17 @@ namespace DotsGame
                 var q = from Dot fd in d where fd.Blocked == false select fd;
                 if(q.Count()>0) return true;
             }
+            if (dot.Own == 0)//если пустая точка находится рядом с блокированной - она получает статус Blocked
+            {
+                var q = from Dot fd in d where fd.Own != 0 & fd.Blocked select fd;
+                if (q.Count() > 0) return false;
+            }
             //----------------------------------------------------------------------------------
             for (int i = 0; i < 4; i++)
             {
                 if (d[i].Marked == false)
                 {
-                    if (d[i].Own == 0 | d[i].Own == flg_own | d[i].Own != flg_own & d[i].Blocked & d[i].BlokingDots.Contains(dot)==false)
+                    if (d[i].Own == 0 | d[i].Own == flg_own | d[i].Own != flg_own & d[i].Blocked & d[i].BlokingDots.Contains(dot) == false)
                     {
                         if (DotIsFree(d[i], flg_own))
                         {
@@ -795,6 +800,7 @@ namespace DotsGame
                     arrDot = query2.ToArray();
                     break;
             }
+            
             foreach (Dot d in arrDot)
             {
                 aDots.UnmarkAllDots();
@@ -975,6 +981,7 @@ namespace DotsGame
             aDots.Remove(x, y);
             count_blocked = CheckBlocked();
             ScanBlockedFreeDots();
+            aDots.UnmarkAllDots();
             LinkDots(); 
         }
 
