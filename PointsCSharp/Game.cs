@@ -68,7 +68,7 @@ namespace DotsGame
                            colorGamer2 = Properties.Settings.Default.Color_Gamer2,
                            colorCursor = Properties.Settings.Default.Color_Cursor;
         private float PointWidth = 0.25f;
-        public Pen boardPen = new Pen(Color.DarkSlateBlue, 0.05f);
+        public Pen boardPen = new Pen(Color.FromArgb(150,150,150), 0.05f);//(Color.DarkSlateBlue, 0.05f);
         private SolidBrush drawBrush = new SolidBrush(Color.MediumPurple);
         public Font drawFont = new Font("Arial", 0.22f);
         //===============================================================================
@@ -615,7 +615,7 @@ namespace DotsGame
                 for (int i = 0; i < lnks.Count; i++)
                 {
                     float x, y;
-                    PenGamer = lnks[i].Dot1.Own == 1 ? new Pen(colorGamer1, 0.1f) : new Pen(colorGamer2, 0.1f);
+                    PenGamer = lnks[i].Dot1.Own == 1 ? new Pen(colorGamer1, 0.05f) : new Pen(colorGamer2, 0.05f);
                     gr.DrawLine(PenGamer, lnks[i].Dot1.x, lnks[i].Dot1.y, lnks[i].Dot2.x, lnks[i].Dot2.y);
 #if DEBUG
                     x = (lnks[i].Dot2.x - lnks[i].Dot1.x) / 2.0f + lnks[i].Dot1.x;
@@ -688,12 +688,17 @@ namespace DotsGame
                 var q = from Dot fd in d where fd.Blocked == false select fd;
                 if(q.Count()>0) return true;
             }
+            if (dot.Own == 0)//если пустая точка находится рядом с блокированной - она получает статус Blocked
+            {
+                var q = from Dot fd in d where fd.Own != 0 & fd.Blocked select fd;
+                if (q.Count() > 0) return false;
+            }
             //----------------------------------------------------------------------------------
             for (int i = 0; i < 4; i++)
             {
                 if (d[i].Marked == false)
                 {
-                    if (d[i].Own == 0 | d[i].Own == flg_own | d[i].Own != flg_own & d[i].Blocked & d[i].BlokingDots.Contains(dot)==false)
+                    if (d[i].Own == 0 | d[i].Own == flg_own | d[i].Own != flg_own & d[i].Blocked & d[i].BlokingDots.Contains(dot) == false)
                     {
                         if (DotIsFree(d[i], flg_own))
                         {
@@ -795,6 +800,7 @@ namespace DotsGame
                     arrDot = query2.ToArray();
                     break;
             }
+            
             foreach (Dot d in arrDot)
             {
                 aDots.UnmarkAllDots();
@@ -822,7 +828,6 @@ namespace DotsGame
                     d.Blocked = false;
                 }
             }
-            RescanBlocked();
             return counter;
         }
 
@@ -856,17 +861,6 @@ namespace DotsGame
             }
         }
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        private void RescanBlocked()//функция ресканирует списки блокированных точек и устанавливает статус Blocked у єтих точек
-        {
-            var q = from Dot d in aDots where d.BlokingDots.Count > 0 select d;
-            foreach(Dot _d in q)
-            {
-                foreach(Dot bl_dot in _d.BlokingDots)
-                {
-                    bl_dot.Blocked = true;
-                }
-            }
-        }
         private void MakeRating()//возвращает массив вражеских точек вокруг заданной точки
         {
             int res;
@@ -987,7 +981,6 @@ namespace DotsGame
             aDots.Remove(x, y);
             count_blocked = CheckBlocked();
             ScanBlockedFreeDots();
-            RescanBlocked();
             aDots.UnmarkAllDots();
             LinkDots(); 
         }
