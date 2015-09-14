@@ -81,8 +81,18 @@ namespace DotsGame
                         }
                         break;
                     case MouseButtons.Middle:
-                        game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
-                        game.UndoMove(dot.x, dot.y);
+                        if (выделитьШаблонToolStripMenuItem.Checked)
+                        {
+                            game.ListPatterns.Add(game.aDots[dot.x, dot.y]);
+                            game.aDots[dot.x, dot.y].Marked = true;
+                            game.aDots[dot.x, dot.y].Fixed = true;
+                            break;
+                        }
+                        else
+                        {
+                            game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
+                            game.UndoMove(dot.x, dot.y);
+                        }
                         break;
                 }
             }

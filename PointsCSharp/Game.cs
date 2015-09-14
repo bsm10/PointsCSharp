@@ -672,6 +672,11 @@ namespace DotsGame
                 gr.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.WhiteSmoke)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(Color.Transparent, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
             }
+            if (p.Fixed)
+            {
+                gr.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.LightSeaGreen)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.DrawEllipse(new Pen(Color.Transparent, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+            }
         }
         private bool DotIsFree(Dot dot,int flg_own)//проверяет заблокирована ли точка. Перед использованием функции надо установить flg_own-владелец проверяемой точки
         {
@@ -1003,12 +1008,31 @@ namespace DotsGame
 
         public void MakePattern()
         {
-            string s;
-            ComparerDots cmp = new ComparerDots();
-            lstPat.Sort(cmp);
+            string s,strdX,strdY, sWhere="", sMove = "";
+            int dx, dy;
 
+            //ComparerDots cmp = new ComparerDots();
+            //lstPat.Sort(cmp);
+            for (int i = 0; i < lstPat.Count-1; i++)
+            {
+                string own = lstPat[0].Own == lstPat[i].Own ? "Owner" : "enemy_own";
+                dx = lstPat[0].x - lstPat[i].x;
+                strdX = dx == 0 ? "" : dx.ToString();
+                dy = lstPat[0].y - lstPat[i].y;
+                strdY = dy == 0 ? "" : dy.ToString();
+                if (lstPat[i].Fixed==false)
+                {
+                    sWhere += "aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " & \r\n";
+                }
+                else
+                {
+                    sMove = " foreach (Dot p in pat1) \r\n" + "{ \r\n" + "if (aDots[p.x" + strdX + "," + "p.y" + strdY + "].Own == PLAYER_NONE) return new Dot(p.x" + strdX + "," + "p.y" + strdY + "); \r\n" + "}";
+                }
+            }
+            s = "var pat1 = from Dot d in get_non_blocked where " + sWhere + "\r\n" + sMove;
+            txtDbg.Text = s;
         }
-//==========================================================================
+        //==========================================================================
         public string path_savegame = Application.CommonAppDataPath + @"\dots.dat";
         public void SaveGame()
         {
