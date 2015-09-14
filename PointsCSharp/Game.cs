@@ -688,11 +688,6 @@ namespace DotsGame
                 var q = from Dot fd in d where fd.Blocked == false select fd;
                 if(q.Count()>0) return true;
             }
-            if (dot.Own == 0)//если пустая точка находится рядом с блокированной - она получает статус Blocked
-            {
-                var q = from Dot fd in d where fd.Own != 0 & fd.Blocked select fd;
-                if (q.Count() > 0) return false;
-            }
             //----------------------------------------------------------------------------------
             for (int i = 0; i < 4; i++)
             {
@@ -828,9 +823,20 @@ namespace DotsGame
                     d.Blocked = false;
                 }
             }
+            RescanBlocked();
             return counter;
         }
-
+        private void RescanBlocked()//функция ресканирует списки блокированных точек и устанавливает статус Blocked у єтих точек
+        {
+            var q = from Dot d in aDots where d.BlokingDots.Count > 0 select d;
+            foreach (Dot _d in q)
+            {
+                foreach (Dot bl_dot in _d.BlokingDots)
+                {
+                    bl_dot.Blocked = true;
+                }
+            }
+        }
         private List<Dot> lst_blocked_dots = new List<Dot>();//список блокированных точек
         private List<Dot> lst_in_region_dots = new List<Dot>();//список блокирующих точек
         private void MarkDotsInRegion(Dot blocked_dot, int flg_own)//Ставит InRegion=true точкам которые блокируют заданную в параметре точку
@@ -1047,6 +1053,7 @@ namespace DotsGame
             reader.Close();
         }
     }
+
     struct Dots_sg//структура для сохранения игры в файл
     {
         public byte x;
