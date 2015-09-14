@@ -592,19 +592,18 @@ namespace DotsGame
         }
         public void DrawBoard(Graphics gr)//рисуем доску из клеток
         {
-
             Pen pen = new Pen(new SolidBrush(Color.MediumSeaGreen), 0.15f);// 0
-            gr.DrawLine(pen, 0, 0, 0, iMapSize - 1);
-            gr.DrawLine(pen, 0, 0, iMapSize - 1, 0);
-            gr.DrawLine(pen, 0, iMapSize - 1, iMapSize - 1, iMapSize - 1);
-            gr.DrawLine(pen, iMapSize - 1, iMapSize - 1, iMapSize - 1, 0);
+            //gr.DrawLine(pen, 0, 0, 0, iMapSize - 1);
+            //gr.DrawLine(pen, 0, 0, iMapSize - 1, 0);
+            //gr.DrawLine(pen, 0, iMapSize - 1, iMapSize - 1, iMapSize - 1);
+            //gr.DrawLine(pen, iMapSize - 1, iMapSize - 1, iMapSize - 1, 0);
             for (float i = 0; i <= iBoardSize; i++)
             {
                 SolidBrush drB = i == 0 ? new SolidBrush(Color.MediumSeaGreen) : drawBrush;
                 gr.DrawString("y" + (i + startY + 0.5f).ToString(), drawFont, drB, startX, i + startY + 0.5f - 0.2f);
                 gr.DrawString("x" + (i + startX + 0.5f).ToString(), drawFont, drB, i + startX + 0.5f - 0.2f, startY);
-                gr.DrawLine(boardPen, i + startX + 0.5f, startY + 0.5f, i + startX + 0.5f, iBoardSize + startY + 0.5f);
-                gr.DrawLine(boardPen, startX + 0.5f, i + startY + 0.5f, iBoardSize + startX + 0.5f, i + startY + 0.5f);
+                gr.DrawLine(boardPen, i + startX + 0.5f, startY + 0.5f, i + startX + 0.5f, iBoardSize + startY - 0.5f);
+                gr.DrawLine(boardPen, startX + 0.5f, i + startY + 0.5f, iBoardSize + startX - 0.5f, i + startY + 0.5f);
             }
         }
         public void DrawLinks(Graphics gr)//отрисовка связей
