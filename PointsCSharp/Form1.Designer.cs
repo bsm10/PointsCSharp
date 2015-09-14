@@ -54,6 +54,7 @@
             this.цветИгрокаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.цветПротивникаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoplayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.выделитьШаблонToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.содержаниеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -75,7 +76,6 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.rtbStat = new System.Windows.Forms.RichTextBox();
-            this.выделитьШаблонToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -92,6 +92,8 @@
             this.pbxBoard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxBoard.BackColor = System.Drawing.Color.White;
+            this.pbxBoard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pbxBoard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbxBoard.Location = new System.Drawing.Point(13, 32);
             this.pbxBoard.Margin = new System.Windows.Forms.Padding(4);
@@ -119,7 +121,7 @@
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(326, 28);
+            this.menuStrip.Size = new System.Drawing.Size(211, 28);
             this.menuStrip.TabIndex = 2;
             // 
             // файлToolStripMenuItem
@@ -303,6 +305,13 @@
             this.autoplayToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
             this.autoplayToolStripMenuItem.Text = "Autoplay";
             this.autoplayToolStripMenuItem.Click += new System.EventHandler(this.autoplayToolStripMenuItem_Click);
+            // 
+            // выделитьШаблонToolStripMenuItem
+            // 
+            this.выделитьШаблонToolStripMenuItem.Name = "выделитьШаблонToolStripMenuItem";
+            this.выделитьШаблонToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.выделитьШаблонToolStripMenuItem.Text = "Выделить шаблон";
+            this.выделитьШаблонToolStripMenuItem.Click += new System.EventHandler(this.выделитьШаблонToolStripMenuItem_Click);
             // 
             // справкаToolStripMenuItem
             // 
@@ -580,13 +589,6 @@
             this.rtbStat.Size = new System.Drawing.Size(187, 107);
             this.rtbStat.TabIndex = 14;
             this.rtbStat.Text = "";
-            // 
-            // выделитьШаблонToolStripMenuItem
-            // 
-            this.выделитьШаблонToolStripMenuItem.Name = "выделитьШаблонToolStripMenuItem";
-            this.выделитьШаблонToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
-            this.выделитьШаблонToolStripMenuItem.Text = "Выделить шаблон";
-            this.выделитьШаблонToolStripMenuItem.Click += new System.EventHandler(this.выделитьШаблонToolStripMenuItem_Click);
             // 
             // Form1
             // 
