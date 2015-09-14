@@ -16,6 +16,7 @@ namespace DotsGame
             return Dot1.x + ":" + Dot1.y + "-" + Dot2.x + ":" + Dot2.y + s;
         }
         public bool Blocked{get;set;}
+
         //{
         //    get
         //    {

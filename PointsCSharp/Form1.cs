@@ -42,6 +42,13 @@ namespace DotsGame
                 switch (e.Button)
                 {
                     case MouseButtons.Left:
+                        if (выделитьШаблонToolStripMenuItem.Checked)
+                        {
+                            game.ListPatterns.Add(game.aDots[dot.x, dot.y]);
+                            game.aDots[dot.x, dot.y].Marked = true;
+                            break;
+                        }
+                        #region Ходы игроков
                         if (game.aDots[game.MousePos.X, game.MousePos.Y].Own > 0) break;//предовращение хода если клик был по занятой точке
                         if (player_move == 2 | player_move == 0)
                         {
@@ -59,10 +66,18 @@ namespace DotsGame
                             MoveGamer(2);
                             player_move = 2;
                         }
+                        #endregion
                         break;
                     case MouseButtons.Right:
+                        if (выделитьШаблонToolStripMenuItem.Checked)
+                        {
+                            game.MakePattern();
+                            break;
+                        }
+                        else { 
                         //============Ход компьютера  в ручном режиме=================
                         MoveGamer(2, new Dot(dot.x, dot.y, 2, null));
+                        }
                         break;
                     case MouseButtons.Middle:
                         game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
@@ -324,10 +339,8 @@ namespace DotsGame
             {
                 Application.DoEvents();
                 if (MoveGamer(1) > 0) break;
-                //game.Pause(1000); 
                 Application.DoEvents();
                 if (MoveGamer(2) > 0) break;
-                //game.Pause(1000);
             }
             while (true);
             return;
@@ -357,7 +370,13 @@ namespace DotsGame
 
         private void выделитьШаблонToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (выделитьШаблонToolStripMenuItem.Checked)
+                выделитьШаблонToolStripMenuItem.Checked = false;
+            else
+            {
+                выделитьШаблонToolStripMenuItem.Checked = true;
+                game.ListPatterns.Clear();
+            }
         }
     }  
 }

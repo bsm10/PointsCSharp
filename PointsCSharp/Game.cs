@@ -33,7 +33,12 @@ namespace DotsGame
         private Dot best_move; //ход который должен сделать комп
         private Dot last_move; //последний ход
         private List<Dot> list_moves; //список ходов
-        
+        private List<Dot> lstPat;
+        public List<Dot> ListPatterns
+        {
+            get { return lstPat; }
+        }
+
         public List<Dot> ListMoves 
         {
             get { return list_moves; }   
@@ -110,7 +115,7 @@ namespace DotsGame
             //проверяем ход который ведет сразу к окружению
             best_move = CheckMove(pl2);
             if (best_move == null) best_move = CheckMove(pl1);
-
+            aDots.UnmarkAllDots();
             //проверяем паттерны
             if (best_move == null) best_move = CheckPattern(pl2);
             if (best_move == null) best_move = CheckPattern(pl1);  // проверяем ходы
@@ -523,8 +528,9 @@ namespace DotsGame
             square1 = 0; square2 = 0;
             count_blocked1=0;count_blocked2=0;
             count_blocked=0;
+            lstPat = new List<Dot>();//точки паттернов
 #if DEBUG
-            f.Show();
+        f.Show();
             lstDbg1 = (ListBox)f.Controls.Find("lstDbg1", false)[0];
             lstDbg2 = (ListBox)f.Controls.Find("lstDbg2", false)[0];
             txtDbg = (TextBox)f.Controls.Find("txtDebug", false)[0];
@@ -635,6 +641,9 @@ namespace DotsGame
                         case 2:
                             SetColorAndDrawDots(gr, colorGamer2, p);
                             break;
+                        case 0:
+                            if (p.Marked) SetColorAndDrawDots(gr, Color.Bisque, p);
+                            break;
                     }
                 }
             }
@@ -649,7 +658,6 @@ namespace DotsGame
             else if (p.x== last_move.x & p.y == last_move.y)//точка последнего хода должна для удовства выделяться
             {
                 gr.FillEllipse(new SolidBrush(Color.FromArgb(140, colorGamer)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
-                //gr.DrawEllipse(new Pen(colorGamer, 0.08f), p.x - PointWidth/2, p.y - PointWidth/2, PointWidth, PointWidth );
                 gr.DrawEllipse(new Pen(Color.FromArgb(140, Color.WhiteSmoke), 0.08f), p.x - PointWidth / 2, p.y - PointWidth / 2, PointWidth, PointWidth);
                 gr.DrawEllipse(new Pen(colorGamer, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth+ PointWidth, PointWidth+ PointWidth);
             }
@@ -659,6 +667,11 @@ namespace DotsGame
                 c = p.BlokingDots.Count > 0 ? Color.FromArgb(255, colorGamer.R, G, colorGamer.B) : colorGamer;
                 gr.FillEllipse(new SolidBrush(colorGamer), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(c, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+            }
+            if (p.Marked)
+            {
+                gr.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.WhiteSmoke)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.DrawEllipse(new Pen(Color.Transparent, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
             }
         }
         private bool DotIsFree(Dot dot,int flg_own)//проверяет заблокирована ли точка. Перед использованием функции надо установить flg_own-владелец проверяемой точки
@@ -763,41 +776,10 @@ namespace DotsGame
             count_blocked -= dif;
             last_move = dot;//зафиксировать последний ход
             MakeRating();//пересчитать рейтинг
+            aDots.UnmarkAllDots();
             ScanBlockedFreeDots();
             return s;//dif;
         }
-        //private int CheckBlocked()//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
-        //{
-        //    int counter=0;
-        //    var q = from Dot dots in aDots where dots.Own != 0 | dots.Own == 0 & dots.Blocked
-        //            select dots;
-        //    foreach (Dot d in q)
-        //    {
-        //        aDots.UnmarkAllDots();
-        //        if (DotIsFree(d, d.Own) == false)
-        //        {
-        //            lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
-        //            if (d.Own != 0) d.Blocked = true;
-        //            aDots.UnmarkAllDots();
-        //            MarkDotsInRegion(d, d.Own);
-        //            counter += 1;
-        //            foreach (Dot dr in lst_in_region_dots)
-        //            {
-        //                foreach (Dot bd in lst_blocked_dots)
-        //                {
-        //                   if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0) dr.BlokingDots.Add(bd);
-        //                   // if (dr.BlokingDots.Contains(bd) == false) dr.BlokingDots.Add(bd);
-        //                }
-        //            }
-        //        }
-        //        else
-        //        {
-        //            d.Blocked = false;
-        //        }
-        //    }
-
-        //    return counter;
-        //}
         private int CheckBlocked(int last_moveOwner=0)//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
         {
             int counter = 0;
@@ -1005,6 +987,15 @@ namespace DotsGame
             f.Left = left + width;
         }
 #endif
+
+
+        public void MakePattern()
+        {
+            string s;
+            ComparerDots cmp = new ComparerDots();
+            lstPat.Sort(cmp);
+
+        }
 //==========================================================================
         public string path_savegame = Application.CommonAppDataPath + @"\dots.dat";
         public void SaveGame()
