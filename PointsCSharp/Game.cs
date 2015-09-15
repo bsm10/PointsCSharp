@@ -576,19 +576,6 @@ namespace DotsGame
             //Отрисовка замкнутого региона игрока1
             DrawLinks(gr);
 
-            //DrawRegion(1);
-#if DEBUG
-            //if (aDots != null)
-            //{
-            //    SolidBrush drBrush = new SolidBrush(Color.DarkMagenta);
-            //    Font drFont = new Font("Arial", 0.2f);
-            //    foreach (Dot d in aDots)
-            //    {
-            //        gr.DrawString(d.IndexDot.ToString(), drFont, drBrush, d.x, d.y);
-            //    }
-            //}
-#endif
-
         }
         public void DrawBoard(Graphics gr)//рисуем доску из клеток
         {
@@ -674,13 +661,13 @@ namespace DotsGame
             }
             if (p.PatternsMoveDot)
             {
-                gr.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.LightSeaGreen)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
-                gr.DrawEllipse(new Pen(Color.Transparent, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                //gr.FillEllipse(new SolidBrush(Color.FromArgb(50, Color.Plum)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.DrawEllipse(new Pen(Color.LimeGreen, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
             }
             if (p.PatternsFirstDot)
             {
-                gr.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.DarkOrange)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
-                gr.DrawEllipse(new Pen(Color.Transparent, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                //gr.FillEllipse(new SolidBrush(Color.FromArgb(50, Color.ForestGreen)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.DrawEllipse(new Pen(Color.DarkSeaGreen, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
             }
 
         }
@@ -1023,8 +1010,8 @@ namespace DotsGame
         {
             string s,strdX,strdY, sWhere="", sMove = "";
             int dx, dy, ind;
-            ind=lstPat.FindIndex(
-                delegate(Dot dt)
+            ind = lstPat.FindIndex(
+                delegate (Dot dt)
                 {
                     return dt.PatternsFirstDot == true;
                 });
@@ -1049,7 +1036,7 @@ namespace DotsGame
                 {
                     sWhere += "aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " & \r\n";
                 }
-                else
+                if(lstPat[i].PatternsMoveDot)
                 {
                     sMove = " foreach (Dot p in pat1) \r\n" + "{ \r\n" + "if (aDots[p.x" + strdX + "," + "p.y" + strdY + "].Own == PLAYER_NONE) return new Dot(p.x" + strdX + "," + "p.y" + strdY + "); \r\n" + "}";
                 }

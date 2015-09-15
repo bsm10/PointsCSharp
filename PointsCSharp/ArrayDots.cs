@@ -282,6 +282,8 @@ namespace DotsGame
             foreach (Dot d in Dots)
             {
                 d.Marked = false;
+                d.PatternsFirstDot = false;
+                d.PatternsMoveDot = false;
             }
         }
 
