@@ -529,6 +529,7 @@ namespace DotsGame
             count_blocked1=0;count_blocked2=0;
             count_blocked=0;
             lstPat = new List<Dot>();//точки паттернов
+            
 #if DEBUG
         f.Show();
             lstDbg1 = (ListBox)f.Controls.Find("lstDbg1", false)[0];
@@ -1015,11 +1016,21 @@ namespace DotsGame
             //lstPat.Sort(cmp);
             for (int i = 0; i < lstPat.Count-1; i++)
             {
-                string own = lstPat[0].Own == lstPat[i].Own ? "Owner" : "enemy_own";
+                string own;
+                if (lstPat[0].Own == lstPat[i].Own) own = "Owner";
+                else if (lstPat[i].Own == 0) own = "0";
+                else own = "enemy_own";
+
                 dx = lstPat[0].x - lstPat[i].x;
-                strdX = dx == 0 ? "" : dx.ToString();
+                if (dx == 0) strdX = "";
+                else if (dx > 0) strdX = "+" + dx.ToString();
+                else strdX = dx.ToString();
+
                 dy = lstPat[0].y - lstPat[i].y;
-                strdY = dy == 0 ? "" : dy.ToString();
+                if (dy == 0) strdY = "";
+                else if (dy > 0) strdY = "+" + dy.ToString();
+                else strdY = dy.ToString();
+
                 if (lstPat[i].Fixed==false)
                 {
                     sWhere += "aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " & \r\n";
@@ -1029,7 +1040,7 @@ namespace DotsGame
                     sMove = " foreach (Dot p in pat1) \r\n" + "{ \r\n" + "if (aDots[p.x" + strdX + "," + "p.y" + strdY + "].Own == PLAYER_NONE) return new Dot(p.x" + strdX + "," + "p.y" + strdY + "); \r\n" + "}";
                 }
             }
-            s = "var pat1 = from Dot d in get_non_blocked where " + sWhere + "\r\n" + sMove;
+            s = "var pat1 = from Dot d in get_non_blocked where " + sWhere + "\r\n select d; \r\n" + sMove;
             txtDbg.Text = s;
         }
         //==========================================================================

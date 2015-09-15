@@ -254,12 +254,8 @@ namespace DotsGame
                          select d;
             if (pat5_1.Count() > 0) return new Dot(pat5_1.First().x, pat5_1.First().y-1);
 
-            
-            
-            
-            
-            
-            
+
+
             return null;//если никаких паттернов не найдено возвращаем нуль
         }
 
