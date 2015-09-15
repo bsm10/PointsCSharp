@@ -104,7 +104,6 @@ namespace DotsGame
                 return _NeiborDots;//Список точек, которые блокируются этой точкой
             }
         }
-
         public bool Fixed { get; set; }
         public bool Selected { get; set; }
         public int Own
@@ -173,6 +172,8 @@ namespace DotsGame
             _BlokingDots = new List<Dot>();
             Own = (int)Owner.None;
         }
+        public bool PatternsFirstDot {get; set;}
+        public bool PatternsMoveDot { get; set; }
         public override string ToString() 
             {
             string s;

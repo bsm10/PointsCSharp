@@ -672,11 +672,17 @@ namespace DotsGame
                 gr.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.WhiteSmoke)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(Color.Transparent, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
             }
-            if (p.Fixed)
+            if (p.PatternsMoveDot)
             {
                 gr.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.LightSeaGreen)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(Color.Transparent, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
             }
+            if (p.PatternsFirstDot)
+            {
+                gr.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.DarkOrange)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.DrawEllipse(new Pen(Color.Transparent, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+            }
+
         }
         private bool DotIsFree(Dot dot,int flg_own)//проверяет заблокирована ли точка. Перед использованием функции надо установить flg_own-владелец проверяемой точки
         {
@@ -1013,32 +1019,33 @@ namespace DotsGame
         }
 #endif
 
-
-        public void MakePattern()
+        public void MakePattern()//сохраняет паттерн в текстовое поле
         {
             string s,strdX,strdY, sWhere="", sMove = "";
-            int dx, dy;
-
-            //ComparerDots cmp = new ComparerDots();
-            //lstPat.Sort(cmp);
+            int dx, dy, ind;
+            ind=lstPat.FindIndex(
+                delegate(Dot dt)
+                {
+                    return dt.PatternsFirstDot == true;
+                });
             for (int i = 0; i < lstPat.Count-1; i++)
             {
                 string own="";
-                if (lstPat[0].Own == lstPat[i].Own) own = "Owner";
-                if (lstPat[0].Own != lstPat[i].Own) own = "enemy_own";
+                if (lstPat[ind].Own == lstPat[i].Own) own = "Owner";
+                if (lstPat[ind].Own != lstPat[i].Own) own = "enemy_own";
                 if (lstPat[i].Own == 0) own = "0";
 
-                dx = lstPat[0].x - lstPat[i].x;
+                dx = lstPat[i].x - lstPat[ind].x;
                 if (dx == 0) strdX = "";
                 else if (dx > 0) strdX = "+" + dx.ToString();
                 else strdX = dx.ToString();
 
-                dy = lstPat[0].y - lstPat[i].y;
+                dy = lstPat[i].y - lstPat[ind].y;
                 if (dy == 0) strdY = "";
                 else if (dy > 0) strdY = "+" + dy.ToString();
                 else strdY = dy.ToString();
 
-                if (lstPat[i].Fixed==false)
+                if (lstPat[i].PatternsMoveDot==false)
                 {
                     sWhere += "aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " & \r\n";
                 }

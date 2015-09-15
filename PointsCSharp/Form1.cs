@@ -46,6 +46,16 @@ namespace DotsGame
                         {
                             game.ListPatterns.Add(game.aDots[dot.x, dot.y]);
                             game.aDots[dot.x, dot.y].Marked = true;
+                            if(точкаОтсчетаToolStripMenuItem.Checked) 
+                            {
+                                game.aDots[dot.x, dot.y].PatternsFirstDot=true;
+                                точкаОтсчетаToolStripMenuItem.Checked=false;
+                            }
+                            if (точкаХодаToolStripMenuItem.Checked)
+                            {
+                                game.aDots[dot.x, dot.y].PatternsMoveDot = true;
+                                точкаХодаToolStripMenuItem.Checked=false;
+                            }
                             break;
                         }
                         #region Ходы игроков
@@ -388,6 +398,28 @@ namespace DotsGame
             {
                 выделитьШаблонToolStripMenuItem.Checked = true;
                 game.ListPatterns.Clear();
+            }
+        }
+
+        private void точкаОтсчетаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (точкаОтсчетаToolStripMenuItem.Checked)
+                точкаОтсчетаToolStripMenuItem.Checked = false;
+            else
+            {
+                точкаОтсчетаToolStripMenuItem.Checked = true;
+                точкаХодаToolStripMenuItem.Checked = false;
+            }
+        }
+
+        private void точкаХодаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (точкаХодаToolStripMenuItem.Checked)
+                точкаХодаToolStripMenuItem.Checked = false;
+            else
+            {
+                точкаХодаToolStripMenuItem.Checked = true;
+                точкаОтсчетаToolStripMenuItem.Checked = false;
             }
         }
     }  

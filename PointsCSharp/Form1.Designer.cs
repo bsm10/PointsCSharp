@@ -55,6 +55,8 @@
             this.цветПротивникаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoplayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выделитьШаблонToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.точкаОтсчетаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.точкаХодаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.содержаниеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -307,10 +309,27 @@
             // 
             // выделитьШаблонToolStripMenuItem
             // 
+            this.выделитьШаблонToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.точкаОтсчетаToolStripMenuItem,
+            this.точкаХодаToolStripMenuItem});
             this.выделитьШаблонToolStripMenuItem.Name = "выделитьШаблонToolStripMenuItem";
             this.выделитьШаблонToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.выделитьШаблонToolStripMenuItem.Text = "Выделить шаблон";
             this.выделитьШаблонToolStripMenuItem.Click += new System.EventHandler(this.выделитьШаблонToolStripMenuItem_Click);
+            // 
+            // точкаОтсчетаToolStripMenuItem
+            // 
+            this.точкаОтсчетаToolStripMenuItem.Name = "точкаОтсчетаToolStripMenuItem";
+            this.точкаОтсчетаToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.точкаОтсчетаToolStripMenuItem.Text = "Точка отсчета";
+            this.точкаОтсчетаToolStripMenuItem.Click += new System.EventHandler(this.точкаОтсчетаToolStripMenuItem_Click);
+            // 
+            // точкаХодаToolStripMenuItem
+            // 
+            this.точкаХодаToolStripMenuItem.Name = "точкаХодаToolStripMenuItem";
+            this.точкаХодаToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.точкаХодаToolStripMenuItem.Text = "Точка хода";
+            this.точкаХодаToolStripMenuItem.Click += new System.EventHandler(this.точкаХодаToolStripMenuItem_Click);
             // 
             // справкаToolStripMenuItem
             // 
@@ -354,7 +373,7 @@
             0,
             0});
             this.numericUpDown1.Location = new System.Drawing.Point(501, 410);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -402,7 +421,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(498, 388);
+            this.label1.Location = new System.Drawing.Point(499, 392);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 16);
             this.label1.TabIndex = 5;
@@ -416,7 +435,7 @@
             this.numericUpDown2.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.numericUpDown2.Location = new System.Drawing.Point(500, 290);
-            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -470,7 +489,7 @@
             this.numericUpDown3.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.numericUpDown3.Location = new System.Drawing.Point(500, 254);
-            this.numericUpDown3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown3.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -498,8 +517,8 @@
             this.chkMove.AutoSize = true;
             this.chkMove.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.chkMove.ForeColor = System.Drawing.Color.Navy;
-            this.chkMove.Location = new System.Drawing.Point(494, 366);
-            this.chkMove.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chkMove.Location = new System.Drawing.Point(536, 370);
+            this.chkMove.Margin = new System.Windows.Forms.Padding(2);
             this.chkMove.Name = "chkMove";
             this.chkMove.Size = new System.Drawing.Size(59, 20);
             this.chkMove.TabIndex = 10;
@@ -527,7 +546,7 @@
             this.numericUpDown4.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.numericUpDown4.Location = new System.Drawing.Point(500, 336);
-            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown4.Minimum = new decimal(new int[] {
             2,
             0,
@@ -577,7 +596,7 @@
             this.rtbStat.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbStat.Font = new System.Drawing.Font("Arial Narrow", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.rtbStat.Location = new System.Drawing.Point(456, 146);
-            this.rtbStat.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rtbStat.Margin = new System.Windows.Forms.Padding(2);
             this.rtbStat.Name = "rtbStat";
             this.rtbStat.ReadOnly = true;
             this.rtbStat.Size = new System.Drawing.Size(140, 87);
@@ -677,6 +696,8 @@
         public System.Windows.Forms.RichTextBox rtbStat;
         private System.Windows.Forms.ToolStripMenuItem autoplayToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem выделитьШаблонToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem точкаОтсчетаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem точкаХодаToolStripMenuItem;
     }
 }
 
