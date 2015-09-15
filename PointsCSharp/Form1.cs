@@ -57,9 +57,10 @@ namespace DotsGame
                                 MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null));
                                 break;
                             }
-
+                            
                             if (MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null)) > 0) break;
                             player_move = 1;
+                            Application.DoEvents();
                         }
                         //============Ход компьютера=================
                         if (player_move == 1)

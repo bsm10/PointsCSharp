@@ -8,6 +8,7 @@ using System.IO;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
 
+
 namespace DotsGame
 {
 
@@ -179,7 +180,6 @@ namespace DotsGame
             stopWatch.Reset();
             square1=s1; square2=s2;
 
-            //list_moves.Add(best_move);//добавим в реестр ходов
             return new Dot(best_move.x,best_move.y); //так надо чтобы best_move не ссылался на точку в aDots
         }
  //==================================================================================================================
@@ -465,16 +465,15 @@ namespace DotsGame
         public string Statistic()
         {
             var q5 = from Dot d in aDots where d.Own == 1 select d;
-            count_dot1 = q5.Count();
             var q6 = from Dot d in aDots where d.Own == 2 select d;
-            count_dot2 = q5.Count();
-
-            return "Игрок1 окружил точек: " + count_blocked1 + "; \r\n" +
-              "Захваченая площадь: " + square1 + "; \r\n" +
-              "Игрок2 окружил точек: " + count_blocked2 + "; \r\n" +
-              "Захваченая площадь: " + square2 + "; \r\n" +
-              "Игрок1 точек поставил: " + count_dot1.ToString() + "; \r\n" +
-              "Игрок2 точек поставил: " + count_dot2.ToString() + "; \r\n";
+            var q7 = from Dot d in aDots where d.Own== 1 & d.Blocked select d;
+            var q8 = from Dot d in aDots where d.Own == 2 & d.Blocked select d;
+            return "Игрок1 окружил точек: " + q8.Count() + "; \r\n" +
+              "Игрок1 Захваченая площадь: " + square1 + "; \r\n" +
+              "Игрок1 точек поставил: " + q5.Count() + "; \r\n" +
+              "Игрок2 окружил точек: " + q7.Count() + "; \r\n" +
+              "Игрок2 Захваченая площадь: " + square2 + "; \r\n" +
+              "Игрок2 точек поставил: " + q6.Count() + "; \r\n";
         }
         public void Statistic(int x, int y)
         {
@@ -747,6 +746,8 @@ namespace DotsGame
         {
             return nBlockedDots + nRegionDots / 2.0f - 1;//Формула Пика
         }
+        private int count_in_region;
+        private int count_blocked_dots;
         //=================================================================================================
         public float MakeMove(Dot dot)//Основная функция - ход игрока - возвращает захваченую площадь, 
         {
@@ -755,35 +756,35 @@ namespace DotsGame
             {
                 aDots.Add(dot);
             }
-            int lst_in_r = lst_in_region_dots.Count;
-            int lst_bl_d = lst_blocked_dots.Count;
             float s=0;
+            int c_reg = count_in_region, c_bl = count_blocked_dots;
+            //--------------------------------
             int res = CheckBlocked(dot.Own);
-            int dif=count_blocked - res;
-            int lst_i_r = lst_in_region_dots.Count - lst_in_r;//количество точек окружающих новый регион
-            int lst_b_d = lst_blocked_dots.Count - lst_bl_d;//количество блокир точек
-            if (dif!= 0) 
+            //--------------------------------
+            var q = from Dot d in aDots where d.Blocked select d;
+            count_blocked_dots = q.Count();
+            int lst_i_r = count_in_region - c_reg;//количество точек окружающих новый регион
+            int lst_b_d = count_blocked_dots - c_bl;//количество блокир точек
+            if (res != 0)
+            {
+                switch (dot.Own)
                 {
-                    switch (dot.Own)//подсчитать кол-во поставленых точек
-                    {
-                        case 1:
-                            square1 += SquarePolygon(lst_b_d, lst_i_r);
-                            s=square1;
-                            break;
-                        case 2:
-                            square2 += SquarePolygon(lst_b_d, lst_i_r);
-                            s=square2;
-                            break;
-                    }
-                    LinkDots();
+                    case 1:
+                        square1 += SquarePolygon(lst_b_d, lst_i_r);
+                        s = square1;
+                        break;
+                    case 2:
+                        square2 += SquarePolygon(lst_b_d, lst_i_r);
+                        s = square2;
+                        break;
                 }
-            
-            count_blocked -= dif;
+                LinkDots();
+            }
             last_move = dot;//зафиксировать последний ход
             MakeRating();//пересчитать рейтинг
             aDots.UnmarkAllDots();
             ScanBlockedFreeDots();
-            return s;//dif;
+            return s;
         }
         private int CheckBlocked(int last_moveOwner=0)//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
         {
@@ -817,9 +818,14 @@ namespace DotsGame
                         counter += 1;
                         foreach (Dot dr in lst_in_region_dots)
                         {
+                            count_in_region++;
                             foreach (Dot bd in lst_blocked_dots)
                             {
-                                if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0 & dr.Own != bd.Own) dr.BlokingDots.Add(bd);
+                                if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0 & dr.Own != bd.Own)
+                                {
+                                    dr.BlokingDots.Add(bd);
+                                   
+                                }
                             }
                         }
                     }
@@ -940,7 +946,8 @@ namespace DotsGame
                 {
                     d.BlokingDots.Remove(aDots[x, y]);
                 }
-                count_blocked = CheckBlocked();
+                count_blocked_dots = CheckBlocked();
+
                 //aDots.Remove(x, y);
             }
             //aDots[x, y].Own = 0;
@@ -991,7 +998,7 @@ namespace DotsGame
 
             //list_moves.Remove(aDots[x, y]);
             aDots.Remove(x, y);
-            count_blocked = CheckBlocked();
+            count_blocked_dots = CheckBlocked();
             ScanBlockedFreeDots();
             aDots.UnmarkAllDots();
             LinkDots(); 
