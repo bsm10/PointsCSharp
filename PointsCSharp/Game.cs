@@ -1016,10 +1016,10 @@ namespace DotsGame
             //lstPat.Sort(cmp);
             for (int i = 0; i < lstPat.Count-1; i++)
             {
-                string own;
+                string own="";
                 if (lstPat[0].Own == lstPat[i].Own) own = "Owner";
-                else if (lstPat[i].Own == 0) own = "0";
-                else own = "enemy_own";
+                if (lstPat[0].Own != lstPat[i].Own) own = "enemy_own";
+                if (lstPat[i].Own == 0) own = "0";
 
                 dx = lstPat[0].x - lstPat[i].x;
                 if (dx == 0) strdX = "";

@@ -254,8 +254,24 @@ namespace DotsGame
                          select d;
             if (pat5_1.Count() > 0) return new Dot(pat5_1.First().x, pat5_1.First().y-1);
 
+            // *   +  *
+            //        *
+            // *      
 
-
+            var pat61 = from Dot d in get_non_blocked
+                       where aDots[d.x, d.y].Own == Owner &
+aDots[d.x + 1, d.y + 1].Own == enemy_own &
+aDots[d.x, d.y + 1].Own == enemy_own &
+aDots[d.x - 1, d.y + 1].Own == 0 &
+aDots[d.x + 1, d.y].Own == 0 &
+aDots[d.x - 1, d.y].Own == enemy_own &
+aDots[d.x + 1, d.y - 1].Own == enemy_own &
+aDots[d.x - 1, d.y - 1].Own == 0             
+ select d;
+            foreach (Dot p in pat61)
+            {
+                if (aDots[p.x, p.y - 1].Own == PLAYER_NONE) return new Dot(p.x, p.y - 1);
+            }
             return null;//если никаких паттернов не найдено возвращаем нуль
         }
 
