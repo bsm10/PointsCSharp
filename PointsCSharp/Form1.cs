@@ -273,8 +273,7 @@ namespace DotsGame
             decimal i;
             if (decimal.TryParse(strSize, out i))
             {
-                game.iBoardSize = (int)i;
-                pbxBoard.Invalidate();
+                game.ResizeBoard((int)i);
             }
         }
         private void цветКурсораToolStripMenuItem_Click(object sender, EventArgs e)
@@ -424,6 +423,11 @@ namespace DotsGame
                 точкаХодаToolStripMenuItem.Checked = true;
                 точкаОтсчетаToolStripMenuItem.Checked = false;
             }
+        }
+
+        private void toolStripTextBox1_Click(object sender, EventArgs e)
+        {
+
         }
     }  
 }

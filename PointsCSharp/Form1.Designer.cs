@@ -124,7 +124,7 @@
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(164, 24);
+            this.menuStrip.Size = new System.Drawing.Size(256, 24);
             this.menuStrip.TabIndex = 2;
             // 
             // файлToolStripMenuItem
@@ -264,6 +264,7 @@
             this.toolStripTextBox1.Size = new System.Drawing.Size(100, 21);
             this.toolStripTextBox1.Text = "10";
             this.toolStripTextBox1.ToolTipText = "Enter decimal number";
+            this.toolStripTextBox1.Click += new System.EventHandler(this.toolStripTextBox1_Click);
             this.toolStripTextBox1.TextChanged += new System.EventHandler(this.toolStripTextBox1_TextChanged);
             // 
             // networkToolStripMenuItem

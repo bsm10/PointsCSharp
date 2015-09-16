@@ -79,27 +79,23 @@ namespace DotsGame
                                               aDots[d.x - 1, d.y - 1].Own == enemy_own &
                                               aDots[d.x - 1, d.y + 1].Own == enemy_own &
                                               aDots[d.x + 1, d.y + 1].Own == 0 &
-                                              aDots[d.x - 1, d.y ].Own != Owner &
-                                              aDots[d.x + 1, d.y ].Own != Owner &
-                                              aDots[d.x , d.y + 1 ].Own != Owner &
-                                              aDots[d.x , d.y - 1 ].Own != Owner
-                       select d;
+                                              aDots[d.x + 1, d.y].Own == 0 &
+                                              aDots[d.x, d.y + 1].Own == 0
+                                              select d;
             if (pat3.Count() > 0) return new Dot(pat3.First().x + 1, pat3.First().y + 1);
             // паттерн на конструкцию    *     *      точка окружена через две точки
             //                             d+    
             //               cтавить сюда+     *   
-            var pat3_1 = from Dot d in get_non_blocked
-                         where d.Own == Owner & aDots[d.x + 1, d.y - 1].Own == enemy_own &
-                                                aDots[d.x - 1, d.y - 1].Own == enemy_own &
-                                                aDots[d.x - 1, d.y + 1].Own == 0 &
-                                                aDots[d.x + 1, d.y + 1].Own == enemy_own
-                                              & aDots[d.x - 1, d.y ].Own != Owner &
-                                              aDots[d.x + 1, d.y ].Own != Owner &
-                                              aDots[d.x , d.y + 1 ].Own != Owner &
-                                              aDots[d.x , d.y - 1 ].Own != Owner
-
-                         select d;
-            if (pat3_1.Count() > 0) return new Dot(pat3_1.First().x - 1, pat3_1.First().y + 1);
+            var pat3_1_1 = from Dot d in get_non_blocked
+                           where aDots[d.x + 1, d.y - 1].Own == enemy_own & 
+                                 aDots[d.x - 1, d.y - 1].Own == enemy_own &
+                                 aDots[d.x + 1, d.y + 1].Own == enemy_own &
+                                 aDots[d.x - 1, d.y].Own == 0 &
+                                 aDots[d.x, d.y + 1].Own == 0 &
+                                 aDots[d.x-1, d.y + 1].Own == 0 &
+                                 aDots[d.x, d.y].Own == Owner
+                               select d;
+            if (pat3_1_1.Count() > 0) return new Dot(pat3_1_1.First().x - 1, pat3_1_1.First().y + 1);
             // паттерн на конструкцию    +     *      точка окружена через две точки
             //                             d+    
             //                           *     *   
@@ -311,7 +307,6 @@ namespace DotsGame
             {
                 if (aDots[p.x, p.y + 1].Own == PLAYER_NONE) return new Dot(p.x, p.y + 1);
             }
-
 
 
 

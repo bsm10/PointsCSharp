@@ -24,7 +24,7 @@ namespace DotsGame
         //-------------------------------------------------
         public int iScaleCoef = 1;//- коэффициент масштаба
         public int iBoardSize = 10;//- количество клеток квадрата в длинну
-        public int iMapSize;//- количество клеток квадрата в длинну
+        //public int iMapSize;//- количество клеток квадрата в длинну - размер всей карты
         public const int iBoardSizeMin = 5;
         public const int iBoardSizeMax = 20;
 
@@ -519,8 +519,9 @@ namespace DotsGame
         }
         public void NewGame()
         {
-            iMapSize = iBoardSize * iScaleCoef;
-            aDots = new ArrayDots(iMapSize);
+            //iMapSize = iBoardSize * iScaleCoef;
+            //aDots = new ArrayDots(iMapSize);
+            aDots = new ArrayDots(iBoardSize);
             lnks = new List<Links>();
             dots_in_region = new List<Dot>();
             list_moves = new List<Dot>();
@@ -678,7 +679,8 @@ namespace DotsGame
         {
             dot.Marked = true;
             
-            if (dot.x == 0 | dot.y == 0 | dot.x == iMapSize - 1 | dot.y == iMapSize - 1)
+            //if (dot.x == 0 | dot.y == 0 | dot.x == iMapSize - 1 | dot.y == iMapSize - 1)
+            if (dot.x == 0 | dot.y == 0 | dot.x == iBoardSize - 1 | dot.y == iBoardSize - 1)
             {
                 return true;
             }
@@ -881,7 +883,8 @@ namespace DotsGame
             var qd = from Dot dt in aDots where dt.Own != 0 & dt.Blocked==false select dt;
             foreach (Dot dot in qd)
             {
-                if (dot.x > 0 & dot.y > 0 & dot.x < iMapSize - 1 & dot.y < iMapSize - 1)
+                //if (dot.x > 0 & dot.y > 0 & dot.x < iMapSize - 1 & dot.y < iMapSize - 1)
+                if (dot.x > 0 & dot.y > 0 & dot.x < iBoardSize - 1 & dot.y < iBoardSize - 1)
                 {
                     Dot[] dts = new Dot[4] {aDots[dot.x + 1, dot.y], aDots[dot.x - 1, dot.y],aDots[dot.x, dot.y + 1], aDots[dot.x, dot.y - 1]};
                     res = 0;
@@ -919,7 +922,12 @@ namespace DotsGame
             }
 
         }
-
+        public void ResizeBoard(int newSize)//изменение размера доски
+        {
+            iBoardSize=newSize;
+            NewGame();
+            pbxBoard.Invalidate();
+        }
         public void UndoMove(int x, int y)//поле отмена хода
         {
             Undo(x,y);
@@ -1041,7 +1049,9 @@ namespace DotsGame
                 }
                 if(lstPat[i].PatternsMoveDot)
                 {
-                    sMove = " foreach (Dot p in pat1) \r\n" + "{ \r\n" + "if (aDots[p.x" + strdX + "," + "p.y" + strdY + "].Own == PLAYER_NONE) return new Dot(p.x" + strdX + "," + "p.y" + strdY + "); \r\n" + "}";
+                    //sMove = " foreach (Dot p in pat1) \r\n" + "{ \r\n" + "if (aDots[p.x" + strdX + "," + "p.y" + strdY + "].Own == PLAYER_NONE) return new Dot(p.x" + strdX + "," + "p.y" + strdY + "); \r\n" + "}";
+                    sMove = " if (pat1.Count() > 0) return new Dot(pat1.First().x" + strdX + "," + "pat1.First().y" + strdY + ");";
+                    //if (pat4_7.Count() > 0) return new Dot(pat4_7.First().x + 1, pat4_7.First().y);
                 }
             }
             s = "var pat1 = from Dot d in get_non_blocked where " + sWhere + "\r\n select d; \r\n" + sMove;
