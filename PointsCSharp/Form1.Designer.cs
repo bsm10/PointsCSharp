@@ -78,6 +78,8 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.rtbStat = new System.Windows.Forms.RichTextBox();
+            this.rbtnHand = new System.Windows.Forms.RadioButton();
+            this.rbtnAuto = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -372,7 +374,7 @@
             0,
             0,
             0});
-            this.numericUpDown1.Location = new System.Drawing.Point(501, 410);
+            this.numericUpDown1.Location = new System.Drawing.Point(461, 376);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             5000,
@@ -421,7 +423,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(499, 392);
+            this.label1.Location = new System.Drawing.Point(454, 358);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 16);
             this.label1.TabIndex = 5;
@@ -517,7 +519,7 @@
             this.chkMove.AutoSize = true;
             this.chkMove.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.chkMove.ForeColor = System.Drawing.Color.Navy;
-            this.chkMove.Location = new System.Drawing.Point(536, 370);
+            this.chkMove.Location = new System.Drawing.Point(536, 375);
             this.chkMove.Margin = new System.Windows.Forms.Padding(2);
             this.chkMove.Name = "chkMove";
             this.chkMove.Size = new System.Drawing.Size(59, 20);
@@ -603,11 +605,37 @@
             this.rtbStat.TabIndex = 14;
             this.rtbStat.Text = "";
             // 
+            // rbtnHand
+            // 
+            this.rbtnHand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.rbtnHand.AutoSize = true;
+            this.rbtnHand.Location = new System.Drawing.Point(461, 413);
+            this.rbtnHand.Name = "rbtnHand";
+            this.rbtnHand.Size = new System.Drawing.Size(60, 17);
+            this.rbtnHand.TabIndex = 15;
+            this.rbtnHand.TabStop = true;
+            this.rbtnHand.Text = "Ручной";
+            this.rbtnHand.UseVisualStyleBackColor = true;
+            // 
+            // rbtnAuto
+            // 
+            this.rbtnAuto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.rbtnAuto.AutoSize = true;
+            this.rbtnAuto.Location = new System.Drawing.Point(534, 412);
+            this.rbtnAuto.Name = "rbtnAuto";
+            this.rbtnAuto.Size = new System.Drawing.Size(49, 17);
+            this.rbtnAuto.TabIndex = 16;
+            this.rbtnAuto.TabStop = true;
+            this.rbtnAuto.Text = "Авто";
+            this.rbtnAuto.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(606, 474);
+            this.Controls.Add(this.rbtnAuto);
+            this.Controls.Add(this.rbtnHand);
             this.Controls.Add(this.rtbStat);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.label4);
@@ -698,6 +726,8 @@
         private System.Windows.Forms.ToolStripMenuItem выделитьШаблонToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem точкаОтсчетаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem точкаХодаToolStripMenuItem;
+        private System.Windows.Forms.RadioButton rbtnHand;
+        private System.Windows.Forms.RadioButton rbtnAuto;
     }
 }
 

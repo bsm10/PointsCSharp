@@ -25,6 +25,7 @@ namespace DotsGame
             toolStripStatusLabel2.ForeColor = game.colorGamer1;
             toolStripStatusLabel2.Text = "Ход игрока";
             chkMove.Checked = true;
+            rbtnAuto.Checked=true;
 
             toolStripTextBox1.Text = game.iBoardSize.ToString();
         }
@@ -42,6 +43,7 @@ namespace DotsGame
                 switch (e.Button)
                 {
                     case MouseButtons.Left:
+                        #region PatternEditor
                         if (выделитьШаблонToolStripMenuItem.Checked)
                         {
                             game.ListPatterns.Add(game.aDots[dot.x, dot.y]);
@@ -58,11 +60,12 @@ namespace DotsGame
                             }
                             break;
                         }
+                        #endregion
                         #region Ходы игроков
                         if (game.aDots[game.MousePos.X, game.MousePos.Y].Own > 0) break;//предовращение хода если клик был по занятой точке
                         if (player_move == 2 | player_move == 0)
                         {
-                            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+                            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift | rbtnHand.Checked)
                             {
                                 MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null));
                                 break;
