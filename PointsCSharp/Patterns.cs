@@ -297,7 +297,20 @@ namespace DotsGame
                 if (aDots[p.x, p.y - 1].Own == PLAYER_NONE) return new Dot(p.x, p.y - 1);
             }
 
+            var pat6_5 = from Dot d in get_non_blocked
+                         where aDots[d.x - 2, d.y].Own == enemy_own &
+                             aDots[d.x, d.y].Own == Owner &
+                             aDots[d.x + 1, d.y].Own == enemy_own &
+                             aDots[d.x, d.y - 1].Own == Owner &
+                             aDots[d.x - 1, d.y].Own == 0 &
+                             aDots[d.x - 1, d.y + 1].Own == 0 &
+                             aDots[d.x, d.y].Own == Owner
 
+                         select d;
+            foreach (Dot p in pat6_5)
+            {
+                if (aDots[p.x, p.y + 1].Own == PLAYER_NONE) return new Dot(p.x, p.y + 1);
+            }
 
 
 

@@ -238,10 +238,11 @@ namespace DotsGame
                     #endregion
                     count_moves++;
                     player = d.Own;
-                    if (move1 == null & player == 1 | recursion_depth < 4) move1 = d;
-                    if (move2 == null & player == 2 | recursion_depth < 3) move2 = d;
+                    if (player == 1 & recursion_depth < 3) move1 = d;
+                    if (player == 2 & recursion_depth < 2) move2 = d;
                     //-----показывает проверяемые ходы--------
                     if (ShowMoves) Pause(); //делает паузу если значение поля pause>0
+                    #region Debug
                     #if DEBUG
                         lstDbg1.Items.Add(d.Own + " - " + d.x  + ":" + d.y) ;
                            txtDbg.Text="Общее число ходов: " + count_moves.ToString() + 
@@ -250,7 +251,8 @@ namespace DotsGame
                                        "\r\n move1 " + move1 +
                                        "\r\n move2 " + move2 +
                                        "\r\n время поиска " + stopWatch.ElapsedMilliseconds;
-#endif
+                    #endif
+                    #endregion
                     #region Проверка res_last_move если больше нуля значит кто-то окружает
                     //-----------------------------------
                     if (res_last_move != 0 & aDots[d.x, d.y].Blocked)//если ход в окруженный регион
@@ -292,7 +294,6 @@ namespace DotsGame
                         return PLAYER_COMPUTER;//побеждает компьютер
                     }
                     #endregion
-
                     //теперь ходит другой игрок =========================================================================================
                     int result = Play(ref enemy_move, move1,move2, player, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
                     //отменить ход
