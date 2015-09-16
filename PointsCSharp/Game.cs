@@ -209,7 +209,8 @@ namespace DotsGame
                     //**************делаем ход***********************************
                     d.Own = player == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     int res_last_move = (int)MakeMove(d);
-                    Dot dt = CheckMove(player, false);//проверить не замыкается ли регион
+                    #region проверить не замыкается ли регион
+                    Dot dt = CheckMove(player, false);
                     count_moves++;
                     if (dt != null)
                     {
@@ -234,10 +235,10 @@ namespace DotsGame
                             return player;
                         }
                     }
-
+                    #endregion
                     count_moves++;
                     player = d.Own;
-                    if (move1 == null & player == 1 | recursion_depth < 2) move1 = d;
+                    if (move1 == null & player == 1 | recursion_depth < 4) move1 = d;
                     if (move2 == null & player == 2 | recursion_depth < 3) move2 = d;
                     //-----показывает проверяемые ходы--------
                     if (ShowMoves) Pause(); //делает паузу если значение поля pause>0
@@ -248,8 +249,9 @@ namespace DotsGame
                                        "\r\n проверка вокруг точки " + lastmove +
                                        "\r\n move1 " + move1 +
                                        "\r\n move2 " + move2 +
-                                       "\r\n время поиска " + stopWatch.ElapsedMilliseconds; 
-                    #endif
+                                       "\r\n время поиска " + stopWatch.ElapsedMilliseconds;
+#endif
+                    #region Проверка res_last_move если больше нуля значит кто-то окружает
                     //-----------------------------------
                     if (res_last_move != 0 & aDots[d.x, d.y].Blocked)//если ход в окруженный регион
                     {
@@ -273,23 +275,23 @@ namespace DotsGame
                         UndoMove(d);
                         return PLAYER_HUMAN;//побеждает игрок
                     }
-                    else if (d.Own == 2 & res_last_move != 0 | d.Own==1 & aDots[d.x,d.y].Blocked)
+                    else if (d.Own == 2 & res_last_move != 0 | d.Own == 1 & aDots[d.x, d.y].Blocked)
                     {
                         if (recursion_depth < counter_root)
                         {
                             counter_root = recursion_depth;
-                           // best_move =  new Dot(d.x, d.y);
-                           best_move = new Dot(move2.x, move2.y);
+                            // best_move =  new Dot(d.x, d.y);
+                            best_move = new Dot(move2.x, move2.y);
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
 #if DEBUG
-                            lstDbg2.Items.Add(recursion_depth +" ход на " + best_move.x + ":" + best_move.y + "; win COM");
+                            lstDbg2.Items.Add(recursion_depth + " ход на " + best_move.x + ":" + best_move.y + "; win COM");
 #endif
                         }
                         UndoMove(d);
                         return PLAYER_COMPUTER;//побеждает компьютер
                     }
-                    //count_moves++;
+                    #endregion
 
                     //теперь ходит другой игрок =========================================================================================
                     int result = Play(ref enemy_move, move1,move2, player, ref count_moves, ref recursion_depth, lastmove, ref counter_root);

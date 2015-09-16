@@ -254,15 +254,48 @@ namespace DotsGame
                          select d;
             if (pat5_1.Count() > 0) return new Dot(pat5_1.First().x, pat5_1.First().y-1);
 
-            // *   +  *
-            //        *
-            // *      
+            //     *
+            //    
+            //  m  +d  +  
+            //     *   *     ход для недопущения двухклеточного расстояния
+            var pat6_1 = from Dot d in get_non_blocked
+                         where aDots[d.x, d.y - 2].Own == enemy_own & aDots[d.x, d.y - 1].Own == 0 &
+                                aDots[d.x - 1, d.y - 1].Own == 0 & aDots[d.x, d.y].Own == Owner &
+                                  aDots[d.x, d.y + 1].Own == enemy_own & aDots[d.x - 1, d.y + 1].Own == 0 &
+                                  aDots[d.x, d.y].Own == Owner 
+                                  select d;
+            foreach (Dot p in pat6_1)
+            {
+                if (aDots[p.x - 1, p.y].Own == PLAYER_NONE) return new Dot(p.x - 1, p.y);
+            }
 
+            var pat6_2 = from Dot d in get_non_blocked where aDots[d.x - 1, d.y].Own == enemy_own &
+                            aDots[d.x + 2, d.y].Own == enemy_own & aDots[d.x, d.y].Own == Owner & aDots[d.x - 1, d.y - 1].Own == 0 &
+                            aDots[d.x + 1, d.y].Own == 0 & aDots[d.x + 1, d.y - 1].Own == 0 & aDots[d.x, d.y].Own == Owner 
+                            select d;
+            foreach (Dot p in pat6_2)
+            {
+                if (aDots[p.x, p.y - 1].Own == PLAYER_NONE) return new Dot(p.x, p.y - 1);
+            }
 
+            var pat6_3 = from Dot d in get_non_blocked where aDots[d.x, d.y - 2].Own == enemy_own & aDots[d.x, d.y + 1].Own == enemy_own &
+                                                             aDots[d.x, d.y].Own == Owner & aDots[d.x - 1, d.y].Own == Owner & aDots[d.x - 1, d.y + 1].Own == enemy_own &
+                                                                aDots[d.x, d.y - 1].Own == 0 & aDots[d.x + 1, d.y - 1].Own == 0 & aDots[d.x + 1, d.y + 1].Own == 0 &
+                                                                aDots[d.x, d.y].Own == Owner            
+                                                                select d;
+            foreach (Dot p in pat6_3)
+            {
+                if (aDots[p.x + 1, p.y].Own == PLAYER_NONE) return new Dot(p.x + 1, p.y);
+            }
 
-
-
-
+            var pat6_4 = from Dot d in get_non_blocked where aDots[d.x - 2, d.y].Own == enemy_own & aDots[d.x - 1, d.y].Own == 0 &
+                aDots[d.x - 1, d.y - 1].Own == 0 & aDots[d.x, d.y].Own == Owner & aDots[d.x + 1, d.y - 1].Own == 0 & aDots[d.x + 1, d.y].Own == enemy_own &
+                aDots[d.x, d.y].Own == Owner 
+                select d;
+            foreach (Dot p in pat6_4)
+            {
+                if (aDots[p.x, p.y - 1].Own == PLAYER_NONE) return new Dot(p.x, p.y - 1);
+            }
 
 
 
