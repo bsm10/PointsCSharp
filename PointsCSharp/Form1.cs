@@ -24,7 +24,7 @@ namespace DotsGame
             game = new Game(pbxBoard);
             toolStripStatusLabel2.ForeColor = game.colorGamer1;
             toolStripStatusLabel2.Text = "Ход игрока";
-            chkMove.Checked = true;
+            //chkMove.Checked = true;
             rbtnAuto.Checked=true;
 
             toolStripTextBox1.Text = game.iBoardSize.ToString();

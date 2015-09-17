@@ -217,15 +217,7 @@ namespace DotsGame
                         if (recursion_depth < counter_root)
                         {
                             counter_root = recursion_depth;
-                            if (recursion_depth == 1)
-                            {
-                                best_move = dt;
-                            }
-                            else
-                            {
-                                best_move = player == 1 ? move1 : move2;
-                            }
-                            //best_move = dt;
+                            best_move = dt;
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
 #if DEBUG
@@ -235,6 +227,41 @@ namespace DotsGame
                             return player;
                         }
                     }
+                    //проверяем паттерны
+                    dt = CheckPattern(d.Own);
+                    if (dt != null)
+                    {
+                        if (recursion_depth < counter_root)
+                        {
+                            counter_root = recursion_depth;
+                            best_move = d;
+                            lst_best_move.Clear();
+                            lst_best_move.Add(best_move);
+#if DEBUG
+                            lstDbg2.Items.Add(recursion_depth + " CheckMove " + best_move.x + ":" + best_move.y + "; win player " + player);
+#endif
+                            UndoMove(d);
+                            return d.Own;
+                        }
+                    }
+                    dt = CheckPattern(player);
+                    if (dt != null)
+                    {
+                        if (recursion_depth < counter_root)
+                        {
+                            counter_root = recursion_depth;
+                            best_move = d;
+                            lst_best_move.Clear();
+                            lst_best_move.Add(best_move);
+#if DEBUG
+                            lstDbg2.Items.Add(recursion_depth + " CheckMove " + best_move.x + ":" + best_move.y + "; win player " + player);
+#endif
+                            UndoMove(d);
+                            return player;
+                        }
+                    }
+
+
                     #endregion
                     count_moves++;
                     player = d.Own;
