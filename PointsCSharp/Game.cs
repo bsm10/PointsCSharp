@@ -87,11 +87,7 @@ namespace DotsGame
         private int _pause = 10;
 
 #if DEBUG
-        public Form f = new Form2();
-        public ListBox lstDbg1;
-        public ListBox lstDbg2;
-        public TextBox txtDbg;
-        public TextBox txtDot;
+        public Form2 f = new Form2();
 #endif
 
         Stopwatch stopWatch = new Stopwatch();//для диагностики времени выполнения
@@ -104,6 +100,7 @@ namespace DotsGame
         //  ************************************************
         public Dot PickComputerMove(Dot enemy_move)
         {
+            
             float s1 = square1; float s2 = square2;
             int pl1=0; int pl2=0;
             if (enemy_move.Own == PLAYER_HUMAN) { pl1 = PLAYER_HUMAN; pl2 = PLAYER_COMPUTER; }
@@ -129,14 +126,14 @@ namespace DotsGame
                Dot[] ad;
                ad = dots_on_board.ToArray();
 #if DEBUG
-                lstDbg2.Items.Clear();
+                f.lstDbg2.Items.Clear();
 #endif
                 lst_best_move.Clear();
                //foreach (Dot d in ad)
                //     {
 #if DEBUG
-                        lstDbg1.Items.Clear();
-                        lstDbg1.BeginUpdate();
+                f.lstDbg1.Items.Clear();
+                f.lstDbg1.BeginUpdate();
 #endif
                 Dot dot1 = null, dot2 =null;
                 //PLAYER_HUMAN - ставим в параметр - первым ходит игрок1(человек)
@@ -168,11 +165,11 @@ namespace DotsGame
             }
 
 #if DEBUG
-            lstDbg1.EndUpdate();
+            f.lstDbg1.EndUpdate();
 #endif
             //stopWatch.Stop();
-           
-            txtDbg.Text = "Skilllevel: " + SkillLevel + "\r\n Общее число ходов: " + depth.ToString() +
+
+            f.txtDebug.Text = "Skilllevel: " + SkillLevel + "\r\n Общее число ходов: " + depth.ToString() +
             "\r\n Глубина просчета: " + c_root.ToString() +
             "\r\n Ход на " + best_move.x + ":" + best_move.y +
             "\r\n время просчета " + stopWatch.ElapsedMilliseconds.ToString() + " мс";
@@ -221,7 +218,7 @@ namespace DotsGame
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
 #if DEBUG
-                            lstDbg2.Items.Add(recursion_depth + " CheckMove " + best_move.x + ":" + best_move.y + "; win player " + player);
+                            f.lstDbg2.Items.Add(recursion_depth + " CheckMove " + best_move.x + ":" + best_move.y + "; win player " + player);
 #endif
                             UndoMove(d);
                             return player;
@@ -238,7 +235,7 @@ namespace DotsGame
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
 #if DEBUG
-                            lstDbg2.Items.Add(recursion_depth + " CheckMove " + best_move.x + ":" + best_move.y + "; win player " + player);
+                            f.lstDbg2.Items.Add(recursion_depth + " CheckMove " + best_move.x + ":" + best_move.y + "; win player " + player);
 #endif
                             UndoMove(d);
                             return d.Own;
@@ -254,7 +251,7 @@ namespace DotsGame
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
 #if DEBUG
-                            lstDbg2.Items.Add(recursion_depth + " CheckMove " + best_move.x + ":" + best_move.y + "; win player " + player);
+                            f.lstDbg2.Items.Add(recursion_depth + " CheckMove " + best_move.x + ":" + best_move.y + "; win player " + player);
 #endif
                             UndoMove(d);
                             return player;
@@ -271,8 +268,8 @@ namespace DotsGame
                     if (ShowMoves) Pause(); //делает паузу если значение поля pause>0
                     #region Debug
                     #if DEBUG
-                        lstDbg1.Items.Add(d.Own + " - " + d.x  + ":" + d.y) ;
-                           txtDbg.Text="Общее число ходов: " + count_moves.ToString() + 
+                    f.lstDbg1.Items.Add(d.Own + " - " + d.x + ":" + d.y);
+                    f.txtDebug.Text = "Общее число ходов: " + count_moves.ToString() + 
                                        "\r\n Глубина просчета: " + recursion_depth.ToString() +
                                        "\r\n проверка вокруг точки " + lastmove +
                                        "\r\n move1 " + move1 +
@@ -298,7 +295,7 @@ namespace DotsGame
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
 #if DEBUG
-                            lstDbg2.Items.Add(recursion_depth + "ход на " + best_move.x + ":" + best_move.y + "; win HUMAN");
+                            f.lstDbg2.Items.Add(recursion_depth + "ход на " + best_move.x + ":" + best_move.y + "; win HUMAN");
 #endif
                         }
                         UndoMove(d);
@@ -314,7 +311,7 @@ namespace DotsGame
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
 #if DEBUG
-                            lstDbg2.Items.Add(recursion_depth + " ход на " + best_move.x + ":" + best_move.y + "; win COM");
+                            f.lstDbg2.Items.Add(recursion_depth + " ход на " + best_move.x + ":" + best_move.y + "; win COM");
 #endif
                         }
                         UndoMove(d);
@@ -327,7 +324,7 @@ namespace DotsGame
                     UndoMove(d);
                     recursion_depth--;
 #if DEBUG
-                    if (lstDbg1.Items.Count>0) lstDbg1.Items.RemoveAt(lstDbg1.Items.Count-1);
+                    if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
 #endif
                     if (enemy_move == null & recursion_depth > 1)
                         break;
@@ -411,8 +408,8 @@ namespace DotsGame
                         if (ShowMoves) Pause();
 #if DEBUG
 
-                        lstDbg1.Items.Add(d.Own + " - " + d.x + ":" + d.y);
-                        txtDbg.Text = "Общее число ходов: " + depth.ToString() +
+                        f.lstDbg1.Items.Add(d.Own + " - " + d.x + ":" + d.y);
+                        f.txtDebug.Text = "Общее число ходов: " + depth.ToString() +
                                 "\r\n Глубина просчета: " + counter.ToString() +
                                 "\r\n проверка вокруг точки " + last_move;
 #endif
@@ -431,7 +428,7 @@ namespace DotsGame
                                 counter_root = counter;
                                 move = new Dot(d.x, d.y);
 #if DEBUG
-                                lstDbg2.Items.Add("Ход на " + move.x + ":" + move.y + "; ход " + counter);
+                                f.lstDbg2.Items.Add("Ход на " + move.x + ":" + move.y + "; ход " + counter);
 #endif
                             }
                             //UndoMove(d);
@@ -444,7 +441,7 @@ namespace DotsGame
                                 counter_root = counter;
                                 move = new Dot(d.x, d.y);
 #if DEBUG
-                                lstDbg2.Items.Add("Ход на " + move.x + ":" + move.y + "; ход " + counter);
+                                f.lstDbg2.Items.Add("Ход на " + move.x + ":" + move.y + "; ход " + counter);
 #endif
                             }
                             //UndoMove(d);
@@ -509,7 +506,7 @@ namespace DotsGame
         {
             if (aDots.Contains(x, y))
             {
-                txtDot.Text = "Blocked: " + aDots[x, y].Blocked + "\r\n" +
+                f.txtDotStatus.Text = "Blocked: " + aDots[x, y].Blocked + "\r\n" +
                               "BlokingDots.Count: " + aDots[x, y].BlokingDots.Count + "\r\n" +
                               "NeiborDots.Count: " + aDots[x, y].NeiborDots.Count + "\r\n" +
                               "Rating: " + aDots[x, y].Rating + "\r\n" +
@@ -562,11 +559,10 @@ namespace DotsGame
             
 #if DEBUG
         f.Show();
-            lstDbg1 = (ListBox)f.Controls.Find("lstDbg1", false)[0];
-            lstDbg2 = (ListBox)f.Controls.Find("lstDbg2", false)[0];
-            txtDbg = (TextBox)f.Controls.Find("txtDebug", false)[0];
-            txtDot = (TextBox)f.Controls.Find("txtDotStatus", false)[0];
-
+            //lstDbg1 = (ListBox)f.Controls.Find("lstDbg1", false)[0];
+            //lstDbg2 = (ListBox)f.Controls.Find("lstDbg2", false)[0];
+            //txtDbg = (TextBox)f.Controls.Find("txtDebug", false)[0];
+            //txtDot = (TextBox)f.Controls.Find("txtDotStatus", false)[0];
 #endif
             pbxBoard.Invalidate();
         }
@@ -1110,7 +1106,7 @@ namespace DotsGame
             s+="//--------------Rotate on 180----------------------------------- \r\n";
             s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
             s += "//============================================================================================================== \r\n";
-            txtDbg.Text = s;
+            f.txtDebug.Text = s;
             Clipboard.Clear();
             Clipboard.SetText(s);
         }
