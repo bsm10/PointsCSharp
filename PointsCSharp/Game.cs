@@ -1053,6 +1053,8 @@ namespace DotsGame
                 {
                     return dt.PatternsFirstDot == true;
                 });
+            var random = new Random(DateTime.Now.Millisecond);
+            string n = random.Next(1,1000).ToString();
             for (int i = 0; i < lstPat.Count-1; i++)
             {
                 string own="";
@@ -1070,19 +1072,47 @@ namespace DotsGame
                 else if (dy > 0) strdY = "+" + dy.ToString();
                 else strdY = dy.ToString();
 
-                if (lstPat[i].PatternsMoveDot==false)
-                {
-                    sWhere += "aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " & \r\n";
-                }
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " \r\n"; 
+
                 if(lstPat[i].PatternsMoveDot)
                 {
-                    //sMove = " foreach (Dot p in pat1) \r\n" + "{ \r\n" + "if (aDots[p.x" + strdX + "," + "p.y" + strdY + "].Own == PLAYER_NONE) return new Dot(p.x" + strdX + "," + "p.y" + strdY + "); \r\n" + "}";
-                    sMove = " if (pat1.Count() > 0) return new Dot(pat1.First().x" + strdX + "," + "pat1.First().y" + strdY + ");";
-                    //if (pat4_7.Count() > 0) return new Dot(pat4_7.First().x + 1, pat4_7.First().y);
+                    sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
                 }
+                
             }
-            s = "var pat1 = from Dot d in get_non_blocked where " + sWhere + "\r\n select d; \r\n" + sMove;
+            s = "//============================================================================================================== \r\n";
+            s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
+            n+="_2";
+            sWhere=""; sMove="";
+            for (int i = 0; i < lstPat.Count - 1; i++)
+            {
+                string own = "";
+                if (lstPat[ind].Own == lstPat[i].Own) own = "Owner";
+                if (lstPat[ind].Own != lstPat[i].Own) own = "enemy_own";
+                if (lstPat[i].Own == 0) own = "0";
+
+                dx = lstPat[ind].x - lstPat[i].x;
+                if (dx == 0) strdX = "";
+                else if (dx > 0) strdX = "+" + dx.ToString();
+                else strdX = dx.ToString();
+
+                dy = lstPat[ind].y - lstPat[i].y;
+                if (dy == 0) strdY = "";
+                else if (dy > 0) strdY = "+" + dy.ToString();
+                else strdY = dy.ToString();
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " \r\n";
+                if (lstPat[i].PatternsMoveDot)
+                {
+                    sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                }
+
+            }
+            s+="//--------------Rotate on 180----------------------------------- \r\n";
+            s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
+            s += "//============================================================================================================== \r\n";
             txtDbg.Text = s;
+            Clipboard.Clear();
+            Clipboard.SetText(s);
         }
         //==========================================================================
         public string path_savegame = Application.CommonAppDataPath + @"\dots.dat";

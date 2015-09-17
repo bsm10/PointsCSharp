@@ -52,6 +52,10 @@ namespace DotsGame
                             {
                                 game.aDots[dot.x, dot.y].PatternsFirstDot=true;
                                 точкаОтсчетаToolStripMenuItem.Checked=false;
+                                pbxBoard.Invalidate();
+                                точкаХодаToolStripMenuItem.Checked = true;
+                                MessageBox.Show("Ставьте точку хода (ЛКМ), на точку отмеченную как пустую");
+                                break;
                             }
                             if (точкаХодаToolStripMenuItem.Checked)
                             {
@@ -86,6 +90,14 @@ namespace DotsGame
                     case MouseButtons.Right:
                         if (выделитьШаблонToolStripMenuItem.Checked)
                         {
+
+
+
+
+
+
+
+
                             game.MakePattern();
                             break;
                         }
@@ -95,18 +107,8 @@ namespace DotsGame
                         }
                         break;
                     case MouseButtons.Middle:
-                        if (выделитьШаблонToolStripMenuItem.Checked)
-                        {
-                            game.ListPatterns.Add(game.aDots[dot.x, dot.y]);
-                            game.aDots[dot.x, dot.y].Marked = true;
-                            game.aDots[dot.x, dot.y].Fixed = true;
-                            break;
-                        }
-                        else
-                        {
                             game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
                             game.UndoMove(dot.x, dot.y);
-                        }
                         break;
                 }
             }
