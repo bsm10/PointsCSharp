@@ -224,39 +224,39 @@ namespace DotsGame
                             return player;
                         }
                     }
-                    //проверяем паттерны
-                    dt = CheckPattern(d.Own);
-                    if (dt != null)
-                    {
-                        if (recursion_depth < counter_root)
-                        {
-                            counter_root = recursion_depth;
-                            best_move = d;
-                            lst_best_move.Clear();
-                            lst_best_move.Add(best_move);
-#if DEBUG
-                            f.lstDbg2.Items.Add(recursion_depth + " CheckMove " + best_move.x + ":" + best_move.y + "; win player " + player);
-#endif
-                            UndoMove(d);
-                            return d.Own;
-                        }
-                    }
-                    dt = CheckPattern(player);
-                    if (dt != null)
-                    {
-                        if (recursion_depth < counter_root)
-                        {
-                            counter_root = recursion_depth;
-                            best_move = d;
-                            lst_best_move.Clear();
-                            lst_best_move.Add(best_move);
-#if DEBUG
-                            f.lstDbg2.Items.Add(recursion_depth + " CheckMove " + best_move.x + ":" + best_move.y + "; win player " + player);
-#endif
-                            UndoMove(d);
-                            return player;
-                        }
-                    }
+//                    //проверяем паттерны
+//                    dt = CheckPattern(player);
+//                    if (dt != null)
+//                    {
+//                        if (recursion_depth < counter_root)
+//                        {
+//                            counter_root = recursion_depth;
+//                            best_move = d;
+//                            lst_best_move.Clear();
+//                            lst_best_move.Add(best_move);
+//#if DEBUG
+//                            f.lstDbg2.Items.Add(recursion_depth + " CheckPattern " + best_move.x + ":" + best_move.y + "; win player " + player);
+//#endif
+//                            UndoMove(d);
+//                            return player;
+//                        }
+//                    }
+//                    dt = CheckPattern(d.Own);
+//                    if (dt != null)
+//                    {
+//                        if (recursion_depth < counter_root)
+//                        {
+//                            counter_root = recursion_depth;
+//                            best_move = d;
+//                            lst_best_move.Clear();
+//                            lst_best_move.Add(best_move);
+//#if DEBUG
+//                            f.lstDbg2.Items.Add(recursion_depth + " CheckPattern " + best_move.x + ":" + best_move.y + "; win player " + d.Own);
+//#endif
+//                            UndoMove(d);
+//                            return d.Own;
+//                        }
+//                    }
 
 
                     #endregion
