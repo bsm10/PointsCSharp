@@ -85,9 +85,10 @@ namespace DotsGame
        
         private PictureBox pbxBoard;
         private int _pause = 10;
-
+        
 #if DEBUG
         public Form2 f = new Form2();
+        private string sPattern="";
 #endif
 
         Stopwatch stopWatch = new Stopwatch();//для диагностики времени выполнения
@@ -117,9 +118,13 @@ namespace DotsGame
             //проверяем паттерны
             if (best_move == null) best_move = CheckPattern(pl2);
             if (best_move == null) best_move = CheckPattern(pl1);  // проверяем ходы
-
-
-            int c1=0 , c_root=1000;// , dpth=0;
+#if DEBUG
+            if (best_move!=null)
+            {
+                f.lstDbg2.Items.Add(best_move.ToString() + " - паттерн №" + sPattern);
+            }
+#endif
+            int c1 = 0, c_root = 1000;// , dpth=0;
             if (best_move ==null)
             {
                var dots_on_board = from Dot d in aDots where d.Own != 0 & d.Blocked==false select d;
@@ -205,9 +210,10 @@ namespace DotsGame
                     //**************делаем ход***********************************
                     d.Own = player == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     int res_last_move = (int)MakeMove(d);
+                    count_moves++;
+                    //if (count_moves==318) MessageBox.Show("318");
                     #region проверить не замыкается ли регион
                     Dot dt = CheckMove(player, false);
-                    count_moves++;
                     if (dt != null)
                     {
                         if (recursion_depth < counter_root)
@@ -259,7 +265,6 @@ namespace DotsGame
 
 
                     #endregion
-                    count_moves++;
                     player = d.Own;
                     if (player == 1 & recursion_depth < 3) move1 = d;
                     if (player == 2 & recursion_depth < 2) move2 = d;
@@ -325,8 +330,8 @@ namespace DotsGame
 #if DEBUG
                     if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
 #endif
-                    //if (enemy_move == null & recursion_depth > 1)
-                    //    break;
+                    if (enemy_move == null & recursion_depth > 2)
+                        break;
                     if (count_moves > SkillLevel * 100)
                         return PLAYER_NONE;
                 }
