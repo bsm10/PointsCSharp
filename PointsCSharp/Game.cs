@@ -191,11 +191,10 @@ namespace DotsGame
                 return 0;
             }
             Dot enemy_move = null;
-            //var random = new Random(DateTime.Now.Millisecond);
             var qry = from Dot d in aDots
                       where d.Own == PLAYER_NONE & d.Blocked==false & Math.Abs(d.x - lastmove.x) <SkillNumSq
                                                                     & Math.Abs(d.y - lastmove.y) <SkillNumSq
-                      orderby Math.Sqrt(Math.Pow(Math.Abs(d.x - lastmove.x), 2) + Math.Pow(Math.Abs(d.y - lastmove.y), 2)) //Math.Sqrt(Math.Abs(d.x - lm.x)* Math.Abs(d.x - lm.x) + Math.Abs(d.y - lm.y)* Math.Abs(d.y - lm.y)) //(random.Next())
+                      orderby Math.Sqrt(Math.Pow(Math.Abs(d.x - lastmove.x), 2) + Math.Pow(Math.Abs(d.y - lastmove.y), 2)) 
                       select d;
             Dot[] ad = qry.ToArray();
             int i = ad.Length;
@@ -326,8 +325,8 @@ namespace DotsGame
 #if DEBUG
                     if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
 #endif
-                    if (enemy_move == null & recursion_depth > 1)
-                        break;
+                    //if (enemy_move == null & recursion_depth > 1)
+                    //    break;
                     if (count_moves > SkillLevel * 100)
                         return PLAYER_NONE;
                 }

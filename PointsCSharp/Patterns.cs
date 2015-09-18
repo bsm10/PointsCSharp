@@ -496,7 +496,27 @@ namespace DotsGame
                            select d;
             if (pat353_2.Count() > 0) return new Dot(pat353_2.First().x - 1, pat353_2.First().y);
             //============================================================================================================== 
-
+            //============================================================================================================== 
+            var pat579 = from Dot d in get_non_blocked
+                         where d.Own == Owner
+                        & aDots[d.x + 1, d.y - 1].Own == enemy_own
+                        & aDots[d.x + 2, d.y].Own == enemy_own
+                        & aDots[d.x + 1, d.y + 1].Own == enemy_own
+                        & aDots[d.x + 1, d.y].Own == 0
+                        & aDots[d.x + 2, d.y - 1].Own == Owner
+                         select d;
+            if (pat579.Count() > 0) return new Dot(pat579.First().x + 1, pat579.First().y);
+            //--------------Rotate on 180----------------------------------- 
+            var pat579_2 = from Dot d in get_non_blocked
+                           where d.Own == Owner
+                            & aDots[d.x - 1, d.y + 1].Own == enemy_own
+                            & aDots[d.x - 2, d.y].Own == enemy_own
+                            & aDots[d.x - 1, d.y - 1].Own == enemy_own
+                            & aDots[d.x - 1, d.y].Own == 0
+                            & aDots[d.x - 2, d.y + 1].Own == Owner
+                           select d;
+            if (pat579_2.Count() > 0) return new Dot(pat579_2.First().x - 1, pat579_2.First().y);
+            //============================================================================================================== 
 
 
 
