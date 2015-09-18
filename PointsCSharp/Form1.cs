@@ -7,7 +7,7 @@ namespace DotsGame
 {
     public partial class Form1 : Form
     {
-        Game game;
+        public Game game;
         private Point t;
 
         public Form1()
@@ -17,15 +17,14 @@ namespace DotsGame
 
             int Xres = Screen.PrimaryScreen.WorkingArea.Width;
             int Yres = Screen.PrimaryScreen.WorkingArea.Height;
-
-            Height = 4 * Yres / 5;
-            Width = Height + 100;
+            float scl_coef=Xres/Yres;
+            
+            Height = 400; //2 * Yres / 3;
+            Width = (int)(Height * scl_coef);//Xres / 3;
 
             game = new Game(pbxBoard);
             toolStripStatusLabel2.ForeColor = game.colorGamer1;
             toolStripStatusLabel2.Text = "Ход игрока";
-            //chkMove.Checked = true;
-            rbtnAuto.Checked=true;
 
             toolStripTextBox1.Text = game.iBoardSize.ToString();
         }
@@ -69,7 +68,8 @@ namespace DotsGame
                         if (game.aDots[game.MousePos.X, game.MousePos.Y].Own > 0) break;//предовращение хода если клик был по занятой точке
                         if (player_move == 2 | player_move == 0)
                         {
-                            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift | rbtnHand.Checked)
+                            //if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift | rbtnHand.Checked)
+                            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
                             {
                                 MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null));
                                 break;
@@ -112,10 +112,10 @@ namespace DotsGame
                         break;
                 }
             }
-            lstMoves.DataSource = null;
-            lstMoves.DataSource = game.ListMoves;
-            if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
-            rtbStat.Text = game.Statistic();
+            //lstMoves.DataSource = null;
+            //lstMoves.DataSource = game.ListMoves;
+            //if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
+            //rtbStat.Text = game.Statistic();
         }
         public void pbxBoard_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -223,7 +223,7 @@ namespace DotsGame
         private void создатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             game.NewGame();
-            lstMoves.DataSource = null;
+            //lstMoves.DataSource = null;
         }
         private void антиалToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -239,7 +239,6 @@ namespace DotsGame
         }
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            game.pause = (int)numericUpDown1.Value;
         }
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
@@ -315,8 +314,8 @@ namespace DotsGame
         private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             game.LoadGame();
-            lstMoves.DataSource = null;
-            lstMoves.DataSource = game.ListMoves;
+            //lstMoves.DataSource = null;
+            //lstMoves.DataSource = game.ListMoves;
 
         }
 
@@ -332,22 +331,21 @@ namespace DotsGame
 
         private void chkMove_CheckedChanged(object sender, EventArgs e)
         {
-            game.ShowMoves = chkMove.Checked ? true : false;
         }
 
         private void numericUpDown2_ValueChanged(object sender, EventArgs e)
         {
-            game.SkillDepth = (int)numericUpDown2.Value;
+            //game.SkillDepth = (int)numericUpDown2.Value;
         }
 
         private void numericUpDown3_ValueChanged(object sender, EventArgs e)
         {
-            game.SkillLevel = (int)numericUpDown3.Value;
+            //game.SkillLevel = (int)numericUpDown3.Value;
         }
 
         private void numericUpDown4_ValueChanged(object sender, EventArgs e)
         {
-            game.SkillNumSq = (int)numericUpDown4.Value;
+            //game.SkillNumSq = (int)numericUpDown4.Value;
         }
 
         private void lstMoves_SelectedIndexChanged(object sender, EventArgs e)
@@ -387,10 +385,10 @@ namespace DotsGame
                 MessageBox.Show("Game over!");
                 return 1;
             }
-            lstMoves.DataSource = null;
-            lstMoves.DataSource = game.ListMoves;
-            if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
-            rtbStat.Text = game.Statistic();
+            //lstMoves.DataSource = null;
+            //lstMoves.DataSource = game.ListMoves;
+            //if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
+            //rtbStat.Text = game.Statistic();
             return 0;
         }
 

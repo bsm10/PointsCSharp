@@ -21,6 +21,7 @@ namespace DotsGame
         public int SkillLevel = 5;
         public int SkillDepth = 20;
         public int SkillNumSq = 3;
+
         //-------------------------------------------------
         public int iScaleCoef = 1;//- коэффициент масштаба
         public int iBoardSize = 10;//- количество клеток квадрата в длинну
@@ -61,7 +62,7 @@ namespace DotsGame
                 return last_move;
             }
         }
-        public bool ShowMoves { get; set; }
+        //public bool ShowMoves { get; set; }
 
         public List<Dot> dots_in_region;//записывает сюда точки, которые окружают точку противника
         //=========== цвета, шрифты ===================================================
@@ -190,6 +191,9 @@ namespace DotsGame
         private int Play(ref Dot best_move, Dot move1, Dot move2, int player, ref int count_moves, 
                                ref int recursion_depth, Dot lastmove, ref int counter_root)//возвращает Owner кто побеждает в результате хода
         {
+            SkillDepth=(int)f.numericUpDown2.Value;
+            SkillNumSq = (int)f.numericUpDown4.Value;
+            SkillLevel = (int)f.numericUpDown3.Value;
             recursion_depth++;
             if (recursion_depth >= SkillDepth)
             {
@@ -229,23 +233,23 @@ namespace DotsGame
                             return player;
                         }
                     }
-//                    //проверяем паттерны
-//                    dt = CheckPattern(player);
-//                    if (dt != null)
-//                    {
-//                        if (recursion_depth < counter_root)
-//                        {
-//                            counter_root = recursion_depth;
-//                            best_move = d;
-//                            lst_best_move.Clear();
-//                            lst_best_move.Add(best_move);
-//#if DEBUG
-//                            f.lstDbg2.Items.Add(recursion_depth + " CheckPattern " + best_move.x + ":" + best_move.y + "; win player " + player);
-//#endif
-//                            UndoMove(d);
-//                            return player;
-//                        }
-//                    }
+                    //проверяем паттерны
+                    dt = CheckPattern(player);
+                    if (dt != null)
+                    {
+                        if (recursion_depth < counter_root)
+                        {
+                            counter_root = recursion_depth;
+                            best_move = d;
+                            lst_best_move.Clear();
+                            lst_best_move.Add(best_move);
+#if DEBUG
+                            f.lstDbg2.Items.Add(recursion_depth + " Play.CheckPattern - " + sPattern + " - " + best_move.x + ":" + best_move.y + "; win player " + player);
+#endif
+                            UndoMove(d);
+                            return player;
+                        }
+                    }
 //                    dt = CheckPattern(d.Own);
 //                    if (dt != null)
 //                    {
@@ -269,7 +273,7 @@ namespace DotsGame
                     if (player == 1 & recursion_depth < 3) move1 = d;
                     if (player == 2 & recursion_depth < 2) move2 = d;
                     //-----показывает проверяемые ходы--------
-                    if (ShowMoves) Pause(); //делает паузу если значение поля pause>0
+                    if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
                     #region Debug
                     #if DEBUG
                     f.lstDbg1.Items.Add(d.Own + " - " + d.x + ":" + d.y);
@@ -409,7 +413,7 @@ namespace DotsGame
                         int res_last_move = (int)MakeMove(d);
                         mvs.Add(d); 
                         //-----показывает проверяемые ходы-----------------------------------------------
-                        if (ShowMoves) Pause();
+                        if (f.chkMove.Checked) Pause();
 #if DEBUG
 
                         f.lstDbg1.Items.Add(d.Own + " - " + d.x + ":" + d.y);
@@ -480,7 +484,7 @@ namespace DotsGame
                     //делаем ход
                     d.Own = Owner;
                     int result_last_move = (int)MakeMove(d);
-                    if (ShowMoves) Pause();
+                    if (f.chkMove.Checked) Pause();
                     //-----------------------------------
                     if (result_last_move != 0 & aDots[d.x, d.y].Blocked == false)
                     {
@@ -524,6 +528,7 @@ namespace DotsGame
             get
                 {
                  return _pause;
+                 //
                 }
             set
             {
@@ -532,11 +537,11 @@ namespace DotsGame
             }
         private void Pause()
         {
-            if (pause>0)
+            if (f.Pause>0)
             {
                 Application.DoEvents();
                 pbxBoard.Invalidate();
-                System.Threading.Thread.Sleep(pause);
+                System.Threading.Thread.Sleep(f.Pause);
             }
         }
         public void Pause(int ms)
