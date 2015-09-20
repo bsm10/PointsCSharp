@@ -35,11 +35,7 @@ namespace DotsGame
         private Dot best_move; //ход который должен сделать комп
         private Dot last_move; //последний ход
         private List<Dot> list_moves; //список ходов
-        private List<Dot> lstPat;
-        public List<Dot> ListPatterns
-        {
-            get { return lstPat; }
-        }
+
 
         public List<Dot> ListMoves 
         {
@@ -89,8 +85,8 @@ namespace DotsGame
         
 #if DEBUG
         public Form2 f = new Form2();
-        private string sPattern="";
 #endif
+        private int iNumberPattern;
 
         Stopwatch stopWatch = new Stopwatch();//для диагностики времени выполнения
 
@@ -98,11 +94,48 @@ namespace DotsGame
         {
             pbxBoard = CanvasGame;
             NewGame();
+            
+        }
+        public void SetLevel(int iLevel=1)
+        {
+            switch (iLevel)
+            {
+                case 0://easy
+                    SkillLevel = 3;
+                    SkillDepth = 15;
+                    SkillNumSq = 3;
+                    break;
+                case 1://mid
+                    SkillLevel = 5;
+                    SkillDepth = 20;
+                    SkillNumSq = 3;
+                    break;
+                case 2://hard
+                    SkillLevel = 50;
+                    SkillDepth = 50;
+                    SkillNumSq = 4;
+                    break;
+            }
+#if DEBUG
+            f.numericUpDown2.Value = SkillDepth;
+            f.numericUpDown4.Value = SkillNumSq;
+            f.numericUpDown3.Value = SkillLevel;
+#endif
         }
         //  ************************************************
         public Dot PickComputerMove(Dot enemy_move)
         {
-            
+            #region если первый ход выбираем произвольную соседнюю точку
+            if (ListMoves.Count<2)
+            {
+                var random = new Random(DateTime.Now.Millisecond);
+                var fm = from Dot d in aDots
+                         where Math.Sqrt(Math.Pow(Math.Abs(d.x - enemy_move.x), 2) + Math.Pow(Math.Abs(d.y - enemy_move.y), 2))<2
+                         orderby random.Next()
+                         select d;
+                return fm.First();
+            }
+            #endregion
             float s1 = square1; float s2 = square2;
             int pl1=0; int pl2=0;
             if (enemy_move.Own == PLAYER_HUMAN) { pl1 = PLAYER_HUMAN; pl2 = PLAYER_COMPUTER; }
@@ -122,7 +155,7 @@ namespace DotsGame
 #if DEBUG
             if (best_move!=null)
             {
-                f.lstDbg2.Items.Add(best_move.ToString() + " - паттерн №" + sPattern);
+                f.lstDbg2.Items.Add(best_move.ToString() + " - паттерн №" + iNumberPattern);
             }
 #endif
             int c1 = 0, c_root = 1000;// , dpth=0;
@@ -191,9 +224,11 @@ namespace DotsGame
         private int Play(ref Dot best_move, Dot move1, Dot move2, int player, ref int count_moves, 
                                ref int recursion_depth, Dot lastmove, ref int counter_root)//возвращает Owner кто побеждает в результате хода
         {
+#if DEBUG
             SkillDepth=(int)f.numericUpDown2.Value;
             SkillNumSq = (int)f.numericUpDown4.Value;
             SkillLevel = (int)f.numericUpDown3.Value;
+#endif
             recursion_depth++;
             if (recursion_depth >= SkillDepth)
             {
@@ -215,15 +250,16 @@ namespace DotsGame
                     d.Own = player == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     int res_last_move = (int)MakeMove(d);
                     count_moves++;
-                    //if (count_moves==318) MessageBox.Show("318");
                     #region проверить не замыкается ли регион
                     Dot dt = CheckMove(player, false);
+                    //Dot dt = CheckMove(d.Own, false);
                     if (dt != null)
                     {
-                        if (recursion_depth < counter_root)
+                        //if (recursion_depth < counter_root)
+                        if (recursion_depth < 3)
                         {
                             counter_root = recursion_depth;
-                            best_move = dt;
+                            best_move = dt.Own == PLAYER_COMPUTER ? d : dt;
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
 #if DEBUG
@@ -233,40 +269,23 @@ namespace DotsGame
                             return player;
                         }
                     }
-                    //проверяем паттерны
-                    dt = CheckPattern(player);
-                    if (dt != null)
-                    {
-                        if (recursion_depth < counter_root)
-                        {
-                            counter_root = recursion_depth;
-                            best_move = d;
-                            lst_best_move.Clear();
-                            lst_best_move.Add(best_move);
-#if DEBUG
-                            f.lstDbg2.Items.Add(recursion_depth + " Play.CheckPattern - " + sPattern + " - " + best_move.x + ":" + best_move.y + "; win player " + player);
-#endif
-                            UndoMove(d);
-                            return player;
-                        }
-                    }
-//                    dt = CheckPattern(d.Own);
-//                    if (dt != null)
-//                    {
-//                        if (recursion_depth < counter_root)
-//                        {
-//                            counter_root = recursion_depth;
-//                            best_move = d;
-//                            lst_best_move.Clear();
-//                            lst_best_move.Add(best_move);
-//#if DEBUG
-//                            f.lstDbg2.Items.Add(recursion_depth + " CheckPattern " + best_move.x + ":" + best_move.y + "; win player " + d.Own);
-//#endif
-//                            UndoMove(d);
-//                            return d.Own;
-//                        }
-//                    }
-
+                    //                    //проверяем паттерны
+                    //                    dt = CheckPattern(player);
+                    //                    if (dt != null)
+                    //                    {
+                    //                        if (recursion_depth < counter_root)
+                    //                        {
+                    //                            counter_root = recursion_depth;
+                    //                            best_move = d;
+                    //                            lst_best_move.Clear();
+                    //                            lst_best_move.Add(best_move);
+                    //#if DEBUG
+                    //                            f.lstDbg2.Items.Add(recursion_depth + " Play.CheckPattern - " + sPattern + " - " + best_move.x + ":" + best_move.y + "; win player " + player);
+                    //#endif
+                    //                            UndoMove(d);
+                    //                            return player;
+                    //                        }
+                    //                    }
 
                     #endregion
                     player = d.Own;
@@ -564,14 +583,11 @@ namespace DotsGame
             square1 = 0; square2 = 0;
             count_blocked1=0;count_blocked2=0;
             count_blocked=0;
-            lstPat = new List<Dot>();//точки паттернов
+            //lstPat = new List<Dot>();//точки паттернов
             
 #if DEBUG
         f.Show();
-            //lstDbg1 = (ListBox)f.Controls.Find("lstDbg1", false)[0];
-            //lstDbg2 = (ListBox)f.Controls.Find("lstDbg2", false)[0];
-            //txtDbg = (TextBox)f.Controls.Find("txtDebug", false)[0];
-            //txtDot = (TextBox)f.Controls.Find("txtDotStatus", false)[0];
+
 #endif
             pbxBoard.Invalidate();
         }
@@ -1049,9 +1065,55 @@ namespace DotsGame
         }
 #endif
 
+        #region Pattern Editor
+        private List<Dot> lstPat;
+        public List<Dot> ListPatterns
+        {
+            get { return lstPat; }
+        }
+        public bool Autoplay
+        {
+            get { return f.rbtnHand.Checked; }
+            //set { f.rbtnHand.Checked = value; }
+        }
+
+        public bool PE_FirstDot
+        {
+            get { return f.tlsТочкаОтсчета.Checked; }
+            set { f.tlsТочкаОтсчета.Checked = value; }
+        }
+        public bool PE_EmptyDot
+        {
+            get { return f.tlsПустая.Checked; }
+            set { f.tlsПустая.Checked = value; }
+
+        }
+
+        public bool PE_AnyDot
+        {
+            get { return f.tlsКромеВражеской.Checked; }
+            set { f.tlsКромеВражеской.Checked = value; }
+
+        }
+        public bool PE_MoveDot
+        {
+            get { return f.tlsТочкаХода.Checked; }
+            set { f.tlsТочкаХода.Checked = value; }
+
+        }
+        public bool PE_On
+        {
+            get
+            {
+                if (f.tlsEditPattern.Checked & lstPat==null) lstPat = new List<Dot>();
+                return f.tlsEditPattern.Checked;
+
+            }
+            set { f.tlsEditPattern.Checked = value; }
+        }
         public void MakePattern()//сохраняет паттерн в текстовое поле
         {
-            string s,strdX,strdY, sWhere="", sMove = "";
+            string s, strdX, strdY, sWhere = "", sMove = "";
             int dx, dy, ind;
             ind = lstPat.FindIndex(
                 delegate (Dot dt)
@@ -1059,10 +1121,10 @@ namespace DotsGame
                     return dt.PatternsFirstDot == true;
                 });
             var random = new Random(DateTime.Now.Millisecond);
-            string n = random.Next(1,1000).ToString();
-            for (int i = 0; i < lstPat.Count-1; i++)
+            string n = random.Next(1, 1000).ToString();
+            for (int i = 0; i < lstPat.Count - 1; i++)
             {
-                string own="";
+                string own = "";
                 if (lstPat[ind].Own == lstPat[i].Own) own = "Owner";
                 if (lstPat[ind].Own != lstPat[i].Own) own = "enemy_own";
                 if (lstPat[i].Own == 0) own = "0";
@@ -1077,18 +1139,19 @@ namespace DotsGame
                 else if (dy > 0) strdY = "+" + dy.ToString();
                 else strdY = dy.ToString();
 
-                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " \r\n"; 
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " \r\n";
 
-                if(lstPat[i].PatternsMoveDot)
+                if (lstPat[i].PatternsMoveDot)
                 {
                     sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
                 }
-                
+
             }
             s = "//============================================================================================================== \r\n";
+            s += "iNumberPattern = " + n + "; \r\n";
             s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
-            n+="_2";
-            sWhere=""; sMove="";
+            n += "_2";
+            sWhere = ""; sMove = "";
             for (int i = 0; i < lstPat.Count - 1; i++)
             {
                 string own = "";
@@ -1112,13 +1175,17 @@ namespace DotsGame
                 }
 
             }
-            s+="//--------------Rotate on 180----------------------------------- \r\n";
+            s += "//--------------Rotate on 180----------------------------------- \r\n";
             s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
             s += "//============================================================================================================== \r\n";
             f.txtDebug.Text = s;
+            MessageBox.Show("Into clipboard!");
             Clipboard.Clear();
             Clipboard.SetText(s);
         }
+        //public bool PatternEdit { get; set; }
+        #endregion
+
         //==========================================================================
         public string path_savegame = Application.CommonAppDataPath + @"\dots.dat";
         public void SaveGame()

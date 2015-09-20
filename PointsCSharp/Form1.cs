@@ -17,12 +17,13 @@ namespace DotsGame
 
             int Xres = Screen.PrimaryScreen.WorkingArea.Width;
             int Yres = Screen.PrimaryScreen.WorkingArea.Height;
-            float scl_coef=Xres/Yres;
-            
-            Height = 400; //2 * Yres / 3;
-            Width = (int)(Height * scl_coef);//Xres / 3;
+            float scl_coef=(float)Xres/ Yres;
+
+            Height = 4 * Yres / 5;
+            Width = Height-50;// (int)(Height * scl_coef);//Xres / 3;
 
             game = new Game(pbxBoard);
+            game.SetLevel(2);
             toolStripStatusLabel2.ForeColor = game.colorGamer1;
             toolStripStatusLabel2.Text = "Ход игрока";
 
@@ -43,24 +44,26 @@ namespace DotsGame
                 {
                     case MouseButtons.Left:
                         #region PatternEditor
-                        if (выделитьШаблонToolStripMenuItem.Checked)
+                        if (game.PE_On==true)
                         {
                             game.ListPatterns.Add(game.aDots[dot.x, dot.y]);
                             game.aDots[dot.x, dot.y].Marked = true;
-                            if(точкаОтсчетаToolStripMenuItem.Checked) 
+                            
+                            if (game.PE_FirstDot)
                             {
-                                game.aDots[dot.x, dot.y].PatternsFirstDot=true;
-                                точкаОтсчетаToolStripMenuItem.Checked=false;
+                                game.aDots[dot.x, dot.y].PatternsFirstDot = true;
+                                game.PE_FirstDot = false;
                                 pbxBoard.Invalidate();
-                                точкаХодаToolStripMenuItem.Checked = true;
+                                game.PE_MoveDot = true;
                                 MessageBox.Show("Ставьте точку хода (ЛКМ), на точку отмеченную как пустую");
                                 break;
                             }
-                            if (точкаХодаToolStripMenuItem.Checked)
+                            if (game.PE_MoveDot)
                             {
                                 game.aDots[dot.x, dot.y].PatternsMoveDot = true;
-                                точкаХодаToolStripMenuItem.Checked=false;
+                                game.PE_MoveDot = false;
                             }
+
                             break;
                         }
                         #endregion
@@ -68,8 +71,7 @@ namespace DotsGame
                         if (game.aDots[game.MousePos.X, game.MousePos.Y].Own > 0) break;//предовращение хода если клик был по занятой точке
                         if (player_move == 2 | player_move == 0)
                         {
-                            //if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift | rbtnHand.Checked)
-                            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+                            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift | game.Autoplay)
                             {
                                 MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null));
                                 break;
@@ -88,16 +90,8 @@ namespace DotsGame
                         #endregion
                         break;
                     case MouseButtons.Right:
-                        if (выделитьШаблонToolStripMenuItem.Checked)
+                        if (game.PE_On == true)
                         {
-
-
-
-
-
-
-
-
                             game.MakePattern();
                             break;
                         }
@@ -394,13 +388,13 @@ namespace DotsGame
 
         private void выделитьШаблонToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (выделитьШаблонToolStripMenuItem.Checked)
-                выделитьШаблонToolStripMenuItem.Checked = false;
-            else
-            {
-                выделитьШаблонToolStripMenuItem.Checked = true;
-                game.ListPatterns.Clear();
-            }
+            //if (выделитьШаблонToolStripMenuItem.Checked)
+            //    выделитьШаблонToolStripMenuItem.Checked = false;
+            //else
+            //{
+            //    выделитьШаблонToolStripMenuItem.Checked = true;
+            //    game.ListPatterns.Clear();
+            //}
         }
 
         private void точкаОтсчетаToolStripMenuItem_Click(object sender, EventArgs e)
@@ -428,6 +422,43 @@ namespace DotsGame
         private void toolStripTextBox1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void Form1_MouseEnter(object sender, EventArgs e)
+        {
+           Activate();
+        }
+
+
+
+        private void среднеToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (среднеToolStripMenuItem.Checked)
+            {
+                тяжелоToolStripMenuItem.Checked = false;
+                легкоToolStripMenuItem.Checked = false;
+                game.SetLevel(1);
+            }
+        }
+
+        private void легкоToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (легкоToolStripMenuItem.Checked)
+            {
+                тяжелоToolStripMenuItem.Checked = false;
+                среднеToolStripMenuItem.Checked = false;
+                game.SetLevel(0);
+            }
+        }
+
+        private void тяжелоToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (тяжелоToolStripMenuItem.Checked)
+            {
+                легкоToolStripMenuItem.Checked = false;
+                среднеToolStripMenuItem.Checked = false;
+                game.SetLevel(2);
+            }
         }
     }  
 }

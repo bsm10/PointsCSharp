@@ -174,7 +174,10 @@ namespace DotsGame
         }
         public bool PatternsFirstDot {get; set;}
         public bool PatternsMoveDot { get; set; }
-        public override string ToString() 
+        public bool PatternsAnyDot { get; set; }
+        public override string ToString()
+
+
             {
             string s;
             if (Own == 1) s = " Player";

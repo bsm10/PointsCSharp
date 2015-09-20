@@ -67,15 +67,72 @@ namespace DotsGame
             switch (tlsEditPattern.Checked)
             {
                 case true:
+                    tlsEditPattern.Checked = false;
                     tlsТочкаОтсчета.Enabled=false;
-                    tlsEditPattern.Checked=false;
+                    tlsПустая.Enabled = false;
+                    tlsПустая.Checked = false;
+                    tlsТочкаХода.Enabled = false;
+                    tlsКромеВражеской.Enabled = false;
                     break;
                 case false:
                     tlsEditPattern.Checked = true;
                     tlsТочкаОтсчета.Enabled = true;
+                    tlsПустая.Enabled = true;
+                    tlsПустая.Checked = true;
+                    tlsТочкаХода.Enabled = true;
+                    tlsКромеВражеской.Enabled = true;
                     break;
             }
         }
 
-     }
+        private void Form2_MouseEnter(object sender, EventArgs e)
+        {
+            Activate();
+        }
+
+        private void tlsТочкаОтсчета_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tlsТочкаОтсчета.Checked)
+            {
+                tlsКромеВражеской.Checked = false;
+                tlsТочкаХода.Checked = false;
+                tlsПустая.Checked = false;
+            }
+        }
+
+        private void tlsПустая_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tlsПустая.Checked)
+            {
+                tlsКромеВражеской.Checked = false;
+                tlsТочкаХода.Checked = false;
+                tlsТочкаОтсчета.Checked = false;
+            }
+        }
+
+        private void tlsКромеВражеской_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tlsКромеВражеской.Checked)
+            {
+                tlsПустая.Checked = false;
+                tlsТочкаХода.Checked = false;
+                tlsТочкаОтсчета.Checked = false;
+            }
+        }
+
+        private void tlsТочкаХода_CheckedChanged(object sender, EventArgs e)
+        {
+            if(tlsТочкаХода.Checked)
+            {
+                tlsПустая.Checked = false;
+                tlsКромеВражеской.Checked = false;
+                tlsТочкаОтсчета.Checked = false;
+            }
+        }
+
+        private void tlsКромеВражеской_Click(object sender, EventArgs e)
+        {
+            
+        }
+    }
 }
