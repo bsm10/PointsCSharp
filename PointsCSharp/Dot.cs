@@ -175,6 +175,8 @@ namespace DotsGame
         public bool PatternsFirstDot {get; set;}
         public bool PatternsMoveDot { get; set; }
         public bool PatternsAnyDot { get; set; }
+        public bool PatternsEmptyDot { get; set; }
+
         public override string ToString()
 
 

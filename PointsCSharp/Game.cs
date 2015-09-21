@@ -130,7 +130,7 @@ namespace DotsGame
             {
                 var random = new Random(DateTime.Now.Millisecond);
                 var fm = from Dot d in aDots
-                         where Math.Sqrt(Math.Pow(Math.Abs(d.x - enemy_move.x), 2) + Math.Pow(Math.Abs(d.y - enemy_move.y), 2))<2
+                         where d.Own==0 & Math.Sqrt(Math.Pow(Math.Abs(d.x - enemy_move.x), 2) + Math.Pow(Math.Abs(d.y - enemy_move.y), 2)) < 2
                          orderby random.Next()
                          select d;
                 return fm.First();
@@ -150,8 +150,10 @@ namespace DotsGame
             if (best_move == null) best_move = CheckMove(pl1);
             aDots.UnmarkAllDots();
             //проверяем паттерны
+            if (best_move == null) best_move = CheckPattern_vilochka(pl2);
+            if (best_move == null) best_move = CheckPattern_vilochka(pl1);
             if (best_move == null) best_move = CheckPattern(pl2);
-            if (best_move == null) best_move = CheckPattern(pl1);  // проверяем ходы
+            if (best_move == null) best_move = CheckPattern(pl1);
 #if DEBUG
             if (best_move!=null)
             {
@@ -256,7 +258,7 @@ namespace DotsGame
                     if (dt != null)
                     {
                         //if (recursion_depth < counter_root)
-                        if (recursion_depth < 3)
+                        if (recursion_depth < 2)
                         {
                             counter_root = recursion_depth;
                             best_move = dt.Own == PLAYER_COMPUTER ? d : dt;
@@ -269,23 +271,23 @@ namespace DotsGame
                             return player;
                         }
                     }
-                    //                    //проверяем паттерны
-                    //                    dt = CheckPattern(player);
-                    //                    if (dt != null)
-                    //                    {
-                    //                        if (recursion_depth < counter_root)
-                    //                        {
-                    //                            counter_root = recursion_depth;
-                    //                            best_move = d;
-                    //                            lst_best_move.Clear();
-                    //                            lst_best_move.Add(best_move);
-                    //#if DEBUG
-                    //                            f.lstDbg2.Items.Add(recursion_depth + " Play.CheckPattern - " + sPattern + " - " + best_move.x + ":" + best_move.y + "; win player " + player);
-                    //#endif
-                    //                            UndoMove(d);
-                    //                            return player;
-                    //                        }
-                    //                    }
+                    //проверяем паттерны - вилочка
+                    dt = CheckPattern_vilochka(player);
+                    if (dt != null)
+                    {
+                        if (recursion_depth < counter_root)
+                        {
+                            counter_root = recursion_depth;
+                            best_move = d;
+                            lst_best_move.Clear();
+                            lst_best_move.Add(best_move);
+#if DEBUG
+                            f.lstDbg2.Items.Add(recursion_depth + " Play.CheckPattern - " + iNumberPattern + " - " + best_move.x + ":" + best_move.y + "; win player " + player);
+#endif
+                            UndoMove(d);
+                            return player;
+                        }
+                    }
 
                     #endregion
                     player = d.Own;
@@ -680,7 +682,8 @@ namespace DotsGame
                             SetColorAndDrawDots(gr, colorGamer2, p);
                             break;
                         case 0:
-                            if (p.Marked) SetColorAndDrawDots(gr, Color.Bisque, p);
+                            if (p.PatternsEmptyDot) SetColorAndDrawDots(gr, Color.Bisque, p);
+                            if (p.PatternsAnyDot) SetColorAndDrawDots(gr, Color.DarkOrange, p);
                             break;
                     }
                 }
@@ -706,7 +709,7 @@ namespace DotsGame
                 gr.FillEllipse(new SolidBrush(colorGamer), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(c, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
             }
-            if (p.Marked)
+            if (p.PatternsEmptyDot)
             {
                 gr.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.WhiteSmoke)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(Color.Transparent, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
@@ -720,6 +723,11 @@ namespace DotsGame
             {
                 //gr.FillEllipse(new SolidBrush(Color.FromArgb(50, Color.ForestGreen)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(Color.DarkSeaGreen, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+            }
+            if (p.PatternsAnyDot)
+            {
+                gr.FillEllipse(new SolidBrush(Color.Yellow), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.DrawEllipse(new Pen(Color.Orange, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
             }
 
         }
@@ -1122,12 +1130,13 @@ namespace DotsGame
                 });
             var random = new Random(DateTime.Now.Millisecond);
             string n = random.Next(1, 1000).ToString();
-            for (int i = 0; i < lstPat.Count - 1; i++)
+            for (int i = 0; i < lstPat.Count; i++)
             {
                 string own = "";
-                if (lstPat[ind].Own == lstPat[i].Own) own = "Owner";
-                if (lstPat[ind].Own != lstPat[i].Own) own = "enemy_own";
-                if (lstPat[i].Own == 0) own = "0";
+                if (lstPat[ind].Own == lstPat[i].Own) own = "== Owner";
+                if (lstPat[ind].Own != lstPat[i].Own) own = "== enemy_own";
+                if (lstPat[i].Own == 0 & lstPat[i].PatternsAnyDot==false) own = " == 0";
+                if (lstPat[i].PatternsAnyDot) own = " != enemy_own";
 
                 dx = lstPat[i].x - lstPat[ind].x;
                 if (dx == 0) strdX = "";
@@ -1139,7 +1148,7 @@ namespace DotsGame
                 else if (dy > 0) strdY = "+" + dy.ToString();
                 else strdY = dy.ToString();
 
-                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " \r\n";
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " \r\n";
 
                 if (lstPat[i].PatternsMoveDot)
                 {
@@ -1155,9 +1164,10 @@ namespace DotsGame
             for (int i = 0; i < lstPat.Count - 1; i++)
             {
                 string own = "";
-                if (lstPat[ind].Own == lstPat[i].Own) own = "Owner";
-                if (lstPat[ind].Own != lstPat[i].Own) own = "enemy_own";
-                if (lstPat[i].Own == 0) own = "0";
+                if (lstPat[ind].Own == lstPat[i].Own) own = "== Owner";
+                if (lstPat[ind].Own != lstPat[i].Own) own = "== enemy_own";
+                if (lstPat[i].Own == 0 & lstPat[i].PatternsAnyDot == false) own = " == 0";
+                if (lstPat[i].PatternsAnyDot) own = " != enemy_own";
 
                 dx = lstPat[ind].x - lstPat[i].x;
                 if (dx == 0) strdX = "";
@@ -1168,7 +1178,7 @@ namespace DotsGame
                 if (dy == 0) strdY = "";
                 else if (dy > 0) strdY = "+" + dy.ToString();
                 else strdY = dy.ToString();
-                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " \r\n";
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " \r\n";
                 if (lstPat[i].PatternsMoveDot)
                 {
                     sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
@@ -1178,41 +1188,12 @@ namespace DotsGame
             s += "//--------------Rotate on 180----------------------------------- \r\n";
             s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
             s += "//============================================================================================================== \r\n";
-            //n += "_3";
-            //sWhere = ""; sMove = "";
-            //for (int i = 0; i < lstPat.Count - 1; i++)
-            //{
-            //    string own = "";
-            //    if (lstPat[ind].Own == lstPat[i].Own) own = "Owner";
-            //    if (lstPat[ind].Own != lstPat[i].Own) own = "enemy_own";
-            //    if (lstPat[i].Own == 0) own = "0";
-
-            //    dx = lstPat[ind].x - lstPat[i].x;
-            //    if (dx == 0) strdX = "";
-            //    else if (dx > 0) strdX = "+" + dx.ToString();
-            //    else strdX = dx.ToString();
-
-            //    dy = lstPat[ind].y - lstPat[i].y;
-            //    if (dy == 0) strdY = "";
-            //    else if (dy > 0) strdY = "+" + dy.ToString();
-            //    else strdY = dy.ToString();
-            //    if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " \r\n";
-            //    if (lstPat[i].PatternsMoveDot)
-            //    {
-            //        sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
-            //    }
-
-            //}
-            //s += "//--------------Rotate on 90----------------------------------- \r\n";
-            //s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
-            //s += "//============================================================================================================== \r\n";
 
             f.txtDebug.Text = s;
             MessageBox.Show("Into clipboard!");
             Clipboard.Clear();
             Clipboard.SetText(s);
         }
-        //public bool PatternEdit { get; set; }
         #endregion
 
         //==========================================================================

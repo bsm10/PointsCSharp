@@ -46,9 +46,15 @@ namespace DotsGame
                         #region PatternEditor
                         if (game.PE_On==true)
                         {
-                            game.ListPatterns.Add(game.aDots[dot.x, dot.y]);
-                            game.aDots[dot.x, dot.y].Marked = true;
-                            
+                            if(game.ListPatterns.Contains(game.aDots[dot.x, dot.y])==false)
+                            {
+                                 game.ListPatterns.Add(game.aDots[dot.x, dot.y]);
+                            }
+                            if (game.PE_EmptyDot)
+                            {
+                                if (game.aDots[dot.x, dot.y].PatternsAnyDot) game.aDots[dot.x, dot.y].PatternsAnyDot = false;
+                                game.aDots[dot.x, dot.y].PatternsEmptyDot = true;
+                            }
                             if (game.PE_FirstDot)
                             {
                                 game.aDots[dot.x, dot.y].PatternsFirstDot = true;
@@ -63,7 +69,11 @@ namespace DotsGame
                                 game.aDots[dot.x, dot.y].PatternsMoveDot = true;
                                 game.PE_MoveDot = false;
                             }
-
+                            if (game.PE_AnyDot)
+                            {
+                                if (game.aDots[dot.x, dot.y].PatternsEmptyDot) game.aDots[dot.x, dot.y].PatternsEmptyDot = false;
+                                game.aDots[dot.x, dot.y].PatternsAnyDot = true;
+                            }
                             break;
                         }
                         #endregion
@@ -101,6 +111,12 @@ namespace DotsGame
                         }
                         break;
                     case MouseButtons.Middle:
+                        if (game.PE_On == true)
+                        {
+                            game.ListPatterns.Remove(game.aDots[dot.x, dot.y]);
+                            break;
+                        }
+
                             game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
                             game.UndoMove(dot.x, dot.y);
                         break;
@@ -113,15 +129,15 @@ namespace DotsGame
         }
         public void pbxBoard_MouseWheel(object sender, MouseEventArgs e)
         {
-            int d = e.Delta / 120;
-            game.iScaleCoef -= d;
-            game.iBoardSize -= d;
-            if (game.iBoardSize < Game.iBoardSizeMin)
-                game.iBoardSize = Game.iBoardSizeMin;
-            if (game.iBoardSize > Game.iBoardSizeMax)
-                game.iBoardSize = Game.iBoardSizeMax;
-            //game.iMapSize = game.iBoardSize * game.iScaleCoef;
-            Invalidate(pbxBoard.Region);
+            //int d = e.Delta / 120;
+            //game.iScaleCoef -= d;
+            //game.iBoardSize -= d;
+            //if (game.iBoardSize < Game.iBoardSizeMin)
+            //    game.iBoardSize = Game.iBoardSizeMin;
+            //if (game.iBoardSize > Game.iBoardSizeMax)
+            //    game.iBoardSize = Game.iBoardSizeMax;
+            ////game.iMapSize = game.iBoardSize * game.iScaleCoef;
+            //Invalidate(pbxBoard.Region);
         }
         private void pbxBoard_MouseMove(object sender, MouseEventArgs e)
         {
@@ -200,15 +216,6 @@ namespace DotsGame
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-        private void pbxBoard_MouseLeave(object sender, EventArgs e)
-        {
-            //Cursor.Show();
-        }
-        private void pbxBoard_MouseEnter(object sender, EventArgs e)
-        {
-            //Cursor.Hide();
-
         }
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -323,34 +330,6 @@ namespace DotsGame
 
         }
 
-        private void chkMove_CheckedChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
-        {
-            //game.SkillDepth = (int)numericUpDown2.Value;
-        }
-
-        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
-        {
-            //game.SkillLevel = (int)numericUpDown3.Value;
-        }
-
-        private void numericUpDown4_ValueChanged(object sender, EventArgs e)
-        {
-            //game.SkillNumSq = (int)numericUpDown4.Value;
-        }
-
-        private void lstMoves_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void toolStripComboBox1_Click(object sender, EventArgs e)
-        {
-            //game.SkillLevel = (int)toolStripComboBox1.Selected.ToString;
-        }
-
         private void autoplayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             do
@@ -363,7 +342,6 @@ namespace DotsGame
             while (true);
             return;
         }
-
         private int MoveGamer(int Player, Dot pl_move=null)
         {
             if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove);
@@ -385,52 +363,10 @@ namespace DotsGame
             //rtbStat.Text = game.Statistic();
             return 0;
         }
-
-        private void выделитьШаблонToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //if (выделитьШаблонToolStripMenuItem.Checked)
-            //    выделитьШаблонToolStripMenuItem.Checked = false;
-            //else
-            //{
-            //    выделитьШаблонToolStripMenuItem.Checked = true;
-            //    game.ListPatterns.Clear();
-            //}
-        }
-
-        private void точкаОтсчетаToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (точкаОтсчетаToolStripMenuItem.Checked)
-                точкаОтсчетаToolStripMenuItem.Checked = false;
-            else
-            {
-                точкаОтсчетаToolStripMenuItem.Checked = true;
-                точкаХодаToolStripMenuItem.Checked = false;
-            }
-        }
-
-        private void точкаХодаToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (точкаХодаToolStripMenuItem.Checked)
-                точкаХодаToolStripMenuItem.Checked = false;
-            else
-            {
-                точкаХодаToolStripMenuItem.Checked = true;
-                точкаОтсчетаToolStripMenuItem.Checked = false;
-            }
-        }
-
-        private void toolStripTextBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Form1_MouseEnter(object sender, EventArgs e)
         {
            Activate();
         }
-
-
-
         private void среднеToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
         {
             if (среднеToolStripMenuItem.Checked)
@@ -440,7 +376,6 @@ namespace DotsGame
                 game.SetLevel(1);
             }
         }
-
         private void легкоToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
         {
             if (легкоToolStripMenuItem.Checked)
@@ -450,7 +385,6 @@ namespace DotsGame
                 game.SetLevel(0);
             }
         }
-
         private void тяжелоToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
         {
             if (тяжелоToolStripMenuItem.Checked)
