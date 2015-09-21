@@ -1178,6 +1178,35 @@ namespace DotsGame
             s += "//--------------Rotate on 180----------------------------------- \r\n";
             s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
             s += "//============================================================================================================== \r\n";
+            //n += "_3";
+            //sWhere = ""; sMove = "";
+            //for (int i = 0; i < lstPat.Count - 1; i++)
+            //{
+            //    string own = "";
+            //    if (lstPat[ind].Own == lstPat[i].Own) own = "Owner";
+            //    if (lstPat[ind].Own != lstPat[i].Own) own = "enemy_own";
+            //    if (lstPat[i].Own == 0) own = "0";
+
+            //    dx = lstPat[ind].x - lstPat[i].x;
+            //    if (dx == 0) strdX = "";
+            //    else if (dx > 0) strdX = "+" + dx.ToString();
+            //    else strdX = dx.ToString();
+
+            //    dy = lstPat[ind].y - lstPat[i].y;
+            //    if (dy == 0) strdY = "";
+            //    else if (dy > 0) strdY = "+" + dy.ToString();
+            //    else strdY = dy.ToString();
+            //    if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own == " + own + " \r\n";
+            //    if (lstPat[i].PatternsMoveDot)
+            //    {
+            //        sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+            //    }
+
+            //}
+            //s += "//--------------Rotate on 90----------------------------------- \r\n";
+            //s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
+            //s += "//============================================================================================================== \r\n";
+
             f.txtDebug.Text = s;
             MessageBox.Show("Into clipboard!");
             Clipboard.Clear();
