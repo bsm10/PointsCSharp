@@ -84,7 +84,6 @@
             this.lstDbg2.Name = "lstDbg2";
             this.lstDbg2.Size = new System.Drawing.Size(247, 121);
             this.lstDbg2.TabIndex = 2;
-            this.lstDbg2.SelectedIndexChanged += new System.EventHandler(this.lstDbg2_SelectedIndexChanged);
             // 
             // txtDebug
             // 
@@ -182,7 +181,6 @@
             0,
             0,
             0});
-            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
             // 
             // numericUpDown2
             // 
@@ -212,7 +210,6 @@
             0,
             0,
             0});
-            this.numericUpDown2.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
             // 
             // label1
             // 
@@ -254,7 +251,6 @@
             0,
             0,
             0});
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // label2
             // 
@@ -281,7 +277,6 @@
             this.chkMove.TabIndex = 23;
             this.chkMove.Text = "ходы";
             this.chkMove.UseVisualStyleBackColor = true;
-            this.chkMove.CheckedChanged += new System.EventHandler(this.chkMove_CheckedChanged);
             // 
             // label3
             // 
@@ -318,7 +313,6 @@
             0,
             0,
             0});
-            this.numericUpDown4.ValueChanged += new System.EventHandler(this.numericUpDown4_ValueChanged);
             // 
             // rtbStat
             // 

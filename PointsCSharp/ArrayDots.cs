@@ -233,12 +233,6 @@ namespace DotsGame
             }
         }
         
-        //public void Sort(ref Dot[] arrDots)//принимает пустой массив, в который возвращает отсортированный массив по Х и У
-        //{
-        //    arrDots=(Dot[])Dots.Clone();
-        //    ComparerDots cmp = new ComparerDots();
-        //    Array.Sort(arrDots, cmp);
-        //}
         public void Remove(Dot dot)//удаляет точку из массива
         {
             int i = Dots[dot.x, dot.y].IndexDot;
@@ -285,6 +279,8 @@ namespace DotsGame
                 d.Marked = false;
                 d.PatternsFirstDot = false;
                 d.PatternsMoveDot = false;
+                d.PatternsAnyDot=false;
+                d.PatternsEmptyDot=false;
             }
         }
 

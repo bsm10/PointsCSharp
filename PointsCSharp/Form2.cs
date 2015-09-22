@@ -9,12 +9,11 @@ namespace DotsGame
         {
             InitializeComponent();
             rbtnAuto.Checked = true;
-
         }
 
         private void Form2_Load(object sender, EventArgs e)
         {
-
+            
         }
         public ListBox listDbg1()
         {
@@ -24,31 +23,6 @@ namespace DotsGame
         {
             return lstDbg2;
         }
-
-        private void lstDbg2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void numericUpDown4_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            //game.pause = (int)numericUpDown1.Value;
-        }
         public int Pause
         {
             get
@@ -57,11 +31,6 @@ namespace DotsGame
 
             }
         }
-
-        private void chkMove_CheckedChanged(object sender, EventArgs e)
-        {
-        }
-
         private void tlsEditPattern_Click(object sender, EventArgs e)
         {
             switch (tlsEditPattern.Checked)
@@ -73,6 +42,7 @@ namespace DotsGame
                     tlsПустая.Checked = false;
                     tlsТочкаХода.Enabled = false;
                     tlsКромеВражеской.Enabled = false;
+                    
                     break;
                 case false:
                     tlsEditPattern.Checked = true;

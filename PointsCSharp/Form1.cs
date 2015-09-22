@@ -14,13 +14,12 @@ namespace DotsGame
         {
             InitializeComponent();
 
-
             int Xres = Screen.PrimaryScreen.WorkingArea.Width;
             int Yres = Screen.PrimaryScreen.WorkingArea.Height;
             float scl_coef=(float)Xres/ Yres;
 
             Height = 4 * Yres / 5;
-            Width = Height-50;// (int)(Height * scl_coef);//Xres / 3;
+            Width = Height-50;
 
             game = new Game(pbxBoard);
             game.SetLevel(2);
