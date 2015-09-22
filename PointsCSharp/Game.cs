@@ -148,12 +148,16 @@ namespace DotsGame
             //проверяем ход который ведет сразу к окружению
             best_move = CheckMove(pl2);
             if (best_move == null) best_move = CheckMove(pl1);
+            if (best_move == null) best_move = CheckPatternVilka(pl2);
+            if (aDots.Contains(best_move) == false) best_move = null;
+            if (best_move == null) best_move = CheckPatternVilka(pl1);
+            if (aDots.Contains(best_move) == false) best_move = null;
             aDots.UnmarkAllDots();
             //проверяем паттерны
-            if (best_move == null) best_move = CheckPattern_vilochka(pl2);
-            if (best_move == null) best_move = CheckPattern_vilochka(pl1);
             if (best_move == null) best_move = CheckPattern(pl2);
+            if (aDots.Contains(best_move) == false) best_move = null;
             if (best_move == null) best_move = CheckPattern(pl1);
+            if (aDots.Contains(best_move) == false) best_move = null;
 #if DEBUG
             if (best_move!=null)
             {
@@ -271,24 +275,6 @@ namespace DotsGame
                             return player;
                         }
                     }
-                    //проверяем паттерны - вилочка
-                    dt = CheckPattern_vilochka(player);
-                    if (dt != null)
-                    {
-                        if (recursion_depth < counter_root)
-                        {
-                            counter_root = recursion_depth;
-                            best_move = d;
-                            lst_best_move.Clear();
-                            lst_best_move.Add(best_move);
-#if DEBUG
-                            f.lstDbg2.Items.Add(recursion_depth + " Play.CheckPattern - " + iNumberPattern + " - " + best_move.x + ":" + best_move.y + "; win player " + player);
-#endif
-                            UndoMove(d);
-                            return player;
-                        }
-                    }
-
                     #endregion
                     player = d.Own;
                     if (player == 1 & recursion_depth < 3) move1 = d;
@@ -319,7 +305,6 @@ namespace DotsGame
                         if (recursion_depth < counter_root)
                         {
                             counter_root = recursion_depth;
-                            //best_move = new Dot(d.x,d.y);
                             best_move = new Dot(move1.x, move1.y);
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
@@ -335,7 +320,6 @@ namespace DotsGame
                         if (recursion_depth < counter_root)
                         {
                             counter_root = recursion_depth;
-                            // best_move =  new Dot(d.x, d.y);
                             best_move = new Dot(move2.x, move2.y);
                             lst_best_move.Clear();
                             lst_best_move.Add(best_move);
@@ -507,7 +491,7 @@ namespace DotsGame
                     int result_last_move = (int)MakeMove(d);
                     if (f.chkMove.Checked) Pause();
                     //-----------------------------------
-                    if (result_last_move != 0 & aDots[d.x, d.y].Blocked == false)
+                    if (result_last_move != 0 & aDots[d.x, d.y].Blocked == false )
                     {
                         UndoMove(d);
                         return d;
@@ -517,7 +501,32 @@ namespace DotsGame
             }
             return null;
         }
-        
+        private Dot CheckPatternVilka(int Owner)
+        {
+            var qry = from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked == false select d;
+            Dot dot_ptn;
+            Dot[] ad = qry.ToArray();
+            if (ad.Length != 0)
+            {
+                foreach (Dot d in ad)
+                {
+                    //делаем ход
+                    d.Own = Owner;
+                    int result_last_move = (int)MakeMove(d);
+                    dot_ptn = CheckPattern_vilochka(d.Own);
+                    if (f.chkMove.Checked) Pause();
+                    //-----------------------------------
+                    if (dot_ptn != null)
+                    {
+                        UndoMove(d);
+                        return dot_ptn;
+                    }
+                    UndoMove(d);
+                }
+            }
+            return null;
+        }
+
         public string Statistic()
         {
             var q5 = from Dot d in aDots where d.Own == 1 select d;

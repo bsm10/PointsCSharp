@@ -260,9 +260,10 @@ namespace DotsGame
         {
             return (float)Math.Sqrt(Math.Pow((dot1.x - dot2.x),2) + Math.Pow((dot1.y - dot2.y), 2));
         }
-        public bool Contains(Dot Dot)//проверяет, есть ли точка с такими координатами в массиве
+        public bool Contains(Dot dot)//проверяет, есть ли точка с такими координатами в массиве
         {
-                if (Dot.x >=0 & Dot.x<nSize & Dot.y >= 0 & Dot.y<nSize )
+            if (dot == null) return false;
+                if (dot.x >=0 & dot.x<nSize & dot.y >= 0 & dot.y<nSize )
                 {
                     return true;
                 } 
