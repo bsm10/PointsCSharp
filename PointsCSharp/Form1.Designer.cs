@@ -104,7 +104,7 @@
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(164, 24);
+            this.menuStrip.Size = new System.Drawing.Size(256, 24);
             this.menuStrip.TabIndex = 2;
             // 
             // файлToolStripMenuItem
@@ -237,9 +237,7 @@
             // 
             // тяжелоToolStripMenuItem
             // 
-            this.тяжелоToolStripMenuItem.Checked = true;
             this.тяжелоToolStripMenuItem.CheckOnClick = true;
-            this.тяжелоToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.тяжелоToolStripMenuItem.Name = "тяжелоToolStripMenuItem";
             this.тяжелоToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.тяжелоToolStripMenuItem.Text = "тяжело";

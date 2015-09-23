@@ -11,5 +11,8 @@
     <Setting Name="Color_Gamer2" Type="System.Drawing.Color" Scope="User">
       <Value Profile="(Default)">80, 100, 200</Value>
     </Setting>
+    <Setting Name="Level" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

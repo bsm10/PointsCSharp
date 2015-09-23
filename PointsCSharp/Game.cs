@@ -114,6 +114,8 @@ namespace DotsGame
                     SkillNumSq = 4;
                     break;
             }
+            Properties.Settings.Default.Level=iLevel;
+            Properties.Settings.Default.Save();
 #if DEBUG
             f.numericUpDown2.Value = SkillDepth;
             f.numericUpDown4.Value = SkillNumSq;
@@ -146,16 +148,22 @@ namespace DotsGame
             //проверяем ход который ведет сразу к окружению
             best_move = CheckMove(pl2);
             if (best_move == null) best_move = CheckMove(pl1);
-            if (best_move == null) best_move = CheckPatternVilka(pl2);
-            if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move == null) best_move = CheckPatternVilka(pl1);
-            if (aDots.Contains(best_move) == false) best_move = null;
             aDots.UnmarkAllDots();
             //проверяем паттерны
+            if (best_move == null) best_move = CheckPattern_vilochka(pl2);
+            if (aDots.Contains(best_move) == false) best_move = null;
+            if (best_move == null) best_move = CheckPattern_vilochka(pl1);
+            if (aDots.Contains(best_move) == false) best_move = null;
             if (best_move == null) best_move = CheckPattern(pl2);
             if (aDots.Contains(best_move) == false) best_move = null;
             if (best_move == null) best_move = CheckPattern(pl1);
             if (aDots.Contains(best_move) == false) best_move = null;
+            if (best_move == null) best_move = CheckPatternVilkaNextMove(pl2);
+            if (aDots.Contains(best_move) == false) best_move = null;
+            if (best_move == null) best_move = CheckPatternVilkaNextMove(pl1);
+            if (aDots.Contains(best_move) == false) best_move = null;
+
+
 #if DEBUG
             if (best_move!=null)
             {
@@ -499,7 +507,7 @@ namespace DotsGame
             }
             return null;
         }
-        private Dot CheckPatternVilka(int Owner)
+        private Dot CheckPatternVilkaNextMove(int Owner)
         {
             var qry = from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked == false select d;
             Dot dot_ptn;
@@ -514,10 +522,11 @@ namespace DotsGame
                     dot_ptn = CheckPattern_vilochka(d.Own);
                     if (f.chkMove.Checked) Pause();
                     //-----------------------------------
-                    if (dot_ptn != null)
+                    if (dot_ptn != null & CheckMove(1)==null)
                     {
                         UndoMove(d);
-                        return dot_ptn; 
+                        //return dot_ptn; 
+                        return d;
                     }
                     UndoMove(d);
                 }
@@ -592,7 +601,7 @@ namespace DotsGame
             square1 = 0; square2 = 0;
             count_blocked1=0;count_blocked2=0;
             count_blocked=0;
-            //lstPat = new List<Dot>();//точки паттернов
+            SetLevel(Properties.Settings.Default.Level);
             
 #if DEBUG
         f.Show();

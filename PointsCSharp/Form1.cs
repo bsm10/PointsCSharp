@@ -22,11 +22,15 @@ namespace DotsGame
             Width = Height-50;
 
             game = new Game(pbxBoard);
-            game.SetLevel(2);
+            //game.SetLevel(2);
             toolStripStatusLabel2.ForeColor = game.colorGamer1;
             toolStripStatusLabel2.Text = "Ход игрока";
 
             toolStripTextBox1.Text = game.iBoardSize.ToString();
+
+            if(Properties.Settings.Default.Level==0) легкоToolStripMenuItem.Checked=true;
+            if (Properties.Settings.Default.Level == 1) среднеToolStripMenuItem.Checked = true;
+            if (Properties.Settings.Default.Level == 2) тяжелоToolStripMenuItem.Checked = true;
         }
         private void pbxBoard_Paint(object sender, PaintEventArgs e)
         {
@@ -393,5 +397,6 @@ namespace DotsGame
                 game.SetLevel(2);
             }
         }
+
     }  
 }
