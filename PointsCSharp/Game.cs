@@ -522,7 +522,8 @@ namespace DotsGame
                     dot_ptn = CheckPattern_vilochka(d.Own);
                     if (f.chkMove.Checked) Pause();
                     //-----------------------------------
-                    if (dot_ptn != null & CheckMove(1)==null)
+                    //if (dot_ptn != null & CheckMove(1)==null)
+                    if (dot_ptn != null)
                     {
                         UndoMove(d);
                         //return dot_ptn; 
