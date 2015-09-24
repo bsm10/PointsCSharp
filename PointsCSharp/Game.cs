@@ -147,9 +147,11 @@ namespace DotsGame
             Dot lm = new Dot(last_move.x, last_move.y);//точка последнего хода
             //проверяем ход который ведет сразу к окружению
             best_move = CheckMove(pl2);
+           
             if (best_move == null) best_move = CheckMove(pl1);
             aDots.UnmarkAllDots();
             //проверяем паттерны
+            
             if (best_move == null) best_move = CheckPattern_vilochka(pl2);
             if (aDots.Contains(best_move) == false) best_move = null;
             if (best_move == null) best_move = CheckPattern_vilochka(pl1);
@@ -522,8 +524,8 @@ namespace DotsGame
                     dot_ptn = CheckPattern_vilochka(d.Own);
                     if (f.chkMove.Checked) Pause();
                     //-----------------------------------
-                    //if (dot_ptn != null & CheckMove(1)==null)
-                    if (dot_ptn != null)
+                    if (dot_ptn != null & result_last_move==0)
+                    //if (dot_ptn != null)
                     {
                         UndoMove(d);
                         //return dot_ptn; 
