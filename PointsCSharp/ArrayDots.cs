@@ -283,6 +283,46 @@ namespace DotsGame
                 d.PatternsEmptyDot=false;
             }
         }
+        public int MinX()
+        {
+        var q = from Dot d in Dots where d.Own!=0 & d.Blocked==false select d;
+            int minX=nSize;
+            foreach (Dot d in q)
+            {
+                if(minX>d.x)minX=d.x; 
+            }
+            return minX;
+        }
+        public int MaxX()
+        {
+            var q = from Dot d in Dots where d.Own != 0 & d.Blocked == false select d;
+            int maxX = 0;
+            foreach (Dot d in q)
+            {
+                if (maxX < d.x) maxX = d.x;
+            }
+            return maxX;
+        }
+        public int MaxY()
+        {
+            var q = from Dot d in Dots where d.Own != 0 & d.Blocked == false select d;
+            int maxY = 0;
+            foreach (Dot d in q)
+            {
+                if (maxY < d.y) maxY = d.y;
+            }
+            return maxY;
+        }
+        public int MinY()
+        {
+            var q = from Dot d in Dots where d.Own != 0 & d.Blocked == false select d;
+            int minY = nSize;
+            foreach (Dot d in q)
+            {
+                if (minY > d.y) minY = d.y;
+            }
+            return minY;
+        }
 
         public Dot[] NotBlockedDots()
         {

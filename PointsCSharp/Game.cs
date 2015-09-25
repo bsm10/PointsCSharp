@@ -111,7 +111,7 @@ namespace DotsGame
                 case 2://hard
                     SkillLevel = 50;
                     SkillDepth = 50;
-                    SkillNumSq = 4;
+                    SkillNumSq = 5;
                     break;
             }
             Properties.Settings.Default.Level=iLevel;
@@ -265,7 +265,7 @@ namespace DotsGame
                     int res_last_move = (int)MakeMove(d);
                     count_moves++;
                     #region проверить не замыкается ли регион
-                    Dot dt = CheckMove(player, false);
+                    Dot dt = CheckMove(player);//CheckMove(player, false);
                     //Dot dt = CheckMove(d.Own, false);
                     if (dt != null)
                     {
@@ -362,7 +362,11 @@ namespace DotsGame
             int depth = 0, counter = 0, counter_root = 1000, own;
             own = PLAYER_HUMAN;//последним ходил игрок
             List<Dot> mvs = new List<Dot>();
-            Dot[] ad=null; 
+            Dot[] ad=null;
+            int minX = aDots.MinX();
+            int minY = aDots.MinY();
+            int maxX = aDots.MaxX();
+            int maxY = aDots.MaxY();
 
             int i = 0;
             do
@@ -370,10 +374,17 @@ namespace DotsGame
                 if (i == 0)
                 {
                     var qry = from Dot d in aDots
-                              where d.Own == PLAYER_NONE & d.Blocked == false //& Math.Abs(d.x - last_mv.x) < SkillNumSq
-                                                                              // & Math.Abs(d.y - last_mv.y) < SkillNumSq
+                              where d.Own == PLAYER_NONE & d.Blocked == false
+                                                        & d.x <= maxX + 1 & d.x >= minX - 1
+                                                        & d.y <= maxY + 1 & d.y >= minY - 1
                               orderby d.x
                               select d;
+
+                    //var qry = from Dot d in aDots
+                    //          where d.Own == PLAYER_NONE & d.Blocked == false //& Math.Abs(d.x - last_mv.x) < SkillNumSq
+                    //                                                          // & Math.Abs(d.y - last_mv.y) < SkillNumSq
+                    //          orderby d.x
+                    //          select d;
                     ad = qry.ToArray();
                     if (qry.Count() == 0)
                     {
@@ -389,10 +400,17 @@ namespace DotsGame
                 else if (i == 1)
                 {
                     var qry1 = from Dot d in aDots
-                          where d.Own == PLAYER_NONE & d.Blocked == false//& Math.Abs(d.x - last_mv.x) < SkillNumSq
-                                                                         // & Math.Abs(d.y - last_mv.y) < SkillNumSq
-                          orderby d.y descending
-                          select d;
+                              where d.Own == PLAYER_NONE & d.Blocked == false
+                                                        & d.x <= maxX + 1 & d.x >= minX - 1
+                                                        & d.y <= maxY + 1 & d.y >= minY - 1
+                              orderby d.y descending
+                              select d;
+
+                    //var qry1 = from Dot d in aDots
+                    //      where d.Own == PLAYER_NONE & d.Blocked == false//& Math.Abs(d.x - last_mv.x) < SkillNumSq
+                    //                                                     // & Math.Abs(d.y - last_mv.y) < SkillNumSq
+                    //      orderby d.y descending
+                    //      select d;
                     ad = qry1.ToArray();
                     if (qry1.Count() == 0)
                     {
@@ -484,11 +502,17 @@ namespace DotsGame
 
         //==============================================================================================
         //проверяет ход в результате которого окружение.Возвращает ход который завершает окружение
-        private Dot CheckMove(int Owner, bool AllBoard=true)
+        private Dot CheckMove(int Owner)
         {
-            var qry = AllBoard ? from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked==false select d :
-                                            from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked == false & 
-                                            Math.Abs(d.x - LastMove.x) < 2 & Math.Abs(d.y - LastMove.y) < 2 select d;
+            int minX=aDots.MinX();
+            int minY=aDots.MinY();
+            int maxX=aDots.MaxX();
+            int maxY=aDots.MaxY();
+            var qry = from Dot d in aDots
+                      where d.Own == PLAYER_NONE & d.Blocked == false 
+                                                & d.x <= maxX+1 & d.x >= minX-1
+                                                & d.y <= maxY+1 & d.y >= minY-1
+                                                select d;
             Dot[] ad = qry.ToArray();
             if (ad.Length != 0)
             {
@@ -499,7 +523,7 @@ namespace DotsGame
                     int result_last_move = (int)MakeMove(d);
                     if (f.chkMove.Checked) Pause();
                     //-----------------------------------
-                    if (result_last_move != 0 & aDots[d.x, d.y].Blocked == false )
+                    if (result_last_move != 0 & aDots[d.x, d.y].Blocked == false)
                     {
                         UndoMove(d);
                         return d;
@@ -509,7 +533,68 @@ namespace DotsGame
             }
             return null;
         }
+        private Dot CheckMove1(int Owner, bool AllBoard = true)
+        {
+            var qry = AllBoard ? from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked == false select d :
+                                            from Dot d in aDots
+                                            where d.Own == PLAYER_NONE & d.Blocked == false &
+                                                Math.Abs(d.x - LastMove.x) < 2 & Math.Abs(d.y - LastMove.y) < 2
+                                            select d;
+            Dot[] ad = qry.ToArray();
+            if (ad.Length != 0)
+            {
+                foreach (Dot d in ad)
+                {
+                    //делаем ход
+                    d.Own = Owner;
+                    int result_last_move = (int)MakeMove(d);
+                    if (f.chkMove.Checked) Pause();
+                    //-----------------------------------
+                    if (result_last_move != 0 & aDots[d.x, d.y].Blocked == false)
+                    {
+                        UndoMove(d);
+                        return d;
+                    }
+                    UndoMove(d);
+                }
+            }
+            return null;
+        }
+
         private Dot CheckPatternVilkaNextMove(int Owner)
+        {
+            var qry = from Dot d in aDots where d.Own == Owner & d.Blocked == false select d;
+            Dot dot_ptn;
+            Dot[] ad = qry.ToArray();
+            if (ad.Length != 0)
+            {
+                foreach (Dot d in ad)
+                {
+                    Dot[] dots = new Dot[8] { aDots[d.x + 1, d.y], aDots[d.x - 1, d.y], aDots[d.x, d.y + 1], aDots[d.x, d.y - 1],
+                                              aDots[d.x + 1, d.y+1], aDots[d.x - 1, d.y-1], aDots[d.x-1, d.y + 1], aDots[d.x+1, d.y - 1]};
+                    foreach (Dot dot_move in dots)
+                    {
+                        if (dot_move.Blocked == false & dot_move.Own == 0)
+                        {
+                            //делаем ход
+                            dot_move.Own = Owner;
+                            int result_last_move = (int)MakeMove(dot_move);
+                            dot_ptn = CheckPattern_vilochka(d.Own);
+                            if (f.chkMove.Checked) Pause();
+                            //-----------------------------------
+                            if (dot_ptn != null & result_last_move == 0)
+                            {
+                                UndoMove(dot_move);
+                                return dot_move;
+                            }
+                            UndoMove(dot_move);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+        private Dot CheckPatternVilkaNextMove2(int Owner)
         {
             var qry = from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked == false select d;
             Dot dot_ptn;
@@ -1167,7 +1252,7 @@ namespace DotsGame
                 else if (dy > 0) strdY = "+" + dy.ToString();
                 else strdY = dy.ToString();
 
-                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " \r\n";
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " & aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
 
                 if (lstPat[i].PatternsMoveDot)
                 {
@@ -1195,7 +1280,7 @@ namespace DotsGame
                 if (dy == 0) strdY = "";
                 else if (dy > 0) strdY = "+" + dy.ToString();
                 else strdY = dy.ToString();
-                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " \r\n";
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " & aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
                 if (lstPat[i].PatternsMoveDot)
                 {
                     sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
@@ -1225,7 +1310,7 @@ namespace DotsGame
                 if (dy == 0) strdY = "";
                 else if (dy > 0) strdY = "+" + dy.ToString();
                 else strdY = dy.ToString();
-                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " \r\n";
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " & aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
                 if (l[i].PatternsMoveDot)
                 {
                     sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
@@ -1252,7 +1337,7 @@ namespace DotsGame
                 if (dy == 0) strdY = "";
                 else if (dy > 0) strdY = "+" + dy.ToString();
                 else strdY = dy.ToString();
-                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " \r\n";
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " & aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
                 if (l[i].PatternsMoveDot)
                 {
                     sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
