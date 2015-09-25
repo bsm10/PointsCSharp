@@ -349,7 +349,7 @@ namespace DotsGame
 #endif
                     if (enemy_move == null & recursion_depth > 2)
                         break;
-                    if (count_moves > SkillLevel * 100)
+                    if (count_moves > SkillLevel * 10)
                         return PLAYER_NONE;
                 }
             }
