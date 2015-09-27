@@ -504,15 +504,41 @@ namespace DotsGame
         //проверяет ход в результате которого окружение.Возвращает ход который завершает окружение
         private Dot CheckMove(int Owner)
         {
-            int minX=aDots.MinX();
-            int minY=aDots.MinY();
-            int maxX=aDots.MaxX();
-            int maxY=aDots.MaxY();
+            //int minX=aDots.MinX();
+            //int minY=aDots.MinY();
+            //int maxX=aDots.MaxX();
+            //int maxY=aDots.MaxY();
+            //var qry = from Dot d in aDots
+            //              where d.Own == PLAYER_NONE & d.Blocked == false 
+            //                                        & d.x <= maxX+1 & d.x >= minX-1
+            //                                        & d.y <= maxY+1 & d.y >= minY-1
+            //          select d;
             var qry = from Dot d in aDots
-                      where d.Own == PLAYER_NONE & d.Blocked == false 
-                                                & d.x <= maxX+1 & d.x >= minX-1
-                                                & d.y <= maxY+1 & d.y >= minY-1
-                                                select d;
+                    where d.Blocked == false & d.Own == 0 &
+                    aDots[d.x + 1, d.y - 1].Blocked == false & aDots[d.x + 1, d.y - 1].Own == Owner & aDots[d.x + 1, d.y + 1].Blocked == false & aDots[d.x + 1, d.y + 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x, d.y - 1].Blocked == false & aDots[d.x, d.y - 1].Own == Owner & aDots[d.x, d.y + 1].Blocked == false & aDots[d.x, d.y + 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x - 1, d.y - 1].Blocked == false & aDots[d.x - 1, d.y - 1].Own == Owner & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x - 1, d.y - 1].Blocked == false & aDots[d.x - 1, d.y - 1].Own == Owner & aDots[d.x + 1, d.y + 1].Blocked == false & aDots[d.x + 1, d.y + 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner & aDots[d.x + 1, d.y - 1].Blocked == false & aDots[d.x + 1, d.y - 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x - 1, d.y] .Blocked == false & aDots[d.x - 1, d.y].Own == Owner & aDots[d.x + 1, d.y].Blocked == false & aDots[d.x + 1, d.y].Own == Owner
+
+                    | d.Own == 0 & aDots[d.x - 1, d.y].Blocked == false & aDots[d.x - 1, d.y].Own == Owner & aDots[d.x + 1, d.y-1].Blocked == false & aDots[d.x + 1, d.y-1].Own == Owner
+                    | d.Own == 0 & aDots[d.x - 1, d.y].Blocked == false & aDots[d.x - 1, d.y].Own == Owner & aDots[d.x + 1, d.y + 1].Blocked == false & aDots[d.x + 1, d.y + 1].Own == Owner
+                    
+                    | d.Own == 0 & aDots[d.x + 1, d.y].Blocked == false & aDots[d.x + 1, d.y].Own == Owner & aDots[d.x - 1, d.y - 1].Blocked == false & aDots[d.x - 1, d.y - 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x + 1, d.y].Blocked == false & aDots[d.x + 1, d.y].Own == Owner & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner
+
+                    | d.Own == 0 & aDots[d.x, d.y+1].Blocked == false & aDots[d.x , d.y+1].Own == Owner & aDots[d.x - 1, d.y - 1].Blocked == false & aDots[d.x - 1, d.y - 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x , d.y-1].Blocked == false & aDots[d.x , d.y-1].Own == Owner & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner
+
+
+                    | d.Own == 0 & aDots[d.x+1, d.y + 1].Blocked == false & aDots[d.x+1, d.y + 1].Own == Owner & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x-1, d.y - 1].Blocked == false & aDots[d.x-1, d.y - 1].Own == Owner & aDots[d.x + 1, d.y - 1].Blocked == false & aDots[d.x + 1, d.y - 1].Own == Owner
+
+                    | d.Own == 0 & aDots[d.x + 1, d.y + 1].Blocked == false & aDots[d.x + 1, d.y + 1].Own == Owner & aDots[d.x + 1, d.y - 1].Blocked == false & aDots[d.x + 1, d.y - 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x - 1, d.y - 1].Blocked == false & aDots[d.x - 1, d.y - 1].Own == Owner & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner
+
+                      select d;
             Dot[] ad = qry.ToArray();
             if (ad.Length != 0)
             {

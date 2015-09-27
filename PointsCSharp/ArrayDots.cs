@@ -323,6 +323,19 @@ namespace DotsGame
             }
             return minY;
         }
+        public int CountNeibourDots(int Owner)//количество точек определенного цвета возле пустой точки
+        {
+            var q = from Dot d in Dots
+                    where d.Blocked == false & d.Own == 0 & 
+                    Dots[d.x + 1, d.y - 1].Blocked == false & Dots[d.x + 1, d.y - 1].Own == Owner & Dots[d.x + 1, d.y + 1].Blocked == false & Dots[d.x + 1, d.y + 1].Own == Owner
+                    | d.Own == 0 & Dots[d.x, d.y - 1].Blocked == false & Dots[d.x, d.y - 1].Own == Owner & Dots[d.x, d.y + 1].Blocked == false & Dots[d.x, d.y + 1].Own == Owner
+                    | d.Own == 0 & Dots[d.x-1, d.y - 1].Blocked == false & Dots[d.x-1, d.y - 1].Own == Owner & Dots[d.x-1, d.y + 1].Blocked == false & Dots[d.x-1, d.y + 1].Own == Owner
+                    | d.Own == 0 & Dots[d.x-1, d.y - 1].Blocked == false & Dots[d.x-1, d.y - 1].Own == Owner & Dots[d.x+1, d.y + 1].Blocked == false & Dots[d.x+1, d.y + 1].Own == Owner
+                    | d.Own == 0 & Dots[d.x-1, d.y + 1].Blocked == false & Dots[d.x-1, d.y + 1].Own == Owner & Dots[d.x+1, d.y - 1].Blocked == false & Dots[d.x+1, d.y - 1].Own == Owner
+                    select d;
+            return q.Count();
+
+        }
 
         public Dot[] NotBlockedDots()
         {

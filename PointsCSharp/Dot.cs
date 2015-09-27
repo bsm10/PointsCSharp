@@ -101,7 +101,7 @@ namespace DotsGame
         {
             get
             {
-                return _NeiborDots;//Список точек, которые блокируются этой точкой
+                return _NeiborDots;//Список соседних точек
             }
         }
         public bool Fixed { get; set; }
