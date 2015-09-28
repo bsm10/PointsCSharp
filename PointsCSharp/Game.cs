@@ -23,7 +23,7 @@ namespace DotsGame
 
         //-------------------------------------------------
         public int iScaleCoef = 1;//- коэффициент масштаба
-        public int iBoardSize = 10;//- количество клеток квадрата в длинну
+        public int iBoardSize = 20;//- количество клеток квадрата в длинну
         //public int iMapSize;//- количество клеток квадрата в длинну - размер всей карты
         public const int iBoardSizeMin = 5;
         public const int iBoardSizeMax = 20;
@@ -65,7 +65,7 @@ namespace DotsGame
                            colorGamer2 = Properties.Settings.Default.Color_Gamer2,
                            colorCursor = Properties.Settings.Default.Color_Cursor;
         private float PointWidth = 0.25f;
-        public Pen boardPen = new Pen(Color.FromArgb(150,150,150), 0.05f);//(Color.DarkSlateBlue, 0.05f);
+        public Pen boardPen = new Pen(Color.FromArgb(150,200,200), 0.08f);//(Color.DarkSlateBlue, 0.05f);
         private SolidBrush drawBrush = new SolidBrush(Color.MediumPurple);
         public Font drawFont = new Font("Arial", 0.22f);
         //===============================================================================
@@ -265,7 +265,7 @@ namespace DotsGame
                     int res_last_move = (int)MakeMove(d);
                     count_moves++;
                     #region проверить не замыкается ли регион
-                    Dot dt = CheckMove(player);//CheckMove(player, false);
+                    Dot dt = CheckMove(player, false);
                     //Dot dt = CheckMove(d.Own, false);
                     if (dt != null)
                     {
@@ -502,19 +502,9 @@ namespace DotsGame
 
         //==============================================================================================
         //проверяет ход в результате которого окружение.Возвращает ход который завершает окружение
-        private Dot CheckMove(int Owner)
+        private Dot CheckMove(int Owner, bool AllBoard = true)
         {
-            //int minX=aDots.MinX();
-            //int minY=aDots.MinY();
-            //int maxX=aDots.MaxX();
-            //int maxY=aDots.MaxY();
-            //var qry = from Dot d in aDots
-            //              where d.Own == PLAYER_NONE & d.Blocked == false 
-            //                                        & d.x <= maxX+1 & d.x >= minX-1
-            //                                        & d.y <= maxY+1 & d.y >= minY-1
-            //          select d;
-            var qry = from Dot d in aDots
-                    where d.Blocked == false & d.Own == 0 &
+            var qry = AllBoard ? from Dot d in aDots where d.Blocked == false & d.Own == 0 &
                     aDots[d.x + 1, d.y - 1].Blocked == false & aDots[d.x + 1, d.y - 1].Own == Owner & aDots[d.x + 1, d.y + 1].Blocked == false & aDots[d.x + 1, d.y + 1].Own == Owner
                     | d.Own == 0 & aDots[d.x, d.y - 1].Blocked == false & aDots[d.x, d.y - 1].Own == Owner & aDots[d.x, d.y + 1].Blocked == false & aDots[d.x, d.y + 1].Own == Owner
                     | d.Own == 0 & aDots[d.x - 1, d.y - 1].Blocked == false & aDots[d.x - 1, d.y - 1].Own == Owner & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner
@@ -528,18 +518,22 @@ namespace DotsGame
                     | d.Own == 0 & aDots[d.x + 1, d.y].Blocked == false & aDots[d.x + 1, d.y].Own == Owner & aDots[d.x - 1, d.y - 1].Blocked == false & aDots[d.x - 1, d.y - 1].Own == Owner
                     | d.Own == 0 & aDots[d.x + 1, d.y].Blocked == false & aDots[d.x + 1, d.y].Own == Owner & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner
 
-                    | d.Own == 0 & aDots[d.x, d.y+1].Blocked == false & aDots[d.x , d.y+1].Own == Owner & aDots[d.x - 1, d.y - 1].Blocked == false & aDots[d.x - 1, d.y - 1].Own == Owner
-                    | d.Own == 0 & aDots[d.x , d.y-1].Blocked == false & aDots[d.x , d.y-1].Own == Owner & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x, d.y + 1].Blocked == false & aDots[d.x , d.y+1].Own == Owner & aDots[d.x - 1, d.y - 1].Blocked == false & aDots[d.x - 1, d.y - 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x , d.y - 1].Blocked == false & aDots[d.x , d.y-1].Own == Owner & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner
 
+                    | d.Own == 0 & aDots[d.x, d.y - 1].Blocked == false & aDots[d.x, d.y - 1].Own == Owner & aDots[d.x + 1, d.y + 1].Blocked == false & aDots[d.x + 1, d.y + 1].Own == Owner
 
-                    | d.Own == 0 & aDots[d.x+1, d.y + 1].Blocked == false & aDots[d.x+1, d.y + 1].Own == Owner & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner
-                    | d.Own == 0 & aDots[d.x-1, d.y - 1].Blocked == false & aDots[d.x-1, d.y - 1].Own == Owner & aDots[d.x + 1, d.y - 1].Blocked == false & aDots[d.x + 1, d.y - 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x + 1, d.y + 1].Blocked == false & aDots[d.x + 1, d.y + 1].Own == Owner & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner
+                    | d.Own == 0 & aDots[d.x - 1, d.y - 1].Blocked == false & aDots[d.x - 1, d.y - 1].Own == Owner & aDots[d.x + 1, d.y - 1].Blocked == false & aDots[d.x + 1, d.y - 1].Own == Owner
 
                     | d.Own == 0 & aDots[d.x + 1, d.y + 1].Blocked == false & aDots[d.x + 1, d.y + 1].Own == Owner & aDots[d.x + 1, d.y - 1].Blocked == false & aDots[d.x + 1, d.y - 1].Own == Owner
                     | d.Own == 0 & aDots[d.x - 1, d.y - 1].Blocked == false & aDots[d.x - 1, d.y - 1].Own == Owner & aDots[d.x - 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Own == Owner
+                    select d :
+                    from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked == false &
+                                                                Math.Abs(d.x - LastMove.x) < 2 & Math.Abs(d.y - LastMove.y) < 2
+                                                                select d;
 
-                      select d;
-            Dot[] ad = qry.ToArray();
+                Dot[] ad = qry.ToArray();
             if (ad.Length != 0)
             {
                 foreach (Dot d in ad)
@@ -1249,6 +1243,139 @@ namespace DotsGame
             }
             set { f.tlsEditPattern.Checked = value; }
         }
+        public void MakePattern1()//сохраняет паттерн в текстовое поле
+        {
+            string s, strdX, strdY, sWhere = "", sMove = "";
+            int dx, dy, ind;
+            ind = lstPat.FindIndex(
+                delegate(Dot dt)
+                {
+                    return dt.PatternsFirstDot == true;
+                });
+            var random = new Random(DateTime.Now.Millisecond);
+            string n = random.Next(1, 1000).ToString();
+            for (int i = 0; i < lstPat.Count; i++)
+            {
+                string own = "";
+                if (lstPat[ind].Own == lstPat[i].Own) own = "== Owner";
+                if (lstPat[ind].Own != lstPat[i].Own) own = "== enemy_own";
+                if (lstPat[i].Own == 0 & lstPat[i].PatternsAnyDot == false) own = " == 0";
+                if (lstPat[i].PatternsAnyDot) own = " != enemy_own";
+
+                dx = lstPat[i].x - lstPat[ind].x;
+                if (dx == 0) strdX = "";
+                else if (dx > 0) strdX = "+" + dx.ToString();
+                else strdX = dx.ToString();
+
+                dy = lstPat[i].y - lstPat[ind].y;
+                if (dy == 0) strdY = "";
+                else if (dy > 0) strdY = "+" + dy.ToString();
+                else strdY = dy.ToString();
+
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " & aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
+
+                if (lstPat[i].PatternsMoveDot)
+                {
+                    sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                }
+            }
+            s = "iNumberPattern = " + n + "; \r\n";
+            s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
+            n += "_2";
+            sWhere = ""; sMove = "";
+            for (int i = 0; i < lstPat.Count; i++)
+            {
+                string own = "";
+                if (lstPat[ind].Own == lstPat[i].Own) own = "== Owner";
+                if (lstPat[ind].Own != lstPat[i].Own) own = "== enemy_own";
+                if (lstPat[i].Own == 0 & lstPat[i].PatternsAnyDot == false) own = " == 0";
+                if (lstPat[i].PatternsAnyDot) own = " != enemy_own";
+
+                dx = lstPat[ind].x - lstPat[i].x;
+                if (dx == 0) strdX = "";
+                else if (dx > 0) strdX = "+" + dx.ToString();
+                else strdX = dx.ToString();
+
+                dy = lstPat[ind].y - lstPat[i].y;
+                if (dy == 0) strdY = "";
+                else if (dy > 0) strdY = "+" + dy.ToString();
+                else strdY = dy.ToString();
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " & aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
+                if (lstPat[i].PatternsMoveDot)
+                {
+                    sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                }
+
+            }
+            s += "//180 Rotate=========================================================================================================== \r\n";
+            s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
+
+            n += "_3";
+            sWhere = ""; sMove = "";
+            List<Dot> l = RotateMatrix(90);
+            for (int i = 0; i < l.Count; i++)
+            {
+                string own = "";
+                if (l[ind].Own == l[i].Own) own = "== Owner";
+                if (l[ind].Own != l[i].Own) own = "== enemy_own";
+                if (l[i].Own == 0 & l[i].PatternsAnyDot == false) own = " == 0";
+                if (l[i].PatternsAnyDot) own = " != enemy_own";
+
+                dx = l[ind].x - l[i].x;
+                if (dx == 0) strdX = "";
+                else if (dx > 0) strdX = "+" + dx.ToString();
+                else strdX = dx.ToString();
+
+                dy = l[ind].y - l[i].y;
+                if (dy == 0) strdY = "";
+                else if (dy > 0) strdY = "+" + dy.ToString();
+                else strdY = dy.ToString();
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " & aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
+                if (l[i].PatternsMoveDot)
+                {
+                    sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                }
+            }
+            s += "//--------------Rotate on 90----------------------------------- \r\n";
+            s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
+            n += "_4";
+            sWhere = ""; sMove = "";
+            for (int i = 0; i < l.Count; i++)
+            {
+                string own = "";
+                if (l[ind].Own == l[i].Own) own = "== Owner";
+                if (l[ind].Own != l[i].Own) own = "== enemy_own";
+                if (l[i].Own == 0 & l[i].PatternsAnyDot == false) own = " == 0";
+                if (l[i].PatternsAnyDot) own = " != enemy_own";
+
+                dx = l[i].x - l[ind].x;
+                if (dx == 0) strdX = "";
+                else if (dx > 0) strdX = "+" + dx.ToString();
+                else strdX = dx.ToString();
+
+                dy = l[i].y - l[ind].y;
+                if (dy == 0) strdY = "";
+                else if (dy > 0) strdY = "+" + dy.ToString();
+                else strdY = dy.ToString();
+                if ((dx == 0 & dy == 0) == false) sWhere += " & aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " & aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
+                if (l[i].PatternsMoveDot)
+                {
+                    sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                }
+            }
+            s += "//--------------Rotate on 90 - 2----------------------------------- \r\n";
+            s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
+            s += "//============================================================================================================== \r\n";
+            f.txtDebug.Text = s;
+            MessageBox.Show("Into clipboard!");
+            Clipboard.Clear();
+            Clipboard.SetText(s);
+
+            lstPat.Clear();
+            f.tlsEditPattern.Checked = false;
+            aDots.UnmarkAllDots();
+        }
+
         public void MakePattern()//сохраняет паттерн в текстовое поле
         {
             string s, strdX, strdY, sWhere = "", sMove = "";
