@@ -188,18 +188,7 @@ namespace DotsGame
 #endif
                 Dot dot1 = null, dot2 =null;
                 //PLAYER_HUMAN - ставим в параметр - первым ходит игрок1(человек)
-                Play(ref best_move, dot1, dot2, PLAYER_HUMAN, ref depth, ref c1, lm, ref c_root);//раскоментировать для поиска без цикла - вокруг последнего хода
-                                                                                                       // BoardValue(ref best_move, PLAYER_COMPUTER, PLAYER_HUMAN, ref depth, ref c1, d, ref c2);
-                                                                                                       // FindMove(ref best_move, lm);
-               //                                                                                        //}
-               // if (lst_best_move.Count>0) 
-               // {
-               //     best_move=lst_best_move[0];
-               // }
-               //else
-               // {
-               //     FindMove(ref best_move, last_move);
-               // }
+                Play(ref best_move, dot1, dot2, PLAYER_HUMAN, PLAYER_COMPUTER, ref depth, ref c1, lm, ref c_root);//раскоментировать для поиска без цикла - вокруг последнего хода
                 
             }
             if (best_move == null)
@@ -233,7 +222,7 @@ namespace DotsGame
  //==================================================================================================================
         List<Dot> lst_best_move=new List<Dot>();//сюда заносим лучшие ходы
 //===================================================================================================================
-        private int Play(ref Dot best_move, Dot move1, Dot move2, int player, ref int count_moves, 
+        private int Play(ref Dot best_move, Dot move1, Dot move2, int player1, int player2, ref int count_moves, 
                                ref int recursion_depth, Dot lastmove, ref int counter_root)//возвращает Owner кто побеждает в результате хода
         {
 #if DEBUG
@@ -241,7 +230,7 @@ namespace DotsGame
             SkillNumSq = (int)f.numericUpDown4.Value;
             SkillLevel = (int)f.numericUpDown3.Value;
 #endif
-            recursion_depth++;
+            recursion_depth++; 
             if (recursion_depth >= SkillDepth)
             {
                 return 0;
@@ -257,53 +246,69 @@ namespace DotsGame
             int i = ad.Length;
             if (i != 0)
             {
+                //Dot dt = CheckMove(player2);//поверка хода компа
+                //if (dt!=null)
+                //{
+                //    best_move = dt;
+                //    return player2;
+                //}
                 foreach (Dot d in ad)
                 {
                     //**************делаем ход***********************************
-                    d.Own = player == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
+                    player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
+                    d.Own = player2;
                     int res_last_move = (int)MakeMove(d);
                     count_moves++;
                     #region проверить не замыкается ли регион
                     //проверяем ход который ведет сразу к окружению
-                    Dot dt = CheckMove(player);//проверка, если ход сделан на точку, которая при следующем ходе противника будет ним окружена
-                    if (dt == null) dt = CheckPattern_vilochka(player);
-                    if (aDots.Contains(dt) == false) dt = null;
-                    if (dt == null) dt = CheckPattern(player);
-                    if (aDots.Contains(dt) == false) dt = null;
-                    if (dt == null) dt = CheckPatternVilkaNextMove(player);
-                    if (aDots.Contains(dt) == false) dt = null;
-
-                    // если это такая точка, пропускаем такой ход и проверяем следующую точку, если нет проверяем паттерны
-                    if (dt == null)
+                    best_move = CheckMove(player2);
+                    if (best_move == null) best_move = CheckMove(player1);
+                    if (best_move != null)
                     {
-                        dt = CheckMove(d.Own);//поверка игрока
-                        //aDots.UnmarkAllDots();
-                        //проверяем паттерны
-                        if (dt == null) dt = CheckPattern_vilochka(d.Own);
-                        if (aDots.Contains(dt) == false) dt = null;
-                        if (dt == null) dt = CheckPattern(d.Own);
-                        if (aDots.Contains(dt) == false) dt = null;
-                        if (dt == null) dt = CheckPatternVilkaNextMove(d.Own);
-                        if (aDots.Contains(dt) == false) dt = null;
-                        if (dt != null)
-                        {
-                            best_move = d;//dt;
-                            UndoMove(d);
-#if DEBUG
-                            f.lstDbg2.Items.Add(recursion_depth + " CheckMove-CheckPattern(Play) " + best_move.x + ":" + best_move.y + "; win player " + player);
-#endif
-                            return player;
-                        }
+                        UndoMove(d);
+                        //continue;
+                        return player1;
                     }
-                    else
+                    if (best_move == null) best_move = CheckPattern_vilochka(player2);
+                    if (aDots.Contains(best_move) == false) best_move = null;
+                    if (best_move == null) best_move = CheckPattern_vilochka(player1);
+                    if (best_move != null)
                     {
                         UndoMove(d);
                         continue;
                     }
+                    if (aDots.Contains(best_move) == false) best_move = null;
+                    if (best_move == null) best_move = CheckPattern(player2);
+                    if (aDots.Contains(best_move) == false) best_move = null;
+                    if (best_move == null) best_move = CheckPattern(player1);
+                    if (best_move != null)
+                    {
+                        UndoMove(d);
+                        continue;
+                    }
+                    if (aDots.Contains(best_move) == false) best_move = null;
+                    if (best_move == null) best_move = CheckPatternVilkaNextMove(player2);
+                    if (aDots.Contains(best_move) == false) best_move = null;
+                    if (best_move == null) best_move = CheckPatternVilkaNextMove(player1);
+                    if (best_move != null)
+                    {
+                        UndoMove(d);
+                        continue;
+                    }
+                    if (aDots.Contains(best_move) == false) best_move = null;
+                    if (best_move != null)
+                    {
+                        best_move = d;//dt;
+                        UndoMove(d);
+#if DEBUG
+                        f.lstDbg2.Items.Add(recursion_depth + " CheckMove-CheckPattern(Play) " + best_move.x + ":" + best_move.y + "; win player " + player1);
+#endif
+                        return player1;//?????
+                    }
                     #endregion
-                    player = d.Own;
-                    if (player == 1 & recursion_depth < 3) move1 = d;
-                    if (player == 2 & recursion_depth < 2) move2 = d;
+                    //player1 = d.Own;
+                    if (player1 == 1 & recursion_depth < 3) move1 = d;
+                    if (player1 == 2 & recursion_depth < 2) move2 = d;
                     //-----показывает проверяемые ходы--------
                     if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
                     #region Debug
@@ -357,7 +362,7 @@ namespace DotsGame
                     }
                     #endregion
                     //теперь ходит другой игрок =========================================================================================
-                    int result = Play(ref enemy_move, move1,move2, player, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
+                    int result = Play(ref enemy_move, move1,move2, player2, player1, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
                     //отменить ход
                     UndoMove(d);
                     recursion_depth--;
@@ -511,7 +516,7 @@ namespace DotsGame
                     }
                     #endregion
                     //теперь ходит другой игрок =========================================================================================
-                    int result = Play(ref enemy_move, move1, move2, player, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
+                    int result = Play1(ref enemy_move, move1, move2, player, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
                     //отменить ход
                     UndoMove(d);
                     recursion_depth--;
