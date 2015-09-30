@@ -46,7 +46,9 @@ namespace DotsGame
                 switch (e.Button)
                 {
                     case MouseButtons.Left:
+                       
                         #region PatternEditor
+                        #if DEBUG
                         if (game.PE_On==true)
                         {
                             if(game.ListPatterns.Contains(game.aDots[dot.x, dot.y])==false)
@@ -77,19 +79,23 @@ namespace DotsGame
                                 if (game.aDots[dot.x, dot.y].PatternsEmptyDot) game.aDots[dot.x, dot.y].PatternsEmptyDot = false;
                                 game.aDots[dot.x, dot.y].PatternsAnyDot = true;
                             }
+                        
                             break;
                         }
+                        #endif
                         #endregion
+
                         #region Ходы игроков
                         if (game.aDots[game.MousePos.X, game.MousePos.Y].Own > 0) break;//предовращение хода если клик был по занятой точке
                         if (player_move == 2 | player_move == 0)
                         {
+                        #if DEBUG
                             if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift | game.Autoplay)
                             {
                                 MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null));
                                 break;
                             }
-                            
+                        #endif
                             if (MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null)) > 0) break;
                             player_move = 1;
                             Application.DoEvents();
@@ -102,6 +108,7 @@ namespace DotsGame
                         }
                         #endregion
                         break;
+                 #if DEBUG //паттерны и пр.
                     case MouseButtons.Right:
                         if (game.PE_On == true)
                         {
@@ -123,6 +130,7 @@ namespace DotsGame
                             game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
                             game.UndoMove(dot.x, dot.y);
                         break;
+                 #endif
                 }
             }
             //lstMoves.DataSource = null;

@@ -1,5 +1,4 @@
-﻿//#define DEBUG
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
@@ -206,7 +205,7 @@ namespace DotsGame
 
 #if DEBUG
             f.lstDbg1.EndUpdate();
-#endif
+
             //stopWatch.Stop();
 
             f.txtDebug.Text = "Skilllevel: " + SkillLevel + "\r\n Общее число ходов: " + depth.ToString() +
@@ -214,6 +213,7 @@ namespace DotsGame
             "\r\n Ход на " + best_move.x + ":" + best_move.y +
             "\r\n время просчета " + stopWatch.ElapsedMilliseconds.ToString() + " мс";
             //best_move.Own = 2;
+#endif
             stopWatch.Reset();
             square1=s1; square2=s2;
 
@@ -244,14 +244,9 @@ namespace DotsGame
                       select d;
             Dot[] ad = qry.ToArray();
             int i = ad.Length;
+            string sfoo="";
             if (i != 0)
             {
-                //Dot dt = CheckMove(player2);//поверка хода компа
-                //if (dt!=null)
-                //{
-                //    best_move = dt;
-                //    return player2;
-                //}
                 foreach (Dot d in ad)
                 {
                     //**************делаем ход***********************************
@@ -260,59 +255,82 @@ namespace DotsGame
                     int res_last_move = (int)MakeMove(d);
                     count_moves++;
                     #region проверить не замыкается ли регион
-                    //проверяем ход который ведет сразу к окружению
+                    //проверяем ход чтобы точку не окружили на следующем ходу
+                    sfoo="CheckMove player" + player1;
                     best_move = CheckMove(player2);
-                    if (best_move == null) best_move = CheckMove(player1);
-                    if (best_move != null)
+                    if (best_move == null) 
                     {
-                        UndoMove(d);
-                        //continue;
-                        return player1;
+                        sfoo = "CheckMove player" + player2;
+                        best_move = CheckMove(player1);
                     }
-                    if (best_move == null) best_move = CheckPattern_vilochka(player2);
-                    if (aDots.Contains(best_move) == false) best_move = null;
-                    if (best_move == null) best_move = CheckPattern_vilochka(player1);
-                    if (best_move != null)
+                    else 
                     {
                         UndoMove(d);
                         continue;
                     }
-                    if (aDots.Contains(best_move) == false) best_move = null;
-                    if (best_move == null) best_move = CheckPattern(player2);
-                    if (aDots.Contains(best_move) == false) best_move = null;
-                    if (best_move == null) best_move = CheckPattern(player1);
-                    if (best_move != null)
+                    if (best_move == null)
                     {
-                        UndoMove(d);
-                        continue;
+                        sfoo = "CheckPattern_vilochka player" + player2;
+                        best_move = CheckPattern_vilochka(player2);
+                        if (aDots.Contains(best_move) == false) best_move = null;
                     }
-                    if (aDots.Contains(best_move) == false) best_move = null;
-                    if (best_move == null) best_move = CheckPatternVilkaNextMove(player2);
-                    if (aDots.Contains(best_move) == false) best_move = null;
-                    if (best_move == null) best_move = CheckPatternVilkaNextMove(player1);
-                    if (best_move != null)
+                    
+                    if (best_move == null)
                     {
-                        UndoMove(d);
-                        continue;
+                        sfoo = "CheckPattern_vilochka player" + player1;
+                        best_move = CheckPattern_vilochka(player1);
+                        if (aDots.Contains(best_move) == false) best_move = null;
                     }
-                    if (aDots.Contains(best_move) == false) best_move = null;
+                    if (best_move == null)
+                    {
+                        sfoo = "CheckPattern player" + player2;
+                        best_move = CheckPattern(player2);
+                        if (aDots.Contains(best_move) == false) best_move = null;
+                    }
+                    
+                    if (best_move == null)
+                    {
+                        sfoo = "CheckPattern player" + player1;
+                        best_move = CheckPattern(player1);
+                        if (aDots.Contains(best_move) == false) best_move = null;
+                    }
+                    if (best_move == null) 
+                    {
+                        sfoo = "CheckPatternVilkaNextMove player" + player2;
+                        best_move = CheckPatternVilkaNextMove(player2);
+                        if (aDots.Contains(best_move) == false) best_move = null;
+                    }
+
+                    if (best_move == null) 
+                    {
+                        sfoo = "CheckPatternVilkaNextMove player" + player1;                        
+                        best_move = CheckPatternVilkaNextMove(player1);
+                        if (aDots.Contains(best_move) == false) best_move = null;
+                    }
                     if (best_move != null)
                     {
                         best_move = d;//dt;
                         UndoMove(d);
 #if DEBUG
-                        f.lstDbg2.Items.Add(recursion_depth + " CheckMove-CheckPattern(Play) " + best_move.x + ":" + best_move.y + "; win player " + player1);
+                        f.lstDbg2.Items.Add(recursion_depth + "Play: " + sfoo + " - " + best_move.x + ":" + best_move.y);
 #endif
-                        return player1;//?????
+                        return d.Own;// player1;//?????
                     }
+                    else
+                    {
+                        UndoMove(d);
+                        continue;
+                    } 
+
                     #endregion
                     //player1 = d.Own;
                     if (player1 == 1 & recursion_depth < 3) move1 = d;
                     if (player1 == 2 & recursion_depth < 2) move2 = d;
                     //-----показывает проверяемые ходы--------
-                    if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
+                    
                     #region Debug
                     #if DEBUG
+                    if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
                     f.lstDbg1.Items.Add(d.Own + " - " + d.x + ":" + d.y);
                     f.txtDebug.Text = "Общее число ходов: " + count_moves.ToString() + 
                                        "\r\n Глубина просчета: " + recursion_depth.ToString() +
@@ -320,48 +338,9 @@ namespace DotsGame
                                        "\r\n move1 " + move1 +
                                        "\r\n move2 " + move2 +
                                        "\r\n время поиска " + stopWatch.ElapsedMilliseconds;
-                    #endif
-                    #endregion
-                    #region Проверка res_last_move если больше нуля значит кто-то окружает
-                    //-----------------------------------
-                    if (res_last_move != 0 & aDots[d.x, d.y].Blocked)//если ход в окруженный регион
-                    {
-                        best_move = null;
-                        UndoMove(d);
-                        return d.Own == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
-                    }
-                    if (d.Own == 1 & res_last_move != 0)
-                    {
-                        if (recursion_depth < counter_root)
-                        {
-                            counter_root = recursion_depth;
-                            best_move = new Dot(move1.x, move1.y);
-                            lst_best_move.Clear();
-                            lst_best_move.Add(best_move);
-#if DEBUG
-                            f.lstDbg2.Items.Add(recursion_depth + "ход на " + best_move.x + ":" + best_move.y + "; win HUMAN");
 #endif
-                        }
-                        UndoMove(d);
-                        return PLAYER_HUMAN;//побеждает игрок
-                    }
-                    else if (d.Own == 2 & res_last_move != 0 | d.Own == 1 & aDots[d.x, d.y].Blocked)
-                    {
-                        if (recursion_depth < counter_root)
-                        {
-                            counter_root = recursion_depth;
-                            best_move = new Dot(move2.x, move2.y);
-                            lst_best_move.Clear();
-                            lst_best_move.Add(best_move);
-#if DEBUG
-                            f.lstDbg2.Items.Add(recursion_depth + " ход на " + best_move.x + ":" + best_move.y + "; win COM");
-#endif
-                        }
-                        UndoMove(d);
-                        return PLAYER_COMPUTER;//побеждает компьютер
-                    }
                     #endregion
-                    //теперь ходит другой игрок =========================================================================================
+                    //теперь ходит другой игрок ===========================================================================
                     int result = Play(ref enemy_move, move1,move2, player2, player1, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
                     //отменить ход
                     UndoMove(d);
@@ -464,9 +443,10 @@ namespace DotsGame
                     if (player == 1 & recursion_depth < 3) move1 = d;
                     if (player == 2 & recursion_depth < 2) move2 = d;
                     //-----показывает проверяемые ходы--------
-                    if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
+                    
                     #region Debug
 #if DEBUG
+                    if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
                     f.lstDbg1.Items.Add(d.Own + " - " + d.x + ":" + d.y);
                     f.txtDebug.Text = "Общее число ходов: " + count_moves.ToString() +
                                        "\r\n Глубина просчета: " + recursion_depth.ToString() +
@@ -626,8 +606,8 @@ namespace DotsGame
                         int res_last_move = (int)MakeMove(d);
                         mvs.Add(d); 
                         //-----показывает проверяемые ходы-----------------------------------------------
-                        if (f.chkMove.Checked) Pause();
 #if DEBUG
+                        if (f.chkMove.Checked) Pause();
 
                         f.lstDbg1.Items.Add(d.Own + " - " + d.x + ":" + d.y);
                         f.txtDebug.Text = "Общее число ходов: " + depth.ToString() +
@@ -723,7 +703,9 @@ namespace DotsGame
                     //делаем ход
                     d.Own = Owner;
                     int result_last_move = (int)MakeMove(d);
+                    #if DEBUG
                     if (f.chkMove.Checked) Pause();
+                    #endif
                     //-----------------------------------
                     if (result_last_move != 0 & aDots[d.x, d.y].Blocked == false)
                     {
@@ -751,7 +733,9 @@ namespace DotsGame
                     //делаем ход
                     d.Own = Owner;
                     int result_last_move = (int)MakeMove(d);
+                    #if DEBUG
                     if (f.chkMove.Checked) Pause();
+                    #endif
                     //-----------------------------------
                     if (result_last_move != 0 & aDots[d.x, d.y].Blocked == false)
                     {
@@ -783,7 +767,9 @@ namespace DotsGame
                             dot_move.Own = Owner;
                             int result_last_move = (int)MakeMove(dot_move);
                             dot_ptn = CheckPattern_vilochka(d.Own);
+                            #if DEBUG
                             if (f.chkMove.Checked) Pause();
+                            #endif
                             //-----------------------------------
                             if (dot_ptn != null & result_last_move == 0)
                             {
@@ -810,7 +796,9 @@ namespace DotsGame
                     d.Own = Owner;
                     int result_last_move = (int)MakeMove(d);
                     dot_ptn = CheckPattern_vilochka(d.Own);
+                    #if DEBUG
                     if (f.chkMove.Checked) Pause();
+                    #endif
                     //-----------------------------------
                     if (dot_ptn != null & result_last_move==0)
                     //if (dot_ptn != null)
@@ -842,6 +830,7 @@ namespace DotsGame
         {
             if (aDots.Contains(x, y))
             {
+                #if DEBUG
                 f.txtDotStatus.Text = "Blocked: " + aDots[x, y].Blocked + "\r\n" +
                               "BlokingDots.Count: " + aDots[x, y].BlokingDots.Count + "\r\n" +
                               "NeiborDots.Count: " + aDots[x, y].NeiborDots.Count + "\r\n" +
@@ -849,6 +838,7 @@ namespace DotsGame
                               "IndexDot: " + aDots[x, y].IndexDot + "\r\n" +
                               "Own: " + aDots[x, y].Own + "\r\n" +
                               "X: " + aDots[x, y].x + "; Y: " + aDots[x, y].y;
+               #endif
             }
         }
         public int pause 
@@ -865,12 +855,14 @@ namespace DotsGame
             }
         private void Pause()
         {
+        #if DEBUG
             if (f.Pause>0)
             {
                 Application.DoEvents();
                 pbxBoard.Invalidate();
                 System.Threading.Thread.Sleep(f.Pause);
             }
+        #endif
         }
         public void Pause(int ms)
         {
@@ -1396,19 +1388,21 @@ namespace DotsGame
             f.Top = top;
             f.Left = left + width;
         }
-#endif
-
         #region Pattern Editor
         private List<Dot> lstPat;
         public List<Dot> ListPatterns
         {
             get { return lstPat; }
         }
+
         public bool Autoplay
         {
+        
             get { return f.rbtnHand.Checked; }
             //set { f.rbtnHand.Checked = value; }
+        
         }
+
 
         public bool PE_FirstDot
         {
@@ -1709,6 +1703,7 @@ namespace DotsGame
             f.tlsEditPattern.Checked=false;
             aDots.UnmarkAllDots();
         }
+
         #endregion
         private List<Dot> RotateMatrix(int ungle)
         {
@@ -1726,6 +1721,7 @@ namespace DotsGame
             }
             return l;
         }
+#endif
         //==========================================================================
         public string path_savegame = Application.CommonAppDataPath + @"\dots.dat";
         public void SaveGame()
