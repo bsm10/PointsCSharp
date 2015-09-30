@@ -98,7 +98,7 @@ namespace DotsGame
                         #endif
                             if (MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null)) > 0) break;
                             player_move = 1;
-                            Application.DoEvents();
+                            //Application.DoEvents();
                         }
                         //============Ход компьютера=================
                         if (player_move == 1)
@@ -355,14 +355,18 @@ namespace DotsGame
         }
         private int MoveGamer(int Player, Dot pl_move=null)
         {
+            Application.DoEvents();
+            toolStripStatusLabel2.ForeColor = Player == 1 ? game.colorGamer1 : game.colorGamer2;
+            toolStripStatusLabel2.Text = "Ход игрока" + Player + "...";
             if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove);
             pl_move.Own = Player;
             game.MakeMove(pl_move);
             game.ListMoves.Add(pl_move);
             pbxBoard.Invalidate();
             statusStrip1.Refresh();
-            toolStripStatusLabel2.ForeColor = Color.BurlyWood;
-            toolStripStatusLabel2.Text = "Ход игрока" + Player;
+            int pl = Player == 1 ? 2 : 1;
+            toolStripStatusLabel2.ForeColor = pl == 1 ? game.colorGamer1 : game.colorGamer2;
+            toolStripStatusLabel2.Text = "Ход игрока" + pl + "...";
             if (game.GameOver())
             {
                 MessageBox.Show("Game over!");
