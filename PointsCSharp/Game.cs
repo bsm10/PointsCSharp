@@ -257,11 +257,17 @@ namespace DotsGame
                     #region проверить не замыкается ли регион
                     //проверяем ход чтобы точку не окружили на следующем ходу
                     sfoo="CheckMove player" + player1;
-                    best_move = CheckMove(player2);
+                    best_move = CheckMove(player1);
                     if (best_move == null) 
                     {
                         sfoo = "CheckMove player" + player2;
-                        best_move = CheckMove(player1);
+                        best_move = CheckMove(player2);
+                        if (best_move!=null)
+                        {
+                            best_move=d;
+                            UndoMove(d);
+                            return player2;
+                        }
                     }
                     else 
                     {
@@ -350,7 +356,7 @@ namespace DotsGame
 #endif
                     if (enemy_move == null & recursion_depth > 2)
                         break;
-                    if (count_moves > SkillLevel * 10)
+                    if (count_moves > SkillLevel)
                         return PLAYER_NONE;
                     if (result!=0)
                     {
@@ -362,6 +368,8 @@ namespace DotsGame
             }
             return PLAYER_NONE;
         }
+
+
         private int Play1(ref Dot best_move, Dot move1, Dot move2, int player, ref int count_moves,
                                ref int recursion_depth, Dot lastmove, ref int counter_root)//возвращает Owner кто побеждает в результате хода
         {
@@ -951,17 +959,25 @@ namespace DotsGame
             if (lnks != null)
             {
                 Pen PenGamer;
-
                 for (int i = 0; i < lnks.Count; i++)
                 {
-                    float x, y;
-                    PenGamer = lnks[i].Dot1.Own == 1 ? new Pen(colorGamer1, 0.1f) : new Pen(colorGamer2, 0.1f);
-                    gr.DrawLine(PenGamer, lnks[i].Dot1.x, lnks[i].Dot1.y, lnks[i].Dot2.x, lnks[i].Dot2.y);
-#if DEBUG
-                    x = (lnks[i].Dot2.x - lnks[i].Dot1.x) / 2.0f + lnks[i].Dot1.x;
-                    y = (lnks[i].Dot2.y - lnks[i].Dot1.y) / 2.0f + lnks[i].Dot1.y;
-                    //gr.DrawString(lnks[i].Dot1.IndexRelation.ToString(), drawFont, new SolidBrush(Color.Navy), x, y);
-#endif
+                    //float x, y;
+                    if(lnks[i].Dot1.Blocked)
+                    {
+                        PenGamer = lnks[i].Dot1.Own == 1 ? new Pen(Color.FromArgb(130, colorGamer1), 0.1f) :
+                                                           new Pen(Color.FromArgb(130, colorGamer2), 0.1f);
+
+                        gr.DrawLine(PenGamer, lnks[i].Dot1.x, lnks[i].Dot1.y, lnks[i].Dot2.x, lnks[i].Dot2.y);
+                    }
+                    else
+                    {
+                        PenGamer = lnks[i].Dot1.Own == 1 ? new Pen(colorGamer1, 0.1f) : new Pen(colorGamer2, 0.1f);
+                        gr.DrawLine(PenGamer, lnks[i].Dot1.x, lnks[i].Dot1.y, lnks[i].Dot2.x, lnks[i].Dot2.y);
+                    }
+//#if DEBUG
+//                    x = (lnks[i].Dot2.x - lnks[i].Dot1.x) / 2.0f + lnks[i].Dot1.x;
+//                    y = (lnks[i].Dot2.y - lnks[i].Dot1.y) / 2.0f + lnks[i].Dot1.y;
+//#endif
                 }
             }
         }
