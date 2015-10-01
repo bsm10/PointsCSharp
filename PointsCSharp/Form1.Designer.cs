@@ -65,6 +65,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tlsStatusFoo = new System.Windows.Forms.ToolStripStatusLabel();
             this.gameBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
@@ -104,7 +105,7 @@
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(256, 24);
+            this.menuStrip.Size = new System.Drawing.Size(164, 24);
             this.menuStrip.TabIndex = 2;
             // 
             // файлToolStripMenuItem
@@ -223,7 +224,7 @@
             // 
             this.легкоToolStripMenuItem.CheckOnClick = true;
             this.легкоToolStripMenuItem.Name = "легкоToolStripMenuItem";
-            this.легкоToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.легкоToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.легкоToolStripMenuItem.Text = "легко";
             this.легкоToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.легкоToolStripMenuItem_CheckStateChanged);
             // 
@@ -231,7 +232,7 @@
             // 
             this.среднеToolStripMenuItem.CheckOnClick = true;
             this.среднеToolStripMenuItem.Name = "среднеToolStripMenuItem";
-            this.среднеToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.среднеToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.среднеToolStripMenuItem.Text = "средне";
             this.среднеToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.среднеToolStripMenuItem_CheckStateChanged);
             // 
@@ -239,7 +240,7 @@
             // 
             this.тяжелоToolStripMenuItem.CheckOnClick = true;
             this.тяжелоToolStripMenuItem.Name = "тяжелоToolStripMenuItem";
-            this.тяжелоToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.тяжелоToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.тяжелоToolStripMenuItem.Text = "тяжело";
             this.тяжелоToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.тяжелоToolStripMenuItem_CheckStateChanged);
             // 
@@ -341,7 +342,8 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.toolStripStatusLabel2});
+            this.toolStripStatusLabel2,
+            this.tlsStatusFoo});
             this.statusStrip1.Location = new System.Drawing.Point(0, 451);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
@@ -351,10 +353,11 @@
             // 
             // toolStripStatusLabel1
             // 
+            this.toolStripStatusLabel1.AutoSize = false;
             this.toolStripStatusLabel1.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripStatusLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 18);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(50, 18);
             // 
             // toolStripStatusLabel2
             // 
@@ -362,6 +365,11 @@
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
             this.toolStripStatusLabel2.Size = new System.Drawing.Size(140, 18);
             this.toolStripStatusLabel2.Text = "toolStripStatusLabel2";
+            // 
+            // tlsStatusFoo
+            // 
+            this.tlsStatusFoo.Name = "tlsStatusFoo";
+            this.tlsStatusFoo.Size = new System.Drawing.Size(0, 18);
             // 
             // gameBindingSource
             // 
@@ -436,6 +444,7 @@
         private System.Windows.Forms.ToolStripMenuItem легкоToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem среднеToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem тяжелоToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel tlsStatusFoo;
     }
 }
 

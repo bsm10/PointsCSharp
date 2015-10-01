@@ -369,7 +369,7 @@ namespace DotsGame
             toolStripStatusLabel2.Text = "Ход игрока" + pl + "...";
             if (game.GameOver())
             {
-                MessageBox.Show("Game over!");
+                MessageBox.Show("Game over! \r\n" + game.Statistic());
                 return 1;
             }
             //lstMoves.DataSource = null;

@@ -22,7 +22,7 @@ namespace DotsGame
 
         //-------------------------------------------------
         public int iScaleCoef = 1;//- коэффициент масштаба
-        public int iBoardSize = 20;//- количество клеток квадрата в длинну
+        public int iBoardSize = 14;//- количество клеток квадрата в длинну
         //public int iMapSize;//- количество клеток квадрата в длинну - размер всей карты
         public const int iBoardSizeMin = 5;
         public const int iBoardSizeMax = 20;
@@ -33,8 +33,12 @@ namespace DotsGame
         private Dot best_move; //ход который должен сделать комп
         private Dot last_move; //последний ход
         private List<Dot> list_moves; //список ходов
-
-
+        private string status=string.Empty;
+        public string  Status
+        {
+            get{return status;}
+            set{status=value;}
+        }
         public List<Dot> ListMoves 
         {
             get { return list_moves; }   
@@ -231,6 +235,7 @@ namespace DotsGame
             SkillLevel = (int)f.numericUpDown3.Value;
 #endif
             recursion_depth++; 
+            
             if (recursion_depth >= SkillDepth)
             {
                 return 0;
@@ -254,6 +259,7 @@ namespace DotsGame
                     d.Own = player2;
                     int res_last_move = (int)MakeMove(d);
                     count_moves++;
+                    status = "move №" + count_moves;
                     #region проверить не замыкается ли регион
                     //проверяем ход чтобы точку не окружили на следующем ходу
                     sfoo="CheckMove player" + player1;
@@ -301,27 +307,30 @@ namespace DotsGame
                         best_move = CheckPattern(player1);
                         if (aDots.Contains(best_move) == false) best_move = null;
                     }
-                    if (best_move == null) 
+                    if (Properties.Settings.Default.Level == 2)
                     {
-                        sfoo = "CheckPatternVilkaNextMove player" + player2;
-                        best_move = CheckPatternVilkaNextMove(player2);
-                        if (aDots.Contains(best_move) == false) best_move = null;
-                    }
+                        if (best_move == null) 
+                        {
+                            sfoo = "CheckPatternVilkaNextMove player" + player2;
+                            best_move = CheckPatternVilkaNextMove(player2);
+                            if (aDots.Contains(best_move) == false) best_move = null;
+                        }
 
-                    if (best_move == null) 
-                    {
-                        sfoo = "CheckPatternVilkaNextMove player" + player1;                        
-                        best_move = CheckPatternVilkaNextMove(player1);
-                        if (aDots.Contains(best_move) == false) best_move = null;
+                        if (best_move == null) 
+                        {
+                            sfoo = "CheckPatternVilkaNextMove player" + player1;                        
+                            best_move = CheckPatternVilkaNextMove(player1);
+                            if (aDots.Contains(best_move) == false) best_move = null;
+                        }
                     }
                     if (best_move != null)
                     {
                         best_move = d;//dt;
                         UndoMove(d);
 #if DEBUG
-                        f.lstDbg2.Items.Add(recursion_depth + "Play: " + sfoo + " - " + best_move.x + ":" + best_move.y);
+                        f.lstDbg2.Items.Add(count_moves + " Play: " + sfoo + " - " + best_move.x + ":" + best_move.y);
 #endif
-                        return d.Own;// player1;//?????
+                        return d.Own;
                     }
                     else
                     {
