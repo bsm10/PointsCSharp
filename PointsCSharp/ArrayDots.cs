@@ -107,7 +107,6 @@ namespace DotsGame
                 Dots[Dot.x, Dot.y].Own = Dot.Own;
                 Dots[Dot.x, Dot.y].Blocked = false;
                 AddNeibor(Dots[Dot.x, Dot.y]);
-                
             }
         }
         public void Add(int x, int y, int own)//меняет владельца точки

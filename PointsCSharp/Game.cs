@@ -285,6 +285,7 @@ namespace DotsGame
                     {
                         sfoo = "CheckPattern_vilochka player" + player1;
                         best_move = CheckPattern_vilochka(player1);
+
                         if (aDots.Contains(best_move) == false) best_move = null;
                     }
                     if (best_move == null)
@@ -726,35 +727,35 @@ namespace DotsGame
             return null;
         }
 
-        private Dot CheckMove1(int Owner, bool AllBoard = true)
-        {
-            var qry = AllBoard ? from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked == false select d :
-                                            from Dot d in aDots
-                                            where d.Own == PLAYER_NONE & d.Blocked == false &
-                                                Math.Abs(d.x - LastMove.x) < 2 & Math.Abs(d.y - LastMove.y) < 2
-                                            select d;
-            Dot[] ad = qry.ToArray();
-            if (ad.Length != 0)
-            {
-                foreach (Dot d in ad)
-                {
-                    //делаем ход
-                    d.Own = Owner;
-                    int result_last_move = (int)MakeMove(d);
-                    #if DEBUG
-                    if (f.chkMove.Checked) Pause();
-                    #endif
-                    //-----------------------------------
-                    if (result_last_move != 0 & aDots[d.x, d.y].Blocked == false)
-                    {
-                        UndoMove(d);
-                        return d;
-                    }
-                    UndoMove(d);
-                }
-            }
-            return null;
-        }
+        //private Dot CheckMove1(int Owner, bool AllBoard = true)
+        //{
+        //    var qry = AllBoard ? from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked == false select d :
+        //                                    from Dot d in aDots
+        //                                    where d.Own == PLAYER_NONE & d.Blocked == false &
+        //                                        Math.Abs(d.x - LastMove.x) < 2 & Math.Abs(d.y - LastMove.y) < 2
+        //                                    select d;
+        //    Dot[] ad = qry.ToArray();
+        //    if (ad.Length != 0)
+        //    {
+        //        foreach (Dot d in ad)
+        //        {
+        //            //делаем ход
+        //            d.Own = Owner;
+        //            int result_last_move = (int)MakeMove(d);
+        //            #if DEBUG
+        //            if (f.chkMove.Checked) Pause();
+        //            #endif
+        //            //-----------------------------------
+        //            if (result_last_move != 0 & aDots[d.x, d.y].Blocked == false)
+        //            {
+        //                UndoMove(d);
+        //                return d;
+        //            }
+        //            UndoMove(d);
+        //        }
+        //    }
+        //    return null;
+        //}
 
         private Dot CheckPatternVilkaNextMove(int Owner)
         {
@@ -791,35 +792,35 @@ namespace DotsGame
             }
             return null;
         }
-        private Dot CheckPatternVilkaNextMove2(int Owner)
-        {
-            var qry = from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked == false select d;
-            Dot dot_ptn;
-            Dot[] ad = qry.ToArray();
-            if (ad.Length != 0)
-            {
-                foreach (Dot d in ad)
-                {
-                    //делаем ход
-                    d.Own = Owner;
-                    int result_last_move = (int)MakeMove(d);
-                    dot_ptn = CheckPattern_vilochka(d.Own);
-                    #if DEBUG
-                    if (f.chkMove.Checked) Pause();
-                    #endif
-                    //-----------------------------------
-                    if (dot_ptn != null & result_last_move==0)
-                    //if (dot_ptn != null)
-                    {
-                        UndoMove(d);
-                        //return dot_ptn; 
-                        return d;
-                    }
-                    UndoMove(d);
-                }
-            }
-            return null;
-        }
+        //private Dot CheckPatternVilkaNextMove2(int Owner)
+        //{
+        //    var qry = from Dot d in aDots where d.Own == PLAYER_NONE & d.Blocked == false select d;
+        //    Dot dot_ptn;
+        //    Dot[] ad = qry.ToArray();
+        //    if (ad.Length != 0)
+        //    {
+        //        foreach (Dot d in ad)
+        //        {
+        //            //делаем ход
+        //            d.Own = Owner;
+        //            int result_last_move = (int)MakeMove(d);
+        //            dot_ptn = CheckPattern_vilochka(d.Own);
+        //            #if DEBUG
+        //            if (f.chkMove.Checked) Pause();
+        //            #endif
+        //            //-----------------------------------
+        //            if (dot_ptn != null & result_last_move==0)
+        //            //if (dot_ptn != null)
+        //            {
+        //                UndoMove(d);
+        //                //return dot_ptn; 
+        //                return d;
+        //            }
+        //            UndoMove(d);
+        //        }
+        //    }
+        //    return null;
+        //}
 
         public string Statistic()
         {
@@ -1129,46 +1130,45 @@ namespace DotsGame
             count_blocked_dots = q.Count();
             last_move = dot;//зафиксировать последний ход
             LinkDots();
-            //MakeRating();//пересчитать рейтинг
             return res;
         }
-        public float MakeMove1(Dot dot)//Основная функция - ход игрока - возвращает захваченую площадь, 
-        {
-            if (aDots.Contains(dot) == false) return 0;
-            if (aDots[dot.x, dot.y].Own == 0)//если точка не занята
-            {
-                aDots.Add(dot);
-            }
-            float s = 0;
-            int c_reg = count_in_region, c_bl = count_blocked_dots;
-            //--------------------------------
-            int res = CheckBlocked(dot.Own);
-            //--------------------------------
-            var q = from Dot d in aDots where d.Blocked select d;
-            count_blocked_dots = q.Count();
-            int lst_i_r = count_in_region - c_reg;//количество точек окружающих новый регион
-            int lst_b_d = count_blocked_dots - c_bl;//количество блокир точек
-            if (res != 0)
-            {
-                switch (dot.Own)
-                {
-                    case 1:
-                        square1 += SquarePolygon(lst_b_d, lst_i_r);
-                        s = square1;
-                        break;
-                    case 2:
-                        square2 += SquarePolygon(lst_b_d, lst_i_r);
-                        s = square2;
-                        break;
-                }
-                LinkDots();
-            }
-            last_move = dot;//зафиксировать последний ход
-            MakeRating();//пересчитать рейтинг
-            //aDots.UnmarkAllDots();
-            //ScanBlockedFreeDots();
-            return s;
-        }
+        //public float MakeMove1(Dot dot)//Основная функция - ход игрока - возвращает захваченую площадь, 
+        //{
+        //    if (aDots.Contains(dot) == false) return 0;
+        //    if (aDots[dot.x, dot.y].Own == 0)//если точка не занята
+        //    {
+        //        aDots.Add(dot);
+        //    }
+        //    float s = 0;
+        //    int c_reg = count_in_region, c_bl = count_blocked_dots;
+        //    //--------------------------------
+        //    int res = CheckBlocked(dot.Own);
+        //    //--------------------------------
+        //    var q = from Dot d in aDots where d.Blocked select d;
+        //    count_blocked_dots = q.Count();
+        //    int lst_i_r = count_in_region - c_reg;//количество точек окружающих новый регион
+        //    int lst_b_d = count_blocked_dots - c_bl;//количество блокир точек
+        //    if (res != 0)
+        //    {
+        //        switch (dot.Own)
+        //        {
+        //            case 1:
+        //                square1 += SquarePolygon(lst_b_d, lst_i_r);
+        //                s = square1;
+        //                break;
+        //            case 2:
+        //                square2 += SquarePolygon(lst_b_d, lst_i_r);
+        //                s = square2;
+        //                break;
+        //        }
+        //        LinkDots();
+        //    }
+        //    last_move = dot;//зафиксировать последний ход
+        //    MakeRating();//пересчитать рейтинг
+        //    //aDots.UnmarkAllDots();
+        //    //ScanBlockedFreeDots();
+        //    return s;
+        //}
 
         private int CheckBlocked(int last_moveOwner=0)//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
         {
