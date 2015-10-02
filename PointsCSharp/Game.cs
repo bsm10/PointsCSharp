@@ -163,6 +163,12 @@ namespace DotsGame
             if (aDots.Contains(best_move) == false) best_move = null;
             if (best_move == null) best_move = CheckPattern(pl1);
             if (aDots.Contains(best_move) == false) best_move = null;
+#if DEBUG
+            if (best_move != null)
+            {
+                f.lstDbg2.Items.Add(best_move.ToString() + " - паттерн №" + iNumberPattern);
+            }
+#endif
             if (best_move == null) best_move = CheckPatternVilkaNextMove(pl2);
             if (aDots.Contains(best_move) == false) best_move = null;
             if (best_move == null) best_move = CheckPatternVilkaNextMove(pl1);
@@ -172,7 +178,7 @@ namespace DotsGame
 #if DEBUG
             if (best_move!=null)
             {
-                f.lstDbg2.Items.Add(best_move.ToString() + " - паттерн №" + iNumberPattern);
+                f.lstDbg2.Items.Add(best_move.ToString() + "CheckPatternVilkaNextMove - паттерн №" + iNumberPattern);
             }
 #endif
             int c1 = 0, c_root = 1000;// , dpth=0;
@@ -787,9 +793,16 @@ namespace DotsGame
                             //делаем ход
                             dot_move.Own = Owner;
                             int result_last_move = (int)MakeMove(dot_move);
+                            int pl = Owner == PLAYER_COMPUTER ? PLAYER_HUMAN : PLAYER_COMPUTER;
+                            Dot dt = CheckMove(pl, false); // проверка чтобы не попасть в капкан
+                            if (dt != null)
+                            {
+                                UndoMove(dot_move);
+                                continue;
+                            }
                             dot_ptn = CheckPattern_vilochka(d.Own);
                             #if DEBUG
-                            if (f.chkMove.Checked) Pause();
+                                if (f.chkMove.Checked) Pause();
                             #endif
                             //-----------------------------------
                             if (dot_ptn != null & result_last_move == 0)
@@ -1017,12 +1030,13 @@ namespace DotsGame
         }
         private void SetColorAndDrawDots(Graphics gr, Color colorGamer, Dot p) //Вспомогательная функция для DrawPoints. Выбор цвета точки в зависимости от ее состояния и рисование элипса
         {
+            
             Color c;
             if (p.Blocked)
             {
                 gr.FillEllipse(new SolidBrush(Color.FromArgb(130, colorGamer)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
             }
-            else if (p.x== last_move.x & p.y == last_move.y)//точка последнего хода должна для удовства выделяться
+            else if (last_move!=null && p.x== last_move.x & p.y == last_move.y)//точка последнего хода должна для удовства выделяться
             {
                 gr.FillEllipse(new SolidBrush(Color.FromArgb(140, colorGamer)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(Color.FromArgb(140, Color.WhiteSmoke), 0.08f), p.x - PointWidth / 2, p.y - PointWidth / 2, PointWidth, PointWidth);
@@ -1305,9 +1319,9 @@ namespace DotsGame
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         public void ScanBlockedFreeDots()//сканирует не занятые узлы на предмет блокировки
         {
-            var q= from Dot d in aDots where d.Own==PLAYER_NONE select d;
-
-            foreach(Dot dot in q)
+            var q = from Dot d in aDots where d.Own == PLAYER_NONE && d.Blocked == false select d;
+            if (q.Count()==0) return;
+            foreach (Dot dot in q)
             {
                 Dot[] dts = new Dot[4] {aDots[dot.x + 1, dot.y], aDots[dot.x - 1, dot.y],
                                         aDots[dot.x, dot.y + 1], aDots[dot.x, dot.y - 1]};
@@ -1316,6 +1330,7 @@ namespace DotsGame
                     if (neibour_dot.Blocked)
                     {
                         dot.Blocked = true;
+                        ScanBlockedFreeDots();
                         break;
                     }
                 }
@@ -1785,14 +1800,14 @@ namespace DotsGame
                  while (reader.PeekChar() > -1)
                 {
                  	d=new Dot((int)reader.ReadByte(),(int)reader.ReadByte(),(int)reader.ReadByte(),null);
-                	//aDots.Add(d);
                     MakeMove(d);
                 	list_moves.Add(d);
                 }
             last_move=d;
             //CheckBlocked();//проверяем блокировку
             LinkDots();//восстанавливаем связи между точками
-            ScanBlockedFreeDots();
+            RescanBlocked();
+            //ScanBlockedFreeDots();
             reader.Close();
         }
     }
