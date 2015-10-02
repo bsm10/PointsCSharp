@@ -70,5 +70,17 @@ namespace DotsGame.Properties {
                 this["Level"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        public int BoardSize {
+            get {
+                return ((int)(this["BoardSize"]));
+            }
+            set {
+                this["BoardSize"] = value;
+            }
+        }
     }
 }

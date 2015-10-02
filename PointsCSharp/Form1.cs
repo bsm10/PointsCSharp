@@ -357,21 +357,22 @@ namespace DotsGame
         {
             toolStripStatusLabel2.ForeColor = Player == 1 ? game.colorGamer1 : game.colorGamer2;
             toolStripStatusLabel2.Text = "Ход игрока" + Player + "...";
+            Application.DoEvents();
             if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove);
             pl_move.Own = Player;
             game.MakeMove(pl_move);
             game.ListMoves.Add(pl_move);
-            Application.DoEvents();
-            if (game.GameOver())
-            {
-                MessageBox.Show("Game over! \r\n" + game.Statistic());
-                return 1;
-            }
             pbxBoard.Invalidate();
             statusStrip1.Refresh();
             int pl = Player == 1 ? 2 : 1;
             toolStripStatusLabel2.ForeColor = pl == 1 ? game.colorGamer1 : game.colorGamer2;
             toolStripStatusLabel2.Text = "Ход игрока" + pl + "...";
+            if (game.GameOver())
+            {
+                MessageBox.Show("Game over! \r\n" + game.Statistic());
+                return 1;
+            }
+
             //lstMoves.DataSource = null;
             //lstMoves.DataSource = game.ListMoves;
             //if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
