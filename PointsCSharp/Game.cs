@@ -317,19 +317,19 @@ namespace DotsGame
                     }
                     //if (Properties.Settings.Default.Level == 2)
                     //{
-                        //if (best_move == null) 
-                        //{
-                        //    sfoo = "CheckPatternVilkaNextMove player" + player2;
-                        //    best_move = CheckPatternVilkaNextMove(player2);
-                        //    if (aDots.Contains(best_move) == false) best_move = null;
-                        //}
+                    if (best_move == null)
+                    {
+                        sfoo = "CheckPatternVilkaNextMove player" + player2;
+                        best_move = CheckPatternVilkaNextMove(player2);
+                        if (aDots.Contains(best_move) == false) best_move = null;
+                    }
 
-                        //if (best_move == null) 
-                        //{
-                        //    sfoo = "CheckPatternVilkaNextMove player" + player1;                        
-                        //    best_move = CheckPatternVilkaNextMove(player1);
-                        //    if (aDots.Contains(best_move) == false) best_move = null;
-                        //}
+                    if (best_move == null)
+                    {
+                        sfoo = "CheckPatternVilkaNextMove player" + player1;
+                        best_move = CheckPatternVilkaNextMove(player1);
+                        if (aDots.Contains(best_move) == false) best_move = null;
+                    }
                     //}
                     if (best_move != null)
                     {
@@ -339,6 +339,7 @@ namespace DotsGame
                         f.lstDbg2.Items.Add(count_moves + " Play: " + sfoo + " - " + best_move.x + ":" + best_move.y);
 #endif
                         return d.Own;
+                        
                     }
                     else
                     {
