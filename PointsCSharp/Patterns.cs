@@ -4558,46 +4558,46 @@ select d;
                                select d;
             if (pat669_2_3_4.Count() > 0) return new Dot(pat669_2_3_4.First().x + 1, pat669_2_3_4.First().y + 1);
             //============================================================================================================== 
-            iNumberPattern = 62;
-            var pat62 = from Dot d in get_non_blocked
-                        where d.Own == Owner
-                            && aDots[d.x + 1, d.y].Own == enemy_own && aDots[d.x + 1, d.y].Blocked == false
-                            && aDots[d.x + 2, d.y].Own == Owner && aDots[d.x + 2, d.y].Blocked == false
-                            && aDots[d.x + 2, d.y + 1].Own == 0 && aDots[d.x + 2, d.y + 1].Blocked == false
-                            && aDots[d.x + 1, d.y + 1].Own == 0 && aDots[d.x + 1, d.y + 1].Blocked == false
-                            && aDots[d.x, d.y + 1].Own == 0 && aDots[d.x, d.y + 1].Blocked == false
-                        select d;
-            if (pat62.Count() > 0) return new Dot(pat62.First().x + 1, pat62.First().y + 1);
-            //180 Rotate=========================================================================================================== 
-            var pat62_2 = from Dot d in get_non_blocked
-                          where d.Own == Owner
-                              && aDots[d.x - 1, d.y].Own == enemy_own && aDots[d.x - 1, d.y].Blocked == false
-                              && aDots[d.x - 2, d.y].Own == Owner && aDots[d.x - 2, d.y].Blocked == false
-                              && aDots[d.x - 2, d.y - 1].Own == 0 && aDots[d.x - 2, d.y - 1].Blocked == false
-                              && aDots[d.x - 1, d.y - 1].Own == 0 && aDots[d.x - 1, d.y - 1].Blocked == false
-                              && aDots[d.x, d.y - 1].Own == 0 && aDots[d.x, d.y - 1].Blocked == false
-                          select d;
-            if (pat62_2.Count() > 0) return new Dot(pat62_2.First().x - 1, pat62_2.First().y - 1);
-            //--------------Rotate on 90----------------------------------- 
-            var pat62_2_3 = from Dot d in get_non_blocked
-                            where d.Own == Owner
-                                && aDots[d.x, d.y - 1].Own == enemy_own && aDots[d.x, d.y - 1].Blocked == false
-                                && aDots[d.x, d.y - 2].Own == Owner && aDots[d.x, d.y - 2].Blocked == false
-                                && aDots[d.x - 1, d.y - 2].Own == 0 && aDots[d.x - 1, d.y - 2].Blocked == false
-                                && aDots[d.x - 1, d.y - 1].Own == 0 && aDots[d.x - 1, d.y - 1].Blocked == false
-                                && aDots[d.x - 1, d.y].Own == 0 && aDots[d.x - 1, d.y].Blocked == false
-                            select d;
-            if (pat62_2_3.Count() > 0) return new Dot(pat62_2_3.First().x - 1, pat62_2_3.First().y - 1);
-            //--------------Rotate on 90 - 2----------------------------------- 
-            var pat62_2_3_4 = from Dot d in get_non_blocked
-                              where d.Own == Owner
-                                  && aDots[d.x, d.y + 1].Own == enemy_own && aDots[d.x, d.y + 1].Blocked == false
-                                  && aDots[d.x, d.y + 2].Own == Owner && aDots[d.x, d.y + 2].Blocked == false
-                                  && aDots[d.x + 1, d.y + 2].Own == 0 && aDots[d.x + 1, d.y + 2].Blocked == false
-                                  && aDots[d.x + 1, d.y + 1].Own == 0 && aDots[d.x + 1, d.y + 1].Blocked == false
-                                  && aDots[d.x + 1, d.y].Own == 0 && aDots[d.x + 1, d.y].Blocked == false
-                              select d;
-            if (pat62_2_3_4.Count() > 0) return new Dot(pat62_2_3_4.First().x + 1, pat62_2_3_4.First().y + 1);
+            //iNumberPattern = 62;
+            //var pat62 = from Dot d in get_non_blocked
+            //            where d.Own == Owner
+            //                && aDots[d.x + 1, d.y].Own == enemy_own && aDots[d.x + 1, d.y].Blocked == false
+            //                && aDots[d.x + 2, d.y].Own == Owner && aDots[d.x + 2, d.y].Blocked == false
+            //                && aDots[d.x + 2, d.y + 1].Own == 0 && aDots[d.x + 2, d.y + 1].Blocked == false
+            //                && aDots[d.x + 1, d.y + 1].Own == 0 && aDots[d.x + 1, d.y + 1].Blocked == false
+            //                && aDots[d.x, d.y + 1].Own == 0 && aDots[d.x, d.y + 1].Blocked == false
+            //            select d;
+            //if (pat62.Count() > 0) return new Dot(pat62.First().x + 1, pat62.First().y + 1);
+            ////180 Rotate=========================================================================================================== 
+            //var pat62_2 = from Dot d in get_non_blocked
+            //              where d.Own == Owner
+            //                  && aDots[d.x - 1, d.y].Own == enemy_own && aDots[d.x - 1, d.y].Blocked == false
+            //                  && aDots[d.x - 2, d.y].Own == Owner && aDots[d.x - 2, d.y].Blocked == false
+            //                  && aDots[d.x - 2, d.y - 1].Own == 0 && aDots[d.x - 2, d.y - 1].Blocked == false
+            //                  && aDots[d.x - 1, d.y - 1].Own == 0 && aDots[d.x - 1, d.y - 1].Blocked == false
+            //                  && aDots[d.x, d.y - 1].Own == 0 && aDots[d.x, d.y - 1].Blocked == false
+            //              select d;
+            //if (pat62_2.Count() > 0) return new Dot(pat62_2.First().x - 1, pat62_2.First().y - 1);
+            ////--------------Rotate on 90----------------------------------- 
+            //var pat62_2_3 = from Dot d in get_non_blocked
+            //                where d.Own == Owner
+            //                    && aDots[d.x, d.y - 1].Own == enemy_own && aDots[d.x, d.y - 1].Blocked == false
+            //                    && aDots[d.x, d.y - 2].Own == Owner && aDots[d.x, d.y - 2].Blocked == false
+            //                    && aDots[d.x - 1, d.y - 2].Own == 0 && aDots[d.x - 1, d.y - 2].Blocked == false
+            //                    && aDots[d.x - 1, d.y - 1].Own == 0 && aDots[d.x - 1, d.y - 1].Blocked == false
+            //                    && aDots[d.x - 1, d.y].Own == 0 && aDots[d.x - 1, d.y].Blocked == false
+            //                select d;
+            //if (pat62_2_3.Count() > 0) return new Dot(pat62_2_3.First().x - 1, pat62_2_3.First().y - 1);
+            ////--------------Rotate on 90 - 2----------------------------------- 
+            //var pat62_2_3_4 = from Dot d in get_non_blocked
+            //                  where d.Own == Owner
+            //                      && aDots[d.x, d.y + 1].Own == enemy_own && aDots[d.x, d.y + 1].Blocked == false
+            //                      && aDots[d.x, d.y + 2].Own == Owner && aDots[d.x, d.y + 2].Blocked == false
+            //                      && aDots[d.x + 1, d.y + 2].Own == 0 && aDots[d.x + 1, d.y + 2].Blocked == false
+            //                      && aDots[d.x + 1, d.y + 1].Own == 0 && aDots[d.x + 1, d.y + 1].Blocked == false
+            //                      && aDots[d.x + 1, d.y].Own == 0 && aDots[d.x + 1, d.y].Blocked == false
+            //                  select d;
+            //if (pat62_2_3_4.Count() > 0) return new Dot(pat62_2_3_4.First().x + 1, pat62_2_3_4.First().y + 1);
             //============================================================================================================== 
             iNumberPattern = 434;
             var pat434 = from Dot d in get_non_blocked
@@ -5002,6 +5002,47 @@ select d;
  if (pat367_2_3_4.Count() > 0) return new Dot(pat367_2_3_4.First().x-1,pat367_2_3_4.First().y);
 //============================================================================================================== 
 
+ //iNumberPattern = 1973;
+ //var pat1973 = from Dot d in get_non_blocked
+ //             where d.Own == Owner
+ //                 & aDots[d.x - 1, d.y - 1].Own == enemy_own & aDots[d.x - 1, d.y - 1].Blocked == false
+ //                 & aDots[d.x, d.y + 2].Own == enemy_own & aDots[d.x, d.y + 2].Blocked == false
+ //                 & aDots[d.x - 1, d.y + 1].Own == 0 & aDots[d.x - 1, d.y + 1].Blocked == false
+ //                 & aDots[d.x - 1, d.y].Own == 0 & aDots[d.x - 1, d.y].Blocked == false
+ //                 & aDots[d.x, d.y + 1].Own == 0 & aDots[d.x, d.y + 1].Blocked == false
+ //             select d;
+ //if (pat1973.Count() > 0) return new Dot(pat1973.First().x - 1, pat1973.First().y + 1);
+ ////180 Rotate=========================================================================================================== 
+ //var pat1973_2 = from Dot d in get_non_blocked
+ //               where d.Own == Owner
+ //                   & aDots[d.x + 1, d.y + 1].Own == enemy_own & aDots[d.x + 1, d.y + 1].Blocked == false
+ //                   & aDots[d.x, d.y - 2].Own == enemy_own & aDots[d.x, d.y - 2].Blocked == false
+ //                   & aDots[d.x + 1, d.y - 1].Own == 0 & aDots[d.x + 1, d.y - 1].Blocked == false
+ //                   & aDots[d.x + 1, d.y].Own == 0 & aDots[d.x + 1, d.y].Blocked == false
+ //                   & aDots[d.x, d.y - 1].Own == 0 & aDots[d.x, d.y - 1].Blocked == false
+ //               select d;
+ //if (pat1973_2.Count() > 0) return new Dot(pat1973_2.First().x + 1, pat1973_2.First().y - 1);
+ ////--------------Rotate on 90----------------------------------- 
+ //var pat1973_2_3 = from Dot d in get_non_blocked
+ //                 where d.Own == Owner
+ //                     & aDots[d.x + 1, d.y + 1].Own == enemy_own & aDots[d.x + 1, d.y + 1].Blocked == false
+ //                     & aDots[d.x - 2, d.y].Own == enemy_own & aDots[d.x - 2, d.y].Blocked == false
+ //                     & aDots[d.x - 1, d.y + 1].Own == 0 & aDots[d.x - 1, d.y + 1].Blocked == false
+ //                     & aDots[d.x, d.y + 1].Own == 0 & aDots[d.x, d.y + 1].Blocked == false
+ //                     & aDots[d.x - 1, d.y].Own == 0 & aDots[d.x - 1, d.y].Blocked == false
+ //                 select d;
+ //if (pat1973_2_3.Count() > 0) return new Dot(pat1973_2_3.First().x - 1, pat1973_2_3.First().y + 1);
+ ////--------------Rotate on 90 - 2----------------------------------- 
+ //var pat1973_2_3_4 = from Dot d in get_non_blocked
+ //                   where d.Own == Owner
+ //                       & aDots[d.x - 1, d.y - 1].Own == enemy_own & aDots[d.x - 1, d.y - 1].Blocked == false
+ //                       & aDots[d.x + 2, d.y].Own == enemy_own & aDots[d.x + 2, d.y].Blocked == false
+ //                       & aDots[d.x + 1, d.y - 1].Own == 0 & aDots[d.x + 1, d.y - 1].Blocked == false
+ //                       & aDots[d.x, d.y - 1].Own == 0 & aDots[d.x, d.y - 1].Blocked == false
+ //                       & aDots[d.x + 1, d.y].Own == 0 & aDots[d.x + 1, d.y].Blocked == false
+ //                   select d;
+ //if (pat1973_2_3_4.Count() > 0) return new Dot(pat1973_2_3_4.First().x + 1, pat1973_2_3_4.First().y - 1);
+ ////============================================================================================================== 
 
 
 
