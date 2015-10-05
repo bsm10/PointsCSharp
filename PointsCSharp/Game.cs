@@ -136,7 +136,7 @@ namespace DotsGame
                          where d.Own==0 & Math.Sqrt(Math.Pow(Math.Abs(d.x - enemy_move.x), 2) + Math.Pow(Math.Abs(d.y - enemy_move.y), 2)) < 2
                          orderby random.Next()
                          select d;
-                return fm.First();
+                return new Dot(fm.First().x, fm.First().y); //так надо чтобы best_move не ссылался на точку в aDots;
             }
             #endregion
             float s1 = square1; float s2 = square2;
@@ -874,6 +874,7 @@ namespace DotsGame
                               "NeiborDots.Count: " + aDots[x, y].NeiborDots.Count + "\r\n" +
                               "Rating: " + aDots[x, y].Rating + "\r\n" +
                               "IndexDot: " + aDots[x, y].IndexDot + "\r\n" +
+                              "IndexRelation: " + aDots[x, y].IndexRelation + "\r\n" +
                               "Own: " + aDots[x, y].Own + "\r\n" +
                               "X: " + aDots[x, y].x + "; Y: " + aDots[x, y].y;
                #endif
@@ -1226,6 +1227,7 @@ namespace DotsGame
                 {
                     lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
                     if (d.Own != 0) d.Blocked = true;
+                    d.IndexRelation=0;
                     var q1 = from Dot dots in aDots where dots.BlokingDots.Contains(d) select dots;
                     if (q1.Count()==0)
                     {
@@ -1253,6 +1255,7 @@ namespace DotsGame
                 }
             }
             RescanBlocked();
+            
             if (counter==0) win_player=0;
             return counter;
         }

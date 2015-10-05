@@ -119,7 +119,6 @@ namespace DotsGame
             }
 
         }
-        //public enum _Rating { None = 0, Crit = 1, Bad = 2, Mid = 3, Good = 4, Nice = 5 }
         private int rating;
         public int Rating 
         {
@@ -176,7 +175,6 @@ namespace DotsGame
         public bool PatternsMoveDot { get; set; }
         public bool PatternsAnyDot { get; set; }
         public bool PatternsEmptyDot { get; set; }
-
         public override string ToString()
 
 
@@ -200,5 +198,27 @@ namespace DotsGame
             return Math.Abs(x - dot.x) <= 1 & Math.Abs(y - dot.y) <= 1;
 
         }
+        //public int IndexRelation{get; set;}
+        private int _IndexRel;
+        public int IndexRelation
+        {
+            get { return _IndexRel; }
+            set
+            {
+                _IndexRel = value;
+                if (NeiborDots.Count > 0)
+                {
+                    foreach (Dot d in NeiborDots)
+                    {
+                        if (d.IndexRelation != _IndexRel & d.Blocked == false & _IndexRel != 0)
+                        {
+                            d.IndexRelation = _IndexRel;
+                        }
+                    }
+                }
+            }
+
+        }
+
     }
 }
