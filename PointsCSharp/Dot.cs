@@ -87,7 +87,17 @@ namespace DotsGame
     {
         public int x, y;
         private int _Own;
-        public bool Blocked { get; set; }
+        private bool _Blocked; 
+
+        public bool Blocked 
+        { 
+            get {return _Blocked;}
+            set
+            {
+                _Blocked=value;
+                if (_Blocked) IndexRelation=0;
+            }
+        }
         private List<Dot> _BlokingDots;
         public List<Dot> BlokingDots 
             {
@@ -149,6 +159,7 @@ namespace DotsGame
             this.y = y;
             _BlokingDots = new List<Dot>();
             Own = (int)OwnerDot;
+            IndexRelation=IndexDot;
         }
         public Dot(int x, int y, int Owner, Dot ParentDot)
         {
@@ -156,6 +167,7 @@ namespace DotsGame
             this.y = y;
             _BlokingDots = new List<Dot>();
             Own = Owner;
+            IndexRelation = IndexDot;
         }
         public Dot(int x, int y)
         {
@@ -163,6 +175,7 @@ namespace DotsGame
             this.y = y;
             _BlokingDots = new List<Dot>();
             Own = (int)Owner.None;
+            IndexRelation = IndexDot;
         }
         public Dot(Point Point)
         {
@@ -170,6 +183,7 @@ namespace DotsGame
             y = Point.Y;
             _BlokingDots = new List<Dot>();
             Own = (int)Owner.None;
+            IndexRelation = IndexDot;
         }
         public bool PatternsFirstDot {get; set;}
         public bool PatternsMoveDot { get; set; }
@@ -210,11 +224,19 @@ namespace DotsGame
                 {
                     foreach (Dot d in NeiborDots)
                     {
-                        if (d.IndexRelation != _IndexRel & d.Blocked == false & _IndexRel != 0)
+                        if (_IndexRel != 0)
                         {
-                            d.IndexRelation = _IndexRel;
+                            if (d.IndexRelation != _IndexRel & d.Blocked == false & _IndexRel != 0)
+                            {
+                                d.IndexRelation = _IndexRel;
+                            }
+                        }
+                        else
+                        {
+                            if(Blocked==false) d.IndexRelation=d.IndexDot;
                         }
                     }
+
                 }
             }
 

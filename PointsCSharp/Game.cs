@@ -260,6 +260,7 @@ namespace DotsGame
             {
                 foreach (Dot d in ad)
                 {
+                    if (count_moves>SkillLevel) break;
                     //**************делаем ход***********************************
                     player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     d.Own = player2;
@@ -306,7 +307,6 @@ namespace DotsGame
                         if (best_move != null)
                         {
                             UndoMove(d);
-                            //return player1;
                             continue;
                         }
                     }
@@ -326,6 +326,7 @@ namespace DotsGame
                     {
                         best_move = CheckPatternVilkaNextMove(player1);
                         sfoo = "CheckPatternVilkaNextMove player" + player1 + " pat" + iNumberPattern;
+                        //if(best_move!=null)best_move=d;
                         if (aDots.Contains(best_move) == false) best_move = null;
                     }
                    
@@ -333,11 +334,12 @@ namespace DotsGame
                     {
                         best_move = CheckPattern(player1);
                         sfoo = "CheckPattern player" + player1 + " pat" + iNumberPattern;
+                        if (best_move != null) best_move = d;
                         if (aDots.Contains(best_move) == false) best_move = null;
                     }
                     if (best_move != null)
                     {
-                        best_move = d;
+                        //best_move = d;
                         UndoMove(d);
 #if DEBUG
                         f.lstDbg2.Items.Add("Move" + count_moves + " Play: " + sfoo + " - " + best_move.x + ":" + best_move.y);
@@ -348,6 +350,7 @@ namespace DotsGame
                     else
                     {
                         UndoMove(d);
+                        count_moves++;
                         continue;
                     }
                     #endregion
@@ -357,7 +360,7 @@ namespace DotsGame
                     //-----показывает проверяемые ходы--------
                     
                     #region Debug
-                    #if DEBUG
+#if DEBUG
 
                     if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
                     f.lstDbg1.Items.Add(d.Own + " - " + d.x + ":" + d.y);
