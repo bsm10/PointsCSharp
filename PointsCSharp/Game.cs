@@ -289,6 +289,7 @@ namespace DotsGame
                     if (res_last_move==PLAYER_COMPUTER)
                     {
                         best_move=d;
+                        UndoMove(d);
                         return PLAYER_COMPUTER;
                     }
                     else if(res_last_move==PLAYER_HUMAN)
