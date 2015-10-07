@@ -95,7 +95,17 @@ namespace DotsGame
             set
             {
                 _Blocked=value;
-                if (_Blocked) IndexRelation=0;
+                if (_Blocked)
+                {
+                    IndexRelation = 0;
+                    if (NeiborDots.Count > 0)
+                    {
+                        foreach (Dot d in NeiborDots)
+                        {
+                            if (d.Blocked==false) d.IndexRelation = d.IndexDot;
+                        }
+                    }
+                }
             }
         }
         private List<Dot> _BlokingDots;
@@ -151,7 +161,19 @@ namespace DotsGame
             }
         }
         public bool Marked { get; set; }
-        public int IndexDot { get; set; }
+        public int _IndexDot;
+        public int IndexDot
+        {
+            get
+            {
+                return _IndexDot;
+            }
+            set
+            {
+                _IndexDot = value;
+                _IndexRel = _IndexDot;
+            }
+        }
         public enum Owner : int {None = 0,Player1 = 1,Player2 = 2}
         public Dot (int x,int y, Owner OwnerDot,Dot ParentDot)
         {
@@ -224,16 +246,12 @@ namespace DotsGame
                 {
                     foreach (Dot d in NeiborDots)
                     {
-                        if (_IndexRel != 0)
+                        if (d.Blocked == false)
                         {
-                            if (d.IndexRelation != _IndexRel & d.Blocked == false & _IndexRel != 0)
+                            if (d.IndexRelation != _IndexRel & _IndexRel != 0)
                             {
                                 d.IndexRelation = _IndexRel;
                             }
-                        }
-                        else
-                        {
-                            if(Blocked==false) d.IndexRelation=d.IndexDot;
                         }
                     }
 

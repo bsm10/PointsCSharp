@@ -300,22 +300,17 @@ namespace DotsGame
             return q.Count();
         }
         
-        private int counterIndexRel;//счетчик связей
         public int MakeIndexRelation (Dot dot)
         {
-            int index=10000;
             if (dot.NeiborDots.Count>0)
             {
                 foreach(Dot d in dot.NeiborDots)
                 {
-                    if (index > d.IndexRelation) index=d.IndexRelation;
+                    if (dot.Blocked == false & dot.Own == d.Own) d.IndexRelation = dot.IndexRelation;
                 }
-                dot.IndexRelation=index;
             }
             else
             {
-                counterIndexRel++;
-                dot.IndexRelation = counterIndexRel;
             }
             return dot.IndexRelation;
         }
