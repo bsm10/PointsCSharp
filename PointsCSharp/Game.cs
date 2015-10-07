@@ -295,6 +295,7 @@ namespace DotsGame
                     else if(res_last_move==PLAYER_HUMAN)
                     {
                         best_move=null;
+                        UndoMove(d);
                         continue;
                     }
 
