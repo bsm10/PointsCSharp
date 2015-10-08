@@ -251,22 +251,22 @@ namespace DotsGame
             Dot enemy_move = null;
             Dot move = null;
             //проверяем ход который ведет сразу к окружению
-            best_move = CheckMove(player2);
-            if (best_move == null) best_move = CheckMove(player1);
+            best_move = CheckMove(PLAYER_COMPUTER);
+            if (best_move == null) best_move = CheckMove(PLAYER_HUMAN);
             //проверяем паттерны
-            if (best_move == null) best_move = CheckPattern_vilochka(player2);
+            if (best_move == null) best_move = CheckPattern_vilochka(PLAYER_COMPUTER);
             if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move == null) best_move = CheckPattern_vilochka(player1);
+            if (best_move == null) best_move = CheckPattern_vilochka(PLAYER_HUMAN);
             if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move == null) best_move = CheckPattern(player2);
+            if (best_move == null) best_move = CheckPattern(PLAYER_COMPUTER);
             if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move == null) best_move = CheckPattern(player1);
+            if (best_move == null) best_move = CheckPattern(PLAYER_HUMAN);
             if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move == null) best_move = CheckPatternVilkaNextMove(player2);
+            if (best_move == null) best_move = CheckPatternVilkaNextMove(PLAYER_COMPUTER);
             if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move == null) best_move = CheckPatternVilkaNextMove(player1);
+            if (best_move == null) best_move = CheckPatternVilkaNextMove(PLAYER_HUMAN);
             if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move!=null) return player2;
+            if (best_move != null) return PLAYER_COMPUTER;
             var qry = from Dot d in aDots
                       where d.Own == PLAYER_NONE & d.Blocked==false & Math.Abs(d.x - lastmove.x) <SkillNumSq
                                                                     & Math.Abs(d.y - lastmove.y) <SkillNumSq
@@ -286,7 +286,33 @@ namespace DotsGame
                     d.Own = player2;
                     res_last_move = MakeMove(d);
                     count_moves++;
-                    if (res_last_move==PLAYER_COMPUTER)
+                    if (win_player == player1)//если ход в заведомо окруженный регион - пропускаем такой ход
+                    {
+                        UndoMove(d);
+                        continue;
+                    }
+                    #region проверить не замыкается ли регион
+                    //проверяем ход чтобы точку не окружили на следующем ходу
+                    sfoo = "CheckMove player" + player1;
+                    best_move = CheckMove(player1, false);
+                    if (best_move == null)
+                    {
+                        sfoo = "next move win player" + player2;
+                        best_move = CheckMove(player2, false);
+                        if (best_move != null)
+                        {
+                            best_move = d;
+                            UndoMove(d);
+                            return player2;
+                        }
+                    }
+                    else
+                    {
+                        UndoMove(d);
+                        best_move = null;
+                        continue;
+                    }
+                    if (res_last_move == PLAYER_COMPUTER)
                     {
                         best_move=d;
                         UndoMove(d);
@@ -298,7 +324,7 @@ namespace DotsGame
                         UndoMove(d);
                         continue;
                     }
-
+                    #endregion
 #region Debug statistic
 #if DEBUG
                     if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
