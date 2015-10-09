@@ -37,6 +37,8 @@ namespace DotsGame
             game.DrawGame(e.Graphics);
         }
         private int player_move;//переменная хранит значение игрока который делает ход
+        private bool autoplay;
+
         private void pbxBoard_MouseClick(object sender, MouseEventArgs e)
         {
             game.MousePos = game.TranslateCoordinates(e.Location);
@@ -343,6 +345,17 @@ namespace DotsGame
 
         private void autoplayToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if(autoplayToolStripMenuItem.Checked) 
+            {
+                autoplayToolStripMenuItem.Checked=false;
+                autoplay=false;
+            }
+            else
+            {
+                autoplayToolStripMenuItem.Checked=true;
+                autoplay = true;
+            }
+
             do
             {
                 Application.DoEvents();
@@ -350,7 +363,7 @@ namespace DotsGame
                 Application.DoEvents();
                 if (MoveGamer(2) > 0) break;
             }
-            while (true);
+            while (autoplay);
             return;
         }
         private int MoveGamer(int Player, Dot pl_move=null)

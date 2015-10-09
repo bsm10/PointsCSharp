@@ -150,56 +150,20 @@ namespace DotsGame
             stopWatch.Start();
 #endif
             Dot lm = new Dot(last_move.x, last_move.y);//точка последнего хода
-            //проверяем ход который ведет сразу к окружению
-//            best_move = CheckMove(pl2);
-//            if (best_move == null) best_move = CheckMove(pl1);
-//            //aDots.UnmarkAllDots();
-//            //проверяем паттерны
-//            if (best_move == null) best_move = CheckPattern_vilochka(pl2);
-//            if (aDots.Contains(best_move) == false) best_move = null;
-//            if (best_move == null) best_move = CheckPattern_vilochka(pl1);
-//            if (aDots.Contains(best_move) == false) best_move = null;
-//            if (best_move == null) best_move = CheckPattern(pl2);
-//            if (aDots.Contains(best_move) == false) best_move = null;
-//            if (best_move == null) best_move = CheckPattern(pl1);
-//            if (aDots.Contains(best_move) == false) best_move = null;
-////#if DEBUG
-////            if (best_move != null)
-////            {
-////                f.lstDbg2.Items.Add(best_move.ToString() + " - паттерн №" + iNumberPattern);
-////            }
-////#endif
-//            if (best_move == null) best_move = CheckPatternVilkaNextMove(pl2);
-//            if (aDots.Contains(best_move) == false) best_move = null;
-//            if (best_move == null) best_move = CheckPatternVilkaNextMove(pl1);
-//            if (aDots.Contains(best_move) == false) best_move = null;
-//#if DEBUG
-//            if (best_move!=null)
-//            {
-//                f.lstDbg2.Items.Add(best_move.ToString() + "CheckPatternVilkaNextMove - паттерн №" + iNumberPattern);
-//            }
-//#endif
+            //проверяем ход который ведет сразу к окружению и паттерны
+            //BestMove(pl1, pl2);
             int c1 = 0, c_root = 1000;// , dpth=0;
-//            if (best_move ==null)
-//            {
-//               var dots_on_board = from Dot d in aDots where d.Own != 0 & d.Blocked==false select d;
-//               Dot[] ad;
-//               ad = dots_on_board.ToArray();
 #if DEBUG
                 f.lstDbg2.Items.Clear();
 #endif
                 lst_best_move.Clear();
-               //foreach (Dot d in ad)
-               //     {
 #if DEBUG
                 f.lstDbg1.Items.Clear();
-                //f.lstDbg1.BeginUpdate();
 #endif
                 Dot dot1 = null, dot2 =null;
                 //PLAYER_HUMAN - ставим в параметр - первым ходит игрок1(человек)
-                Play(ref best_move, dot1, dot2, PLAYER_HUMAN, PLAYER_COMPUTER, ref depth, ref c1, lm, ref c_root);//раскоментировать для поиска без цикла - вокруг последнего хода
-                
-            //}
+                Play(ref best_move, dot1, dot2, PLAYER_HUMAN, PLAYER_COMPUTER, ref depth, ref c1, lm, ref c_root);
+                //Play1(ref best_move, dot1, dot2, PLAYER_HUMAN, ref depth, ref c1, lm, ref c_root);
             if (best_move == null)
             {
                 //MessageBox.Show("best_move == null");
@@ -214,20 +178,78 @@ namespace DotsGame
             }
 
 #if DEBUG
-            //f.lstDbg1.EndUpdate();
-
             stopWatch.Stop();
 
             f.txtDebug.Text = "Skilllevel: " + SkillLevel + "\r\n Общее число ходов: " + depth.ToString() +
             "\r\n Глубина просчета: " + c_root.ToString() +
             "\r\n Ход на " + best_move.x + ":" + best_move.y +
             "\r\n время просчета " + stopWatch.ElapsedMilliseconds.ToString() + " мс";
-            //best_move.Own = 2;
 #endif
             stopWatch.Reset();
             square1=s1; square2=s2;
 
             return new Dot(best_move.x,best_move.y); //так надо чтобы best_move не ссылался на точку в aDots
+        }
+
+        private Dot BestMove(int pl1, int pl2)
+        {
+        Dot bm;
+            bm = CheckMove(pl2);
+            if (bm == null) bm = CheckMove(pl1);
+            //проверяем паттерны
+            if (bm == null) bm = CheckPattern_vilochka(pl2);
+            if (aDots.Contains(bm) == false) bm = null;
+#if DEBUG
+            if (bm != null)
+            {
+                f.lstDbg2.Items.Add(bm.ToString() + " player" + pl2 + " - CheckPattern_vilochka " + iNumberPattern);
+            }
+#endif
+            if (bm == null) bm = CheckPattern_vilochka(pl1);
+            if (aDots.Contains(bm) == false) bm = null;
+#if DEBUG
+            if (bm != null)
+            {
+                f.lstDbg2.Items.Add(bm.ToString() + " player" + pl1 + " - CheckPattern_vilochka " + iNumberPattern);
+            }
+#endif
+
+            if (bm == null) bm = CheckPattern(pl2);
+            if (aDots.Contains(bm) == false) bm = null;
+#if DEBUG
+            if (bm != null)
+            {
+                f.lstDbg2.Items.Add(bm.ToString() + " player" + pl2 + " - CheckPattern " + iNumberPattern);
+            }
+#endif
+
+            if (bm == null) bm = CheckPattern(pl1);
+            if (aDots.Contains(bm) == false) bm = null;
+#if DEBUG
+            if (bm != null)
+            {
+                f.lstDbg2.Items.Add(bm.ToString() + " player" + pl1 + " - CheckPattern " + iNumberPattern);
+            }
+#endif
+
+            if (bm == null) bm = CheckPatternVilkaNextMove(pl2);
+            if (aDots.Contains(bm) == false) bm = null;
+#if DEBUG
+            if (bm != null)
+            {
+                f.lstDbg2.Items.Add(bm.ToString() + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
+            }
+#endif
+
+            if (bm == null) bm = CheckPatternVilkaNextMove(pl1);
+            if (aDots.Contains(bm) == false) bm = null;
+#if DEBUG
+            if (bm != null)
+            {
+                f.lstDbg2.Items.Add(bm.ToString() + " player" + pl1 + "CheckPatternVilkaNextMove " + iNumberPattern);
+            }
+#endif
+        return bm;
         }
  //==================================================================================================================
         List<Dot> lst_best_move=new List<Dot>();//сюда заносим лучшие ходы
@@ -249,24 +271,9 @@ namespace DotsGame
                 return 0;
             }
             Dot enemy_move = null;
-            Dot move = null;
-            //проверяем ход который ведет сразу к окружению
-            best_move = CheckMove(PLAYER_COMPUTER);
-            if (best_move == null) best_move = CheckMove(PLAYER_HUMAN);
-            //проверяем паттерны
-            if (best_move == null) best_move = CheckPattern_vilochka(PLAYER_COMPUTER);
-            if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move == null) best_move = CheckPattern_vilochka(PLAYER_HUMAN);
-            if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move == null) best_move = CheckPattern(PLAYER_COMPUTER);
-            if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move == null) best_move = CheckPattern(PLAYER_HUMAN);
-            if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move == null) best_move = CheckPatternVilkaNextMove(PLAYER_COMPUTER);
-            if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move == null) best_move = CheckPatternVilkaNextMove(PLAYER_HUMAN);
-            if (aDots.Contains(best_move) == false) best_move = null;
-            if (best_move != null) return PLAYER_COMPUTER;
+            //проверяем ход который ведет сразу к окружению и паттерны
+            best_move = BestMove(player1, player2);
+            if (best_move!=null) return PLAYER_COMPUTER;
             var qry = from Dot d in aDots
                       where d.Own == PLAYER_NONE & d.Blocked==false & Math.Abs(d.x - lastmove.x) <SkillNumSq
                                                                     & Math.Abs(d.y - lastmove.y) <SkillNumSq
@@ -274,9 +281,9 @@ namespace DotsGame
                       select d;
             Dot[] ad = qry.ToArray();
             int i = ad.Length;
-            string sfoo="";
             if (i != 0)
             {
+                string sfoo = "";
                 foreach (Dot d in ad)
                 {
                     Application.DoEvents();
@@ -286,13 +293,14 @@ namespace DotsGame
                     d.Own = player2;
                     res_last_move = MakeMove(d);
                     count_moves++;
-                    if (win_player == player1)//если ход в заведомо окруженный регион - пропускаем такой ход
+                    #region если ход в заведомо окруженный регион - пропускаем такой ход
+                    if (win_player == PLAYER_HUMAN)
                     {
                         UndoMove(d);
                         continue;
                     }
-                    #region проверить не замыкается ли регион
-                    //проверяем ход чтобы точку не окружили на следующем ходу
+                    #endregion
+                    #region проверяем ход чтобы точку не окружили на следующем ходу
                     sfoo = "CheckMove player" + player1;
                     best_move = CheckMove(player1, false);
                     if (best_move == null)
@@ -337,105 +345,6 @@ namespace DotsGame
                                        "\r\n время поиска " + stopWatch.ElapsedMilliseconds;
 #endif
 #endregion
-#region check
-//                    status = "move №" + count_moves;
-//                    if (win_player==player1)//если ход в заведомо окруженный регион - пропускаем такой ход
-//                    {
-//                        UndoMove(d);
-//                        continue;
-//                    }
-//                    #region проверить не замыкается ли регион
-//                    //проверяем ход чтобы точку не окружили на следующем ходу
-//                    sfoo="CheckMove player" + player1;
-//                    best_move = CheckMove(player1,false);
-//                    if (best_move == null) 
-//                    {
-//                        sfoo = "next move win player" + player2;
-//                        best_move = CheckMove(player2,false);
-//                        if (best_move!=null)
-//                        {
-//                            best_move=d;
-//                            UndoMove(d);
-//                            return player2;
-//                        }
-//                    }
-//                    else 
-//                    {
-//                        UndoMove(d);
-//                        best_move=null;
-//                        continue;
-//                    }
-//                    if (best_move == null)
-//                    {
-//                        best_move = CheckPattern_vilochka(player2);
-//                        sfoo = "CheckPattern_vilochka player" + player2 + " pat" + iNumberPattern;
-//                        if (aDots.Contains(best_move) == false) best_move = null;
-//                        if (best_move != null)
-//                        {
-//                            UndoMove(d);
-//                            return player2;
-//                        }
-
-//                    }
-//                    if (best_move == null)
-//                    {
-//                        best_move = CheckPattern_vilochka(player1);
-//                        sfoo = "CheckPattern_vilochka player" + player1 + " pat" + iNumberPattern;
-//                        if (aDots.Contains(best_move) == false) best_move = null;
-//                        if (best_move != null)
-//                        {
-//                            UndoMove(d);
-//                            return player1;
-//                        }
-//                    }
-//                    if (best_move == null)
-//                    {
-//                        best_move = CheckPattern(player2);
-//                        sfoo = "CheckPattern player" + player2 + " pat" + iNumberPattern;
-//                        if (aDots.Contains(best_move) == false) best_move = null;
-//                        if (best_move != null)
-//                        {
-//                            UndoMove(d);
-//                            return player1;
-//                        }
-//                    }
-//                    if (best_move == null)
-//                    {
-//                        best_move = CheckPatternVilkaNextMove(player2);
-//                        sfoo = "CheckPatternVilkaNextMove player" + player2 + " pat" + iNumberPattern;
-//                        if (aDots.Contains(best_move) == false) best_move = null;
-//                    }
-//                    if (best_move == null)
-//                    {
-//                        best_move = CheckPatternVilkaNextMove(player1);
-//                        sfoo = "CheckPatternVilkaNextMove player" + player1 + " pat" + iNumberPattern;
-//                        //if(best_move!=null)best_move=d;
-//                        if (aDots.Contains(best_move) == false) best_move = null;
-//                    }
-                   
-//                    if (best_move == null)
-//                    {
-//                        best_move = CheckPattern(player1);
-//                        sfoo = "CheckPattern player" + player1 + " pat" + iNumberPattern;
-//                        if (best_move != null) best_move = d;
-//                        if (aDots.Contains(best_move) == false) best_move = null;
-//                    }
-
-//#if DEBUG
-//                    f.lstDbg2.Items.Add("Move" + count_moves + " Play: " + sfoo + " - " + best_move.x + ":" + best_move.y);
-//#endif
-//                    if (best_move == null)
-//                    {
-//                        UndoMove(d);
-//                        count_moves++;
-//                        best_move=null;
-//                        continue;
-//                    }
-//                    #endregion
-//                    //player1 = d.Own;
-//                    //if (player1 == 1 & recursion_depth < 3) move1 = d;
-//                    //if (player1 == 2 & recursion_depth < 2) move2 = d;
-#endregion                    
                     //теперь ходит другой игрок ===========================================================================
                     int result = Play(ref enemy_move, move1,move2, player2, player1, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
                     //отменить ход
@@ -444,8 +353,6 @@ namespace DotsGame
 #if DEBUG
                     if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
 #endif
-                    //if (enemy_move == null & recursion_depth > 2)
-                    //    break;
                     if (count_moves > SkillLevel)
                         return PLAYER_NONE;
                     if (result!=0)
@@ -492,50 +399,22 @@ namespace DotsGame
                     count_moves++;
                     #region проверить не замыкается ли регион
                     //проверяем ход который ведет сразу к окружению
-                    Dot dt = CheckMove(player);//проверка противника
-                    if (dt == null)
+                    Dot dt = CheckMove(player, false);
+                    if (dt != null)
                     {
-                        dt = CheckMove(d.Own);//поверка игрока
-                        aDots.UnmarkAllDots();
-                        //проверяем паттерны
-                        if (dt == null) dt = CheckPattern_vilochka(player);
-                        if (aDots.Contains(dt) == false) dt = null;
-                        if (dt == null) dt = CheckPattern_vilochka(d.Own);
-                        if (aDots.Contains(dt) == false) dt = null;
-                        if (dt == null) dt = CheckPattern(player);
-                        if (aDots.Contains(dt) == false) dt = null;
-                        if (dt == null) dt = CheckPattern(d.Own);
-                        if (aDots.Contains(dt) == false) dt = null;
-                        if (dt == null) dt = CheckPatternVilkaNextMove(player);
-                        if (aDots.Contains(dt) == false) dt = null;
-                        if (dt == null) dt = CheckPatternVilkaNextMove(d.Own);
-                        if (aDots.Contains(dt) == false) dt = null;
-                        if (dt != null)
+                        if (recursion_depth < 2)
                         {
-                            best_move = d;//dt;
-                            UndoMove(d);
+                            counter_root = recursion_depth;
+                            best_move = dt.Own == PLAYER_COMPUTER ? d : dt;
+                            lst_best_move.Clear();
+                            lst_best_move.Add(best_move);
 #if DEBUG
-                            f.lstDbg2.Items.Add(recursion_depth + " CheckMove-CheckPattern(Play) " + best_move.x + ":" + best_move.y + "; win player " + player);
+                            f.lstDbg2.Items.Add(recursion_depth + " CheckMove(Play) " + best_move.x + ":" + best_move.y + "; win player " + player);
 #endif
+                            UndoMove(d);
                             return player;
                         }
                     }
-                    //                    Dot dt = CheckMove(player, false);
-                    //                    if (dt != null)
-                    //                    {
-                    //                        if (recursion_depth < 2)
-                    //                        {
-                    //                            counter_root = recursion_depth;
-                    //                            best_move = dt.Own == PLAYER_COMPUTER ? d : dt;
-                    //                            lst_best_move.Clear();
-                    //                            lst_best_move.Add(best_move);
-                    //#if DEBUG
-                    //                            f.lstDbg2.Items.Add(recursion_depth + " CheckMove(Play) " + best_move.x + ":" + best_move.y + "; win player " + player);
-                    //#endif
-                    //                            UndoMove(d);
-                    //                            return player;
-                    //                        }
-                    //                    }
                     #endregion
                     player = d.Own;
                     if (player == 1 & recursion_depth < 3) move1 = d;
@@ -605,11 +484,11 @@ namespace DotsGame
                         break;
                     if (count_moves > SkillLevel * 10)
                         return PLAYER_NONE;
-                    if (result != 0)
-                    {
-                        best_move = enemy_move;
-                        return result;
-                    }
+                    //if (result != 0)
+                    //{
+                    //    best_move = enemy_move;
+                    //    return result;
+                    //}
                 }
             }
             return PLAYER_NONE;
