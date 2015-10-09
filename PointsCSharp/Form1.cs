@@ -105,7 +105,9 @@ namespace DotsGame
                         //============Ход компьютера=================
                         if (player_move == 1)
                         {
+                            game.Redraw = false;
                             if (MoveGamer(2) > 0) break;
+                            game.Redraw=true;
                             player_move = 2;
                         }
                         #endregion
@@ -184,7 +186,7 @@ namespace DotsGame
                
 #endif
             toolStripStatusLabel1.Text = p.X + " : " + p.Y;
-            pbxBoard.Invalidate();
+            if (game.Redraw) pbxBoard.Invalidate();
         }
         private void pbxBoard_MouseDown(object sender, MouseEventArgs e)
         {
