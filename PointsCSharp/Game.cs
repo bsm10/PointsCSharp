@@ -1529,7 +1529,7 @@ namespace DotsGame
 #endif
         //==========================================================================
         #region SAVE_LOAD Game
-        public string path_savegame = Application.CommonAppDataPath + @"\dots.dat";
+        public string path_savegame = Application.CommonAppDataPath + @"\dots.dts";
         public void SaveGame()
         {
             try
@@ -1557,21 +1557,30 @@ namespace DotsGame
             lnks.Clear();
             list_moves.Clear();
             Dot d=null;
-            // создаем объект BinaryReader
-            BinaryReader reader = new BinaryReader(File.Open(path_savegame, FileMode.Open));
-           // пока не достигнут конец файла считываем каждое значение из файла
-                 while (reader.PeekChar() > -1)
+            try
+            {
+
+                // создаем объект BinaryReader
+                BinaryReader reader = new BinaryReader(File.Open(path_savegame, FileMode.Open));
+                // пока не достигнут конец файла считываем каждое значение из файла
+                while (reader.PeekChar() > -1)
                 {
-                 	d=new Dot((int)reader.ReadByte(),(int)reader.ReadByte(),(int)reader.ReadByte(),null);
+                    d = new Dot((int)reader.ReadByte(), (int)reader.ReadByte(), (int)reader.ReadByte(), null);
                     MakeMove(d);
-                	list_moves.Add(d);
+                    list_moves.Add(d);
                 }
-            last_move=d;
-            //CheckBlocked();//проверяем блокировку
-            LinkDots();//восстанавливаем связи между точками
-            RescanBlocked();
-            //ScanBlockedFreeDots();
-            reader.Close();
+                last_move = d;
+                //CheckBlocked();//проверяем блокировку
+                LinkDots();//восстанавливаем связи между точками
+                RescanBlocked();
+                //ScanBlockedFreeDots();
+                reader.Close();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            
         }
         #endregion
     }

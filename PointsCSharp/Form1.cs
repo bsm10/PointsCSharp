@@ -38,7 +38,6 @@ namespace DotsGame
         }
         private int player_move;//переменная хранит значение игрока который делает ход
         private bool autoplay;
-
         private void pbxBoard_MouseClick(object sender, MouseEventArgs e)
         {
             game.MousePos = game.TranslateCoordinates(e.Location);
@@ -329,10 +328,7 @@ namespace DotsGame
         }
         private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            game.LoadGame();
-            //lstMoves.DataSource = null;
-            //lstMoves.DataSource = game.ListMoves;
-
+            openFileDialog1.ShowDialog();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -424,6 +420,28 @@ namespace DotsGame
                 среднеToolStripMenuItem.Checked = false;
                 game.SetLevel(2);
             }
+        }
+
+        private void сохранитькакToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.ShowDialog();
+        }
+
+        private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            game.path_savegame = saveFileDialog1.FileName;
+            game.SaveGame();
+        }
+
+        private void открытьПоследнююToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            game.LoadGame();
+        }
+
+        private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            game.path_savegame = openFileDialog1.FileName;
+            game.LoadGame();
         }
 
     }  

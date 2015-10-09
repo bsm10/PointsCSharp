@@ -5335,7 +5335,7 @@ select d;
                         & aDots[d.x + 2, d.y].Own != enemy_own & aDots[d.x + 2, d.y].Blocked == false
                         & aDots[d.x, d.y + 2].Own != enemy_own & aDots[d.x, d.y + 2].Blocked == false
                     select d;
- if (pat1670_2_3_4.Count() > 0) return new Dot(pat1670_2_3_4.First().x + 1, pat1670_2_3_4.First().y - 1);
+ if (pat1670_2_3_4.Count() > 0) return new Dot(pat1670_2_3_4.First().x + 1, pat1670_2_3_4.First().y + 1);
  //============================================================================================================== 
 
 
