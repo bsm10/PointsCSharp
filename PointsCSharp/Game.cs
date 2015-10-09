@@ -199,7 +199,7 @@ namespace DotsGame
             {
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.ToString() + " player" + pl2 + " - CheckMove!");
+                    f.lstDbg2.Items.Add(bm.x +":"+ bm.y  + " player" + pl2 + " - CheckMove!");
                 }
 #endif
                 return bm;
@@ -209,71 +209,71 @@ namespace DotsGame
             {
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.ToString() + " player" + pl1 + " - CheckMove!");
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckMove!");
                 }
 #endif
                 return bm;
             }
             //проверяем паттерны
             bm = CheckPattern_vilochka(pl2);
-            if (bm != null && aDots.Contains(bm))
+            if (bm != null & aDots.Contains(bm))
             {
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.ToString() + " player" + pl2 + " - CheckPattern_vilochka " + iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
                 return bm;
             }
             bm = CheckPattern_vilochka(pl1);
-            if (bm != null && aDots.Contains(bm))
+            if (bm != null & aDots.Contains(bm))
             {
 #if DEBUG
 
                 {
-                    f.lstDbg2.Items.Add(bm.ToString() + " player" + pl1 + " - CheckPattern_vilochka " + iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
                 return bm;
             }
 
             bm = CheckPattern(pl2);
-            if (bm != null && aDots.Contains(bm))
+            if (bm != null & aDots.Contains(bm))
             {
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.ToString() + " player" + pl2 + " - CheckPattern " + iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern " + iNumberPattern);
                 }
 #endif
                 return bm;
             }
             bm = CheckPattern(pl1);
-            if (bm != null && aDots.Contains(bm))
+            if (bm != null & aDots.Contains(bm))
             {
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.ToString() + " player" + pl1 + " - CheckPattern " + iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern " + iNumberPattern);
                 }
 #endif
                 return bm;
             }
             bm = CheckPatternVilkaNextMove(pl2);
-            if (bm != null && aDots.Contains(bm))
+            if (bm != null & aDots.Contains(bm))
             {
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.ToString() + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
                 }
 #endif
                 return bm;
 
             }
             bm = CheckPatternVilkaNextMove(pl1);
-            if (bm != null && aDots.Contains(bm))
+            if (bm != null & aDots.Contains(bm))
             {
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.ToString() + " player" + pl1 + "CheckPatternVilkaNextMove " + iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + "CheckPatternVilkaNextMove " + iNumberPattern);
                 }
 #endif
                 return bm;
@@ -896,7 +896,7 @@ namespace DotsGame
         public void LinkDots()//устанавливает связь между двумя точками и возвращает массив связей 
         {
             var qry = from Dot d in aDots
-                      where d.BlokingDots.Count > 0
+                      where d.BlokingDots.Count > 0 
                       select d;
             Dot[] dts = qry.ToArray();
             Links l;
@@ -935,7 +935,11 @@ namespace DotsGame
             var q = from Dot d in aDots where d.Blocked select d;
             count_blocked_dots = q.Count();
             last_move = dot;//зафиксировать последний ход
-            LinkDots();
+            if (res!=0)
+            {
+                //LinkDots(aDots[dot.x, dot.y].IndexRelation);
+                LinkDots();
+            }
             return res;
         }
         private int win_player;//переменная получает номер игрока, котрый окружил точки

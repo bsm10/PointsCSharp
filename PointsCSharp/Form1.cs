@@ -324,6 +324,7 @@ namespace DotsGame
         }
         private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            game.path_savegame = Application.CommonAppDataPath + @"\dots.dts";
             game.SaveGame();
         }
         private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -435,6 +436,7 @@ namespace DotsGame
 
         private void открытьПоследнююToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            game.path_savegame = Application.CommonAppDataPath + @"\dots.dts";
             game.LoadGame();
         }
 
