@@ -697,6 +697,7 @@ namespace DotsGame
                     | d.Blocked == false & aDots[d.x, d.y - 1].Blocked == false & aDots[d.x - 1, d.y + 1].Blocked == false & d.Own == 0 & aDots[d.x, d.y - 1].Own == Owner & aDots[d.x - 1, d.y + 1].Own == Owner
 
                     | d.Blocked == false & aDots[d.x, d.y - 1].Blocked == false & aDots[d.x + 1, d.y + 1].Blocked == false & d.Own == 0 & aDots[d.x, d.y - 1].Own == Owner & aDots[d.x + 1, d.y + 1].Own == Owner
+                    | d.Blocked == false & aDots[d.x, d.y + 1].Blocked == false & aDots[d.x + 1, d.y - 1].Blocked == false & d.Own == 0 & aDots[d.x, d.y + 1].Own == Owner & aDots[d.x + 1, d.y - 1].Own == Owner
 
                     | d.Blocked == false & aDots[d.x + 1, d.y + 1].Blocked == false & aDots[d.x - 1, d.y + 1].Blocked == false & d.Own == 0 & aDots[d.x + 1, d.y + 1].Own == Owner & aDots[d.x - 1, d.y + 1].Own == Owner
                     | d.Blocked == false & aDots[d.x - 1, d.y - 1].Blocked == false & aDots[d.x + 1, d.y - 1].Blocked == false & d.Own == 0 & aDots[d.x - 1, d.y - 1].Own == Owner & aDots[d.x + 1, d.y - 1].Own == Owner
