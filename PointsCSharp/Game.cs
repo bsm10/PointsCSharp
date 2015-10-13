@@ -304,10 +304,15 @@ namespace DotsGame
             best_move = BestMove(player1, player2);
             if (best_move!=null) return PLAYER_COMPUTER;
             var qry = from Dot d in aDots
-                      where d.Own == PLAYER_NONE & d.Blocked==false & Math.Abs(d.x - lastmove.x) <SkillNumSq
-                                                                    & Math.Abs(d.y - lastmove.y) <SkillNumSq
-                      orderby Math.Sqrt(Math.Pow(Math.Abs(d.x - lastmove.x), 2) + Math.Pow(Math.Abs(d.y - lastmove.y), 2)) 
+                      where d.Own == PLAYER_NONE & d.Blocked == false & Math.Abs(d.x - lastmove.x) < SkillNumSq
+                                                                    & Math.Abs(d.y - lastmove.y) < SkillNumSq
+                      orderby Math.Sqrt(Math.Pow(Math.Abs(d.x - lastmove.x), 2) + Math.Pow(Math.Abs(d.y - lastmove.y), 2))
                       select d;
+            //Random rnd = new Random();
+            //var qry = from Dot d in aDots
+            //          where d.Own == PLAYER_NONE & d.Blocked == false 
+            //          orderby rnd.Next()
+            //          select d;
             Dot[] ad = qry.ToArray();
             int i = ad.Length;
             if (i != 0)
