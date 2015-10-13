@@ -94,6 +94,7 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="Patterns.cs" />
+    <Compile Include="PatternsMove.cs" />
     <Compile Include="Pattern_vilka.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="AssemblyInfo.cs" />

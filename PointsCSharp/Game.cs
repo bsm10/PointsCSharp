@@ -308,16 +308,12 @@ namespace DotsGame
                                                                     & Math.Abs(d.y - lastmove.y) < SkillNumSq
                       orderby Math.Sqrt(Math.Pow(Math.Abs(d.x - lastmove.x), 2) + Math.Pow(Math.Abs(d.y - lastmove.y), 2))
                       select d;
-            //Random rnd = new Random();
-            //var qry = from Dot d in aDots
-            //          where d.Own == PLAYER_NONE & d.Blocked == false 
-            //          orderby rnd.Next()
-            //          select d;
             Dot[] ad = qry.ToArray();
             int i = ad.Length;
             if (i != 0)
             {
                 string sfoo = "";
+                #region Cycle
                 foreach (Dot d in ad)
                 {
                     Application.DoEvents();
@@ -396,6 +392,7 @@ namespace DotsGame
                     }
                     //это конец тела цикла
                 }
+                #endregion
             }
             return PLAYER_NONE;
         }
@@ -1423,7 +1420,7 @@ namespace DotsGame
                 }
             }
             s = "iNumberPattern = " + n + "; \r\n";
-            s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
+            s += "var pat" + n + " = from Dot d in aDots where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
             n += "_2";
             sWhere = ""; sMove = "";
             for (int i = 0; i < lstPat.Count ; i++)
@@ -1451,7 +1448,7 @@ namespace DotsGame
 
             }
             s += "//180 Rotate=========================================================================================================== \r\n";
-            s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
+            s += "var pat" + n + " = from Dot d in aDots where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
             
             n += "_3";
             sWhere = ""; sMove = "";
@@ -1480,7 +1477,7 @@ namespace DotsGame
                 }
             }
             s += "//--------------Rotate on 90----------------------------------- \r\n";
-            s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
+            s += "var pat" + n + " = from Dot d in aDots where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
             n += "_4";
             sWhere = ""; sMove = "";
             for (int i = 0; i < l.Count ; i++)
@@ -1507,7 +1504,7 @@ namespace DotsGame
                 }
             }
             s += "//--------------Rotate on 90 - 2----------------------------------- \r\n";
-            s += "var pat" + n + " = from Dot d in get_non_blocked where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
+            s += "var pat" + n + " = from Dot d in aDots where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
             s += "//============================================================================================================== \r\n";
             f.txtDebug.Text = s;
             MessageBox.Show("Into clipboard!");
@@ -1518,6 +1515,7 @@ namespace DotsGame
             f.tlsEditPattern.Checked=false;
             aDots.UnmarkAllDots();
         }
+
         private List<Dot> RotateMatrix(int ungle)
         {
         Array m = new Array[lstPat.Count];
