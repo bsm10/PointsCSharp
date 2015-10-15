@@ -102,18 +102,18 @@ namespace DotsGame
             switch (iLevel)
             {
                 case 0://easy
-                    SkillLevel = 3;
-                    SkillDepth = 15;
+                    SkillLevel = 10;
+                    SkillDepth = 5;
                     SkillNumSq = 3;
                     break;
                 case 1://mid
-                    SkillLevel = 15;
-                    SkillDepth = 5;//20;
-                    SkillNumSq = 3;
+                    SkillLevel = 30;
+                    SkillDepth = 10;//20;
+                    SkillNumSq = 4;
                     break;
                 case 2://hard
                     SkillLevel = 50;
-                    SkillDepth = 10;//50;
+                    SkillDepth = 50;//50;
                     SkillNumSq = 5;
                     break;
             }
@@ -240,6 +240,28 @@ namespace DotsGame
                 return bm;
             }
             #endregion
+            #region CheckPatternVilkaNextMove
+            bm = CheckPatternVilkaNextMove(pl2);
+            if (bm != null & aDots.Contains(bm))
+            {
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
+                }
+#endif
+                return bm;
+            }
+            //            bm = CheckPatternVilkaNextMove(pl1);
+            //            if (bm != null & aDots.Contains(bm))
+            //            {
+            //#if DEBUG
+            //                {
+            //                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + "CheckPatternVilkaNextMove " + iNumberPattern);
+            //                }
+            //#endif
+            //                return bm;
+            //            }
+            #endregion
             #region CheckPattern
             bm = CheckPattern(pl2);
             if (bm != null & aDots.Contains(bm))
@@ -251,38 +273,28 @@ namespace DotsGame
 #endif
                 return bm;
             }
-            bm = CheckPattern(pl1);
-            if (bm != null & aDots.Contains(bm))
+//            bm = CheckPattern(pl1);
+//            if (bm != null & aDots.Contains(bm))
+//            {
+//#if DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern " + iNumberPattern);
+//                }
+//#endif
+//                return bm;
+//            }
+            #endregion
+            #region CheckPatternMove
+            bm = CheckPatternMove(PLAYER_COMPUTER);
+            if (bm != null)
             {
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern " + iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x +":"+ bm.y  + " player2  CheckPatternMove - " + iNumberPattern);
                 }
 #endif
                 return bm;
             }
-            #endregion
-            #region CheckPatternVilkaNextMove
-//            bm = CheckPatternVilkaNextMove(pl2);
-//            if (bm != null & aDots.Contains(bm))
-//            {
-//#if DEBUG
-//                {
-//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
-//                }
-//#endif
-//                return bm;
-//            }
-//            bm = CheckPatternVilkaNextMove(pl1);
-//            if (bm != null & aDots.Contains(bm))
-//            {
-//#if DEBUG
-//                {
-//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + "CheckPatternVilkaNextMove " + iNumberPattern);
-//                }
-//#endif
-//                return bm;
-//            }
             #endregion
             return null;
         }
@@ -1127,6 +1139,7 @@ namespace DotsGame
         public void UndoMove(Dot dot)//поле отмена хода
         {
             Undo(dot.x, dot.y);
+            dot.Own=0;
             //list_moves.Remove(aDots[dot.x, dot.y]);
         }
         private void Undo(int x, int y)//отмена хода
