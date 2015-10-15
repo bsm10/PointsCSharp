@@ -323,7 +323,8 @@ namespace DotsGame
                 foreach (Dot d in ad)
                 {
                     Application.DoEvents();
-                    player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
+                    player2=1;
+                    //player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     if (count_moves>SkillLevel) break;
                     //**************делаем ход***********************************
                     d.Own = player2;
@@ -353,8 +354,10 @@ namespace DotsGame
                     else
                     {
                         UndoMove(d);
-                        best_move = null;
-                        continue;
+                        best_move = d;
+                        return PLAYER_HUMAN;
+                        //best_move = null;
+                        //continue;
                     }
                     if (res_last_move == PLAYER_COMPUTER)
                     {
@@ -781,6 +784,20 @@ namespace DotsGame
             }
             return null;
         }
+
+        private void CheckNextMoves(Dot dot)
+        {
+            
+            //foreach (Dot d in qry)
+            //    {
+            //        //**************делаем ход***********************************
+            //        d.Own = dot.Own;
+            //        res_last_move = MakeMove(d);
+                    
+            //    }
+
+        }
+
         public string Statistic()
         {
             var q5 = from Dot d in aDots where d.Own == 1 select d;
