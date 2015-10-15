@@ -194,6 +194,7 @@ namespace DotsGame
         private Dot BestMove(int pl1, int pl2)
         {
         Dot bm;
+            #region CheckMove
             bm = CheckMove(pl2);
             if (bm != null)
             {
@@ -214,7 +215,9 @@ namespace DotsGame
 #endif
                 return bm;
             }
+            #endregion
             //проверяем паттерны
+            #region CheckPattern_vilochka
             bm = CheckPattern_vilochka(pl2);
             if (bm != null & aDots.Contains(bm))
             {
@@ -236,7 +239,8 @@ namespace DotsGame
 #endif
                 return bm;
             }
-
+            #endregion
+            #region CheckPattern
             bm = CheckPattern(pl2);
             if (bm != null & aDots.Contains(bm))
             {
@@ -257,27 +261,29 @@ namespace DotsGame
 #endif
                 return bm;
             }
-            bm = CheckPatternVilkaNextMove(pl2);
-            if (bm != null & aDots.Contains(bm))
-            {
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
-                }
-#endif
-                return bm;
-
-            }
-            bm = CheckPatternVilkaNextMove(pl1);
-            if (bm != null & aDots.Contains(bm))
-            {
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + "CheckPatternVilkaNextMove " + iNumberPattern);
-                }
-#endif
-                return bm;
-            }
+            #endregion
+            #region CheckPatternVilkaNextMove
+//            bm = CheckPatternVilkaNextMove(pl2);
+//            if (bm != null & aDots.Contains(bm))
+//            {
+//#if DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
+//                }
+//#endif
+//                return bm;
+//            }
+//            bm = CheckPatternVilkaNextMove(pl1);
+//            if (bm != null & aDots.Contains(bm))
+//            {
+//#if DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + "CheckPatternVilkaNextMove " + iNumberPattern);
+//                }
+//#endif
+//                return bm;
+//            }
+            #endregion
             return null;
         }
  //==================================================================================================================
