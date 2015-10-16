@@ -787,7 +787,8 @@ namespace DotsGame
                             if (dot_ptn != null & result_last_move == 0)
                             {
                                 UndoMove(dot_move);
-                                return dot_move;
+                                //return dot_move;
+                                return dot_ptn;
                             }
                             UndoMove(dot_move);
                         }
