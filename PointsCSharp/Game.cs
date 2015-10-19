@@ -50,8 +50,8 @@ namespace DotsGame
                 if(last_move==null)//когда выбирается первая точка для хода
                 {
                     var random = new Random(DateTime.Now.Millisecond);
-                    var q = from Dot d in aDots where d.x <= iBoardSize / 2 & d.x > iBoardSize / 4 
-                                                    & d.y <= iBoardSize / 2 & d.y > iBoardSize / 4
+                    var q = from Dot d in aDots where d.x <= iBoardSize / 2 & d.x > iBoardSize / 3 
+                                                    & d.y <= iBoardSize / 2 & d.y > iBoardSize / 3
                                                     orderby (random.Next())
                                                     select d;
                     
@@ -295,6 +295,17 @@ namespace DotsGame
 #endif
                 return bm;
             }
+            bm = CheckPatternMove(PLAYER_HUMAN);
+            if (bm != null)
+            {
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player1  CheckPatternMove - " + iNumberPattern);
+                }
+#endif
+                return bm;
+            }
+
             #endregion
             return null;
         }
@@ -335,8 +346,8 @@ namespace DotsGame
                 foreach (Dot d in ad)
                 {
                     Application.DoEvents();
-                    player2=1;
-                    //player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
+                    //player2=1;
+                    player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     if (count_moves>SkillLevel) break;
                     //**************делаем ход***********************************
                     d.Own = player2;
@@ -366,8 +377,8 @@ namespace DotsGame
                     else
                     {
                         UndoMove(d);
-                        best_move = d;
-                        return PLAYER_HUMAN;
+                        continue;
+                        //return PLAYER_HUMAN;
                         //best_move = null;
                         //continue;
                     }

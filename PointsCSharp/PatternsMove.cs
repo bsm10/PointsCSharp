@@ -118,6 +118,35 @@ namespace DotsGame
                 if (aDots[d.x+1, d.y].Own == 0) return new Dot(d.x+1, d.y);
                 if (aDots[d.x, d.y - 1].Own == 0) return new Dot(d.x, d.y - 1);
             }
+            //       *
+            //     m
+            //  d*
+            iNumberPattern = 4;
+            var pat4 = from Dot d in aDots
+                       where d.Own == Owner
+                           & aDots[d.x, d.y - 1].Own == 0 & aDots[d.x, d.y - 1].Blocked == false
+                           & aDots[d.x + 1, d.y - 2].Own == 0 & aDots[d.x + 1, d.y - 2].Blocked == false
+                           & aDots[d.x + 2, d.y - 2].Own == Owner & aDots[d.x + 2, d.y - 2].Blocked == false
+                           & aDots[d.x + 2, d.y - 1].Own == 0 & aDots[d.x + 2, d.y - 1].Blocked == false
+                           & aDots[d.x + 1, d.y].Own == 0 & aDots[d.x + 1, d.y].Blocked == false
+                           & aDots[d.x + 1, d.y - 1].Own == 0 & aDots[d.x + 1, d.y - 1].Blocked == false
+                       select d;
+            if (pat4.Count() > 0) return new Dot(pat4.First().x + 1, pat4.First().y - 1);
+            //180 Rotate=========================================================================================================== 
+            //  *
+            //     m
+            //        d* 
+            var pat4_2 = from Dot d in aDots
+                         where d.Own == Owner
+                             & aDots[d.x, d.y - 1].Own == 0 & aDots[d.x, d.y - 1].Blocked == false
+                             & aDots[d.x - 1, d.y - 2].Own == 0 & aDots[d.x - 1, d.y - 2].Blocked == false
+                             & aDots[d.x - 2, d.y - 2].Own == Owner & aDots[d.x - 2, d.y - 2].Blocked == false
+                             & aDots[d.x - 2, d.y - 1].Own == 0 & aDots[d.x - 2, d.y - 1].Blocked == false
+                             & aDots[d.x - 1, d.y].Own == 0 & aDots[d.x - 1, d.y].Blocked == false
+                             & aDots[d.x - 1, d.y - 1].Own == 0 & aDots[d.x - 1, d.y - 1].Blocked == false
+                         select d;
+            if (pat4_2.Count() > 0) return new Dot(pat4_2.First().x - 1, pat4_2.First().y - 1);
+            //============================================================================================================== 
 
 
 
