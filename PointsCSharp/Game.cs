@@ -295,16 +295,16 @@ namespace DotsGame
 #endif
                 return bm;
             }
-            bm = CheckPatternMove(PLAYER_HUMAN);
-            if (bm != null)
-            {
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player1  CheckPatternMove - " + iNumberPattern);
-                }
-#endif
-                return bm;
-            }
+//            bm = CheckPatternMove(PLAYER_HUMAN);
+//            if (bm != null)
+//            {
+//#if DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player1  CheckPatternMove - " + iNumberPattern);
+//                }
+//#endif
+//                return bm;
+//            }
 
             #endregion
             return null;
