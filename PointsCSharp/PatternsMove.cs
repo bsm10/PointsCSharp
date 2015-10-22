@@ -147,6 +147,29 @@ namespace DotsGame
                          select d;
             if (pat4_2.Count() > 0) return new Dot(pat4_2.First().x - 1, pat4_2.First().y - 1);
             //============================================================================================================== 
+            // если точка рядом с бортом - заземляем
+            iNumberPattern = 5;
+            var pat5 = from Dot d in aDots
+                         where d.Own == Owner
+                             & aDots[d.x + 1, d.y].Own == 0 & d.x + 1 == iBoardSize - 1
+                         select d;
+            if (pat5.Count() > 0) return new Dot(pat5.First().x + 1, pat5.First().y);
+            var pat5_2_3_4 = from Dot d in aDots
+                             where d.Own == Owner
+                                 & aDots[d.x - 1, d.y].Own == 0 & d.x - 1 == 0
+                             select d;
+            if (pat5_2_3_4.Count() > 0) return new Dot(pat5_2_3_4.First().x - 1, pat5_2_3_4.First().y );
+            var pat5_2 = from Dot d in aDots
+                           where d.Own == Owner
+                               & aDots[d.x, d.y + 1].Own == 0 & d.y + 1 == iBoardSize - 1
+                           select d;
+            if (pat5_2.Count() > 0) return new Dot(pat5_2.First().x , pat5_2.First().y+1);
+            var pat5_2_3 = from Dot d in aDots
+                             where d.Own == Owner
+                                 & aDots[d.x, d.y - 1].Own == 0 & (d.y - 1) == 0
+                             select d;
+            if (pat5_2_3.Count() > 0) return new Dot(pat5_2_3.First().x, pat5_2_3.First().y - 1);
+            //============================================================================================================== 
 
 
 
