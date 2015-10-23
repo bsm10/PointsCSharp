@@ -241,27 +241,30 @@ namespace DotsGame
                 return bm;
             }
             #endregion
-            #region CheckPattern2Move
+            #region CheckPattern2Move проверяем ходы на два вперед
             List<Dot> empty_dots = aDots.EmptyNeibourDots(pl2);
+            List<Dot> lst_dots2;
             foreach (Dot dot in empty_dots)
             {
-                dot.Own=pl2;
-                MakeMove(dot);
-                bm = CheckPattern2Move(pl2);
-                UndoMove(dot);
-                if (bm != null)
+                MakeMove(dot, pl2);
+                lst_dots2 = CheckPattern2Move(pl2);
+                foreach (Dot nd in lst_dots2)
                 {
+                    if(MakeMove(nd, pl2)!=0)
+                    {
+                        UndoMove(nd);
+                        UndoMove(dot);
 #if DEBUG
                     {
-                        f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern2Move!");
+                        f.lstDbg2.Items.Add(dot.x + ":" + dot.y + " player" + pl2 + " - CheckPattern2Move!");
                     }
 #endif
-                    return dot;
+                        return dot;
+                    }
+                    UndoMove(nd);
                 }
-
+                UndoMove(dot);
             }
-            
-
             #endregion
             #region CheckPatternVilkaNextMove
             bm = CheckPatternVilkaNextMove(pl2);
@@ -373,8 +376,7 @@ namespace DotsGame
                     player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     //if (count_moves>SkillLevel) break;
                     //**************делаем ход***********************************
-                    d.Own = player2;
-                    res_last_move = MakeMove(d);
+                    res_last_move = MakeMove(d,player2);
                     count_moves++;
                     #region если ход в заведомо окруженный регион - пропускаем такой ход
                     if (win_player == PLAYER_HUMAN)
@@ -655,8 +657,7 @@ namespace DotsGame
                                 break;
                         }
                         //ход делает комп, если последним ходил игрок
-                        d.Own = own;
-                        int res_last_move = (int)MakeMove(d);
+                        int res_last_move = MakeMove(d, own);
                         mvs.Add(d); 
                         //-----показывает проверяемые ходы-----------------------------------------------
 #if DEBUG
@@ -775,8 +776,7 @@ namespace DotsGame
                 foreach (Dot d in ad)
                 {
                     //делаем ход
-                    d.Own = Owner;
-                    int result_last_move = (int)MakeMove(d);
+                    int result_last_move = (int)MakeMove(d, Owner);
                     #if DEBUG
                     if (f.chkMove.Checked) Pause();
                     #endif
@@ -807,8 +807,7 @@ namespace DotsGame
                         if (dot_move.Blocked == false & dot_move.Own == 0)
                         {
                             //делаем ход
-                            dot_move.Own = Owner;
-                            int result_last_move = (int)MakeMove(dot_move);
+                            int result_last_move = MakeMove(dot_move,Owner);
                             int pl = Owner == PLAYER_COMPUTER ? PLAYER_HUMAN : PLAYER_COMPUTER;
                             Dot dt = CheckMove(pl, false); // проверка чтобы не попасть в капкан
                             if (dt != null)
@@ -998,12 +997,13 @@ namespace DotsGame
         private int count_in_region;
         private int count_blocked_dots;
         //=================================================================================================
-        public int MakeMove(Dot dot)//Основная функция - ход игрока - возвращает игрока, который победил
+        public int MakeMove(Dot dot, int Owner=0)//Основная функция - ход игрока - возвращает игрока, который победил
         {
             if (aDots.Contains(dot) == false) return 0;
             if (aDots[dot.x, dot.y].Own == 0)//если точка не занята
             {
-                aDots.Add(dot);
+                if(Owner==0)aDots.Add(dot, dot.Own);
+                else aDots.Add(dot, Owner);
             }
             //--------------------------------
             int res = CheckBlocked(dot.Own);
@@ -1177,7 +1177,10 @@ namespace DotsGame
         public void UndoMove(Dot dot)//поле отмена хода
         {
             Undo(dot.x, dot.y);
-            dot.Own=0;
+            //dot.Own=0;
+            //dot.IndexRelation=0;
+            //dot.NeiborDots.Clear();
+            //dot.BlokingDots.Clear();
             //list_moves.Remove(aDots[dot.x, dot.y]);
         }
         private void Undo(int x, int y)//отмена хода
@@ -1648,7 +1651,7 @@ namespace DotsGame
                 while (reader.PeekChar() > -1)
                 {
                     d = new Dot((int)reader.ReadByte(), (int)reader.ReadByte(), (int)reader.ReadByte(), null);
-                    MakeMove(d);
+                    MakeMove(d,d.Own);
                     list_moves.Add(d);
                 }
                 last_move = d;

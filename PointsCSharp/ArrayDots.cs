@@ -100,11 +100,11 @@ namespace DotsGame
                 Dots[i,j] = value;
             }
         }
-        public void Add(Dot dot)//добавляет точку в массив
+        public void Add(Dot dot, int Owner)//добавляет точку в массив
         {
             if (Contains(dot))
             {
-                Dots[dot.x, dot.y].Own = dot.Own;
+                Dots[dot.x, dot.y].Own = Owner;
                 Dots[dot.x, dot.y].Blocked = false;
                 AddNeibor(Dots[dot.x, dot.y]);
             }
@@ -212,6 +212,10 @@ namespace DotsGame
                 int i = Dots[x, y].IndexDot;
                 Dots[x, y] = new Dot(x, y);
                 Dots[x, y].IndexDot = i;
+                Dots[x, y].IndexRelation = 0;
+                Dots[x, y].NeiborDots.Clear();
+                Dots[x, y].BlokingDots.Clear();
+                Dots[x, y].Own=0;
             }
         }
         public float Distance(Dot dot1, Dot dot2)//расстояние между точками
