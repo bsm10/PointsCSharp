@@ -300,6 +300,25 @@ namespace DotsGame
             return q.Count();
         }
         
+        public List<Dot> EmptyNeibourDots(int Owner)//список не занятых точек возле определенной точки
+        {
+            List<Dot> ld = new List<Dot>();     
+            foreach (Dot d in Dots)
+            {
+                if(d.Own==Owner)
+                {
+                    var q = from Dot dot in Dots
+                    where dot.Blocked == false & dot.Own == 0 & Distance(dot,d)<2
+                    select dot;
+                    foreach(Dot empty_d in q)
+                    {
+                        if (ld.Contains(empty_d)==false) ld.Add(empty_d); 
+                    }
+                }
+            }
+            return ld;
+        }
+       
         public int MakeIndexRelation (Dot dot)
         {
             if (dot.NeiborDots.Count>0)

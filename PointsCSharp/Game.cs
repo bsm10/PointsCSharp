@@ -216,6 +216,7 @@ namespace DotsGame
                 return bm;
             }
             #endregion
+
             //проверяем паттерны
             #region CheckPattern_vilochka
             bm = CheckPattern_vilochka(pl2);
@@ -239,6 +240,28 @@ namespace DotsGame
 #endif
                 return bm;
             }
+            #endregion
+            #region CheckPattern2Move
+            List<Dot> empty_dots = aDots.EmptyNeibourDots(pl2);
+            foreach (Dot dot in empty_dots)
+            {
+                dot.Own=pl2;
+                MakeMove(dot);
+                bm = CheckPattern2Move(pl2);
+                UndoMove(dot);
+                if (bm != null)
+                {
+#if DEBUG
+                    {
+                        f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern2Move!");
+                    }
+#endif
+                    return dot;
+                }
+
+            }
+            
+
             #endregion
             #region CheckPatternVilkaNextMove
             bm = CheckPatternVilkaNextMove(pl2);
