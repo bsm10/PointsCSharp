@@ -247,6 +247,11 @@ namespace DotsGame
             foreach (Dot dot in empty_dots)
             {
                 MakeMove(dot, pl2);
+                //if (CheckMove(pl1)!=null)
+                //{
+                //    UndoMove(dot);
+                //    continue;
+                //}
                 lst_dots2 = CheckPattern2Move(pl2);
                 foreach (Dot nd in lst_dots2)
                 {
