@@ -371,6 +371,7 @@ namespace DotsGame
             toolStripStatusLabel2.Text = "Ход игрока" + Player + "...";
             Application.DoEvents();
             if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove);
+            pl_move.Own=Player;
             game.MakeMove(pl_move,Player);
             game.ListMoves.Add(pl_move);
             pbxBoard.Invalidate();
