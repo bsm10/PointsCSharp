@@ -218,6 +218,35 @@ namespace DotsGame
             #endregion
 
             //проверяем паттерны
+            #region CheckPattern2Move проверяем ходы на два вперед
+            List<Dot> empty_dots = aDots.EmptyNeibourDots(pl2);
+            List<Dot> lst_dots2;
+            foreach (Dot dot in empty_dots)
+            {
+                MakeMove(dot, pl2);
+                if (CheckMove(pl1) != null)
+                {
+                    UndoMove(dot);
+                }
+                lst_dots2 = CheckPattern2Move(pl2);
+                foreach (Dot nd in lst_dots2)
+                {
+                    if(MakeMove(nd, pl2)!=0)
+                    {
+                        UndoMove(nd);
+                        UndoMove(dot);
+#if DEBUG
+                    {
+                        f.lstDbg2.Items.Add(dot.x + ":" + dot.y + " player" + pl2 + " - CheckPattern2Move!");
+                    }
+#endif
+                        return dot;
+                    }
+                    UndoMove(nd);
+                }
+                UndoMove(dot);
+            }
+            #endregion
             #region CheckPattern_vilochka
             bm = CheckPattern_vilochka(pl2);
             if (bm != null & aDots.Contains(bm))
@@ -239,36 +268,6 @@ namespace DotsGame
                 }
 #endif
                 return bm;
-            }
-            #endregion
-            #region CheckPattern2Move проверяем ходы на два вперед
-            List<Dot> empty_dots = aDots.EmptyNeibourDots(pl2);
-            List<Dot> lst_dots2;
-            foreach (Dot dot in empty_dots)
-            {
-                MakeMove(dot, pl2);
-                //if (CheckMove(pl1)!=null)
-                //{
-                //    UndoMove(dot);
-                //    continue;
-                //}
-                lst_dots2 = CheckPattern2Move(pl2);
-                foreach (Dot nd in lst_dots2)
-                {
-                    if(MakeMove(nd, pl2)!=0)
-                    {
-                        UndoMove(nd);
-                        UndoMove(dot);
-#if DEBUG
-                    {
-                        f.lstDbg2.Items.Add(dot.x + ":" + dot.y + " player" + pl2 + " - CheckPattern2Move!");
-                    }
-#endif
-                        return dot;
-                    }
-                    UndoMove(nd);
-                }
-                UndoMove(dot);
             }
             #endregion
             #region CheckPatternVilkaNextMove
@@ -312,20 +311,21 @@ namespace DotsGame
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern " + iNumberPattern);
                 }
 #endif
-                return bm;
+                if (CheckDot(bm,pl2)==false) return bm;
+                
             }
             #endregion
-            #region CheckPatternMove
-            bm = CheckPatternMove(PLAYER_COMPUTER);
-            if (bm != null)
-            {
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x +":"+ bm.y  + " player2  CheckPatternMove - " + iNumberPattern);
-                }
-#endif
-                return bm;
-            }
+            //#region CheckPatternMove
+//            bm = CheckPatternMove(PLAYER_COMPUTER);
+//            if (bm != null)
+//            {
+//#if DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x +":"+ bm.y  + " player2  CheckPatternMove - " + iNumberPattern);
+//                }
+//#endif
+//                return bm;
+//            }
 //            bm = CheckPatternMove(PLAYER_HUMAN);
 //            if (bm != null)
 //            {
@@ -337,9 +337,23 @@ namespace DotsGame
 //                return bm;
 //            }
 
-            #endregion
+            //#endregion
             return null;
         }
+
+// функция проверяет не делается ли ход в точку, которая на следующем ходу будет окружена
+private bool CheckDot(Dot dot, int Player)
+{
+    MakeMove(dot, Player);
+    int pl = Player == PLAYER_COMPUTER ? 1 : 2;
+    if (CheckMove(pl) != null)
+    {
+        UndoMove(dot);
+        return true; // да будет окружена
+    }
+    //нет не будет
+    return false;
+}
  //==================================================================================================================
         List<Dot> lst_best_move=new List<Dot>();//сюда заносим лучшие ходы
         int res_last_move; //хранит результат хода
