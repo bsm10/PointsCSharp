@@ -114,7 +114,7 @@ namespace DotsGame
                 case 2://hard
                     SkillLevel = 50;
                     SkillDepth = 50;//50;
-                    SkillNumSq = 5;
+                    SkillNumSq = 2;//5;
                     break;
             }
             Properties.Settings.Default.Level=iLevel;
@@ -304,7 +304,7 @@ namespace DotsGame
                 }
 #endif
 #endregion
-                return bm;
+                if (CheckDot(bm, pl2) == false) return bm;
             }
             bm = CheckPattern(pl1);
             if (bm != null & aDots.Contains(bm))
@@ -316,7 +316,7 @@ namespace DotsGame
                 }
 #endif
 #endregion
-                if (CheckDot(bm,pl2)==false) return bm;
+                if (CheckDot(bm, pl2)==false) return bm;
             }
             #endregion
             return null;
@@ -327,7 +327,7 @@ private bool CheckDot(Dot dot, int Player)
 {
     MakeMove(dot, Player);
     int pl = Player == PLAYER_COMPUTER ? 1 : 2;
-    if (CheckMove(pl,false) != null)
+    if (CheckMove(pl) != null)
     {
         UndoMove(dot);
         return true; // да будет окружена
@@ -380,12 +380,22 @@ private bool CheckDot(Dot dot, int Player)
                     //**************делаем ход***********************************
                     res_last_move = MakeMove(d,player2);
                     count_moves++;
-                    #region если ход в заведомо окруженный регион - пропускаем такой ход
+                    #region проверка на окружение
+
+                    if (win_player == PLAYER_COMPUTER)
+                    {
+                        best_move = d;
+                        UndoMove(d);
+                        return PLAYER_COMPUTER;
+                    }
+
+                    //если ход в заведомо окруженный регион - пропускаем такой ход
                     if (win_player == PLAYER_HUMAN)
                     {
                         UndoMove(d);
                         continue;
                     }
+
                     #endregion
                     #region проверяем ход чтобы точку не окружили на следующем ходу
                     sfoo = "CheckMove player" + player1;
@@ -409,18 +419,18 @@ private bool CheckDot(Dot dot, int Player)
                         //best_move = null;
                         //continue;
                     }
-                    if (res_last_move == PLAYER_COMPUTER)
-                    {
-                        best_move=d;
-                        UndoMove(d);
-                        return PLAYER_COMPUTER;
-                    }
-                    else if(res_last_move==PLAYER_HUMAN)
-                    {
-                        best_move=null;
-                        UndoMove(d);
-                        continue;
-                    }
+                    //if (res_last_move == PLAYER_COMPUTER)
+                    //{
+                    //    best_move=d;
+                    //    UndoMove(d);
+                    //    return PLAYER_COMPUTER;
+                    //}
+                    //else if(res_last_move==PLAYER_HUMAN)
+                    //{
+                    //    best_move=null;
+                    //    UndoMove(d);
+                    //    continue;
+                    //}
                     #endregion
 #region Debug statistic
 #if DEBUG
@@ -458,7 +468,7 @@ private bool CheckDot(Dot dot, int Player)
         }
 
         //******************************************************************************************************************
-//        private int Play1(ref Dot best_move, Dot move1, Dot move2, int player, ref int count_moves,
+//        private int OldPlay1(ref Dot best_move, Dot move1, Dot move2, int player, ref int count_moves,
 //                               ref int recursion_depth, Dot lastmove, ref int counter_root)//возвращает Owner кто побеждает в результате хода
 //        {
 //#if DEBUG
@@ -999,7 +1009,7 @@ private bool CheckDot(Dot dot, int Player)
         private int count_in_region;
         private int count_blocked_dots;
         //=================================================================================================
-        public int MakeMove(Dot dot, int Owner=0)//Основная функция - ход игрока - возвращает игрока, который победил
+        public int MakeMove(Dot dot, int Owner=0)//Основная функция - ход игрока - возвращает количество окруженных точек
         {
             if (aDots.Contains(dot) == false) return 0;
             if (aDots[dot.x, dot.y].Own == 0)//если точка не занята
@@ -1037,13 +1047,13 @@ private bool CheckDot(Dot dot, int Player)
                     arrDot = query2.ToArray();
                     break;
             }
-            
+            lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
             foreach (Dot d in arrDot)
             {
                 aDots.UnmarkAllDots();
                 if (DotIsFree(d, d.Own) == false)
                 {
-                    lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
+                    //lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
                     if (d.Own != 0) d.Blocked = true;
                     d.IndexRelation=0;
                     var q1 = from Dot dots in aDots where dots.BlokingDots.Contains(d) select dots;
@@ -1051,17 +1061,17 @@ private bool CheckDot(Dot dot, int Player)
                     {
                         aDots.UnmarkAllDots();
                         MarkDotsInRegion(d, d.Own);
-                        counter += 1;
+                        
                         foreach (Dot dr in lst_in_region_dots)
                         {
                             win_player=dr.Own;
                             count_in_region++;
                             foreach (Dot bd in lst_blocked_dots)
                             {
+                                if (bd.Own != 0) counter += 1;
                                 if (dr.BlokingDots.Contains(bd) == false & bd.Own != 0 & dr.Own != bd.Own)
                                 {
                                     dr.BlokingDots.Add(bd);
-                                   
                                 }
                             }
                         }
@@ -1073,9 +1083,9 @@ private bool CheckDot(Dot dot, int Player)
                 }
             }
             RescanBlocked();
-            
-            if (counter==0) win_player=0;
-            return counter;
+
+            if (lst_blocked_dots.Count == 0) win_player = 0;
+            return lst_blocked_dots.Count;
         }
         private void RescanBlocked()//функция ресканирует списки блокированных точек и устанавливает статус Blocked у єтих точек
         {
