@@ -194,29 +194,32 @@ namespace DotsGame
         private Dot BestMove(int pl1, int pl2)
         {
         Dot bm;
-            #region CheckMove
-            bm = CheckMove(pl2);
+        #region CheckMove - проверка на окружение
+        bm = CheckMove(pl2);
             if (bm != null)
             {
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x +":"+ bm.y  + " player" + pl2 + " - CheckMove!");
                 }
 #endif
+#endregion
                 return bm;
             }
             bm = CheckMove(pl1);
             if (bm != null)
             {
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckMove!");
                 }
 #endif
+#endregion
                 return bm;
             }
-            #endregion
-
+            #endregion 
             //проверяем паттерны
             #region CheckPattern2Move проверяем ходы на два вперед
             List<Dot> empty_dots = aDots.EmptyNeibourDots(pl2);
@@ -224,7 +227,7 @@ namespace DotsGame
             foreach (Dot dot in empty_dots)
             {
                 MakeMove(dot, pl2);
-                if (CheckMove(pl1) != null)
+                if (CheckMove(pl1,false) != null)
                 {
                     UndoMove(dot);
                 }
@@ -235,11 +238,13 @@ namespace DotsGame
                     {
                         UndoMove(nd);
                         UndoMove(dot);
+#region DEBUG
 #if DEBUG
-                    {
+                        {
                         f.lstDbg2.Items.Add(dot.x + ":" + dot.y + " player" + pl2 + " - CheckPattern2Move!");
                     }
 #endif
+#endregion
                         return dot;
                     }
                     UndoMove(nd);
@@ -251,22 +256,26 @@ namespace DotsGame
             bm = CheckPattern_vilochka(pl2);
             if (bm != null & aDots.Contains(bm))
             {
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
+#endregion
                 return bm;
             }
             bm = CheckPattern_vilochka(pl1);
             if (bm != null & aDots.Contains(bm))
             {
+#region DEBUG
 #if DEBUG
 
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
+#endregion
                 return bm;
             }
             #endregion
@@ -274,70 +283,42 @@ namespace DotsGame
             bm = CheckPatternVilkaNextMove(pl2);
             if (bm != null & aDots.Contains(bm))
             {
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
                 }
 #endif
+#endregion
                 return bm;
             }
-            //            bm = CheckPatternVilkaNextMove(pl1);
-            //            if (bm != null & aDots.Contains(bm))
-            //            {
-            //#if DEBUG
-            //                {
-            //                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + "CheckPatternVilkaNextMove " + iNumberPattern);
-            //                }
-            //#endif
-            //                return bm;
-            //            }
             #endregion
             #region CheckPattern
             bm = CheckPattern(pl2);
             if (bm != null & aDots.Contains(bm))
             {
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern " + iNumberPattern);
                 }
 #endif
+#endregion
                 return bm;
             }
             bm = CheckPattern(pl1);
             if (bm != null & aDots.Contains(bm))
             {
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern " + iNumberPattern);
                 }
 #endif
+#endregion
                 if (CheckDot(bm,pl2)==false) return bm;
-                
             }
             #endregion
-            //#region CheckPatternMove
-//            bm = CheckPatternMove(PLAYER_COMPUTER);
-//            if (bm != null)
-//            {
-//#if DEBUG
-//                {
-//                    f.lstDbg2.Items.Add(bm.x +":"+ bm.y  + " player2  CheckPatternMove - " + iNumberPattern);
-//                }
-//#endif
-//                return bm;
-//            }
-//            bm = CheckPatternMove(PLAYER_HUMAN);
-//            if (bm != null)
-//            {
-//#if DEBUG
-//                {
-//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player1  CheckPatternMove - " + iNumberPattern);
-//                }
-//#endif
-//                return bm;
-//            }
-
-            //#endregion
             return null;
         }
 
@@ -346,7 +327,7 @@ private bool CheckDot(Dot dot, int Player)
 {
     MakeMove(dot, Player);
     int pl = Player == PLAYER_COMPUTER ? 1 : 2;
-    if (CheckMove(pl) != null)
+    if (CheckMove(pl,false) != null)
     {
         UndoMove(dot);
         return true; // да будет окружена
@@ -377,6 +358,7 @@ private bool CheckDot(Dot dot, int Player)
             Dot enemy_move = null;
             //проверяем ход который ведет сразу к окружению и паттерны
             best_move = BestMove(player1, player2);
+            if (CheckDot(best_move,player2)) best_move=null;
             if (best_move!=null) return PLAYER_COMPUTER;
             var qry = from Dot d in aDots
                       where d.Own == PLAYER_NONE & d.Blocked == false & Math.Abs(d.x - lastmove.x) < SkillNumSq
@@ -1196,7 +1178,7 @@ private bool CheckDot(Dot dot, int Player)
         }
         public void UndoMove(Dot dot)//поле отмена хода
         {
-            Undo(dot.x, dot.y);
+            if(dot!=null) Undo(dot.x, dot.y);
             //dot.Own=0;
             //dot.IndexRelation=0;
             //dot.NeiborDots.Clear();
