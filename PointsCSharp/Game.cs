@@ -33,6 +33,8 @@ namespace DotsGame
         private Dot best_move; //ход который должен сделать комп
         private Dot last_move; //последний ход
         private List<Dot> list_moves; //список ходов
+        private int win_player;//переменная получает номер игрока, котрый окружил точки
+
         private string status=string.Empty;
         public string  Status
         {
@@ -1030,7 +1032,6 @@ private bool CheckDot(Dot dot, int Player)
             }
             return res;
         }
-        private int win_player;//переменная получает номер игрока, котрый окружил точки
         private int CheckBlocked(int last_moveOwner=0)//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
         {
             int counter = 0;
