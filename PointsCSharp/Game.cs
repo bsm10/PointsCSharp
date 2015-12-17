@@ -192,7 +192,7 @@ namespace DotsGame
 
             return new Dot(best_move.x,best_move.y); //так надо чтобы best_move не ссылался на точку в aDots
         }
-
+        //
         private Dot BestMove(int pl1, int pl2)
         {
         Dot bm;
@@ -228,11 +228,11 @@ namespace DotsGame
             List<Dot> lst_dots2;
             foreach (Dot dot in empty_dots)
             {
-                MakeMove(dot, pl2);
-                if (CheckMove(pl1,false) != null)
-                {
-                    UndoMove(dot);
-                }
+                if (CheckDot(dot, pl2) == false) MakeMove(dot, pl2);
+                //if (win_player==1 || CheckMove(pl1,false) != null)
+                //{
+                //    UndoMove(dot);
+                //}
                 lst_dots2 = CheckPattern2Move(pl2);
                 foreach (Dot nd in lst_dots2)
                 {
@@ -329,7 +329,7 @@ private bool CheckDot(Dot dot, int Player)
 {
     MakeMove(dot, Player);
     int pl = Player == PLAYER_COMPUTER ? 1 : 2;
-    if (CheckMove(pl) != null)
+    if (win_player==pl || CheckMove(pl) != null)
     {
         UndoMove(dot);
         return true; // да будет окружена
