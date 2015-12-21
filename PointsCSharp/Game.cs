@@ -1246,16 +1246,10 @@ private bool CheckDot(Dot dot, int Player)
         public void UndoMove(int x, int y)//поле отмена хода
         {
             Undo(x,y);
-            //list_moves.Remove(aDots[x, y]);
         }
         public void UndoMove(Dot dot)//поле отмена хода
         {
             if(dot!=null) Undo(dot.x, dot.y);
-            //dot.Own=0;
-            //dot.IndexRelation=0;
-            //dot.NeiborDots.Clear();
-            //dot.BlokingDots.Clear();
-            //list_moves.Remove(aDots[dot.x, dot.y]);
         }
         private void Undo(int x, int y)//отмена хода
         {
@@ -1270,10 +1264,7 @@ private bool CheckDot(Dot dot, int Player)
                     d.BlokingDots.Remove(aDots[x, y]);
                 }
                 count_blocked_dots = CheckBlocked();
-
-                //aDots.Remove(x, y);
             }
-            //aDots[x, y].Own = 0;
             if (aDots[x, y].BlokingDots.Count > 0)
             {
                 //снимаем блокировку с точки bd, которая была блокирована UndoMove(int x, int y)
@@ -1319,12 +1310,12 @@ private bool CheckDot(Dot dot, int Player)
             ln = null;
             bl_dot = null;
 
-            //list_moves.Remove(aDots[x, y]);
             aDots.Remove(x, y);
             count_blocked_dots = CheckBlocked();
             ScanBlockedFreeDots();            
             aDots.UnmarkAllDots();
-            LinkDots(); 
+            LinkDots();
+            last_move = list_moves.Count == 0 ? null : list_moves.Last(); 
         }
         #region RENDER
         public Point TranslateCoordinates(Point MousePos)
