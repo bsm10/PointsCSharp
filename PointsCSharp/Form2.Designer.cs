@@ -52,6 +52,8 @@
             this.tlsПустая = new System.Windows.Forms.ToolStripButton();
             this.tlsКромеВражеской = new System.Windows.Forms.ToolStripButton();
             this.tlsТочкаХода = new System.Windows.Forms.ToolStripButton();
+            this.lblBestMove = new System.Windows.Forms.Label();
+            this.txtBestMove = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -82,7 +84,7 @@
             this.lstDbg2.HorizontalScrollbar = true;
             this.lstDbg2.Location = new System.Drawing.Point(92, 30);
             this.lstDbg2.Name = "lstDbg2";
-            this.lstDbg2.Size = new System.Drawing.Size(247, 108);
+            this.lstDbg2.Size = new System.Drawing.Size(203, 108);
             this.lstDbg2.TabIndex = 2;
             // 
             // txtDebug
@@ -95,10 +97,10 @@
             this.txtDebug.Font = new System.Drawing.Font("Trebuchet MS", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtDebug.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.txtDebug.Location = new System.Drawing.Point(11, 147);
-            this.txtDebug.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtDebug.Margin = new System.Windows.Forms.Padding(2);
             this.txtDebug.Multiline = true;
             this.txtDebug.Name = "txtDebug";
-            this.txtDebug.Size = new System.Drawing.Size(328, 169);
+            this.txtDebug.Size = new System.Drawing.Size(284, 139);
             this.txtDebug.TabIndex = 4;
             // 
             // txtDotStatus
@@ -110,11 +112,11 @@
             this.txtDotStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtDotStatus.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtDotStatus.ForeColor = System.Drawing.Color.Navy;
-            this.txtDotStatus.Location = new System.Drawing.Point(11, 319);
-            this.txtDotStatus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtDotStatus.Location = new System.Drawing.Point(10, 290);
+            this.txtDotStatus.Margin = new System.Windows.Forms.Padding(2);
             this.txtDotStatus.Multiline = true;
             this.txtDotStatus.Name = "txtDotStatus";
-            this.txtDotStatus.Size = new System.Drawing.Size(329, 156);
+            this.txtDotStatus.Size = new System.Drawing.Size(223, 156);
             this.txtDotStatus.TabIndex = 5;
             // 
             // rbtnAuto
@@ -161,7 +163,7 @@
             this.numericUpDown3.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.numericUpDown3.Location = new System.Drawing.Point(348, 35);
-            this.numericUpDown3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown3.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -190,7 +192,7 @@
             this.numericUpDown2.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.numericUpDown2.Location = new System.Drawing.Point(348, 72);
-            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown2.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -236,7 +238,7 @@
             0,
             0});
             this.numericUpDown1.Location = new System.Drawing.Point(348, 151);
-            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown1.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             5000,
             0,
@@ -271,7 +273,7 @@
             this.chkMove.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.chkMove.ForeColor = System.Drawing.Color.Navy;
             this.chkMove.Location = new System.Drawing.Point(348, 177);
-            this.chkMove.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chkMove.Margin = new System.Windows.Forms.Padding(2);
             this.chkMove.Name = "chkMove";
             this.chkMove.Size = new System.Drawing.Size(59, 20);
             this.chkMove.TabIndex = 23;
@@ -298,7 +300,7 @@
             this.numericUpDown4.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.numericUpDown4.Location = new System.Drawing.Point(348, 110);
-            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.numericUpDown4.Margin = new System.Windows.Forms.Padding(2);
             this.numericUpDown4.Minimum = new decimal(new int[] {
             2,
             0,
@@ -320,7 +322,7 @@
             this.rtbStat.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbStat.Font = new System.Drawing.Font("Arial Narrow", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.rtbStat.Location = new System.Drawing.Point(344, 383);
-            this.rtbStat.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rtbStat.Margin = new System.Windows.Forms.Padding(2);
             this.rtbStat.Name = "rtbStat";
             this.rtbStat.ReadOnly = true;
             this.rtbStat.Size = new System.Drawing.Size(135, 87);
@@ -336,9 +338,9 @@
             this.lstMoves.ForeColor = System.Drawing.Color.Teal;
             this.lstMoves.FormattingEnabled = true;
             this.lstMoves.ItemHeight = 14;
-            this.lstMoves.Location = new System.Drawing.Point(345, 246);
+            this.lstMoves.Location = new System.Drawing.Point(345, 236);
             this.lstMoves.Name = "lstMoves";
-            this.lstMoves.Size = new System.Drawing.Size(134, 56);
+            this.lstMoves.Size = new System.Drawing.Size(134, 42);
             this.lstMoves.TabIndex = 28;
             // 
             // toolStrip1
@@ -415,11 +417,38 @@
             this.tlsТочкаХода.Text = "Точка хода";
             this.tlsТочкаХода.CheckedChanged += new System.EventHandler(this.tlsТочкаХода_CheckedChanged);
             // 
+            // lblBestMove
+            // 
+            this.lblBestMove.AutoSize = true;
+            this.lblBestMove.Location = new System.Drawing.Point(12, 457);
+            this.lblBestMove.Name = "lblBestMove";
+            this.lblBestMove.Size = new System.Drawing.Size(64, 13);
+            this.lblBestMove.TabIndex = 31;
+            this.lblBestMove.Text = "BestMove - ";
+            // 
+            // txtBestMove
+            // 
+            this.txtBestMove.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBestMove.BackColor = System.Drawing.SystemColors.Info;
+            this.txtBestMove.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtBestMove.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtBestMove.ForeColor = System.Drawing.Color.Maroon;
+            this.txtBestMove.Location = new System.Drawing.Point(237, 290);
+            this.txtBestMove.Margin = new System.Windows.Forms.Padding(2);
+            this.txtBestMove.Multiline = true;
+            this.txtBestMove.Name = "txtBestMove";
+            this.txtBestMove.Size = new System.Drawing.Size(192, 156);
+            this.txtBestMove.TabIndex = 32;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(551, 483);
+            this.Controls.Add(this.txtBestMove);
+            this.Controls.Add(this.lblBestMove);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.rtbStat);
             this.Controls.Add(this.lstMoves);
@@ -479,5 +508,7 @@
         public System.Windows.Forms.ToolStripButton tlsТочкаОтсчета;
         public System.Windows.Forms.ToolStripButton tlsТочкаХода;
         public System.Windows.Forms.ToolStripButton tlsКромеВражеской;
+        public System.Windows.Forms.Label lblBestMove;
+        public System.Windows.Forms.TextBox txtBestMove;
     }
 }

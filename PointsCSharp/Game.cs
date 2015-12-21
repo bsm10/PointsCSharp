@@ -92,7 +92,11 @@ namespace DotsGame
 #endif
         private int iNumberPattern;
 
+#if DEBUG
         Stopwatch stopWatch = new Stopwatch();//для диагностики времени выполнения
+        Stopwatch sW_BM = new Stopwatch();
+        Stopwatch sW2 = new Stopwatch();
+#endif
 
         public Game(PictureBox CanvasGame)
         {
@@ -186,16 +190,24 @@ namespace DotsGame
             "\r\n Глубина просчета: " + c_root.ToString() +
             "\r\n Ход на " + best_move.x + ":" + best_move.y +
             "\r\n время просчета " + stopWatch.ElapsedMilliseconds.ToString() + " мс";
-#endif
             stopWatch.Reset();
-            square1=s1; square2=s2;
+#endif
+
+            square1 =s1; square2=s2;
 
             return new Dot(best_move.x,best_move.y); //так надо чтобы best_move не ссылался на точку в aDots
         }
-        //
+        //===============================================================================================
+        //-----------------------------------Поиск лучшего хода------------------------------------------
+        //===============================================================================================
         private Dot BestMove(int pl1, int pl2)
         {
+        String strDebug = String.Empty;
         Dot bm;
+#if DEBUG
+        sW2.Start();
+#endif
+
         #region CheckMove - проверка на окружение
         bm = CheckMove(pl2);
             if (bm != null)
@@ -222,17 +234,26 @@ namespace DotsGame
                 return bm;
             }
             #endregion 
+#if DEBUG
+            sW2.Stop();
+            strDebug = "CheckMove pl1,pl2 - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            Application.DoEvents();
+            sW2.Reset();
+#endif
+
             //проверяем паттерны
+#if DEBUG
+            sW2.Start();
+#endif
+
             #region CheckPattern2Move проверяем ходы на два вперед
             List<Dot> empty_dots = aDots.EmptyNeibourDots(pl2);
             List<Dot> lst_dots2;
+
             foreach (Dot dot in empty_dots)
             {
                 if (CheckDot(dot, pl2) == false) MakeMove(dot, pl2);
-                //if (win_player==1 || CheckMove(pl1,false) != null)
-                //{
-                //    UndoMove(dot);
-                //}
                 lst_dots2 = CheckPattern2Move(pl2);
                 foreach (Dot nd in lst_dots2)
                 {
@@ -253,6 +274,15 @@ namespace DotsGame
                 }
                 UndoMove(dot);
             }
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern2Move(pl2) - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            Application.DoEvents();
+            sW2.Reset();
+            sW2.Start();
+#endif
+
             #endregion
             #region CheckPattern_vilochka
             bm = CheckPattern_vilochka(pl2);
@@ -281,6 +311,15 @@ namespace DotsGame
                 return bm;
             }
             #endregion
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern_vilochka - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            Application.DoEvents();
+            sW2.Reset();
+            sW2.Start();
+#endif
+
             #region CheckPatternVilkaNextMove
             bm = CheckPatternVilkaNextMove(pl2);
             if (bm != null & aDots.Contains(bm))
@@ -294,7 +333,17 @@ namespace DotsGame
 #endregion
                 return bm;
             }
+
             #endregion
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPatternVilkaNextMove - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            Application.DoEvents();
+            sW2.Reset();
+            sW2.Start();
+#endif
+
             #region CheckPattern
             bm = CheckPattern(pl2);
             if (bm != null & aDots.Contains(bm))
@@ -308,6 +357,15 @@ namespace DotsGame
 #endregion
                 if (CheckDot(bm, pl2) == false) return bm;
             }
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern(pl2) - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            Application.DoEvents();
+            sW2.Reset();
+            sW2.Start();
+#endif
+            
             bm = CheckPattern(pl1);
             if (bm != null & aDots.Contains(bm))
             {
@@ -321,6 +379,14 @@ namespace DotsGame
                 if (CheckDot(bm, pl2)==false) return bm;
             }
             #endregion
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern(pl1) - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            Application.DoEvents();
+            sW2.Reset();
+#endif
+
             return null;
         }
 
@@ -358,8 +424,18 @@ private bool CheckDot(Dot dot, int Player)
                 return 0;
             }
             Dot enemy_move = null;
+            #if DEBUG
+                sW_BM.Start();
+            #endif
             //проверяем ход который ведет сразу к окружению и паттерны
             best_move = BestMove(player1, player2);
+            #if DEBUG
+                sW_BM.Stop();
+                f.lblBestMove.Text = "BestMove - " + sW_BM.Elapsed.Milliseconds.ToString();
+                Application.DoEvents();
+                sW_BM.Reset();
+            #endif
+
             if (CheckDot(best_move,player2)) best_move=null;
             if (best_move!=null) return PLAYER_COMPUTER;
             var qry = from Dot d in aDots
@@ -417,22 +493,7 @@ private bool CheckDot(Dot dot, int Player)
                     {
                         UndoMove(d);
                         continue;
-                        //return PLAYER_HUMAN;
-                        //best_move = null;
-                        //continue;
                     }
-                    //if (res_last_move == PLAYER_COMPUTER)
-                    //{
-                    //    best_move=d;
-                    //    UndoMove(d);
-                    //    return PLAYER_COMPUTER;
-                    //}
-                    //else if(res_last_move==PLAYER_HUMAN)
-                    //{
-                    //    best_move=null;
-                    //    UndoMove(d);
-                    //    continue;
-                    //}
                     #endregion
 #region Debug statistic
 #if DEBUG
