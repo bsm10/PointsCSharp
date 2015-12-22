@@ -365,7 +365,6 @@ namespace DotsGame
             sW2.Reset();
             sW2.Start();
 #endif
-            
             bm = CheckPattern(pl1);
             if (bm != null & aDots.Contains(bm))
             {
@@ -385,8 +384,42 @@ namespace DotsGame
             f.txtBestMove.Text = strDebug;
             Application.DoEvents();
             sW2.Reset();
+            sW2.Start();
+#endif
+            #region CheckPatternMove
+            bm = CheckPatternMove(pl2);
+            if (bm != null & aDots.Contains(bm))
+            {
+                #region DEBUG
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPatternMove " + iNumberPattern);
+                }
+#endif
+                #endregion
+                if (CheckDot(bm, pl2) == false) return bm;
+            }
+            bm = CheckPatternMove(pl1);
+            if (bm != null & aDots.Contains(bm))
+            {
+                #region DEBUG
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPatternMove " + iNumberPattern);
+                }
+#endif
+                #endregion
+                if (CheckDot(bm, pl1) == false) return bm;
+            }
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPatternMove(pl2) - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            Application.DoEvents();
+            sW2.Reset();
 #endif
 
+#endregion
             return null;
         }
 
