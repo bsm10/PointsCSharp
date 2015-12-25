@@ -174,46 +174,20 @@ namespace DotsGame
                 _IndexRel = _IndexDot;
             }
         }
-        public enum Owner : int {None = 0,Player1 = 1,Player2 = 2}
-        public Dot (int x,int y, Owner OwnerDot,Dot ParentDot)
-        {
-            this.x = x;
-            this.y = y;
-            _BlokingDots = new List<Dot>();
-            Own = (int)OwnerDot;
-            IndexRelation=IndexDot;
-        }
-        public Dot(int x, int y, int Owner, Dot ParentDot)
+
+        public Dot(int x, int y, int Owner = 0)
         {
             this.x = x;
             this.y = y;
             _BlokingDots = new List<Dot>();
             Own = Owner;
-            IndexRelation = IndexDot;
-        }
-        public Dot(int x, int y)
-        {
-            this.x = x;
-            this.y = y;
-            _BlokingDots = new List<Dot>();
-            Own = (int)Owner.None;
-            IndexRelation = IndexDot;
-        }
-        public Dot(Point Point)
-        {
-            x = Point.X;
-            y = Point.Y;
-            _BlokingDots = new List<Dot>();
-            Own = (int)Owner.None;
-            IndexRelation = IndexDot;
+            //IndexRelation = IndexDot;
         }
         public bool PatternsFirstDot {get; set;}
         public bool PatternsMoveDot { get; set; }
         public bool PatternsAnyDot { get; set; }
         public bool PatternsEmptyDot { get; set; }
         public override string ToString()
-
-
             {
             string s;
             if (Own == 1) s = " Player";
@@ -234,7 +208,6 @@ namespace DotsGame
             return Math.Abs(x - dot.x) <= 1 & Math.Abs(y - dot.y) <= 1;
 
         }
-        //public int IndexRelation{get; set;}
         private int _IndexRel;
         public int IndexRelation
         {

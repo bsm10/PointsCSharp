@@ -105,16 +105,18 @@ namespace DotsGame
             if (Contains(dot))
             {
                 Dots[dot.x, dot.y].Own = Owner;
+                if (Owner!=0) Dots[dot.x, dot.y].IndexRelation = Dots[dot.x, dot.y].IndexDot;
                 Dots[dot.x, dot.y].Blocked = false;
                 AddNeibor(Dots[dot.x, dot.y]);
             }
         }
-        public void Add(int x, int y, int own)//меняет владельца точки
-        {
-            Dots[x, y].Own = own;
-            Dots[x, y].Blocked = false;
-            AddNeibor(Dots[x, y]);
-        }
+        //public void Add(int x, int y, int own)//меняет владельца точки
+        //{
+        //    Dots[x, y].Own = own;
+        //    if (own != 0) Dots[x, y].IndexRelation = Dots[x, y].IndexDot;
+        //    Dots[x, y].Blocked = false;
+        //    AddNeibor(Dots[x, y]);
+        //}
         //private void AddNeibor(Dot dot, bool c)
         //{
         //    if (dot.x > 0 & dot.y > 0 & dot.x < nSize-1 & dot.y < nSize-1)
@@ -203,6 +205,7 @@ namespace DotsGame
             RemoveNeibor(dot);
             Dots[dot.x, dot.y] = new Dot(dot.x, dot.y);
             Dots[dot.x, dot.y].IndexDot=i;
+            Dots[dot.x, dot.y].IndexRelation = i;
         }
         public void Remove(int x, int y)//удаляет точку из массива
         {
@@ -212,7 +215,7 @@ namespace DotsGame
                 int i = Dots[x, y].IndexDot;
                 Dots[x, y] = new Dot(x, y);
                 Dots[x, y].IndexDot = i;
-                Dots[x, y].IndexRelation = 0;
+                Dots[x, y].IndexRelation = i;
                 Dots[x, y].NeiborDots.Clear();
                 Dots[x, y].BlokingDots.Clear();
                 Dots[x, y].Own=0;

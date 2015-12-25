@@ -41,7 +41,7 @@ namespace DotsGame
         private void pbxBoard_MouseClick(object sender, MouseEventArgs e)
         {
             game.MousePos = game.TranslateCoordinates(e.Location);
-            Dot dot = new Dot(game.MousePos);
+            Dot dot = new Dot(game.MousePos.X, game.MousePos.Y);
             if (game.MousePos.X > game.startX - 0.5f & game.MousePos.Y > game.startY - 0.5f)
             {
                 switch (e.Button)
@@ -93,11 +93,11 @@ namespace DotsGame
                         #if DEBUG
                             if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift | game.Autoplay)
                             {
-                                MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null));
+                                MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1));
                                 break;
                             }
                         #endif
-                            if (MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1, null)) > 0) break;
+                            if (MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1)) > 0) break;
                             player_move = 1;
                             //Application.DoEvents();
                         }
@@ -120,7 +120,7 @@ namespace DotsGame
                         }
                         else { 
                         //============Ход компьютера  в ручном режиме=================
-                        MoveGamer(2, new Dot(dot.x, dot.y, 2, null));
+                        MoveGamer(2, new Dot(dot.x, dot.y, 2));
                         }
                         break;
                     case MouseButtons.Middle:
@@ -371,6 +371,12 @@ namespace DotsGame
             toolStripStatusLabel2.Text = "Ход игрока" + Player + "...";
             Application.DoEvents();
             if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove);
+            if (pl_move == null)
+            {
+                MessageBox.Show("You win!!! \r\n" + game.Statistic());
+                game.NewGame();
+                return 1;
+            } 
             pl_move.Own=Player;
             game.MakeMove(pl_move,Player);
             game.ListMoves.Add(pl_move);
