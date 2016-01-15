@@ -373,7 +373,7 @@ namespace DotsGame
             if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove);
             if (pl_move == null)
             {
-                MessageBox.Show("You win!!! \r\n" + game.Statistic());
+                MessageBox.Show("Сдаюсь! \r\n" + game.Statistic());
                 game.NewGame();
                 return 1;
             } 

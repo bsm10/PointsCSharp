@@ -146,10 +146,10 @@ namespace DotsGame
             }
             #endregion
 #region  Если ситуация проигрышная - сдаемся          
-            var q1 = from Dot d in list_moves
+            var q1 = from Dot d in aDots
                      where d.Own == PLAYER_COMPUTER && (d.Blocked == false)
                     select d;
-            var q2 = from Dot d in list_moves
+            var q2 = from Dot d in aDots
                      where d.Own == PLAYER_HUMAN && (d.Blocked == false)
                      select d;
             float res1=q2.Count();
@@ -984,12 +984,14 @@ private bool CheckDot(Dot dot, int Player)
             var q6 = from Dot d in aDots where d.Own == 2 select d;
             var q7 = from Dot d in aDots where d.Own== 1 & d.Blocked select d;
             var q8 = from Dot d in aDots where d.Own == 2 & d.Blocked select d;
-            return "Игрок1 окружил точек: " + q8.Count() + "; \r\n" +
-              "Игрок1 Захваченая площадь: " + square1 + "; \r\n" +
-              "Игрок1 точек поставил: " + q5.Count() + "; \r\n" +
-              "Игрок2 окружил точек: " + q7.Count() + "; \r\n" +
-              "Игрок2 Захваченая площадь: " + square2 + "; \r\n" +
-              "Игрок2 точек поставил: " + q6.Count() + "; \r\n";
+            return q8.Count().ToString() + ":" + q7.Count().ToString();
+
+            //return "Игрок1 окружил точек: " + q8.Count() + "; \r\n" +
+            //  "Игрок1 Захваченая площадь: " + square1 + "; \r\n" +
+            //  "Игрок1 точек поставил: " + q5.Count() + "; \r\n" +
+            //  "Игрок2 окружил точек: " + q7.Count() + "; \r\n" +
+            //  "Игрок2 Захваченая площадь: " + square2 + "; \r\n" +
+            //  "Игрок2 точек поставил: " + q6.Count() + "; \r\n";
         }
         public void Statistic(int x, int y)
         {
