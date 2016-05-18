@@ -106,6 +106,7 @@ namespace DotsGame
                         {
                             game.Redraw = false;
                             if (MoveGamer(2) > 0) break;
+                            //if (MoveGamer(2) > 0) break;
                             game.Redraw=true;
                             player_move = 2;
                         }

@@ -263,6 +263,43 @@ namespace DotsGame
             Application.DoEvents();
 #endif
         #endregion
+            #region CheckPattern_vilochka
+            bm = CheckPattern_vilochka(pl2);
+            if (bm != null & aDots.Contains(bm))
+            {
+#region DEBUG
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern_vilochka " + iNumberPattern);
+                }
+#endif
+#endregion
+                return bm;
+            }
+            bm = CheckPattern_vilochka(pl1);
+            if (bm != null & aDots.Contains(bm))
+            {
+#region DEBUG
+#if DEBUG
+
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern_vilochka " + iNumberPattern);
+                }
+#endif
+#endregion
+                return bm;
+            }
+            
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern_vilochka - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            sW2.Reset();
+            sW2.Start();
+            f.lblBestMove.Text = "CheckPatternVilkaNextMove...";
+            Application.DoEvents();
+#endif
+            #endregion
             #region CheckPattern2Move проверяем ходы на два вперед
             List<Dot> empty_dots = aDots.EmptyNeibourDots(pl2);
             List<Dot> lst_dots2;
@@ -301,67 +338,30 @@ namespace DotsGame
 #endif
 
             #endregion
-            #region CheckPattern_vilochka
-            bm = CheckPattern_vilochka(pl2);
+            #region CheckPatternVilkaNextMove
+            bm = CheckPatternVilkaNextMove(pl2);
             if (bm != null & aDots.Contains(bm))
             {
-#region DEBUG
+                #region DEBUG
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern_vilochka " + iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
                 }
 #endif
-#endregion
+                #endregion
                 return bm;
             }
-            bm = CheckPattern_vilochka(pl1);
-            if (bm != null & aDots.Contains(bm))
-            {
-#region DEBUG
-#if DEBUG
 
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern_vilochka " + iNumberPattern);
-                }
-#endif
-#endregion
-                return bm;
-            }
-            
+
 #if DEBUG
             sW2.Stop();
-            strDebug = strDebug + "\r\nCheckPattern_vilochka - " + sW2.Elapsed.Milliseconds.ToString();
+            strDebug = strDebug + "\r\nCheckPatternVilkaNextMove - " + sW2.Elapsed.Milliseconds.ToString();
             f.txtBestMove.Text = strDebug;
             sW2.Reset();
             sW2.Start();
-            f.lblBestMove.Text = "CheckPatternVilkaNextMove...";
+            f.lblBestMove.Text = "CheckPattern(pl2)...";
             Application.DoEvents();
 #endif
-            #endregion
-            #region CheckPatternVilkaNextMove
-//            bm = CheckPatternVilkaNextMove(pl2);
-//            if (bm != null & aDots.Contains(bm))
-//            {
-//#region DEBUG
-//#if DEBUG
-//                {
-//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
-//                }
-//#endif
-//#endregion
-//                return bm;
-//            }
-
-            
-//#if DEBUG
-//            sW2.Stop();
-//            strDebug = strDebug + "\r\nCheckPatternVilkaNextMove - " + sW2.Elapsed.Milliseconds.ToString();
-//            f.txtBestMove.Text = strDebug;
-//            sW2.Reset();
-//            sW2.Start();
-//            f.lblBestMove.Text = "CheckPattern(pl2)...";
-//            Application.DoEvents();
-//#endif
             #endregion
             #region CheckPattern
             bm = CheckPattern(pl2);
@@ -449,12 +449,21 @@ namespace DotsGame
 // функция проверяет не делается ли ход в точку, которая на следующем ходу будет окружена
 private bool CheckDot(Dot dot, int Player)
 {
-    MakeMove(dot, Player);
+    int res = MakeMove(dot, Player);
     int pl = Player == PLAYER_COMPUTER ? 1 : 2;
-    if (win_player==pl || CheckMove(pl) != null)
+    //if (win_player==pl || CheckMove(pl) != null) // первое условие - ход в уже оеруженный регион, второе окружен на следующем ходу
+    if (win_player == pl)
     {
         UndoMove(dot);
         return true; // да будет окружена
+    }
+    Dot dotEnemy = CheckMove(pl);
+    if (dotEnemy!=null)
+    {
+        res = MakeMove(dotEnemy, pl);
+        bool flag = dot.Blocked;
+        UndoMove(dotEnemy);
+        return flag; // да будет окружена
     }
     //нет не будет
     UndoMove(dot);
@@ -493,6 +502,7 @@ private bool CheckDot(Dot dot, int Player)
             #endif
 
             if (CheckDot(best_move,player2)) best_move=null;
+
             if (best_move!=null) return PLAYER_COMPUTER;
             var qry = from Dot d in aDots
                       where d.Own == PLAYER_NONE & d.Blocked == false & Math.Abs(d.x - lastmove.x) < SkillNumSq
@@ -901,7 +911,7 @@ private bool CheckDot(Dot dot, int Player)
                                                                 Math.Abs(d.x - LastMove.x) < 2 & Math.Abs(d.y - LastMove.y) < 2
                                                                 select d;
 
-                Dot[] ad = qry.ToArray();
+            Dot[] ad = qry.ToArray();
             if (ad.Length != 0)
             {
                 foreach (Dot d in ad)
@@ -1409,10 +1419,6 @@ private bool CheckDot(Dot dot, int Player)
         public void DrawBoard(Graphics gr)//рисуем доску из клеток
         {
             Pen pen = new Pen(new SolidBrush(Color.MediumSeaGreen), 0.15f);// 0
-            //gr.DrawLine(pen, 0, 0, 0, iMapSize - 1);
-            //gr.DrawLine(pen, 0, 0, iMapSize - 1, 0);
-            //gr.DrawLine(pen, 0, iMapSize - 1, iMapSize - 1, iMapSize - 1);
-            //gr.DrawLine(pen, iMapSize - 1, iMapSize - 1, iMapSize - 1, 0);
             for (float i = 0; i <= iBoardSize; i++)
             {
                 SolidBrush drB = i == 0 ? new SolidBrush(Color.MediumSeaGreen) : drawBrush;
