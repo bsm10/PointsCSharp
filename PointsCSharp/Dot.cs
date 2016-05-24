@@ -174,6 +174,7 @@ namespace DotsGame
                 _IndexRel = _IndexDot;
             }
         }
+        public bool BonusDot { get; set; }
 
         public Dot(int x, int y, int Owner = 0)
         {

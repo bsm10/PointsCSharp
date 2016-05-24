@@ -1250,8 +1250,12 @@ private bool CheckDot(Dot dot, int Player)
         private void MarkDotsInRegion(Dot blocked_dot, int flg_own)
         {
             blocked_dot.Marked = true;
-            Dot[] dts = new Dot[4] {aDots[blocked_dot.x + 1, blocked_dot.y], aDots[blocked_dot.x - 1, blocked_dot.y],
-                                  aDots[blocked_dot.x, blocked_dot.y + 1], aDots[blocked_dot.x, blocked_dot.y - 1]};
+            Dot[] dts = new Dot[4] {
+                                    aDots[blocked_dot.x + 1, blocked_dot.y],
+                                    aDots[blocked_dot.x - 1, blocked_dot.y],
+                                    aDots[blocked_dot.x, blocked_dot.y + 1],
+                                    aDots[blocked_dot.x, blocked_dot.y - 1],
+                                    };
             //добавим точки которые попали в окружение
             if (lst_blocked_dots.Contains(blocked_dot) == false)
             {
