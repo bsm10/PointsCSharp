@@ -48,7 +48,6 @@ namespace DotsGame
         int position = -1;
         private int nSize;//размер поля
         public ArrayDots(int size)
-
         {
             int counter=0;
             Dots = new Dot[size, size];
@@ -64,6 +63,8 @@ namespace DotsGame
                 }
             }
         }
+
+
         public class DotEq : EqualityComparer<Dot>
         {
             public override int GetHashCode(Dot dot)

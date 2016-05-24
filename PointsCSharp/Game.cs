@@ -6,6 +6,8 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Threading;
+using System.Threading.Tasks;
 
 
 namespace DotsGame
@@ -225,32 +227,59 @@ namespace DotsGame
         f.lblBestMove.Text="CheckMove(pl2,pl1)...";
         Application.DoEvents();
 #endif
+    
+            var task1 = Task<Dot>.Factory.StartNew(() =>
+            {
+                return CheckMove(pl2);
+            });
+            var task2 = Task<Dot>.Factory.StartNew(() =>
+            {
+                return CheckMove(pl1);
+            });
+            var task3 = Task<Dot>.Factory.StartNew(() =>
+            {
+                return CheckPattern_vilochka(pl2);
+            });
+            var task4 = Task<Dot>.Factory.StartNew(() =>
+            {
+                return CheckPattern_vilochka(pl1);
+            });
+            var task5 = Task<Dot>.Factory.StartNew(() =>
+            {
+                List<Dot> empty_dots = aDots.EmptyNeibourDots(pl2);
+                List<Dot> lst_dots2;
 
-            #region CheckMove - проверка на окружение
-        bm = CheckMove(pl2);
-            if (bm != null)
-            {
-#region DEBUG
-#if DEBUG
+                foreach (Dot dot in empty_dots)
                 {
-                    f.lstDbg2.Items.Add(bm.x +":"+ bm.y  + " player" + pl2 + " - CheckMove!");
+                    if (CheckDot(dot, pl2) == false) MakeMove(dot, pl2);
+                    lst_dots2 = CheckPattern2Move(pl2);
+                    foreach (Dot nd in lst_dots2)
+                    {
+                        if (MakeMove(nd, pl2) != 0)
+                        {
+                            UndoMove(nd);
+                            UndoMove(dot);
+                            return dot;
+                        }
+                        UndoMove(nd);
+                    }
+                    UndoMove(dot);
                 }
-#endif
-#endregion
-                return bm;
-            }
-            bm = CheckMove(pl1);
-            if (bm != null)
+                return null;
+            });
+
+            var task6 = Task<Dot>.Factory.StartNew(() =>
             {
-#region DEBUG
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckMove!");
-                }
-#endif
-#endregion
-                return bm;
-            }
+                return CheckPatternVilkaNextMove(pl2);
+            });
+
+            task1.Wait();
+            task2.Wait();
+            bm=task1.Result;
+            if(bm!=null) return bm;
+            bm = task2.Result;
+            if (bm != null) return bm;
+
             
 #if DEBUG
             sW2.Stop();
@@ -262,21 +291,24 @@ namespace DotsGame
             f.lblBestMove.Text = "CheckPattern2Move проверяем ходы на два вперед...";
             Application.DoEvents();
 #endif
-        #endregion
             #region CheckPattern_vilochka
-            bm = CheckPattern_vilochka(pl2);
+
+            task3.Wait();
+            bm = task3.Result;
             if (bm != null & aDots.Contains(bm))
             {
-#region DEBUG
+                #region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
-#endregion
+                #endregion
                 return bm;
             }
-            bm = CheckPattern_vilochka(pl1);
+            
+            task4.Wait();
+            bm = task4.Result;
             if (bm != null & aDots.Contains(bm))
             {
 #region DEBUG
@@ -301,32 +333,21 @@ namespace DotsGame
 #endif
             #endregion
             #region CheckPattern2Move проверяем ходы на два вперед
-            List<Dot> empty_dots = aDots.EmptyNeibourDots(pl2);
-            List<Dot> lst_dots2;
 
-            foreach (Dot dot in empty_dots)
+            task5.Wait();
+            bm = task5.Result;
+            if (bm != null & aDots.Contains(bm))
             {
-                if (CheckDot(dot, pl2) == false) MakeMove(dot, pl2);
-                lst_dots2 = CheckPattern2Move(pl2);
-                foreach (Dot nd in lst_dots2)
-                {
-                    if (MakeMove(nd, pl2) != 0)
-                    {
-                        UndoMove(nd);
-                        UndoMove(dot);
-                        #region DEBUG
+                #region DEBUG
 #if DEBUG
-                        {
-                            f.lstDbg2.Items.Add(dot.x + ":" + dot.y + " player" + pl2 + " - CheckPattern2Move!");
-                        }
-#endif
-                        #endregion
-                        return dot;
-                    }
-                    UndoMove(nd);
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern2Move!");
                 }
-                UndoMove(dot);
+#endif
+                #endregion
+                return bm;
             }
+
 #if DEBUG
             sW2.Stop();
             strDebug = strDebug + "\r\nCheckPattern2Move(pl2) - " + sW2.Elapsed.Milliseconds.ToString();
@@ -339,7 +360,9 @@ namespace DotsGame
 
             #endregion
             #region CheckPatternVilkaNextMove
-            bm = CheckPatternVilkaNextMove(pl2);
+            //bm = CheckPatternVilkaNextMove(pl2);
+            task6.Wait();
+            bm = task6.Result;
             if (bm != null & aDots.Contains(bm))
             {
                 #region DEBUG
@@ -445,7 +468,6 @@ namespace DotsGame
             #endregion
             return null;
         }
-
 // функция проверяет не делается ли ход в точку, которая на следующем ходу будет окружена
 private bool CheckDot(Dot dot, int Player)
 {
