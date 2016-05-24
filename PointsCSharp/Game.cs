@@ -1078,7 +1078,13 @@ private bool CheckDot(Dot dot, int Player)
                       select d;
             return (qry.Count()==0);
         }
-        private bool DotIsFree(Dot dot,int flg_own)//проверяет заблокирована ли точка. Перед использованием функции надо установить flg_own-владелец проверяемой точки
+        /// <summary>
+        /// проверяет заблокирована ли точка. Перед использованием функции надо установить flg_own
+        /// </summary>
+        /// <param name="dot">поверяемая точка</param>
+        /// <param name="flg_own">владелец проверяемой точки</param>
+        /// <returns></returns>
+        private bool DotIsFree(Dot dot,int flg_own)
         {
             dot.Marked = true;
             
@@ -1140,7 +1146,13 @@ private bool CheckDot(Dot dot, int Player)
         private int count_in_region;
         private int count_blocked_dots;
         //=================================================================================================
-        public int MakeMove(Dot dot, int Owner=0)//Основная функция - ход игрока - возвращает количество окруженных точек
+        /// <summary>
+        /// Функция делает ход игрока 
+        /// </summary>
+        /// <param name="dot">точка куда делается ход</param>
+        /// <param name="Owner">владелец точки - целое 1-Игрок или 2 - Компьютер</param>
+        /// <returns>количество окруженных точек</returns>
+        public int MakeMove(Dot dot, int Owner=0)//
         {
             if (aDots.Contains(dot) == false) return 0;
             if (aDots[dot.x, dot.y].Own == 0)//если точка не занята
@@ -1230,7 +1242,12 @@ private bool CheckDot(Dot dot, int Player)
         }
         private List<Dot> lst_blocked_dots = new List<Dot>();//список блокированных точек
         private List<Dot> lst_in_region_dots = new List<Dot>();//список блокирующих точек
-        private void MarkDotsInRegion(Dot blocked_dot, int flg_own)//Ставит InRegion=true точкам которые блокируют заданную в параметре точку
+        /// <summary>
+        /// Определяет блокирующие точки и устанавливает этим точкам поле InRegion=true 
+        /// </summary>
+        /// <param name="blocked_dot">точка, которая блокируется</param>
+        /// <param name="flg_own">владелец точки</param>
+        private void MarkDotsInRegion(Dot blocked_dot, int flg_own)
         {
             blocked_dot.Marked = true;
             Dot[] dts = new Dot[4] {aDots[blocked_dot.x + 1, blocked_dot.y], aDots[blocked_dot.x - 1, blocked_dot.y],
@@ -1238,7 +1255,7 @@ private bool CheckDot(Dot dot, int Player)
             //добавим точки которые попали в окружение
             if (lst_blocked_dots.Contains(blocked_dot) == false)
             {
-                lst_blocked_dots.Add(blocked_dot);
+                 lst_blocked_dots.Add(blocked_dot);
             }
             foreach (Dot _d in dts)
             {
