@@ -132,7 +132,7 @@ namespace DotsGame
                         }
 
                             game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
-                            game.UndoMove(dot.x, dot.y);
+                            game.UndoMove(dot.x, dot.y, game.aDots);
                         break;
                  #endif
                 }
@@ -379,7 +379,7 @@ namespace DotsGame
                 return 1;
             } 
             pl_move.Own=Player;
-            game.MakeMove(pl_move,Player);
+            game.MakeMove(pl_move, game.aDots,Player);
             game.ListMoves.Add(pl_move);
             pbxBoard.Invalidate();
             statusStrip1.Refresh();

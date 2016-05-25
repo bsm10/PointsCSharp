@@ -326,7 +326,15 @@ namespace DotsGame
         //IEnumerable
         public object Current
         {
-            get {return Dots[position/nSize,position%nSize];}
+            get {
+                int i = position / nSize;
+                    if (position / nSize == nSize)
+                    {
+                        i = nSize-1;
+                    }
+                    int j = position % nSize;
+                    return Dots[i,j];
+                }
         }
     }
 }

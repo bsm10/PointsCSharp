@@ -244,35 +244,35 @@ namespace DotsGame
             {
                 return CheckPattern_vilochka(pl1);
             });
-            //var task5 = Task<Dot>.Factory.StartNew(() =>
-            //{
-            //    ArrayDots _aDots = aDots.CopyArray;
-            //    List<Dot> empty_dots = _aDots.EmptyNeibourDots(pl2);
-            //    List<Dot> lst_dots2;
+            var task5 = Task<Dot>.Factory.StartNew(() =>
+            {
+                ArrayDots _aDots = aDots.CopyArray;
+                List<Dot> empty_dots = _aDots.EmptyNeibourDots(pl2);
+                List<Dot> lst_dots2;
 
-            //    foreach (Dot dot in empty_dots)
-            //    {
-            //        if (CheckDot(dot, pl2) == false) MakeMove(dot, pl2);
-            //        lst_dots2 = CheckPattern2Move(pl2);
-            //        foreach (Dot nd in lst_dots2)
-            //        {
-            //            if (MakeMove(nd, pl2) != 0)
-            //            {
-            //                UndoMove(nd);
-            //                UndoMove(dot);
-            //                return dot;
-            //            }
-            //            UndoMove(nd);
-            //        }
-            //        UndoMove(dot);
-            //    }
-            //    return null;
-            //});
+                foreach (Dot dot in empty_dots)
+                {
+                    if (CheckDot(dot,_aDots, pl2) == false) MakeMove(dot, _aDots, pl2);
+                    lst_dots2 = CheckPattern2Move(pl2);
+                    foreach (Dot nd in lst_dots2)
+                    {
+                        if (MakeMove(nd, _aDots, pl2) != 0)
+                        {
+                            UndoMove(nd, _aDots);
+                            UndoMove(dot, _aDots);
+                            return dot;
+                        }
+                        UndoMove(nd, _aDots);
+                    }
+                    UndoMove(dot, _aDots);
+                }
+                return null;
+            });
 
-            //var task6 = Task<Dot>.Factory.StartNew(() =>
-            //{
-            //    return CheckPatternVilkaNextMove(pl2);
-            //});
+            var task6 = Task<Dot>.Factory.StartNew(() =>
+            {
+                return CheckPatternVilkaNextMove(pl2);
+            });
 
             task1.Wait();
             task2.Wait();
@@ -398,7 +398,7 @@ namespace DotsGame
                 }
 #endif
 #endregion
-                if (CheckDot(bm, pl2) == false) return bm;
+                if (CheckDot(bm, aDots,pl2) == false) return bm;
             }
 #if DEBUG
             sW2.Stop();
@@ -420,7 +420,7 @@ namespace DotsGame
                 }
 #endif
                 #endregion
-                if (CheckDot(bm, pl2) == false) return bm;
+                if (CheckDot(bm, aDots, pl2) == false) return bm;
             }
             bm = CheckPatternMove(pl1);
             if (bm != null & aDots.Contains(bm))
@@ -432,7 +432,7 @@ namespace DotsGame
                 }
 #endif
                 #endregion
-                if (CheckDot(bm, pl1) == false) return bm;
+                if (CheckDot(bm, aDots, pl1) == false) return bm;
             }
 #if DEBUG
             sW2.Stop();
@@ -454,7 +454,7 @@ namespace DotsGame
                 }
 #endif
 #endregion
-                if (CheckDot(bm, pl2)==false) return bm;
+                if (CheckDot(bm, aDots, pl2)==false) return bm;
             }
             
 #if DEBUG
@@ -470,26 +470,27 @@ namespace DotsGame
             return null;
         }
 // функция проверяет не делается ли ход в точку, которая на следующем ходу будет окружена
-private bool CheckDot(Dot dot, int Player)
+private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
 {
-    int res = MakeMove(dot, Player);
+    ArrayDots _aDots = arrDots.CopyArray;
+    int res = MakeMove(dot, _aDots, Player);
     int pl = Player == PLAYER_COMPUTER ? 1 : 2;
     //if (win_player==pl || CheckMove(pl) != null) // первое условие - ход в уже оеруженный регион, второе окружен на следующем ходу
     if (win_player == pl)
     {
-        UndoMove(dot);
+        UndoMove(dot, _aDots);
         return true; // да будет окружена
     }
     Dot dotEnemy = CheckMove(pl);
     if (dotEnemy!=null)
     {
-        res = MakeMove(dotEnemy, pl);
+        res = MakeMove(dotEnemy, _aDots, pl);
         bool flag = dot.Blocked;
-        UndoMove(dotEnemy);
+        UndoMove(dotEnemy, _aDots);
         return flag; // да будет окружена
     }
     //нет не будет
-    UndoMove(dot);
+    UndoMove(dot, _aDots);
     return false;
 }
  //==================================================================================================================
@@ -524,7 +525,7 @@ private bool CheckDot(Dot dot, int Player)
                 sW_BM.Reset();
             #endif
 
-            if (CheckDot(best_move,player2)) best_move=null;
+            if (CheckDot(best_move, aDots, player2)) best_move=null;
 
             if (best_move!=null) return PLAYER_COMPUTER;
             var qry = from Dot d in aDots
@@ -545,21 +546,21 @@ private bool CheckDot(Dot dot, int Player)
                     player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     //if (count_moves>SkillLevel) break;
                     //**************делаем ход***********************************
-                    res_last_move = MakeMove(d,player2);
+                    res_last_move = MakeMove(d,aDots,player2);
                     count_moves++;
                     #region проверка на окружение
 
                     if (win_player == PLAYER_COMPUTER)
                     {
                         best_move = d;
-                        UndoMove(d);
+                        UndoMove(d, aDots);
                         return PLAYER_COMPUTER;
                     }
 
                     //если ход в заведомо окруженный регион - пропускаем такой ход
                     if (win_player == PLAYER_HUMAN)
                     {
-                        UndoMove(d);
+                        UndoMove(d, aDots);
                         continue;
                     }
 
@@ -574,13 +575,13 @@ private bool CheckDot(Dot dot, int Player)
                         if (best_move != null)
                         {
                             best_move = d;
-                            UndoMove(d);
+                            UndoMove(d, aDots);
                             return player2;
                         }
                     }
                     else
                     {
-                        UndoMove(d);
+                        UndoMove(d, aDots);
                         continue;
                     }
                     #endregion
@@ -599,7 +600,7 @@ private bool CheckDot(Dot dot, int Player)
                     //теперь ходит другой игрок ===========================================================================
                     int result = Play(ref enemy_move, move1,move2, player2, player1, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
                     //отменить ход
-                    UndoMove(d);
+                    UndoMove(d, aDots);
                     recursion_depth--;
 #if DEBUG
                     if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
@@ -777,7 +778,7 @@ private bool CheckDot(Dot dot, int Player)
                     {
                         foreach (Dot d in mvs)
                         {
-                            UndoMove(d);
+                            UndoMove(d, aDots);
                         }
                         mvs.Clear();
                         qry = null;
@@ -797,7 +798,7 @@ private bool CheckDot(Dot dot, int Player)
                     {
                         foreach (Dot d in mvs)
                         {
-                            UndoMove(d);
+                            UndoMove(d, aDots);
                         }
                         mvs.Clear();
                         return 0;
@@ -821,7 +822,7 @@ private bool CheckDot(Dot dot, int Player)
                                 break;
                         }
                         //ход делает комп, если последним ходил игрок
-                        int res_last_move = MakeMove(d, own);
+                        int res_last_move = MakeMove(d,aDots, own);
                         mvs.Add(d); 
                         //-----показывает проверяемые ходы-----------------------------------------------
 #if DEBUG
@@ -942,43 +943,45 @@ private bool CheckDot(Dot dot, int Player)
                 foreach (Dot d in ad)
                 {
                     //делаем ход
-                    int result_last_move = (int)MakeMove(d, Owner);
+                    int result_last_move = (int)MakeMove(d,_aDots, Owner);
                     #if DEBUG
                     if (f.chkMove.Checked) Pause();
                     #endif
                     //-----------------------------------
                     if (result_last_move != 0 & _aDots[d.x, d.y].Blocked == false)
                     {
-                        UndoMove(d);
+                        UndoMove(d, _aDots);
                         return d;
                     }
-                    UndoMove(d);
+                    UndoMove(d, _aDots);
                 }
             }
             return null;
         }
         private Dot CheckPatternVilkaNextMove(int Owner)
         {
-            var qry = from Dot d in aDots where d.Own == Owner & d.Blocked == false select d;
+            ArrayDots _aDots = aDots.CopyArray;
+      
+            var qry = from Dot d in _aDots where d.Own == Owner & d.Blocked == false select d;
             Dot dot_ptn;
             Dot[] ad = qry.ToArray();
             if (ad.Length != 0)
             {
                 foreach (Dot d in ad)
                 {
-                    Dot[] dots = new Dot[8] { aDots[d.x + 1, d.y], aDots[d.x - 1, d.y], aDots[d.x, d.y + 1], aDots[d.x, d.y - 1],
-                                              aDots[d.x + 1, d.y+1], aDots[d.x - 1, d.y-1], aDots[d.x-1, d.y + 1], aDots[d.x+1, d.y - 1]};
+                    Dot[] dots = new Dot[8] { _aDots[d.x + 1, d.y], _aDots[d.x - 1, d.y], _aDots[d.x, d.y + 1], _aDots[d.x, d.y - 1],
+                                              _aDots[d.x + 1, d.y+1], _aDots[d.x - 1, d.y-1], _aDots[d.x-1, d.y + 1], _aDots[d.x+1, d.y - 1]};
                     foreach (Dot dot_move in dots)
                     {
                         if (dot_move.Blocked == false & dot_move.Own == 0)
                         {
                             //делаем ход
-                            int result_last_move = MakeMove(dot_move,Owner);
+                            int result_last_move = MakeMove(dot_move, _aDots, Owner);
                             int pl = Owner == PLAYER_COMPUTER ? PLAYER_HUMAN : PLAYER_COMPUTER;
                             Dot dt = CheckMove(pl, false); // проверка чтобы не попасть в капкан
                             if (dt != null)
                             {
-                                UndoMove(dot_move);
+                                UndoMove(dot_move,_aDots);
                                 continue;
                             }
                             dot_ptn = CheckPattern_vilochka(d.Own);
@@ -988,11 +991,11 @@ private bool CheckDot(Dot dot, int Player)
                             //-----------------------------------
                             if (dot_ptn != null & result_last_move == 0)
                             {
-                                UndoMove(dot_move);
+                                UndoMove(dot_move, _aDots);
                                 return dot_move;
                                 //return dot_ptn;
                             }
-                            UndoMove(dot_move);
+                            UndoMove(dot_move, _aDots);
                         }
                     }
                 }
@@ -1177,18 +1180,18 @@ private bool CheckDot(Dot dot, int Player)
         /// <param name="dot">точка куда делается ход</param>
         /// <param name="Owner">владелец точки - целое 1-Игрок или 2 - Компьютер</param>
         /// <returns>количество окруженных точек</returns>
-        public int MakeMove(Dot dot, int Owner=0)//
+        public int MakeMove(Dot dot, ArrayDots arrDots, int Owner=0)//
         {
-            if (aDots.Contains(dot) == false) return 0;
-            if (aDots[dot.x, dot.y].Own == 0)//если точка не занята
+            if (arrDots.Contains(dot) == false) return 0;
+            if (arrDots[dot.x, dot.y].Own == 0)//если точка не занята
             {
-                if(Owner==0)aDots.Add(dot, dot.Own);
-                else aDots.Add(dot, Owner);
+                if(Owner==0)arrDots.Add(dot, dot.Own);
+                else arrDots.Add(dot, Owner);
             }
             //--------------------------------
-            int res = CheckBlocked(dot.Own);
+            int res = CheckBlocked(arrDots,dot.Own);
             //--------------------------------
-            var q = from Dot d in aDots where d.Blocked select d;
+            var q = from Dot d in arrDots where d.Blocked select d;
             count_blocked_dots = q.Count();
             last_move = dot;//зафиксировать последний ход
             if (res!=0)
@@ -1197,10 +1200,10 @@ private bool CheckDot(Dot dot, int Player)
             }
             return res;
         }
-        private int CheckBlocked(int last_moveOwner=0)//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
+        private int CheckBlocked(ArrayDots arrDots, int last_moveOwner=0)//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
         {
             int counter = 0;
-            var q = from Dot dots in aDots where dots.Own != 0 | dots.Own == 0 & dots.Blocked select dots;
+            var q = from Dot dots in arrDots where dots.Own != 0 | dots.Own == 0 & dots.Blocked select dots;
             Dot[] arrDot = q.ToArray();
             switch (last_moveOwner)
             {
@@ -1216,16 +1219,16 @@ private bool CheckDot(Dot dot, int Player)
             lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
             foreach (Dot d in arrDot)
             {
-                aDots.UnmarkAllDots();
+                arrDots.UnmarkAllDots();
                 if (DotIsFree(d, d.Own) == false)
                 {
                     //lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
                     if (d.Own != 0) d.Blocked = true;
                     d.IndexRelation=0;
-                    var q1 = from Dot dots in aDots where dots.BlokingDots.Contains(d) select dots;
+                    var q1 = from Dot dots in arrDots where dots.BlokingDots.Contains(d) select dots;
                     if (q1.Count()==0)
                     {
-                        aDots.UnmarkAllDots();
+                        arrDots.UnmarkAllDots();
                         MarkDotsInRegion(d, d.Own);
                         
                         foreach (Dot dr in lst_in_region_dots)
@@ -1356,15 +1359,15 @@ private bool CheckDot(Dot dot, int Player)
             NewGame();
             pbxBoard.Invalidate();
         }
-        public void UndoMove(int x, int y)//поле отмена хода
+        public void UndoMove(int x, int y, ArrayDots arrDots)//поле отмена хода
         {
-            Undo(x,y);
+            Undo(x,y,arrDots);
         }
-        public void UndoMove(Dot dot)//поле отмена хода
+        public void UndoMove(Dot dot, ArrayDots arrDots)//поле отмена хода
         {
-            if(dot!=null) Undo(dot.x, dot.y);
+            if(dot!=null) Undo(dot.x, dot.y, arrDots);
         }
-        private void Undo(int x, int y)//отмена хода
+        private void Undo(int x, int y, ArrayDots arrDots)//отмена хода
         {
             List<Dot> bl_dot = new List<Dot>();
             List<Links> ln = new List<Links>();
@@ -1376,7 +1379,7 @@ private bool CheckDot(Dot dot, int Player)
                 {
                     d.BlokingDots.Remove(aDots[x, y]);
                 }
-                count_blocked_dots = CheckBlocked();
+                count_blocked_dots = CheckBlocked(arrDots);
             }
             if (aDots[x, y].BlokingDots.Count > 0)
             {
@@ -1424,7 +1427,7 @@ private bool CheckDot(Dot dot, int Player)
             bl_dot = null;
 
             aDots.Remove(x, y);
-            count_blocked_dots = CheckBlocked();
+            count_blocked_dots = CheckBlocked(arrDots);
             ScanBlockedFreeDots();            
             aDots.UnmarkAllDots();
             LinkDots();
@@ -1824,7 +1827,7 @@ private bool CheckDot(Dot dot, int Player)
                 while (reader.PeekChar() > -1)
                 {
                     d = new Dot((int)reader.ReadByte(), (int)reader.ReadByte(), (int)reader.ReadByte());
-                    MakeMove(d,d.Own);
+                    MakeMove(d,aDots,d.Own);
                     list_moves.Add(aDots[d.x,d.y]);
                 }
                 last_move = d;
