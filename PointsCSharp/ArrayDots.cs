@@ -311,7 +311,7 @@ namespace DotsGame
         //IEnumerator and IEnumerable require these methods.
         public IEnumerator GetEnumerator()
         {
-            position =-1;
+            position = -1;
             return this;
         }
         //IEnumerator
@@ -326,15 +326,21 @@ namespace DotsGame
         //IEnumerable
         public object Current
         {
-            get {
+            get
+            {
                 int i = position / nSize;
-                    if (position / nSize == nSize)
-                    {
-                        i = nSize-1;
-                    }
-                    int j = position % nSize;
-                    return Dots[i,j];
+                if (position / nSize == nSize)
+                {
+                    i = nSize - 1;
                 }
+                int j = position % nSize;
+                if (position % nSize == nSize)
+                {
+                    j = nSize - 1;
+                }
+
+                return Dots[i, position % nSize];
+            }
         }
     }
 }
