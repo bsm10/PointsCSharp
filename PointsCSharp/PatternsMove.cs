@@ -348,174 +348,174 @@ namespace DotsGame
             return null;//если никаких паттернов не найдено возвращаем нуль
         }
 
-        private List<Dot> CheckPattern2Move(int Owner) //проверка хода на гарантированное окружение(когда точки находятся через две клетки) 
+        private List<Dot> CheckPattern2Move(int Owner, ArrayDots arrDots) //проверка хода на гарантированное окружение(когда точки находятся через две клетки) 
         {
             List<Dot> ld = new List<Dot>();
             iNumberPattern = 1;
-            var pat1 = from Dot d in aDots
+            var pat1 = from Dot d in arrDots
                        where d.Own == Owner
-                             && aDots[d.x, d.y].IndexRelation == aDots[d.x + 2, d.y - 1].IndexRelation
-                             && aDots[d.x + 2, d.y - 1].Own == Owner && aDots[d.x + 2, d.y - 1].Blocked == false
-                             && aDots[d.x + 1, d.y - 1].Own == 0 && aDots[d.x + 1, d.y - 1].Blocked == false
-                             && aDots[d.x + 1, d.y].Own == 0 && aDots[d.x + 1, d.y].Blocked == false
+                             && arrDots[d.x, d.y].IndexRelation == arrDots[d.x + 2, d.y - 1].IndexRelation
+                             && arrDots[d.x + 2, d.y - 1].Own == Owner && arrDots[d.x + 2, d.y - 1].Blocked == false
+                             && arrDots[d.x + 1, d.y - 1].Own == 0 && arrDots[d.x + 1, d.y - 1].Blocked == false
+                             && arrDots[d.x + 1, d.y].Own == 0 && arrDots[d.x + 1, d.y].Blocked == false
                        select d;
             AddToList(ld, pat1, 1, 0);
             //-----------------------------------------------------------------------------
             iNumberPattern = 2;
-            var pat2 = from Dot d in aDots
+            var pat2 = from Dot d in arrDots
                        where d.Own == Owner
-                            && d.IndexRelation == aDots[d.x + 2, d.y].IndexRelation
-                            && aDots[d.x + 2, d.y - 1].Own == Owner && aDots[d.x + 2, d.y].Blocked == false
-                            && aDots[d.x + 1, d.y - 1].Own == 0 && aDots[d.x + 1, d.y - 1].Blocked == false
-                            && aDots[d.x + 1, d.y].Own == 0 && aDots[d.x + 1, d.y].Blocked == false
+                            && d.IndexRelation == arrDots[d.x + 2, d.y].IndexRelation
+                            && arrDots[d.x + 2, d.y - 1].Own == Owner && arrDots[d.x + 2, d.y].Blocked == false
+                            && arrDots[d.x + 1, d.y - 1].Own == 0 && arrDots[d.x + 1, d.y - 1].Blocked == false
+                            && arrDots[d.x + 1, d.y].Own == 0 && arrDots[d.x + 1, d.y].Blocked == false
                        select d;
             AddToList(ld, pat2, 1, 0);
             //-----------------------------------------------------------------------------
-            var pat3 = from Dot d in aDots
+            var pat3 = from Dot d in arrDots
                        where d.Own == Owner
-                            && d.IndexRelation == aDots[d.x + 2, d.y].IndexRelation
-                            && aDots[d.x + 2, d.y - 1].Own == Owner && aDots[d.x + 2, d.y - 1].Blocked == false
-                            && aDots[d.x + 1, d.y + 1].Own == 0 && aDots[d.x + 1, d.y + 1].Blocked == false
-                            && aDots[d.x + 1, d.y].Own == 0 && aDots[d.x + 1, d.y].Blocked == false
+                            && d.IndexRelation == arrDots[d.x + 2, d.y].IndexRelation
+                            && arrDots[d.x + 2, d.y - 1].Own == Owner && arrDots[d.x + 2, d.y - 1].Blocked == false
+                            && arrDots[d.x + 1, d.y + 1].Own == 0 && arrDots[d.x + 1, d.y + 1].Blocked == false
+                            && arrDots[d.x + 1, d.y].Own == 0 && arrDots[d.x + 1, d.y].Blocked == false
                        select d;
             AddToList(ld, pat3, 1, 0);
             //-----------------------------------------------------------------------------
-            var pat4 = from Dot d in aDots
+            var pat4 = from Dot d in arrDots
                        where d.Own == Owner
-                            && d.IndexRelation == aDots[d.x + 2, d.y + 1].IndexRelation
-                            && aDots[d.x + 2, d.y + 1].Own == Owner && aDots[d.x + 2, d.y + 1].Blocked == false
-                            && aDots[d.x + 1, d.y ].Own == 0 && aDots[d.x + 1, d.y ].Blocked == false
-                            && aDots[d.x + 1, d.y + 1].Own == 0 && aDots[d.x + 1, d.y + 1].Blocked == false
+                            && d.IndexRelation == arrDots[d.x + 2, d.y + 1].IndexRelation
+                            && arrDots[d.x + 2, d.y + 1].Own == Owner && arrDots[d.x + 2, d.y + 1].Blocked == false
+                            && arrDots[d.x + 1, d.y ].Own == 0 && arrDots[d.x + 1, d.y ].Blocked == false
+                            && arrDots[d.x + 1, d.y + 1].Own == 0 && arrDots[d.x + 1, d.y + 1].Blocked == false
                        select d;
             AddToList(ld, pat4, 1, 0);
             //-----------------------------------------------------------------------------
             iNumberPattern = 5;
-            var pat5 = from Dot d in aDots
+            var pat5 = from Dot d in arrDots
                          where d.Own == Owner
-                            && d.IndexRelation == aDots[d.x + 1, d.y + 2].IndexRelation
-                            && aDots[d.x + 1, d.y + 2].Own == Owner && aDots[d.x + 1, d.y + 2].Blocked == false
-                            && aDots[d.x, d.y + 1].Own == 0 && aDots[d.x, d.y + 1].Blocked == false
-                            && aDots[d.x + 1, d.y + 1].Own == 0 && aDots[d.x + 1, d.y + 1].Blocked == false
+                            && d.IndexRelation == arrDots[d.x + 1, d.y + 2].IndexRelation
+                            && arrDots[d.x + 1, d.y + 2].Own == Owner && arrDots[d.x + 1, d.y + 2].Blocked == false
+                            && arrDots[d.x, d.y + 1].Own == 0 && arrDots[d.x, d.y + 1].Blocked == false
+                            && arrDots[d.x + 1, d.y + 1].Own == 0 && arrDots[d.x + 1, d.y + 1].Blocked == false
                          select d;
             AddToList(ld, pat5, 0, 1);
             //-----------------------------------------------------------------------------
             iNumberPattern = 6;
-            var pat6 = from Dot d in aDots
+            var pat6 = from Dot d in arrDots
                        where d.Own == Owner
-                          && d.IndexRelation == aDots[d.x, d.y + 2].IndexRelation
-                          && aDots[d.x, d.y + 2].Own == Owner && aDots[d.x, d.y + 2].Blocked == false
-                          && aDots[d.x, d.y + 1].Own == 0 && aDots[d.x, d.y + 1].Blocked == false
-                          && aDots[d.x + 1, d.y + 1].Own == 0 && aDots[d.x + 1, d.y + 1].Blocked == false
+                          && d.IndexRelation == arrDots[d.x, d.y + 2].IndexRelation
+                          && arrDots[d.x, d.y + 2].Own == Owner && arrDots[d.x, d.y + 2].Blocked == false
+                          && arrDots[d.x, d.y + 1].Own == 0 && arrDots[d.x, d.y + 1].Blocked == false
+                          && arrDots[d.x + 1, d.y + 1].Own == 0 && arrDots[d.x + 1, d.y + 1].Blocked == false
                        select d;
             AddToList(ld, pat6, 0, 1);
             //-----------------------------------------------------------------------------
             iNumberPattern = 7;
-            var pat7 = from Dot d in aDots
+            var pat7 = from Dot d in arrDots
                        where d.Own == Owner
-                          && d.IndexRelation == aDots[d.x, d.y + 2].IndexRelation
-                          && aDots[d.x, d.y + 2].Own == Owner && aDots[d.x, d.y + 2].Blocked == false
-                          && aDots[d.x, d.y + 1].Own == 0 && aDots[d.x, d.y + 1].Blocked == false
-                          && aDots[d.x - 1, d.y + 1].Own == 0 && aDots[d.x + 1, d.y + 1].Blocked == false
+                          && d.IndexRelation == arrDots[d.x, d.y + 2].IndexRelation
+                          && arrDots[d.x, d.y + 2].Own == Owner && arrDots[d.x, d.y + 2].Blocked == false
+                          && arrDots[d.x, d.y + 1].Own == 0 && arrDots[d.x, d.y + 1].Blocked == false
+                          && arrDots[d.x - 1, d.y + 1].Own == 0 && arrDots[d.x + 1, d.y + 1].Blocked == false
                        select d;
             AddToList(ld, pat7, 0, 1);
             //-----------------------------------------------------------------------------
             iNumberPattern = 8;
-            var pat8 = from Dot d in aDots
+            var pat8 = from Dot d in arrDots
                          where d.Own == Owner
-                            && d.IndexRelation == aDots[d.x - 1, d.y + 2].IndexRelation
-                            && aDots[d.x - 1, d.y + 2].Own == Owner && aDots[d.x - 1, d.y + 2].Blocked == false
-                            && aDots[d.x, d.y + 1].Own == 0 && aDots[d.x, d.y + 1].Blocked == false
-                            && aDots[d.x - 1, d.y + 1].Own == 0 && aDots[d.x - 1, d.y + 1].Blocked == false
+                            && d.IndexRelation == arrDots[d.x - 1, d.y + 2].IndexRelation
+                            && arrDots[d.x - 1, d.y + 2].Own == Owner && arrDots[d.x - 1, d.y + 2].Blocked == false
+                            && arrDots[d.x, d.y + 1].Own == 0 && arrDots[d.x, d.y + 1].Blocked == false
+                            && arrDots[d.x - 1, d.y + 1].Own == 0 && arrDots[d.x - 1, d.y + 1].Blocked == false
                          select d;
             AddToList(ld, pat8, 0, 1);
             //-----------------------------------------------------------------------------
             iNumberPattern = 9;
-            var pat9 = from Dot d in aDots
+            var pat9 = from Dot d in arrDots
                          where d.Own == Owner
-                            && d.IndexRelation == aDots[d.x - 2, d.y + 1].IndexRelation
-                            && aDots[d.x - 2, d.y + 1].Own == Owner && aDots[d.x - 2, d.y + 1].Blocked == false
-                            && aDots[d.x - 1, d.y].Own == 0 && aDots[d.x - 1, d.y].Blocked == false
-                            && aDots[d.x - 1, d.y + 1].Own == 0 && aDots[d.x - 1, d.y + 1].Blocked == false
+                            && d.IndexRelation == arrDots[d.x - 2, d.y + 1].IndexRelation
+                            && arrDots[d.x - 2, d.y + 1].Own == Owner && arrDots[d.x - 2, d.y + 1].Blocked == false
+                            && arrDots[d.x - 1, d.y].Own == 0 && arrDots[d.x - 1, d.y].Blocked == false
+                            && arrDots[d.x - 1, d.y + 1].Own == 0 && arrDots[d.x - 1, d.y + 1].Blocked == false
                          select d;
             AddToList(ld, pat9, -1, 0);
             //-----------------------------------------------------------------------------
             iNumberPattern = 10;
-            var pat10 = from Dot d in aDots
+            var pat10 = from Dot d in arrDots
                        where d.Own == Owner
-                          && d.IndexRelation == aDots[d.x - 2, d.y].IndexRelation
-                          && aDots[d.x - 2, d.y].Own == Owner && aDots[d.x - 2, d.y].Blocked == false
-                          && aDots[d.x - 1, d.y].Own == 0 && aDots[d.x - 1, d.y].Blocked == false
-                          && aDots[d.x - 1, d.y + 1].Own == 0 && aDots[d.x - 1, d.y + 1].Blocked == false
+                          && d.IndexRelation == arrDots[d.x - 2, d.y].IndexRelation
+                          && arrDots[d.x - 2, d.y].Own == Owner && arrDots[d.x - 2, d.y].Blocked == false
+                          && arrDots[d.x - 1, d.y].Own == 0 && arrDots[d.x - 1, d.y].Blocked == false
+                          && arrDots[d.x - 1, d.y + 1].Own == 0 && arrDots[d.x - 1, d.y + 1].Blocked == false
                        select d;
             AddToList(ld, pat10, -1, 0);
             //-----------------------------------------------------------------------------
             iNumberPattern = 11;
-            var pat11 = from Dot d in aDots
+            var pat11 = from Dot d in arrDots
                         where d.Own == Owner
-                           && d.IndexRelation == aDots[d.x - 2, d.y].IndexRelation
-                           && aDots[d.x - 2, d.y].Own == Owner && aDots[d.x - 2, d.y].Blocked == false
-                           && aDots[d.x - 1, d.y].Own == 0 && aDots[d.x - 1, d.y].Blocked == false
-                           && aDots[d.x - 1, d.y - 1].Own == 0 && aDots[d.x - 1, d.y - 1].Blocked == false
+                           && d.IndexRelation == arrDots[d.x - 2, d.y].IndexRelation
+                           && arrDots[d.x - 2, d.y].Own == Owner && arrDots[d.x - 2, d.y].Blocked == false
+                           && arrDots[d.x - 1, d.y].Own == 0 && arrDots[d.x - 1, d.y].Blocked == false
+                           && arrDots[d.x - 1, d.y - 1].Own == 0 && arrDots[d.x - 1, d.y - 1].Blocked == false
                         select d;
             AddToList(ld, pat11, -1, 0);
             //-----------------------------------------------------------------------------
             iNumberPattern = 12;
-            var pat12 = from Dot d in aDots
+            var pat12 = from Dot d in arrDots
                          where d.Own == Owner
-                         && d.IndexRelation == aDots[d.x - 2, d.y - 1].IndexRelation
-                         && aDots[d.x - 2, d.y - 1].Own == Owner && aDots[d.x - 2, d.y - 1].Blocked == false
-                         && aDots[d.x - 1, d.y].Own == 0 && aDots[d.x - 1, d.y].Blocked == false
-                         && aDots[d.x - 1, d.y - 1].Own == 0 && aDots[d.x - 1, d.y - 1].Blocked == false
+                         && d.IndexRelation == arrDots[d.x - 2, d.y - 1].IndexRelation
+                         && arrDots[d.x - 2, d.y - 1].Own == Owner && arrDots[d.x - 2, d.y - 1].Blocked == false
+                         && arrDots[d.x - 1, d.y].Own == 0 && arrDots[d.x - 1, d.y].Blocked == false
+                         && arrDots[d.x - 1, d.y - 1].Own == 0 && arrDots[d.x - 1, d.y - 1].Blocked == false
                          select d;
             AddToList(ld, pat12, -1, 0);
             //-----------------------------------------------------------------------------
             iNumberPattern = 13;
-            var pat13 = from Dot d in aDots
+            var pat13 = from Dot d in arrDots
                              where d.Own == Owner
-                             && d.IndexRelation == aDots[d.x - 1, d.y - 2].IndexRelation
-                             && aDots[d.x - 1, d.y - 2].Own == Owner && aDots[d.x - 1, d.y - 2].Blocked == false
-                             && aDots[d.x, d.y - 1].Own == 0 && aDots[d.x, d.y - 1].Blocked == false
-                             && aDots[d.x - 1, d.y - 1].Own == 0 && aDots[d.x - 1, d.y - 1].Blocked == false
+                             && d.IndexRelation == arrDots[d.x - 1, d.y - 2].IndexRelation
+                             && arrDots[d.x - 1, d.y - 2].Own == Owner && arrDots[d.x - 1, d.y - 2].Blocked == false
+                             && arrDots[d.x, d.y - 1].Own == 0 && arrDots[d.x, d.y - 1].Blocked == false
+                             && arrDots[d.x - 1, d.y - 1].Own == 0 && arrDots[d.x - 1, d.y - 1].Blocked == false
                              select d;
             AddToList(ld, pat13, 0, -1);
             //-----------------------------------------------------------------------------
             iNumberPattern = 14;
-            var pat14 = from Dot d in aDots
+            var pat14 = from Dot d in arrDots
                                where d.Own == Owner
-                               && d.IndexRelation == aDots[d.x, d.y - 2].IndexRelation
-                               && aDots[d.x, d.y - 2].Own == Owner && aDots[d.x, d.y - 2].Blocked == false
-                               && aDots[d.x, d.y - 1].Own == 0 && aDots[d.x, d.y - 1].Blocked == false
-                               && aDots[d.x - 1, d.y - 1].Own == 0 && aDots[d.x - 1, d.y - 1].Blocked == false
+                               && d.IndexRelation == arrDots[d.x, d.y - 2].IndexRelation
+                               && arrDots[d.x, d.y - 2].Own == Owner && arrDots[d.x, d.y - 2].Blocked == false
+                               && arrDots[d.x, d.y - 1].Own == 0 && arrDots[d.x, d.y - 1].Blocked == false
+                               && arrDots[d.x - 1, d.y - 1].Own == 0 && arrDots[d.x - 1, d.y - 1].Blocked == false
                                select d;
             AddToList(ld, pat14, 0, -1);
             //-----------------------------------------------------------------------------
             iNumberPattern = 15;
-            var pat15 = from Dot d in aDots
+            var pat15 = from Dot d in arrDots
                         where d.Own == Owner
-                        && d.IndexRelation == aDots[d.x, d.y - 2].IndexRelation
-                        && aDots[d.x, d.y - 2].Own == Owner && aDots[d.x, d.y - 2].Blocked == false
-                        && aDots[d.x, d.y - 1].Own == 0 && aDots[d.x, d.y - 1].Blocked == false
-                        && aDots[d.x + 1, d.y - 1].Own == 0 && aDots[d.x + 1, d.y - 1].Blocked == false
+                        && d.IndexRelation == arrDots[d.x, d.y - 2].IndexRelation
+                        && arrDots[d.x, d.y - 2].Own == Owner && arrDots[d.x, d.y - 2].Blocked == false
+                        && arrDots[d.x, d.y - 1].Own == 0 && arrDots[d.x, d.y - 1].Blocked == false
+                        && arrDots[d.x + 1, d.y - 1].Own == 0 && arrDots[d.x + 1, d.y - 1].Blocked == false
                         select d;
             AddToList(ld, pat15, 0, -1);
             //-----------------------------------------------------------------------------
             iNumberPattern = 16;
-            var pat16 = from Dot d in aDots
+            var pat16 = from Dot d in arrDots
                          where d.Own == Owner
-                            && d.IndexRelation == aDots[d.x + 1, d.y - 2].IndexRelation
-                            && aDots[d.x + 1, d.y - 2].Own == Owner && aDots[d.x + 1, d.y - 2].Blocked == false
-                            && aDots[d.x, d.y - 1].Own == 0 && aDots[d.x, d.y - 1].Blocked == false
-                            && aDots[d.x + 1, d.y - 1].Own == 0 && aDots[d.x + 1, d.y - 1].Blocked == false
+                            && d.IndexRelation == arrDots[d.x + 1, d.y - 2].IndexRelation
+                            && arrDots[d.x + 1, d.y - 2].Own == Owner && arrDots[d.x + 1, d.y - 2].Blocked == false
+                            && arrDots[d.x, d.y - 1].Own == 0 && arrDots[d.x, d.y - 1].Blocked == false
+                            && arrDots[d.x + 1, d.y - 1].Own == 0 && arrDots[d.x + 1, d.y - 1].Blocked == false
                          select d;
             AddToList(ld, pat16, 0, -1);
             //-----------------------------------------------------------------------------
             iNumberPattern = 17;
-            var pat17 = from Dot d in aDots
+            var pat17 = from Dot d in arrDots
                              where d.Own == Owner
-                                && d.IndexRelation == aDots[d.x + 2, d.y - 1].IndexRelation
-                                && aDots[d.x + 2, d.y - 1].Own == Owner && aDots[d.x + 2, d.y - 1].Blocked == false
-                                && aDots[d.x + 1, d.y].Own == 0 && aDots[d.x + 1, d.y].Blocked == false
-                                && aDots[d.x + 1, d.y - 1].Own == 0 && aDots[d.x + 1, d.y - 1].Blocked == false
+                                && d.IndexRelation == arrDots[d.x + 2, d.y - 1].IndexRelation
+                                && arrDots[d.x + 2, d.y - 1].Own == Owner && arrDots[d.x + 2, d.y - 1].Blocked == false
+                                && arrDots[d.x + 1, d.y].Own == 0 && arrDots[d.x + 1, d.y].Blocked == false
+                                && arrDots[d.x + 1, d.y - 1].Own == 0 && arrDots[d.x + 1, d.y - 1].Blocked == false
                              select d;
             AddToList(ld, pat17, 1, 0);
              

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace DotsGame
 {
@@ -47,6 +48,7 @@ namespace DotsGame
         private Dot[,] Dots;//основной массив, где хранятся точки
         int position = -1;
         private int nSize;//размер поля
+
         public ArrayDots(int size)
         {
             int counter=0;
@@ -64,13 +66,37 @@ namespace DotsGame
             }
         }
 
+        //public ArrayDots ShallowCopy()
+        //{
+        //    return (ArrayDots)this.MemberwiseClone();
+        //}
+
+
+        //static T CreateCopy<T>(T aobject)
+        //{
+        //    MethodInfo memberwiseClone = aobject.GetType().GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic);
+        //    T Copy = (T)memberwiseClone.Invoke(aobject, null);
+        //    foreach (FieldInfo f in typeof(T).GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
+        //    {
+        //        object original = f.GetValue(aobject);
+        //        f.SetValue(Copy, CreateCopy(original));
+        //    }
+        //    return Copy;
+        //}
+
         public ArrayDots CopyArray
         {
             get
             {
-                ArrayDots ad = new ArrayDots(nSize);
-                Array.Copy(Dots, ad.Dots,nSize*nSize);
-                return ad;
+                //ArrayDots ad = new ArrayDots(nSize);
+
+                //Array.Copy(Dots, ad.Dots,nSize*nSize);
+                
+                //ad.Dots = Extensions.Clone( Dots);
+                //Array.Copy(Dots, ad.Dots, nSize * nSize);
+
+                //return ad;
+                return (ArrayDots)this.MemberwiseClone();
 
             }
 }
