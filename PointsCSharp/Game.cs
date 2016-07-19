@@ -390,9 +390,9 @@ namespace DotsGame
                 }
 #endif
                 #endregion
+
                 if (CheckDot(bm, aDots, pl2) == false) return bm;
             }
-
             #region Debug
 #if DEBUG
             sW2.Stop();
@@ -404,7 +404,6 @@ namespace DotsGame
             Application.DoEvents();
 #endif
             #endregion
-
             bm = taskArray[1].Result; //CheckPattern(pl1);
             if (bm != null & aDots.Contains(bm))
             {
@@ -415,9 +414,10 @@ namespace DotsGame
                 }
 #endif
                 #endregion
+
                 if (CheckDot(bm, aDots, pl2) == false) return bm;
             }
-
+#region DEBUG
 #if DEBUG
             sW2.Stop();
             strDebug = strDebug + "\r\nCheckPattern(pl1) - " + sW2.Elapsed.Milliseconds.ToString();
@@ -427,6 +427,7 @@ namespace DotsGame
             f.lblBestMove.Text = "CheckPatternMove...";
             Application.DoEvents();
 #endif
+#endregion
             #endregion
             #region CheckPatternMove
             bm = CheckPatternMove(pl2);
@@ -570,16 +571,10 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             
             //проверяем ход который ведет сразу к окружению и паттерны
             best_move = BestMove(player1, player2);
-                //var task = Task<Dot>.Factory.StartNew(() =>
-                //{
-                //    return BestMove(player1, player2);
-                //});
-                //task.Wait();
-                //best_move = task.Result;
             
             #if DEBUG
                 sW_BM.Stop();
-                f.lblBestMove.Text = "BestMove - " + sW_BM.Elapsed.Milliseconds.ToString();
+                f.lblBestMove.Text = "BestMove player" + player1 + " - " + sW_BM.Elapsed.Milliseconds.ToString();
                 Application.DoEvents();
                 sW_BM.Reset();
             #endif
