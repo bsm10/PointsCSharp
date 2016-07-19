@@ -10,7 +10,7 @@ namespace DotsGame
         private Dot CheckPattern_vilochka(int Owner)
         {
             int enemy_own = Owner == 1 ? 2 : 1;
-            ArrayDots _aDots = aDots.CopyArray;
+            ArrayDots _aDots = aDots;//.CopyArray;
             
             var get_non_blocked = from Dot d in _aDots where d.Blocked == false select d; //получить коллекцию незаблокированных точек
 

@@ -46,6 +46,22 @@ namespace DotsGame
     public class ArrayDots : IEnumerator, IEnumerable
     {
         private Dot[,] Dots;//основной массив, где хранятся точки
+        public Dot[,] DotsCopy
+        {
+            get
+            {
+                Dot[,] dots = (Dot[,])Array.CreateInstance(typeof(Dot), nSize, nSize); //(Dot[,])Dots.Clone();
+                for (int i = 0; i < nSize; i++)
+			    {
+                    for (int j = 0; j < nSize; j++)
+                    {
+                        dots[i, j] = Dots[i, j].DotCopy;
+                    }
+			    } 
+                return dots;
+            }
+        }
+
         int position = -1;
         private int nSize;//размер поля
 
@@ -66,40 +82,19 @@ namespace DotsGame
             }
         }
 
-        //public ArrayDots ShallowCopy()
-        //{
-        //    return (ArrayDots)this.MemberwiseClone();
-        //}
-
-
-        //static T CreateCopy<T>(T aobject)
-        //{
-        //    MethodInfo memberwiseClone = aobject.GetType().GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic);
-        //    T Copy = (T)memberwiseClone.Invoke(aobject, null);
-        //    foreach (FieldInfo f in typeof(T).GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
-        //    {
-        //        object original = f.GetValue(aobject);
-        //        f.SetValue(Copy, CreateCopy(original));
-        //    }
-        //    return Copy;
-        //}
-
-        public ArrayDots CopyArray
-        {
-            get
-            {
-                //ArrayDots ad = new ArrayDots(nSize);
-
-                //Array.Copy(Dots, ad.Dots,nSize*nSize);
+//        public ArrayDots CopyArray
+//        {
+//            get
+//            {
                 
-                //ad.Dots = Extensions.Clone( Dots);
-                //Array.Copy(Dots, ad.Dots, nSize * nSize);
+//                ArrayDots ad = new ArrayDots(nSize);
+//                ad = (ArrayDots)this.MemberwiseClone();
+//                //ad.Dots=null;
+//                //ad.Dots = DotsArray;
+//                return ad;
 
-                //return ad;
-                return (ArrayDots)this.MemberwiseClone();
-
-            }
-}
+//            }
+//}
 
     public class DotEq : EqualityComparer<Dot>
         {
@@ -268,6 +263,7 @@ namespace DotsGame
             }
             return minY;
         }
+
         public int CountNeibourDots(int Owner)//количество точек определенного цвета возле пустой точки
         {
             var q = from Dot d in Dots

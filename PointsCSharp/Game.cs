@@ -229,21 +229,42 @@ namespace DotsGame
             f.lblBestMove.Text = "CheckMove(pl2,pl1)...";
             Application.DoEvents();
 #endif
-            Thread currThread = Thread.CurrentThread;
-            ArrayDots _aDots1 = aDots.CopyArray;
-            ArrayDots _aDots2 = aDots.CopyArray;
+            bm = CheckMove(pl2, aDots);
+            if (bm != null)
+            {
+                return bm;
+            }
+            bm = CheckMove(pl1, aDots);
+            if (bm != null)
+            {
+                return bm;
+            }
+            #region DEBUG
+#if DEBUG
+            sW2.Stop();
+            strDebug = "CheckMove pl1,pl2 - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            sW2.Reset();
+            //проверяем паттерны
+            sW2.Start();
+            f.lblBestMove.Text = "CheckPattern2Move проверяем ходы на два вперед...";
+            Application.DoEvents();
+#endif
+            #endregion
+
+            //Thread currThread = Thread.CurrentThread;
 
             Task<Dot>[] taskArray = new Task<Dot>[6];
 
             taskArray[0] = Task<Dot>.Factory.StartNew(() =>
             {
-                return CheckMove(pl2, _aDots1);
+                return CheckPattern(pl2); 
             }, TaskCreationOptions.AttachedToParent);
             taskArray[1] = Task<Dot>.Factory.StartNew(() =>
             {
-                return CheckMove(pl1, _aDots2);
+                return CheckPattern(pl1); 
             }, TaskCreationOptions.AttachedToParent);
-
+            
             taskArray[2] = Task<Dot>.Factory.StartNew(() =>
             {
                 return CheckPattern_vilochka(pl2);
@@ -257,49 +278,12 @@ namespace DotsGame
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token; 
             
-            taskArray[4] = Task<Dot>.Factory.StartNew(() =>
-            {
-                return TaskCheckPattern2Move(pl2);
-            },token, TaskCreationOptions.AttachedToParent,TaskScheduler.Default);
-
-            //ArrayDots _aDots6 = aDots;
-            ArrayDots _aDots6 = aDots.CopyArray;
-            taskArray[5] = Task<Dot>.Factory.StartNew(() =>
-            {
-                return CheckPatternVilkaNextMove(pl2, _aDots6);
-            }, TaskCreationOptions.AttachedToParent);
-            //taskArray[0].Wait();
-            //taskArray[1].Wait();
-            bm = taskArray[0].Result;
-            if (bm != null) 
-            {
-                CloseTasks(taskArray);
-                return bm;
-            }
-            bm = taskArray[1].Result;
-            if (bm != null)
-            {
-                CloseTasks(taskArray);
-                return bm;
-            }
-            //CloseTasks(taskArray);
-            #region DEBUG
-#if DEBUG
-            sW2.Stop();
-            strDebug = "CheckMove pl1,pl2 - " + sW2.Elapsed.Milliseconds.ToString();
-            f.txtBestMove.Text = strDebug;
-            sW2.Reset();
-            //проверяем паттерны
-            sW2.Start();
-            f.lblBestMove.Text = "CheckPattern2Move проверяем ходы на два вперед...";
-            Application.DoEvents();
-#endif
-            #endregion
             #region CheckPattern_vilochka
 
             //taskArray[2].Wait();
             bm = taskArray[2].Result;
             taskArray[2].Dispose();
+
             if (bm != null & aDots.Contains(bm))
             {
                 #region DEBUG
@@ -343,10 +327,7 @@ namespace DotsGame
             #endregion
             #region CheckPattern2Move проверяем ходы на два вперед
 
-            taskArray[4].Wait(TimeSpan.FromSeconds(5));
-            if (!taskArray[4].IsCompleted) tokenSource.Cancel();
-            bm = taskArray[4].Result;
-            taskArray[4].Dispose();
+            bm = CheckPattern2Move(pl2);
             if (bm != null & aDots.Contains(bm))
             {
                 #region DEBUG
@@ -372,10 +353,7 @@ namespace DotsGame
             #endregion
             #endregion
             #region CheckPatternVilkaNextMove
-            bm = CheckPatternVilkaNextMove(pl2, aDots.CopyArray);
-            taskArray[5].Wait();
-            bm = taskArray[5].Result;
-            taskArray[5].Dispose();
+            bm = CheckPatternVilkaNextMove(pl2, aDots);
             if (bm != null & aDots.Contains(bm))
             {
                 #region DEBUG
@@ -400,10 +378,9 @@ namespace DotsGame
 #endif
             #endregion
             #endregion
-
-
             #region CheckPattern
-            bm = CheckPattern(pl2);
+
+            bm = taskArray[0].Result; //CheckPattern(pl2);
             if (bm != null & aDots.Contains(bm))
             {
                 #region DEBUG
@@ -415,6 +392,7 @@ namespace DotsGame
                 #endregion
                 if (CheckDot(bm, aDots, pl2) == false) return bm;
             }
+
             #region Debug
 #if DEBUG
             sW2.Stop();
@@ -427,6 +405,29 @@ namespace DotsGame
 #endif
             #endregion
 
+            bm = taskArray[1].Result; //CheckPattern(pl1);
+            if (bm != null & aDots.Contains(bm))
+            {
+                #region DEBUG
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern " + iNumberPattern);
+                }
+#endif
+                #endregion
+                if (CheckDot(bm, aDots, pl2) == false) return bm;
+            }
+
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern(pl1) - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            sW2.Reset();
+            sW2.Start();
+            f.lblBestMove.Text = "CheckPatternMove...";
+            Application.DoEvents();
+#endif
+            #endregion
             #region CheckPatternMove
             bm = CheckPatternMove(pl2);
             if (bm != null & aDots.Contains(bm))
@@ -461,32 +462,12 @@ namespace DotsGame
 #endif
 
             #endregion
-            bm = CheckPattern(pl1);
-            if (bm != null & aDots.Contains(bm))
-            {
-                #region DEBUG
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern " + iNumberPattern);
-                }
-#endif
-                #endregion
-                if (CheckDot(bm, aDots, pl2) == false) return bm;
-            }
 
-#if DEBUG
-            sW2.Stop();
-            strDebug = strDebug + "\r\nCheckPattern(pl1) - " + sW2.Elapsed.Milliseconds.ToString();
-            f.txtBestMove.Text = strDebug;
-            sW2.Reset();
-            sW2.Start();
-            f.lblBestMove.Text = "CheckPatternMove...";
-            Application.DoEvents();
-#endif
-            #endregion
+            
 
             return null;
         }
+
 
         private void CloseTasks(Task<Dot>[] taskArray)
         {
@@ -499,9 +480,9 @@ namespace DotsGame
             }
         }
 
-        private Dot TaskCheckPattern2Move(int pl2)
+        private Dot CheckPattern2Move(int pl2)
         {
-            ArrayDots _aDots = aDots.CopyArray;
+            ArrayDots _aDots = aDots;
             List<Dot> empty_dots = _aDots.EmptyNeibourDots(pl2);
             List<Dot> lst_dots2;
             

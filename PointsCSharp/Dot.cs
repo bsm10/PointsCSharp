@@ -175,6 +175,16 @@ namespace DotsGame
             }
         }
         public bool BonusDot { get; set; }
+        public Dot DotCopy
+        {
+            get
+            {
+                //return (Dot)this.MemberwiseClone();
+                Dot d = new Dot(x,y,Own);
+                d.Blocked=Blocked;
+                return d;
+            }
+        }
 
         public Dot(int x, int y, int Owner = 0)
         {
@@ -210,6 +220,7 @@ namespace DotsGame
 
         }
         private int _IndexRel;
+
         public int IndexRelation
         {
             get { return _IndexRel; }
