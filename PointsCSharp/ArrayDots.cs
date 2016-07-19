@@ -360,7 +360,6 @@ namespace DotsGame
                 {
                     j = nSize - 1;
                 }
-
                 return Dots[i, position % nSize];
             }
         }
