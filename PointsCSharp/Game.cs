@@ -31,6 +31,7 @@ namespace DotsGame
 
         public float startX = -0.5f, startY = -0.5f;
         public ArrayDots aDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
+        public List<Dot> lstDots;
         private List<Links> lnks;
         private Dot best_move; //ход который должен сделать комп
         private Dot last_move; //последний ход
@@ -252,9 +253,7 @@ namespace DotsGame
 #endif
             #endregion
 
-            //Thread currThread = Thread.CurrentThread;
-
-            Task<Dot>[] taskArray = new Task<Dot>[6];
+            Task<Dot>[] taskArray = new Task<Dot>[4];
 
             taskArray[0] = Task<Dot>.Factory.StartNew(() =>
             {
@@ -463,8 +462,6 @@ namespace DotsGame
 #endif
 
             #endregion
-
-            
 
             return null;
         }
@@ -1139,6 +1136,9 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             //aDots = new ArrayDots(iMapSize);
             iBoardSize = Properties.Settings.Default.BoardSize;
             aDots = new ArrayDots(iBoardSize);
+
+            lstDots = new List<Dot>(iBoardSize);
+
             lnks = new List<Links>();
             dots_in_region = new List<Dot>();
             list_moves = new List<Dot>();
