@@ -357,7 +357,7 @@ namespace DotsGame
             return listToClone.Select(item => (T)item.Clone()).ToList();
         }
     }
-    public class ArrayDots : IEnumerator, IEnumerable, ICloneable
+    public class ArrayDots : IEnumerator, IEnumerable
     {
         private List<Dot> _Dots;
         public List<Dot> Dots

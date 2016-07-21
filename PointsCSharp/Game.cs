@@ -257,13 +257,13 @@ namespace DotsGame
 
             taskArray[0] = Task<Dot>.Factory.StartNew(() =>
             {
-                return CheckPattern(pl2); 
+                return CheckPattern(pl2);
             }, TaskCreationOptions.AttachedToParent);
             taskArray[1] = Task<Dot>.Factory.StartNew(() =>
             {
-                return CheckPattern(pl1); 
+                return CheckPattern(pl1);
             }, TaskCreationOptions.AttachedToParent);
-            
+
             taskArray[2] = Task<Dot>.Factory.StartNew(() =>
             {
                 return CheckPattern_vilochka(pl2);
@@ -416,7 +416,7 @@ namespace DotsGame
 
                 if (CheckDot(bm, aDots, pl2) == false) return bm;
             }
-#region DEBUG
+            #region DEBUG
 #if DEBUG
             sW2.Stop();
             strDebug = strDebug + "\r\nCheckPattern(pl1) - " + sW2.Elapsed.Milliseconds.ToString();
@@ -426,7 +426,7 @@ namespace DotsGame
             f.lblBestMove.Text = "CheckPatternMove...";
             Application.DoEvents();
 #endif
-#endregion
+            #endregion
             #endregion
             #region CheckPatternMove
             bm = CheckPatternMove(pl2);
@@ -480,7 +480,7 @@ namespace DotsGame
 
         private Dot CheckPattern2Move(int pl2)
         {
-            ArrayDots _aDots = aDots;
+            ArrayDots _aDots = aDots;//если дать копию -  не работает
             List<Dot> empty_dots = _aDots.EmptyNeibourDots(pl2);
             List<Dot> lst_dots2;
             
