@@ -350,9 +350,37 @@ namespace DotsGame
             }
         }
     }
-    public class ArrayDots : IEnumerator, IEnumerable
+    static class Extensions
     {
-        public List<Dot> Dots;
+        public static IList<T> Clone<T>(this IList<T> listToClone) where T : ICloneable
+        {
+            return listToClone.Select(item => (T)item.Clone()).ToList();
+        }
+    }
+    public class ArrayDots : IEnumerator, IEnumerable, ICloneable
+    {
+        private List<Dot> _Dots;
+        public List<Dot> Dots
+        {
+            get
+            {
+                return _Dots;
+            }
+            set
+            {
+                _Dots = value;
+            }
+        }
+        public ArrayDots CopyArrayDots
+        {
+            get
+            {
+                ArrayDots ad = new ArrayDots(nSize);
+                ad.Dots = _Dots.ConvertAll(dot => new Dot(dot.x,dot.y,dot.Own));
+                return ad;
+            }
+        }
+
 
         int position = -1;
         private int nSize;//размер поля
@@ -361,16 +389,16 @@ namespace DotsGame
         {
             int counter = 0;
             int ind;
-            Dots = new List<Dot>(size*size);
+            _Dots = new List<Dot>(size*size);
             nSize = size;
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
                     ind = IndexDot(i, j);
-                    Dots.Add(new Dot(i, j));
-                    Dots[ind].IndexDot = ind;
-                    if (i == 0 | i == (size - 1) | j == 0 | j == (size - 1)) Dots[ind].Fixed = true;
+                    _Dots.Add(new Dot(i, j));
+                    _Dots[ind].IndexDot = ind;
+                    if (i == 0 | i == (size - 1) | j == 0 | j == (size - 1)) _Dots[ind].Fixed = true;
                     counter += 1;
                 }
             }
@@ -407,11 +435,6 @@ namespace DotsGame
                 if (j >= nSize) j = nSize - 1;
                 return Dots[IndexDot(i, j)];
             }
-            //set
-            //{
-            //    int ind = IndexDot(i, j);
-            //    Dots[ind] = value;
-            //}
         }
         public void Add(Dot dot, int Owner)//добавляет точку в массив
         {
@@ -653,11 +676,6 @@ namespace DotsGame
                 return Dots[IndexDot(i, position % nSize)];
             }
         }
-
-        //public IEnumerator GetEnumerator()
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 
 }

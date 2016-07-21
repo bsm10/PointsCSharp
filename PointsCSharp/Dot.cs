@@ -179,10 +179,10 @@ namespace DotsGame
         {
             get
             {
-                //return (Dot)this.MemberwiseClone();
-                Dot d = new Dot(x,y,Own);
-                d.Blocked=Blocked;
-                return d;
+                return (Dot)this.MemberwiseClone();
+                //Dot d = new Dot(x,y,Own);
+                //d.Blocked=Blocked;
+                //return d;
             }
         }
 
@@ -194,6 +194,7 @@ namespace DotsGame
             Own = Owner;
             //IndexRelation = IndexDot;
         }
+
         public bool PatternsFirstDot {get; set;}
         public bool PatternsMoveDot { get; set; }
         public bool PatternsAnyDot { get; set; }
