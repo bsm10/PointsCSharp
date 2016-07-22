@@ -1748,7 +1748,11 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 if ((dx == 0 & dy == 0) == false) sWhere += " && aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " && aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
                 if (lstPat[i].PatternsMoveDot)
                 {
-                    sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                    //sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                    sMove = " if (pat" + n + ".Count() > 0) \r\n {" +
+                    "result_dot = new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + "); \r\n" +
+                    "result_dot.iNumberPattern = iNumberPattern; \r\n" +
+                    "return result_dot;";
                 }
 
             }
@@ -1778,7 +1782,12 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 if ((dx == 0 & dy == 0) == false) sWhere += " && aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " && aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
                 if (l[i].PatternsMoveDot)
                 {
-                    sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                    //sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                    sMove = " if (pat" + n + ".Count() > 0) \r\n {" +
+                    "result_dot = new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + "); \r\n" +
+                    "result_dot.iNumberPattern = iNumberPattern; \r\n" +
+                    "return result_dot;";
+
                 }
             }
             s += "//--------------Rotate on 90----------------------------------- \r\n";
@@ -1805,7 +1814,12 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 if ((dx == 0 & dy == 0) == false) sWhere += " && aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " && aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
                 if (l[i].PatternsMoveDot)
                 {
-                    sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                    //sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                    sMove = " if (pat" + n + ".Count() > 0) \r\n {" +
+                    "result_dot = new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + "); \r\n" +
+                    "result_dot.iNumberPattern = iNumberPattern; \r\n" +
+                    "return result_dot;";
+
                 }
             }
             s += "//--------------Rotate on 90 - 2----------------------------------- \r\n";
