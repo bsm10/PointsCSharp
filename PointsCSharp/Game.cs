@@ -385,7 +385,7 @@ namespace DotsGame
                 #region DEBUG
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern " + iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern " + bm.iNumberPattern);
                 }
 #endif
                 #endregion
@@ -409,7 +409,7 @@ namespace DotsGame
                 #region DEBUG
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern " + iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern " + bm.iNumberPattern);
                 }
 #endif
                 #endregion
@@ -1650,16 +1650,11 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         {
             get { return lstPat; }
         }
-
         public bool Autoplay
         {
-        
             get { return f.rbtnHand.Checked; }
             //set { f.rbtnHand.Checked = value; }
-        
         }
-
-
         public bool PE_FirstDot
         {
             get { return f.tlsТочкаОтсчета.Checked; }
@@ -1671,7 +1666,6 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             set { f.tlsПустая.Checked = value; }
 
         }
-
         public bool PE_AnyDot
         {
             get { return f.tlsКромеВражеской.Checked; }
@@ -1844,7 +1838,29 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             return l;
         }
 
-        #endregion
+        public string path_pat = Application.CommonAppDataPath + @"\patterns.dat";
+        public void SavePattern()
+        {
+            try
+            {
+                // создаем объект BinaryWriter
+                using (BinaryWriter writer = new BinaryWriter(File.Open(path_savegame, FileMode.Create)))
+                {
+
+                    for (int i = 0; i < list_moves.Count; i++)
+                    {
+                        writer.Write((byte)list_moves[i].x);
+                        writer.Write((byte)list_moves[i].y);
+                        writer.Write((byte)list_moves[i].Own);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+   #endregion
 #endif
         //==========================================================================
         #region SAVE_LOAD Game

@@ -185,6 +185,7 @@ namespace DotsGame
                 //return d;
             }
         }
+        public int iNumberPattern { get; set; }
 
         public Dot(int x, int y, int Owner = 0)
         {
