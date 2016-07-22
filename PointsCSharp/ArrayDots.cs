@@ -376,7 +376,16 @@ namespace DotsGame
             get
             {
                 ArrayDots ad = new ArrayDots(nSize);
-                ad.Dots = _Dots.ConvertAll(dot => new Dot(dot.x,dot.y,dot.Own));
+                for (int i = 0; i < _Dots.Count; i++)
+                {
+                    ad._Dots[i].Blocked = _Dots[i].Blocked;
+                    ad._Dots[i].Fixed = _Dots[i].Fixed;
+                    ad._Dots[i].IndexDot = _Dots[i].IndexDot;
+                    ad._Dots[i].Own = _Dots[i].Own;
+                    ad._Dots[i].x = _Dots[i].x;
+                    ad._Dots[i].y = _Dots[i].y;
+                }
+                //ad.Dots = _Dots.ConvertAll(dot => new Dot(dot.x, dot.y, dot.Own));
                 return ad;
             }
         }
@@ -422,7 +431,7 @@ namespace DotsGame
         {
             get
             {
-                return Dots.Count;
+                return _Dots.Count;
             }
         }
         public Dot this[int i, int j]//Индексатор возвращает элемент из массива по его индексу
@@ -433,7 +442,7 @@ namespace DotsGame
                 if (j < 0) j = 0;
                 if (i >= nSize) i = nSize - 1;
                 if (j >= nSize) j = nSize - 1;
-                return Dots[IndexDot(i, j)];
+                return _Dots[IndexDot(i, j)];
             }
         }
         public void Add(Dot dot, int Owner)//добавляет точку в массив
@@ -441,17 +450,17 @@ namespace DotsGame
             int ind = IndexDot(dot.x, dot.y);
             if (Contains(dot))
             {
-                Dots[ind].Own = Owner;
-                if (Owner != 0) Dots[ind].IndexRelation = Dots[ind].IndexDot;
-                Dots[ind].Blocked = false;
-                AddNeibor(Dots[ind]);
+                _Dots[ind].Own = Owner;
+                if (Owner != 0) _Dots[ind].IndexRelation = _Dots[ind].IndexDot;
+                _Dots[ind].Blocked = false;
+                AddNeibor(_Dots[ind]);
             }
         }
 
         private void AddNeibor(Dot dot)
         {
             //выбрать соседние точки, если такие есть
-            var q = from Dot d in Dots where d.Own == dot.Own & Distance(dot, d) < 2 select d;
+            var q = from Dot d in _Dots where d.Own == dot.Own & Distance(dot, d) < 2 select d;
 
             foreach (Dot d in q)
             {
@@ -476,11 +485,11 @@ namespace DotsGame
         public void Remove(Dot dot)//удаляет точку из массива
         {
             int ind = IndexDot(dot.x, dot.y);
-            int i = Dots[ind].IndexDot;
+            int i = _Dots[ind].IndexDot;
             RemoveNeibor(dot);
-            Dots[ind] = new Dot(dot.x, dot.y);
-            Dots[ind].IndexDot = i;
-            Dots[ind].IndexRelation = i;
+            _Dots[ind] = new Dot(dot.x, dot.y);
+            _Dots[ind].IndexDot = i;
+            _Dots[ind].IndexRelation = i;
         }
         public void Remove(int x, int y)//удаляет точку из массива
         {
@@ -490,12 +499,12 @@ namespace DotsGame
 
                 RemoveNeibor(Dots[ind]);
                 int i = Dots[ind].IndexDot;
-                Dots[ind] = new Dot(x, y);
-                Dots[ind].IndexDot = i;
-                Dots[ind].IndexRelation = i;
-                Dots[ind].NeiborDots.Clear();
-                Dots[ind].BlokingDots.Clear();
-                Dots[ind].Own = 0;
+                _Dots[ind] = new Dot(x, y);
+                _Dots[ind].IndexDot = i;
+                _Dots[ind].IndexRelation = i;
+                _Dots[ind].NeiborDots.Clear();
+                _Dots[ind].BlokingDots.Clear();
+                _Dots[ind].Own = 0;
             }
         }
         public float Distance(Dot dot1, Dot dot2)//расстояние между точками
@@ -522,7 +531,7 @@ namespace DotsGame
         }
         public void UnmarkAllDots()
         {
-            foreach (Dot d in Dots)
+            foreach (Dot d in _Dots)
             {
                 d.Marked = false;
                 d.PatternsFirstDot = false;
@@ -533,7 +542,7 @@ namespace DotsGame
         }
         public int MinX()
         {
-            var q = from Dot d in Dots where d.Own != 0 & d.Blocked == false select d;
+            var q = from Dot d in _Dots where d.Own != 0 & d.Blocked == false select d;
             int minX = nSize;
             foreach (Dot d in q)
             {
@@ -543,7 +552,7 @@ namespace DotsGame
         }
         public int MaxX()
         {
-            var q = from Dot d in Dots where d.Own != 0 & d.Blocked == false select d;
+            var q = from Dot d in _Dots where d.Own != 0 & d.Blocked == false select d;
             int maxX = 0;
             foreach (Dot d in q)
             {
@@ -553,7 +562,7 @@ namespace DotsGame
         }
         public int MaxY()
         {
-            var q = from Dot d in Dots where d.Own != 0 & d.Blocked == false select d;
+            var q = from Dot d in _Dots where d.Own != 0 & d.Blocked == false select d;
             int maxY = 0;
             foreach (Dot d in q)
             {
@@ -563,7 +572,7 @@ namespace DotsGame
         }
         public int MinY()
         {
-            var q = from Dot d in Dots where d.Own != 0 & d.Blocked == false select d;
+            var q = from Dot d in _Dots where d.Own != 0 & d.Blocked == false select d;
             int minY = nSize;
             foreach (Dot d in q)
             {
@@ -574,14 +583,14 @@ namespace DotsGame
 
         public int CountNeibourDots(int Owner)//количество точек определенного цвета возле пустой точки
         {
-            var q = from Dot d in Dots
+            var q = from Dot d in _Dots
                     where d.Blocked == false & d.Own == 0 &
-                    Dots[IndexDot(d.x + 1, d.y - 1)].Blocked == false & Dots[IndexDot(d.x + 1, d.y - 1)].Own == Owner & 
-                    Dots[IndexDot(d.x + 1, d.y + 1)].Blocked == false & Dots[IndexDot(d.x + 1, d.y + 1)].Own == Owner
-                    | d.Own == 0 & Dots[IndexDot(d.x, d.y - 1)].Blocked == false & Dots[IndexDot(d.x, d.y - 1)].Own == Owner & Dots[IndexDot(d.x, d.y + 1)].Blocked == false & Dots[IndexDot(d.x, d.y + 1)].Own == Owner
-                    | d.Own == 0 & Dots[IndexDot(d.x - 1, d.y - 1)].Blocked == false & Dots[IndexDot(d.x - 1, d.y - 1)].Own == Owner & Dots[IndexDot(d.x - 1, d.y + 1)].Blocked == false & Dots[IndexDot(d.x - 1, d.y + 1)].Own == Owner
-                    | d.Own == 0 & Dots[IndexDot(d.x - 1, d.y - 1)].Blocked == false & Dots[IndexDot(d.x - 1, d.y - 1)].Own == Owner & Dots[IndexDot(d.x + 1, d.y + 1)].Blocked == false & Dots[IndexDot(d.x + 1, d.y + 1)].Own == Owner
-                    | d.Own == 0 & Dots[IndexDot(d.x - 1, d.y + 1)].Blocked == false & Dots[IndexDot(d.x - 1, d.y + 1)].Own == Owner & Dots[IndexDot(d.x + 1, d.y - 1)].Blocked == false & Dots[IndexDot(d.x + 1, d.y - 1)].Own == Owner
+                    _Dots[IndexDot(d.x + 1, d.y - 1)].Blocked == false & _Dots[IndexDot(d.x + 1, d.y - 1)].Own == Owner & 
+                    _Dots[IndexDot(d.x + 1, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x + 1, d.y + 1)].Own == Owner
+                    | d.Own == 0 & _Dots[IndexDot(d.x, d.y - 1)].Blocked == false & _Dots[IndexDot(d.x, d.y - 1)].Own == Owner & _Dots[IndexDot(d.x, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x, d.y + 1)].Own == Owner
+                    | d.Own == 0 & _Dots[IndexDot(d.x - 1, d.y - 1)].Blocked == false & _Dots[IndexDot(d.x - 1, d.y - 1)].Own == Owner & _Dots[IndexDot(d.x - 1, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x - 1, d.y + 1)].Own == Owner
+                    | d.Own == 0 & _Dots[IndexDot(d.x - 1, d.y - 1)].Blocked == false & _Dots[IndexDot(d.x - 1, d.y - 1)].Own == Owner & _Dots[IndexDot(d.x + 1, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x + 1, d.y + 1)].Own == Owner
+                    | d.Own == 0 & _Dots[IndexDot(d.x - 1, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x - 1, d.y + 1)].Own == Owner & _Dots[IndexDot(d.x + 1, d.y - 1)].Blocked == false & _Dots[IndexDot(d.x + 1, d.y - 1)].Own == Owner
                     select d;
             return q.Count();
         }
@@ -592,11 +601,11 @@ namespace DotsGame
         public List<Dot> EmptyNeibourDots(int Owner)//список не занятых точек возле определенной точки
         {
             List<Dot> ld = new List<Dot>();
-            foreach (Dot d in Dots)
+            foreach (Dot d in _Dots)
             {
                 if (d.Own == Owner)
                 {
-                    var q = from Dot dot in Dots
+                    var q = from Dot dot in _Dots
                             where dot.Blocked == false & dot.Own == 0 & Distance(dot, d) < 2
                             select dot;
                     foreach (Dot empty_d in q)
@@ -625,13 +634,13 @@ namespace DotsGame
 
         public Dot[] NotBlockedDots()
         {
-            var q = from Dot d in Dots where d.Blocked == false select d;
+            var q = from Dot d in _Dots where d.Blocked == false select d;
             return q.ToArray();
         }
 
         public void Clear()
         {
-            foreach (Dot d in Dots)
+            foreach (Dot d in _Dots)
             {
                 d.Own = 0;
                 d.Marked = false;
@@ -647,13 +656,13 @@ namespace DotsGame
         {
             position = -1;
             //return this;
-            return Dots.GetEnumerator();
+            return _Dots.GetEnumerator();
         }
         //IEnumerator
         public bool MoveNext()
         {
             position++;
-            return (position < Dots.Count);
+            return (position < _Dots.Count);
         }
         //IEnumerable
         public void Reset()
@@ -673,7 +682,7 @@ namespace DotsGame
                 {
                     j = nSize - 1;
                 }
-                return Dots[IndexDot(i, position % nSize)];
+                return _Dots[IndexDot(i, position % nSize)];
             }
         }
     }

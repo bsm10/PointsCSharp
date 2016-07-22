@@ -64,9 +64,9 @@
             // lstDbg1
             // 
             this.lstDbg1.AccessibleName = "";
-            this.lstDbg1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstDbg1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstDbg1.FormattingEnabled = true;
             this.lstDbg1.HorizontalScrollbar = true;
             this.lstDbg1.Location = new System.Drawing.Point(12, 30);
@@ -77,9 +77,9 @@
             // lstDbg2
             // 
             this.lstDbg2.AccessibleName = "lstDbg2";
-            this.lstDbg2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstDbg2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstDbg2.FormattingEnabled = true;
             this.lstDbg2.HorizontalScrollbar = true;
             this.lstDbg2.Location = new System.Drawing.Point(92, 30);
@@ -89,9 +89,9 @@
             // 
             // txtDebug
             // 
-            this.txtDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDebug.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDebug.BackColor = System.Drawing.SystemColors.Info;
             this.txtDebug.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtDebug.Font = new System.Drawing.Font("Trebuchet MS", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -105,9 +105,9 @@
             // 
             // txtDotStatus
             // 
-            this.txtDotStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDotStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDotStatus.BackColor = System.Drawing.SystemColors.Info;
             this.txtDotStatus.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtDotStatus.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -389,7 +389,7 @@
             this.tlsПустая.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsПустая.Name = "tlsПустая";
             this.tlsПустая.Size = new System.Drawing.Size(24, 24);
-            this.tlsПустая.Text = "Пустая точка";
+            this.tlsПустая.Text = "Отметить точку";
             this.tlsПустая.CheckedChanged += new System.EventHandler(this.tlsПустая_CheckedChanged);
             // 
             // tlsКромеВражеской
@@ -428,9 +428,9 @@
             // 
             // txtBestMove
             // 
-            this.txtBestMove.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBestMove.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtBestMove.BackColor = System.Drawing.SystemColors.Info;
             this.txtBestMove.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtBestMove.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
