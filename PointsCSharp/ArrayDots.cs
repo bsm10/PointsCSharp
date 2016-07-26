@@ -376,14 +376,18 @@ namespace DotsGame
             get
             {
                 ArrayDots ad = new ArrayDots(nSize);
-                for (int i = 0; i < _Dots.Count; i++)
+                for (int i = 0; i < Dots.Count; i++)
                 {
-                    ad._Dots[i].Blocked = _Dots[i].Blocked;
-                    ad._Dots[i].Fixed = _Dots[i].Fixed;
-                    ad._Dots[i].IndexDot = _Dots[i].IndexDot;
-                    ad._Dots[i].Own = _Dots[i].Own;
-                    ad._Dots[i].x = _Dots[i].x;
-                    ad._Dots[i].y = _Dots[i].y;
+                    if (i==42)
+                    {
+                        var x=0;
+                    }
+                    ad._Dots[i].Blocked = Dots[i].Blocked;
+                    ad._Dots[i].Fixed = Dots[i].Fixed;
+                    ad._Dots[i].IndexDot = Dots[i].IndexDot;
+                    ad._Dots[i].Own = Dots[i].Own;
+                    ad._Dots[i].x = Dots[i].x;
+                    ad._Dots[i].y = Dots[i].y;
                 }
                 //ad.Dots = _Dots.ConvertAll(dot => new Dot(dot.x, dot.y, dot.Own));
                 return ad;

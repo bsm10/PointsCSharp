@@ -132,10 +132,10 @@ namespace DotsGame
             set
             {
                 _Own = value;
-                if (_Own==0)
-                {
-                    Blocked = false;
-                }
+                //if (_Own==0)
+                //{
+                //    Blocked = false;
+                //}
             }
 
         }

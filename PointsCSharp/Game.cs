@@ -254,24 +254,29 @@ namespace DotsGame
             #endregion
 
             Task<Dot>[] taskArray = new Task<Dot>[4];
+            ArrayDots[] ad_Array = new ArrayDots[4] { aDots.CopyArrayDots,
+                                                     aDots.CopyArrayDots,
+                                                     aDots.CopyArrayDots,
+                                                     aDots.CopyArrayDots };
+
 
             taskArray[0] = Task<Dot>.Factory.StartNew(() =>
             {
-                return CheckPattern(pl2);
+                return CheckPattern(pl2, ad_Array[0]);
             }, TaskCreationOptions.AttachedToParent);
             taskArray[1] = Task<Dot>.Factory.StartNew(() =>
             {
-                return CheckPattern(pl1);
+                return CheckPattern(pl1, ad_Array[1]);
             }, TaskCreationOptions.AttachedToParent);
 
             taskArray[2] = Task<Dot>.Factory.StartNew(() =>
             {
-                return CheckPattern_vilochka(pl2);
+                return CheckPattern_vilochka(pl2, ad_Array[2]);
             }, TaskCreationOptions.AttachedToParent);
 
             taskArray[3] = Task<Dot>.Factory.StartNew(() =>
             {
-                return CheckPattern_vilochka(pl1);
+                return CheckPattern_vilochka(pl1, ad_Array[3]);
             }, TaskCreationOptions.AttachedToParent);
 
             var tokenSource = new CancellationTokenSource();
@@ -1038,7 +1043,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                                 UndoMove(dot_move,_aDots);
                                 continue;
                             }
-                            dot_ptn = CheckPattern_vilochka(d.Own);
+                            dot_ptn = CheckPattern_vilochka(d.Own, _aDots);
                             #if DEBUG
                                 if (f.chkMove.Checked) Pause();
                             #endif

@@ -9,14 +9,14 @@ namespace DotsGame
 {
     public partial class Game
     {
-        private Dot CheckPattern(int Owner)
+        private Dot CheckPattern(int Owner, ArrayDots _aDots)
         {
 
             int enemy_own = Owner == 1 ? 2 : 1;
-            ArrayDots _aDots = aDots.CopyArrayDots;
+            //ArrayDots _aDots = aDots.CopyArrayDots;
             Dot result_dot;
 
-            var get_non_blocked = from Dot d in _aDots where d.Blocked == false select d; //получить коллекцию незаблокированных точек
+            IEnumerable<Dot> get_non_blocked = from Dot d in _aDots where d.Blocked == false select d; //получить коллекцию незаблокированных точек
             iNumberPattern = 1;
             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             // паттерн на конструкцию    *     *      точка окружена через две точки
