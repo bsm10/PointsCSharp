@@ -378,10 +378,6 @@ namespace DotsGame
                 ArrayDots ad = new ArrayDots(nSize);
                 for (int i = 0; i < Dots.Count; i++)
                 {
-                    if (i==42)
-                    {
-                        var x=0;
-                    }
                     ad._Dots[i].Blocked = Dots[i].Blocked;
                     ad._Dots[i].Fixed = Dots[i].Fixed;
                     ad._Dots[i].IndexDot = Dots[i].IndexDot;

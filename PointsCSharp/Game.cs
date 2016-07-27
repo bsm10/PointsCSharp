@@ -966,7 +966,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         {
             //ArrayDots _aDots = aDots.CopyArray;
 
-            var qry = AllBoard ? from Dot d in _aDots where d.Blocked == false && d.Own == 0 &
+            var qry = AllBoard ? from Dot d in _aDots.AsParallel() where d.Blocked == false && d.Own == 0 &
                     _aDots[d.x + 1, d.y - 1].Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false & _aDots[d.x + 1, d.y - 1].Own == Owner & _aDots[d.x + 1, d.y + 1].Own == Owner
                     | d.Blocked == false & _aDots[d.x, d.y + 1].Blocked == false & _aDots[d.x, d.y - 1].Blocked == false & d.Own == 0 & _aDots[d.x, d.y - 1].Own == Owner & _aDots[d.x, d.y + 1].Own == Owner
                     | d.Blocked == false & d.Own == 0 & _aDots[d.x - 1, d.y - 1].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false & _aDots[d.x - 1, d.y - 1].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner
@@ -992,7 +992,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                     | d.Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false & _aDots[d.x + 1, d.y - 1].Blocked == false & d.Own == 0 & _aDots[d.x + 1, d.y + 1].Own == Owner & _aDots[d.x + 1, d.y - 1].Own == Owner
                     | d.Blocked == false & _aDots[d.x - 1, d.y - 1].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false & d.Own == 0 & _aDots[d.x - 1, d.y - 1].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner
                     select d :
-                    from Dot d in _aDots where d.Own == PLAYER_NONE & d.Blocked == false &
+                    from Dot d in _aDots.AsParallel() where d.Own == PLAYER_NONE & d.Blocked == false &
                                                                 Math.Abs(d.x - LastMove.x) < 2 & Math.Abs(d.y - LastMove.y) < 2
                                                                 select d;
 
@@ -1021,7 +1021,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         {
             //ArrayDots _aDots = aDots.CopyArray;
       
-            var qry = from Dot d in _aDots where d.Own == Owner & d.Blocked == false select d;
+            var qry = from Dot d in _aDots.AsParallel() where d.Own == Owner & d.Blocked == false select d;
             Dot dot_ptn;
             Dot[] ad = qry.ToArray();
             if (ad.Length != 0)

@@ -11,7 +11,7 @@ namespace DotsGame
         {
             ArrayDots _aDots = aDots.CopyArrayDots;
             iNumberPattern = 1;
-            var pat1 = from Dot d in _aDots
+            var pat1 = from Dot d in _aDots.AsParallel()
                          where d.Own == 0
                              && _aDots[d.x - 1, d.y + 1].Own == Owner && _aDots[d.x - 1, d.y + 1].Blocked == false
                              && _aDots[d.x + 1, d.y - 1].Own == Owner && _aDots[d.x + 1, d.y - 1].Blocked == false

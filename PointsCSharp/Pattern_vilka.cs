@@ -12,7 +12,7 @@ namespace DotsGame
             int enemy_own = Owner == 1 ? 2 : 1;
             //ArrayDots _aDots = aDots.CopyArrayDots;
             
-            var get_non_blocked = from Dot d in _aDots where d.Blocked == false select d; //получить коллекцию незаблокированных точек
+            var get_non_blocked = from Dot d in _aDots.AsParallel() where d.Blocked == false select d; //получить коллекцию незаблокированных точек
 
             //паттерн на диагональное расположение точек         *d   
             //                                                *  +  
