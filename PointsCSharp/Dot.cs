@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace DotsGame
 {
     public class Links
@@ -102,7 +104,7 @@ namespace DotsGame
                     {
                         foreach (Dot d in NeiborDots)
                         {
-                            if (d.Blocked==false) d.IndexRelation = d.IndexDot;
+                            if (d.Blocked == false) d.IndexRelation = d.IndexDot;
                         }
                     }
                 }
@@ -161,6 +163,7 @@ namespace DotsGame
             }
         }
         public bool Marked { get; set; }
+
         public int _IndexDot;
         public int IndexDot
         {
@@ -195,6 +198,15 @@ namespace DotsGame
             Own = Owner;
             //IndexRelation = IndexDot;
         }
+        public void UnmarkDot()
+        {
+            this.Marked = false;
+            this.PatternsFirstDot = false;
+            this.PatternsMoveDot = false;
+            this.PatternsAnyDot = false;
+            this.PatternsEmptyDot = false;
+        }
+
 
         public bool PatternsFirstDot {get; set;}
         public bool PatternsMoveDot { get; set; }

@@ -511,6 +511,40 @@ namespace DotsGame
         {
             return (float)Math.Sqrt(Math.Pow((dot1.x - dot2.x), 2) + Math.Pow((dot1.y - dot2.y), 2));
         }
+        /// <summary>
+        /// возвращает список соседних точек заданной точки
+        /// </summary>
+        /// <param name="dot"> точка Dot из массива точек типа ArrayDots </param>
+        /// <returns> список точек </returns>
+        public void SetNeiborDotsSNWE(Dot dot)//SNWE - S - South, N - North, W - West, E - East
+        {
+            Dot[] dts = new Dot[4] {
+                                    this[dot.x + 1, dot.y],
+                                    this[dot.x - 1, dot.y],
+                                    this[dot.x, dot.y + 1],
+                                    this[dot.x, dot.y - 1]
+                                    };
+            //this[dot.x, dot.y].NeiborDotsSNWE = dts.ToList();
+        }
+
+        public List<Dot> NeiborDots(Dot dot)
+        {
+            Dot[] dts = new Dot[8] {
+                                    this[dot.x + 1, dot.y],
+                                    this[dot.x - 1, dot.y],
+                                    this[dot.x, dot.y + 1],
+                                    this[dot.x, dot.y - 1],
+                                    this[dot.x + 1, dot.y + 1],
+                                    this[dot.x - 1, dot.y - 1],
+                                    this[dot.x - 1, dot.y + 1],
+                                    this[dot.x + 1, dot.y - 1]
+                                    };
+            return dts.ToList();
+        }
+
+
+
+
         public bool Contains(Dot dot)//проверяет, есть ли точка с такими координатами в массиве
         {
             if (dot == null) return false;
@@ -531,14 +565,14 @@ namespace DotsGame
         }
         public void UnmarkAllDots()
         {
-            foreach (Dot d in _Dots)
-            {
-                d.Marked = false;
-                d.PatternsFirstDot = false;
-                d.PatternsMoveDot = false;
-                d.PatternsAnyDot = false;
-                d.PatternsEmptyDot = false;
-            }
+            foreach (Dot d in _Dots) d.UnmarkDot();
+            //{
+            //    d.Marked = false;
+            //    d.PatternsFirstDot = false;
+            //    d.PatternsMoveDot = false;
+            //    d.PatternsAnyDot = false;
+            //    d.PatternsEmptyDot = false;
+            //}
         }
         public int MinX()
         {
@@ -594,6 +628,12 @@ namespace DotsGame
                     select d;
             return q.Count();
         }
+        /// <summary>
+        /// Вычисляет индекс точки в списке по ее координатам
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public int IndexDot(int x, int y)
         {
             return x*nSize+y;

@@ -16,7 +16,7 @@ namespace DotsGame
             //ArrayDots _aDots = aDots.CopyArrayDots;
             Dot result_dot;
 
-            IEnumerable<Dot> get_non_blocked = from Dot d in _aDots.AsParallel() where d.Blocked == false select d; //получить коллекцию незаблокированных точек
+            IEnumerable<Dot> get_non_blocked = from Dot d in _aDots where d.Blocked == false select d; //получить коллекцию незаблокированных точек
             iNumberPattern = 1;
             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             // паттерн на конструкцию    *     *      точка окружена через две точки

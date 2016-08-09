@@ -233,11 +233,13 @@ namespace DotsGame
             bm = CheckMove(pl2, aDots);
             if (bm != null)
             {
+                bm.iNumberPattern = 777; //777-ход в результате которого получается окружение - компьютер побеждает
                 return bm;
             }
             bm = CheckMove(pl1, aDots);
             if (bm != null)
             {
+                bm.iNumberPattern = 666; //666-ход в результате которого получается окружение - компьютер проигрывает
                 return bm;
             }
             #region DEBUG
@@ -581,12 +583,20 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 sW_BM.Reset();
             #endif
 
-            if (best_move!=null)
+                if (best_move!=null && best_move.iNumberPattern == 777)
+                {
+                    return PLAYER_COMPUTER;
+                }
+                else if (best_move != null && best_move.iNumberPattern == 666)
+                {
+                    return PLAYER_HUMAN;
+                }
+                else if (best_move != null)
                 {
                     if(CheckDot(best_move, aDots, player2)) best_move=null;
+                    if (best_move != null) return PLAYER_COMPUTER;
                 }
 
-            if (best_move!=null) return PLAYER_COMPUTER;
             var qry = from Dot d in aDots
                       where d.Own == PLAYER_NONE & d.Blocked == false & Math.Abs(d.x - lastmove.x) < SkillNumSq
                                                                     & Math.Abs(d.y - lastmove.y) < SkillNumSq
@@ -966,7 +976,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         {
             //ArrayDots _aDots = aDots.CopyArray;
 
-            var qry = AllBoard ? from Dot d in _aDots.AsParallel() where d.Blocked == false && d.Own == 0 &
+            var qry = AllBoard ? from Dot d in _aDots where d.Blocked == false && d.Own == 0 &
                     _aDots[d.x + 1, d.y - 1].Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false & _aDots[d.x + 1, d.y - 1].Own == Owner & _aDots[d.x + 1, d.y + 1].Own == Owner
                     | d.Blocked == false & _aDots[d.x, d.y + 1].Blocked == false & _aDots[d.x, d.y - 1].Blocked == false & d.Own == 0 & _aDots[d.x, d.y - 1].Own == Owner & _aDots[d.x, d.y + 1].Own == Owner
                     | d.Blocked == false & d.Own == 0 & _aDots[d.x - 1, d.y - 1].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false & _aDots[d.x - 1, d.y - 1].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner
@@ -992,7 +1002,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                     | d.Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false & _aDots[d.x + 1, d.y - 1].Blocked == false & d.Own == 0 & _aDots[d.x + 1, d.y + 1].Own == Owner & _aDots[d.x + 1, d.y - 1].Own == Owner
                     | d.Blocked == false & _aDots[d.x - 1, d.y - 1].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false & d.Own == 0 & _aDots[d.x - 1, d.y - 1].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner
                     select d :
-                    from Dot d in _aDots.AsParallel() where d.Own == PLAYER_NONE & d.Blocked == false &
+                    from Dot d in _aDots where d.Own == PLAYER_NONE & d.Blocked == false &
                                                                 Math.Abs(d.x - LastMove.x) < 2 & Math.Abs(d.y - LastMove.y) < 2
                                                                 select d;
 
@@ -1021,7 +1031,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         {
             //ArrayDots _aDots = aDots.CopyArray;
       
-            var qry = from Dot d in _aDots.AsParallel() where d.Own == Owner & d.Blocked == false select d;
+            var qry = from Dot d in _aDots where d.Own == Owner & d.Blocked == false select d;
             Dot dot_ptn;
             Dot[] ad = qry.ToArray();
             if (ad.Length != 0)
@@ -1206,6 +1216,41 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             }
             return false;
         }
+        private bool DotIsFree(Dot dot, ArrayDots _aDots)
+        {
+            if (dot.Fixed) return true;
+            var q = from Dot fd in _aDots where fd.Blocked == false & fd.Own==dot.Own | fd.Own==PLAYER_NONE
+            orderby _aDots.Distance(dot,fd) 
+            select fd;
+            List<Dot> lstDot = q.ToList<Dot>();
+            //int ind = 0;
+            int indDot = 0;
+            //float dist = 0;
+
+            do
+            {
+                
+                IEnumerable<Dot> dd = from Dot d in lstDot 
+                                      where lstDot[indDot].Marked == false & _aDots.Distance(lstDot[indDot], d) == 1
+                                      orderby d.Fixed == false
+                                      select d;
+                if (dd.Count() == 0) return false;
+                if (dd.First().Fixed) return true;
+
+                lstDot[indDot].Marked = true;
+                indDot++;
+                if(lstDot.Count==indDot) return false;
+            } while (true);
+
+            //for (int i = 0; i < lstDot.Count; i++)
+            //{
+            //    ind = i==lstDot.Count-1 ? 0 : i+1;
+            //    dist = _aDots.Distance(lstDot[i],lstDot[ind]);
+            //    if (dist==1 & lstDot[ind].Fixed) return true;
+            //    //else if (dist>1) return false;
+            //}
+            //return false;
+        }
         //------------------------------------------------------------------------------------
         public void LinkDots(ArrayDots _aDots)//устанавливает связь между двумя точками и возвращает массив связей 
         {
@@ -1279,9 +1324,11 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                     break;
             }
             lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
+            //foreach (Dot d in arrDot.Where( d=> d.Own!=0))
             foreach (Dot d in arrDot)
             {
                 arrDots.UnmarkAllDots();
+                //if (DotIsFree(d, arrDots) == false)
                 if (DotIsFree(d, d.Own, arrDots) == false)
                 {
                     //lst_blocked_dots.Clear(); lst_in_region_dots.Clear();
@@ -1328,7 +1375,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                     bl_dot.Blocked = true;
                 }
             }
-            ScanBlockedFreeDots();
+            //ScanBlockedFreeDots();
         }
         private List<Dot> lst_blocked_dots = new List<Dot>();//список блокированных точек
         private List<Dot> lst_in_region_dots = new List<Dot>();//список блокирующих точек
@@ -1352,6 +1399,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                  lst_blocked_dots.Add(blocked_dot);
             }
             foreach (Dot _d in dts)
+            //foreach (Dot _d in aDots.SetNeiborDotsSNWE(blocked_dot))
             {
                 if (_d.Own != 0 & _d.Blocked == false & _d.Own != flg_own)//_d-точка которая окружает
                 {
@@ -1378,7 +1426,10 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 //if (dot.x > 0 & dot.y > 0 & dot.x < iMapSize - 1 & dot.y < iMapSize - 1)
                 if (dot.x > 0 & dot.y > 0 & dot.x < iBoardSize - 1 & dot.y < iBoardSize - 1)
                 {
-                    Dot[] dts = new Dot[4] {aDots[dot.x + 1, dot.y], aDots[dot.x - 1, dot.y],aDots[dot.x, dot.y + 1], aDots[dot.x, dot.y - 1]};
+                    Dot[] dts = new Dot[4] {aDots[dot.x + 1, dot.y], 
+                                            aDots[dot.x - 1, dot.y],
+                                            aDots[dot.x, dot.y + 1],
+                                            aDots[dot.x, dot.y - 1]};
                     res = 0;
                     foreach (Dot item in dts)
                     {
@@ -1490,7 +1541,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
 
             arrDots.Remove(x, y);
             count_blocked_dots = CheckBlocked(arrDots);
-            ScanBlockedFreeDots();            
+            //ScanBlockedFreeDots();            
             arrDots.UnmarkAllDots();
             LinkDots(arrDots);
             last_move = list_moves.Count == 0 ? null : list_moves.Last(); 
