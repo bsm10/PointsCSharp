@@ -1264,7 +1264,6 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                          _aDots[d.x + 1, d.y].Own != Owner &
                          _aDots[d.x - 1, d.y - 1].Own != Owner &
                          _aDots[d.x + 1, d.y + 1].Own != Owner &
-                         _aDots[d.x , d.y - 1].Own != Owner &
                           _aDots[d.x , d.y + 1].Own != Owner
 
                                 //+  d
@@ -1274,7 +1273,6 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                           _aDots[d.x, d.y + 1].Own != Owner &
                          _aDots[d.x + 1, d.y].Own != Owner &
                          _aDots[d.x - 1, d.y + 1].Own != Owner &
-                          _aDots[d.x - 1, d.y - 1].Own != Owner &
                           _aDots[d.x + 1, d.y - 1].Own != Owner &
                           _aDots[d.x , d.y - 1].Own != Owner
 
@@ -1286,7 +1284,6 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                          _aDots[d.x - 1, d.y + 1].Own != Owner &
                          _aDots[d.x - 1, d.y].Own != Owner &
                          _aDots[d.x + 1, d.y - 1].Own != Owner &
-                         _aDots[d.x + 1, d.y + 1].Own != Owner &
                           _aDots[d.x , d.y + 1].Own != Owner
 
                                //   d  +       
@@ -1297,7 +1294,6 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                          _aDots[d.x + 1, d.y + 1].Own != Owner &
                          _aDots[d.x - 1, d.y ].Own != Owner &
                          _aDots[d.x - 1, d.y - 1].Own != Owner &
-                         _aDots[d.x + 1, d.y - 1].Own != Owner &
                           _aDots[d.x , d.y - 1].Own != Owner
 
                                //+   
@@ -1309,7 +1305,6 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                          _aDots[d.x - 1, d.y + 1].Own != Owner &
                          _aDots[d.x , d.y - 1].Own != Owner &
                          _aDots[d.x + 1, d.y - 1].Own != Owner &
-                         _aDots[d.x + 1, d.y + 1].Own != Owner &
                           _aDots[d.x + 1, d.y ].Own != Owner
 
                                //   +
@@ -1319,7 +1314,6 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                         _aDots[d.x, d.y - 1].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner &
                         _aDots[d.x - 1, d.y].Own != Owner &
                         _aDots[d.x - 1, d.y - 1].Own != Owner &
-                        //_aDots[d.x + 1, d.y - 1].Own != Owner &
                         _aDots[d.x + 1, d.y].Own != Owner &
                         _aDots[d.x + 1, d.y + 1].Own != Owner &
                         _aDots[d.x , d.y + 1].Own != Owner
@@ -1333,7 +1327,6 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                         _aDots[d.x , d.y + 1].Own != Owner &
                         _aDots[d.x - 1, d.y + 1].Own != Owner &
                         _aDots[d.x - 1, d.y].Own != Owner &
-                        _aDots[d.x - 1, d.y - 1].Own != Owner &
                         _aDots[d.x + 1, d.y - 1].Own != Owner
 
                                 //      +
@@ -1345,7 +1338,6 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                         _aDots[d.x , d.y - 1].Own != Owner &
                         _aDots[d.x + 1, d.y].Own != Owner &
                         _aDots[d.x + 1, d.y + 1].Own != Owner &
-                        _aDots[d.x - 1, d.y + 1].Own != Owner &
                         _aDots[d.x - 1, d.y].Own != Owner
             #endregion
             );
