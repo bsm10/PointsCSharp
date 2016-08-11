@@ -250,10 +250,227 @@ namespace DotsGame
             sW2.Reset();
             //проверяем паттерны
             sW2.Start();
+            f.lblBestMove.Text = "CheckPattern_vilochka проверяем ходы на два вперед...";
+            Application.DoEvents();
+#endif
+            #endregion
+            #region CheckPattern_vilochka
+            bm = CheckPattern_vilochka(pl2, aDots);
+            if (bm != null & aDots.Contains(bm))
+            {
+                #region DEBUG
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern_vilochka " + iNumberPattern);
+                }
+#endif
+                #endregion
+                return bm;
+            }
+
+            bm = bm = CheckPattern_vilochka(pl1, aDots);
+            if (bm != null & aDots.Contains(bm))
+            {
+                #region DEBUG
+#if DEBUG
+
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern_vilochka " + iNumberPattern);
+                }
+#endif
+                #endregion
+                return bm;
+            }
+            #region DEBUG
+
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern_vilochka - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            sW2.Reset();
+            sW2.Start();
+            f.lblBestMove.Text = "CheckPattern2Move...";
+
+            Application.DoEvents();
+#endif
+            #endregion
+            #endregion
+            #region CheckPattern2Move проверяем ходы на два вперед
+
+            bm = CheckPattern2Move(pl2);
+            if (bm != null & aDots.Contains(bm))
+            {
+                #region DEBUG
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern2Move!");
+                }
+#endif
+                #endregion
+                return bm;
+            }
+            #region DEBUG
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern2Move(pl2) - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            sW2.Reset();
+            sW2.Start();
+            f.lblBestMove.Text = "CheckPatternVilkaNextMove...";
+            Application.DoEvents();
+#endif
+
+            #endregion
+            #endregion
+            #region CheckPatternVilkaNextMove
+            bm = CheckPatternVilkaNextMove(pl2, aDots);
+            if (bm != null & aDots.Contains(bm))
+            {
+                #region DEBUG
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
+                }
+#endif
+                #endregion
+                return bm;
+            }
+            #region DEBUG
+
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPatternVilkaNextMove - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            sW2.Reset();
+            sW2.Start();
+            f.lblBestMove.Text = "CheckPattern(pl2)...";
+            Application.DoEvents();
+#endif
+            #endregion
+            #endregion
+            #region CheckPattern
+
+            bm = CheckPattern(pl2, aDots); 
+            if (bm != null & aDots.Contains(bm))
+            {
+                #region DEBUG
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPattern " + bm.iNumberPattern);
+                }
+#endif
+                #endregion
+
+                if (CheckDot(bm, aDots, pl2) == false) return bm;
+            }
+            #region Debug
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern(pl2) - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            sW2.Reset();
+            sW2.Start();
+            f.lblBestMove.Text = "CheckPattern(pl1)...";
+            Application.DoEvents();
+#endif
+            #endregion
+            bm = CheckPattern(pl1, aDots); 
+            if (bm != null & aDots.Contains(bm))
+            {
+                #region DEBUG
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " - CheckPattern " + bm.iNumberPattern);
+                }
+#endif
+                #endregion
+
+                if (CheckDot(bm, aDots, pl2) == false) return bm;
+            }
+            #region DEBUG
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern(pl1) - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            sW2.Reset();
+            sW2.Start();
+            f.lblBestMove.Text = "CheckPatternMove...";
+            Application.DoEvents();
+#endif
+            #endregion
+            #endregion
+            #region CheckPatternMove
+            bm = CheckPatternMove(pl2);
+            if (bm != null & aDots.Contains(bm))
+            {
+                #region DEBUG
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPatternMove " + iNumberPattern);
+                }
+#endif
+                #endregion
+                if (CheckDot(bm, aDots, pl2) == false) return bm;
+            }
+            bm = CheckPatternMove(pl1);
+            if (bm != null & aDots.Contains(bm))
+            {
+                #region DEBUG
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " - CheckPatternMove " + iNumberPattern);
+                }
+#endif
+                #endregion
+                if (CheckDot(bm, aDots, pl1) == false) return bm;
+            }
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPatternMove(pl2) - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            Application.DoEvents();
+            sW2.Reset();
+#endif
+
+            #endregion
+
+            return null;
+        }
+
+        private Dot BestMove_MultiTread(int pl1, int pl2)
+        {
+            String strDebug = String.Empty;
+            Dot bm;
+#if DEBUG
+            sW2.Start();
+            f.lblBestMove.Text = "CheckMove(pl2,pl1)...";
+            Application.DoEvents();
+#endif
+            bm = CheckMove(pl2, aDots);
+            if (bm != null)
+            {
+                bm.iNumberPattern = 777; //777-ход в результате которого получается окружение - компьютер побеждает
+                return bm;
+            }
+            bm = CheckMove(pl1, aDots);
+            if (bm != null)
+            {
+                bm.iNumberPattern = 666; //666-ход в результате которого получается окружение - компьютер проигрывает
+                return bm;
+            }
+            #region DEBUG
+#if DEBUG
+            sW2.Stop();
+            strDebug = "CheckMove pl1,pl2 - " + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            sW2.Reset();
+            //проверяем паттерны
+            sW2.Start();
             f.lblBestMove.Text = "CheckPattern2Move проверяем ходы на два вперед...";
             Application.DoEvents();
 #endif
             #endregion
+
 
             Task<Dot>[] taskArray = new Task<Dot>[4];
             ArrayDots[] ad_Array = new ArrayDots[4] { aDots.CopyArrayDots,
@@ -636,11 +853,11 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                     #endregion
                     #region проверяем ход чтобы точку не окружили на следующем ходу
                     sfoo = "CheckMove player" + player1;
-                    best_move = CheckMove(player1, aDots, false);
+                    best_move = CheckMove(player1, aDots);
                     if (best_move == null)
                     {
                         sfoo = "next move win player" + player2;
-                        best_move = CheckMove(player2, aDots, false);
+                        best_move = CheckMove(player2, aDots);
                         if (best_move != null)
                         {
                             best_move = d;
@@ -972,44 +1189,172 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         }
         //==============================================================================================
         //проверяет ход в результате которого окружение.Возвращает ход который завершает окружение
-        private Dot CheckMove(int Owner, ArrayDots _aDots, bool AllBoard = true)
+        //private Dot CheckMove(int Owner, ArrayDots _aDots, bool AllBoard = false)
+        private Dot CheckMove(int Owner, ArrayDots _aDots)
         {
-            //ArrayDots _aDots = aDots.CopyArray;
+            
+            var qry = _aDots.FreeDots.Where(
+            #region Query patterns Check
+                            d =>
+                         //       + 
+                         //    d  
+                         //       +
+                          _aDots[d.x + 1, d.y - 1].Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false &
+                          _aDots[d.x + 1, d.y - 1].Own == Owner & _aDots[d.x + 1, d.y + 1].Own == Owner &
+                          _aDots[d.x + 1, d.y].Own != Owner
+                              //+        
+                              //   d     
+                              //+       
+                          | _aDots[d.x - 1, d.y - 1].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false &
+                          _aDots[d.x - 1, d.y - 1].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner &
+                          _aDots[d.x - 1, d.y].Own != Owner
+                              //      
+                              //   d          
+                              //+     +
+                        | _aDots[d.x + 1, d.y + 1].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false &
+                        _aDots[d.x + 1, d.y + 1].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner &
+                        _aDots[d.x, d.y + 1].Own != Owner
+                              //+     + 
+                              //   d          
+                              //     
+                        | _aDots[d.x - 1, d.y - 1].Blocked == false & _aDots[d.x + 1, d.y - 1].Blocked == false &
+                         _aDots[d.x - 1, d.y - 1].Own == Owner & _aDots[d.x + 1, d.y - 1].Own == Owner &
+                         _aDots[d.x, d.y - 1].Own != Owner
 
-            var qry = AllBoard ? from Dot d in _aDots where d.Blocked == false && d.Own == 0 &
-                    _aDots[d.x + 1, d.y - 1].Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false & _aDots[d.x + 1, d.y - 1].Own == Owner & _aDots[d.x + 1, d.y + 1].Own == Owner
-                    | d.Blocked == false & _aDots[d.x, d.y + 1].Blocked == false & _aDots[d.x, d.y - 1].Blocked == false & d.Own == 0 & _aDots[d.x, d.y - 1].Own == Owner & _aDots[d.x, d.y + 1].Own == Owner
-                    | d.Blocked == false & d.Own == 0 & _aDots[d.x - 1, d.y - 1].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false & _aDots[d.x - 1, d.y - 1].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner
-                    | d.Blocked == false & d.Own == 0 & _aDots[d.x - 1, d.y - 1].Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false & _aDots[d.x - 1, d.y - 1].Own == Owner & _aDots[d.x + 1, d.y + 1].Own == Owner
-                    | d.Blocked == false & d.Own == 0 & _aDots[d.x - 1, d.y + 1].Blocked == false & _aDots[d.x + 1, d.y - 1].Blocked == false & _aDots[d.x - 1, d.y + 1].Own == Owner & _aDots[d.x + 1, d.y - 1].Own == Owner
-                    | d.Blocked == false & d.Own == 0 & _aDots[d.x - 1, d.y].Blocked == false & _aDots[d.x + 1, d.y].Blocked == false & _aDots[d.x - 1, d.y].Own == Owner & _aDots[d.x + 1, d.y].Own == Owner
+                         //    +    
+                         //    d   
+                         //    +   
+                          | _aDots[d.x, d.y + 1].Blocked == false & _aDots[d.x, d.y - 1].Blocked == false &
+                              _aDots[d.x, d.y - 1].Own == Owner & _aDots[d.x, d.y + 1].Own == Owner &
+                              _aDots[d.x + 1, d.y].Own != Owner &
+                              _aDots[d.x - 1, d.y].Own != Owner
+                              //        
+                              //+   d   +  
+                              //       
+                          | _aDots[d.x - 1, d.y].Blocked == false & _aDots[d.x + 1, d.y].Blocked == false &
+                            _aDots[d.x - 1, d.y].Own == Owner & _aDots[d.x + 1, d.y].Own == Owner &
+                            _aDots[d.x, d.y + 1].Own != Owner &
+                            _aDots[d.x, d.y - 1].Own != Owner
 
-                    | d.Blocked == false & _aDots[d.x - 1, d.y].Blocked == false & _aDots[d.x + 1, d.y - 1].Blocked == false & d.Own == 0 & _aDots[d.x - 1, d.y].Own == Owner & _aDots[d.x + 1, d.y - 1].Own == Owner
-                    | d.Blocked == false & _aDots[d.x - 1, d.y].Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false & d.Own == 0 & _aDots[d.x - 1, d.y].Own == Owner & _aDots[d.x + 1, d.y + 1].Own == Owner
+                              //+        
+                              //   d     
+                              //      +   
+                          | _aDots[d.x - 1, d.y - 1].Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false &
+                          _aDots[d.x - 1, d.y - 1].Own == Owner & _aDots[d.x + 1, d.y + 1].Own == Owner &
+                          _aDots[d.x, d.y - 1].Own != Owner &
+                          _aDots[d.x, d.y + 1].Own != Owner &
+                          _aDots[d.x + 1, d.y].Own != Owner &
+                          _aDots[d.x - 1, d.y].Own != Owner
+                              //      +  
+                              //   d     
+                              //+        
+                          | _aDots[d.x - 1, d.y + 1].Blocked == false & _aDots[d.x + 1, d.y - 1].Blocked == false &
+                          _aDots[d.x - 1, d.y + 1].Own == Owner & _aDots[d.x + 1, d.y - 1].Own == Owner &
+                          _aDots[d.x, d.y - 1].Own != Owner &
+                          _aDots[d.x, d.y + 1].Own != Owner &
+                          _aDots[d.x + 1, d.y].Own != Owner &
+                          _aDots[d.x - 1, d.y].Own != Owner
 
-                    | d.Blocked == false & _aDots[d.x + 1, d.y].Blocked == false & _aDots[d.x - 1, d.y - 1].Blocked == false & d.Own == 0 & _aDots[d.x + 1, d.y].Own == Owner & _aDots[d.x - 1, d.y - 1].Own == Owner
-                    | d.Blocked == false & _aDots[d.x + 1, d.y].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false & d.Own == 0 & _aDots[d.x + 1, d.y].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner
+                               //      +
+                               //+  d
+                        | _aDots[d.x - 1, d.y].Blocked == false & _aDots[d.x + 1, d.y - 1].Blocked == false &
+                          _aDots[d.x - 1, d.y].Own == Owner & _aDots[d.x + 1, d.y - 1].Own == Owner &
+                         _aDots[d.x, d.y - 1].Own != Owner &
+                         _aDots[d.x + 1, d.y].Own != Owner &
+                         _aDots[d.x - 1, d.y - 1].Own != Owner &
+                         _aDots[d.x + 1, d.y + 1].Own != Owner &
+                         _aDots[d.x , d.y - 1].Own != Owner &
+                          _aDots[d.x , d.y + 1].Own != Owner
 
-                    | d.Blocked == false  & _aDots[d.x, d.y + 1].Blocked == false & _aDots[d.x - 1, d.y - 1].Blocked == false & d.Own == 0 & _aDots[d.x, d.y + 1].Own == Owner & _aDots[d.x - 1, d.y - 1].Own == Owner
-                    | d.Blocked == false & _aDots[d.x, d.y - 1].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false & d.Own == 0 & _aDots[d.x, d.y - 1].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner
+                                //+  d
+                                //      +
+                        | _aDots[d.x - 1, d.y].Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false &
+                          _aDots[d.x - 1, d.y].Own == Owner & _aDots[d.x + 1, d.y + 1].Own == Owner &
+                          _aDots[d.x, d.y + 1].Own != Owner &
+                         _aDots[d.x + 1, d.y].Own != Owner &
+                         _aDots[d.x - 1, d.y + 1].Own != Owner &
+                          _aDots[d.x - 1, d.y - 1].Own != Owner &
+                          _aDots[d.x + 1, d.y - 1].Own != Owner &
+                          _aDots[d.x , d.y - 1].Own != Owner
 
-                    | d.Blocked == false & _aDots[d.x, d.y - 1].Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false & d.Own == 0 & _aDots[d.x, d.y - 1].Own == Owner & _aDots[d.x + 1, d.y + 1].Own == Owner
-                    | d.Blocked == false & _aDots[d.x, d.y + 1].Blocked == false & _aDots[d.x + 1, d.y - 1].Blocked == false & d.Own == 0 & _aDots[d.x, d.y + 1].Own == Owner & _aDots[d.x + 1, d.y - 1].Own == Owner
+                              //+
+                              //   d  +       
+                        | _aDots[d.x + 1, d.y].Blocked == false & _aDots[d.x - 1, d.y - 1].Blocked == false &
+                         _aDots[d.x + 1, d.y].Own == Owner & _aDots[d.x - 1, d.y - 1].Own == Owner &
+                         _aDots[d.x, d.y - 1].Own != Owner &
+                         _aDots[d.x - 1, d.y + 1].Own != Owner &
+                         _aDots[d.x - 1, d.y].Own != Owner &
+                         _aDots[d.x + 1, d.y - 1].Own != Owner &
+                         _aDots[d.x + 1, d.y + 1].Own != Owner &
+                          _aDots[d.x , d.y + 1].Own != Owner
 
-                    | d.Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false & d.Own == 0 & _aDots[d.x + 1, d.y + 1].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner
-                    | d.Blocked == false & _aDots[d.x - 1, d.y - 1].Blocked == false & _aDots[d.x + 1, d.y - 1].Blocked == false & d.Own == 0 & _aDots[d.x - 1, d.y - 1].Own == Owner & _aDots[d.x + 1, d.y - 1].Own == Owner
+                               //   d  +       
+                               //+
+                        | _aDots[d.x + 1, d.y].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false &
+                         _aDots[d.x + 1, d.y].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner &
+                         _aDots[d.x, d.y + 1].Own != Owner &
+                         _aDots[d.x + 1, d.y + 1].Own != Owner &
+                         _aDots[d.x - 1, d.y ].Own != Owner &
+                         _aDots[d.x - 1, d.y - 1].Own != Owner &
+                         _aDots[d.x + 1, d.y - 1].Own != Owner &
+                          _aDots[d.x , d.y - 1].Own != Owner
 
-                    | d.Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false & _aDots[d.x + 1, d.y - 1].Blocked == false & d.Own == 0 & _aDots[d.x + 1, d.y + 1].Own == Owner & _aDots[d.x + 1, d.y - 1].Own == Owner
-                    | d.Blocked == false & _aDots[d.x - 1, d.y - 1].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false & d.Own == 0 & _aDots[d.x - 1, d.y - 1].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner
-                    select d :
-                    from Dot d in _aDots where d.Own == PLAYER_NONE & d.Blocked == false &
-                                                                Math.Abs(d.x - LastMove.x) < 2 & Math.Abs(d.y - LastMove.y) < 2
-                                                                select d;
+                               //+   
+                               //   d          
+                               //   +
+                        | _aDots[d.x, d.y + 1].Blocked == false & _aDots[d.x - 1, d.y - 1].Blocked == false &
+                         _aDots[d.x, d.y + 1].Own == Owner & _aDots[d.x - 1, d.y - 1].Own == Owner &
+                         _aDots[d.x - 1, d.y].Own != Owner &
+                         _aDots[d.x - 1, d.y + 1].Own != Owner &
+                         _aDots[d.x , d.y - 1].Own != Owner &
+                         _aDots[d.x + 1, d.y - 1].Own != Owner &
+                         _aDots[d.x + 1, d.y + 1].Own != Owner &
+                          _aDots[d.x + 1, d.y ].Own != Owner
 
-            Dot[] ad = qry.ToArray();
-            if (ad.Length != 0)
-            {
-                foreach (Dot d in ad)
+                               //   +
+                               //   d          
+                               //+   
+                        | _aDots[d.x, d.y - 1].Blocked == false & _aDots[d.x - 1, d.y + 1].Blocked == false &
+                        _aDots[d.x, d.y - 1].Own == Owner & _aDots[d.x - 1, d.y + 1].Own == Owner &
+                        _aDots[d.x - 1, d.y].Own != Owner &
+                        _aDots[d.x - 1, d.y - 1].Own != Owner &
+                        _aDots[d.x + 1, d.y - 1].Own != Owner &
+                        _aDots[d.x + 1, d.y].Own != Owner &
+                        _aDots[d.x + 1, d.y + 1].Own != Owner &
+                        _aDots[d.x , d.y + 1].Own != Owner
+
+                               //   +
+                               //   d          
+                               //      +
+                        | _aDots[d.x, d.y - 1].Blocked == false & _aDots[d.x + 1, d.y + 1].Blocked == false &
+                        _aDots[d.x, d.y - 1].Own == Owner & _aDots[d.x + 1, d.y + 1].Own == Owner &
+                        _aDots[d.x + 1, d.y].Own != Owner &
+                        _aDots[d.x , d.y + 1].Own != Owner &
+                        _aDots[d.x - 1, d.y + 1].Own != Owner &
+                        _aDots[d.x - 1, d.y].Own != Owner &
+                        _aDots[d.x - 1, d.y - 1].Own != Owner &
+                        _aDots[d.x + 1, d.y - 1].Own != Owner
+
+                                //      +
+                                //   d          
+                                //   +   
+                        | _aDots[d.x, d.y + 1].Blocked == false & _aDots[d.x + 1, d.y - 1].Blocked == false &
+                        _aDots[d.x, d.y + 1].Own == Owner & _aDots[d.x + 1, d.y - 1].Own == Owner &
+                        _aDots[d.x - 1, d.y - 1].Own != Owner &
+                        _aDots[d.x , d.y - 1].Own != Owner &
+                        _aDots[d.x + 1, d.y].Own != Owner &
+                        _aDots[d.x + 1, d.y + 1].Own != Owner &
+                        _aDots[d.x - 1, d.y + 1].Own != Owner &
+                        _aDots[d.x - 1, d.y].Own != Owner
+            #endregion
+            );
+            #if DEBUG
+                Dot[] ad = qry.ToArray();
+            #endif
+            //if (ad.Length != 0)
+            //{
+                //foreach (Dot d in ad)
+            foreach (Dot d in qry)
                 {
                     //делаем ход
                     int result_last_move = (int)MakeMove(d,_aDots, Owner);
@@ -1024,30 +1369,33 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                     }
                     UndoMove(d, _aDots);
                 }
-            }
+            //}
             return null;
         }
         private Dot CheckPatternVilkaNextMove(int Owner, ArrayDots _aDots)
         {
-            //ArrayDots _aDots = aDots.CopyArray;
       
-            var qry = from Dot d in _aDots where d.Own == Owner & d.Blocked == false select d;
+            //var qry = from Dot d in _aDots where d.Own == Owner & d.Blocked == false select d;
+
+            //var qry = from Dot d in _aDots.NotEmptyNonBlockedDots.Where(dt => dt.Own == Owner) select d;
+
+            var qry = _aDots.NotEmptyNonBlockedDots.Where(dt => dt.Own == Owner);
             Dot dot_ptn;
-            Dot[] ad = qry.ToArray();
-            if (ad.Length != 0)
+            if (qry.Count() != 0)
             {
-                foreach (Dot d in ad)
+                foreach (Dot d in qry)
                 {
-                    Dot[] dots = new Dot[8] { _aDots[d.x + 1, d.y], _aDots[d.x - 1, d.y], _aDots[d.x, d.y + 1], _aDots[d.x, d.y - 1],
-                                              _aDots[d.x + 1, d.y+1], _aDots[d.x - 1, d.y-1], _aDots[d.x-1, d.y + 1], _aDots[d.x+1, d.y - 1]};
-                    foreach (Dot dot_move in dots)
+                    //Dot[] dotsSNWE = new Dot[8] { _aDots[d.x + 1, d.y], _aDots[d.x - 1, d.y], _aDots[d.x, d.y + 1], _aDots[d.x, d.y - 1],
+                    //                          _aDots[d.x + 1, d.y+1], _aDots[d.x - 1, d.y - 1], _aDots[d.x-1, d.y + 1], _aDots[d.x+1, d.y - 1]};
+                    //List<Dot> dotsSNWE = _aDots.NeiborDotsSNWE(d);
+                    foreach (Dot dot_move in _aDots.NeiborDotsSNWE(d))
                     {
                         if (dot_move.Blocked == false & dot_move.Own == 0)
                         {
                             //делаем ход
                             int result_last_move = MakeMove(dot_move, _aDots, Owner);
                             int pl = Owner == PLAYER_COMPUTER ? PLAYER_HUMAN : PLAYER_COMPUTER;
-                            Dot dt = CheckMove(pl, _aDots, false); // проверка чтобы не попасть в капкан
+                            Dot dt = CheckMove(pl, _aDots); // проверка чтобы не попасть в капкан
                             if (dt != null)
                             {
                                 UndoMove(dot_move,_aDots);
@@ -1307,7 +1655,13 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             }
             return res;
         }
-        private int CheckBlocked(ArrayDots arrDots, int last_moveOwner=0)//проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
+        /// <summary>
+        /// проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
+        /// </summary>
+        /// <param name="arrDots"></param>
+        /// <param name="last_moveOwner"></param>
+        /// <returns>количество окруженных точек</returns>
+        private int CheckBlocked(ArrayDots arrDots, int last_moveOwner=0)
         {
             int counter = 0;
             var q = from Dot dots in arrDots where dots.Own != 0 | dots.Own == 0 & dots.Blocked select dots;
@@ -1777,7 +2131,12 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
 
                 if (lstPat[i].PatternsMoveDot)
                 {
-                    sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                    //sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
+                    sMove = " if (pat" + n + ".Count() > 0) \r\n " + "{" +
+                    "result_dot = new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + "); \r\n" +
+                    "result_dot.iNumberPattern = iNumberPattern; \r\n" +
+                    "return result_dot; \r\n " + "}";
+
                 }
             }
             s = "iNumberPattern = " + n + "; \r\n";
@@ -1805,10 +2164,10 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 if (lstPat[i].PatternsMoveDot)
                 {
                     //sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
-                    sMove = " if (pat" + n + ".Count() > 0) \r\n {" +
+                    sMove = " if (pat" + n + ".Count() > 0) \r\n " + "{" +
                     "result_dot = new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + "); \r\n" +
                     "result_dot.iNumberPattern = iNumberPattern; \r\n" +
-                    "return result_dot;";
+                    "return result_dot; \r\n " + "}";
                 }
 
             }
@@ -1839,10 +2198,10 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 if (l[i].PatternsMoveDot)
                 {
                     //sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
-                    sMove = " if (pat" + n + ".Count() > 0) \r\n {" +
+                    sMove = " if (pat" + n + ".Count() > 0) \r\n " + "{" +
                     "result_dot = new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + "); \r\n" +
                     "result_dot.iNumberPattern = iNumberPattern; \r\n" +
-                    "return result_dot;";
+                    "return result_dot; \r\n" + "}";
 
                 }
             }
@@ -1871,10 +2230,10 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 if (l[i].PatternsMoveDot)
                 {
                     //sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
-                    sMove = " if (pat" + n + ".Count() > 0) \r\n {" +
+                    sMove = " if (pat" + n + ".Count() > 0) \r\n " + "{" +
                     "result_dot = new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + "); \r\n" +
                     "result_dot.iNumberPattern = iNumberPattern; \r\n" +
-                    "return result_dot;";
+                    "return result_dot; \r\n" + "}";
 
                 }
             }
