@@ -300,7 +300,7 @@ namespace DotsGame
                 //============================================================================================================== 
             iNumberPattern = 9;
             var pat9 = from Dot d in _aDots
-                         where d.Own == Owner
+                             where d.Own == Owner && d.x >= 2 
                              && _aDots[d.x - 1, d.y - 1].Own == Owner && _aDots[d.x - 1, d.y - 1].Blocked == false
                              && _aDots[d.x - 1, d.y + 1].Own == 0 && _aDots[d.x - 1, d.y + 1].Blocked == false
                              && _aDots[d.x - 1, d.y].Own == 0 && _aDots[d.x - 1, d.y].Blocked == false
@@ -312,7 +312,7 @@ namespace DotsGame
             // d*  
             //     *
             var pat9_2 = from Dot d in _aDots
-                           where d.Own == Owner
+                         where d.Own == Owner && d.x <= iBoardSize - 2 
                                && _aDots[d.x + 1, d.y + 1].Own == Owner && _aDots[d.x + 1, d.y + 1].Blocked == false
                                && _aDots[d.x + 1, d.y - 1].Own == 0 && _aDots[d.x + 1, d.y - 1].Blocked == false
                                && _aDots[d.x + 1, d.y].Own == 0 && _aDots[d.x + 1, d.y].Blocked == false
@@ -324,7 +324,7 @@ namespace DotsGame
             //     d*
             //  m       *
             var pat9_2_3 = from Dot d in _aDots
-                             where d.Own == Owner
+                           where d.Own == Owner && d.y <= iBoardSize - 2
                                  && _aDots[d.x + 1, d.y + 1].Own == Owner && _aDots[d.x + 1, d.y + 1].Blocked == false
                                  && _aDots[d.x - 1, d.y + 1].Own == 0 && _aDots[d.x - 1, d.y + 1].Blocked == false
                                  && _aDots[d.x, d.y + 1].Own == 0 && _aDots[d.x, d.y + 1].Blocked == false
@@ -336,7 +336,7 @@ namespace DotsGame
             //    d*   
             //
             var pat9_2_3_4 = from Dot d in _aDots
-                               where d.Own == Owner
+                             where d.Own == Owner && d.y >= 2 
                                    && _aDots[d.x - 1, d.y - 1].Own == Owner && _aDots[d.x - 1, d.y - 1].Blocked == false
                                    && _aDots[d.x + 1, d.y - 1].Own == 0 && _aDots[d.x + 1, d.y - 1].Blocked == false
                                    && _aDots[d.x, d.y - 1].Own == 0 && _aDots[d.x, d.y - 1].Blocked == false
