@@ -127,6 +127,7 @@ namespace DotsGame
             }
         }
         public bool Fixed { get; set; }
+        public int CountBlockedDots { get; set; }
         public bool Selected { get; set; }
         public int Own
         {

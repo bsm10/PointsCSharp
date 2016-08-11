@@ -350,7 +350,7 @@ namespace DotsGame
             #endregion
             #region CheckPattern
 
-            bm = CheckPattern(pl2, aDots); 
+            bm = CheckPattern(pl2, aDots);
             if (bm != null & aDots.Contains(bm))
             {
                 #region DEBUG
@@ -374,7 +374,7 @@ namespace DotsGame
             Application.DoEvents();
 #endif
             #endregion
-            bm = CheckPattern(pl1, aDots); 
+            bm = CheckPattern(pl1, aDots);
             if (bm != null & aDots.Contains(bm))
             {
                 #region DEBUG
@@ -399,6 +399,7 @@ namespace DotsGame
 #endif
             #endregion
             #endregion
+
             #region CheckPatternMove
             bm = CheckPatternMove(pl2);
             if (bm != null & aDots.Contains(bm))
@@ -1192,7 +1193,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         //private Dot CheckMove(int Owner, ArrayDots _aDots, bool AllBoard = false)
         private Dot CheckMove(int Owner, ArrayDots _aDots)
         {
-            
+            List<Dot> happy_dots = new List<Dot>();
             var qry = _aDots.FreeDots.Where(
             #region Query patterns Check
                             d =>
@@ -1351,9 +1352,6 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             #if DEBUG
                 Dot[] ad = qry.ToArray();
             #endif
-            //if (ad.Length != 0)
-            //{
-                //foreach (Dot d in ad)
             foreach (Dot d in qry)
                 {
                     //делаем ход
@@ -1365,12 +1363,17 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                     if (result_last_move != 0 & _aDots[d.x, d.y].Blocked == false)
                     {
                         UndoMove(d, _aDots);
-                        return d;
+                        d.CountBlockedDots = result_last_move;
+                        happy_dots.Add(d);
+                        //return d;
                     }
                     UndoMove(d, _aDots);
                 }
-            //}
-            return null;
+            var x = happy_dots.Where(dd=>dd.CountBlockedDots == happy_dots.Max(dt=>dt.CountBlockedDots));
+
+            return x.Count() > 0 ? x.First() : null;
+
+            //return null;
         }
         private Dot CheckPatternVilkaNextMove(int Owner, ArrayDots _aDots)
         {
@@ -1665,6 +1668,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         {
             int counter = 0;
             var q = from Dot dots in arrDots where dots.Own != 0 | dots.Own == 0 & dots.Blocked select dots;
+
             Dot[] arrDot = q.ToArray();
             switch (last_moveOwner)
             {
@@ -1729,7 +1733,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                     bl_dot.Blocked = true;
                 }
             }
-            //ScanBlockedFreeDots();
+            ScanBlockedFreeDots();
         }
         private List<Dot> lst_blocked_dots = new List<Dot>();//список блокированных точек
         private List<Dot> lst_in_region_dots = new List<Dot>();//список блокирующих точек
