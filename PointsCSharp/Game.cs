@@ -2294,54 +2294,69 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         //==========================================================================
         private Dot CheckPattern(int Owner, ArrayDots _aDots)
         {
-            int enemy_own = Owner == 1 ? 2 : 1;
-
-            Dot result_dot;
-
-            IEnumerable<Dot> get_non_blocked = from Dot d in _aDots where d.Blocked == false select d; //получить коллекцию незаблокированных точек
-
-            foreach(Pattern p in Patterns)
+            Pattern p = CheckPattern(Owner);
+            if (p!=null)
             {
-                var pat3 = from Dot d in get_non_blocked
-                           where d.Own == Owner && d.x > 2 && d.x < iBoardSize - 2 &&
-                                                    d.y > 2 && d.y < iBoardSize - 2 &&
-
-                           _aDots[d.x + 1, d.y - 1].Own == enemy_own && _aDots[d.x + 1, d.y - 1].Blocked == false &&
-                           _aDots[d.x - 1, d.y - 1].Own == enemy_own && _aDots[d.x - 1, d.y - 1].Blocked == false &&
-                           _aDots[d.x - 1, d.y + 1].Own == enemy_own && _aDots[d.x - 1, d.y + 1].Blocked == false &&
-                           _aDots[d.x + 1, d.y + 1].Own == 0 && _aDots[d.x + 1, d.y + 1].Blocked == false &&
-                           _aDots[d.x + 1, d.y].Own == 0 && _aDots[d.x + 1, d.y].Blocked == false &&
-                           _aDots[d.x, d.y + 1].Own == 0 && _aDots[d.x, d.y + 1].Blocked == false
-                           select d;
-                if (pat3.Count() > 0)
-                {
-                    result_dot = new Dot(pat3.First().x + 1, pat3.First().y + 1);
-                    result_dot.iNumberPattern = iNumberPattern;
-                    return result_dot;
-                }
-
-
+                Dot move_dot = p.ResultDot;
+                move_dot.iNumberPattern = p.PatternNumber;
+                return move_dot;
             }
             return null;
 
         }
 
-        private void CheckPattern(Pattern pt, int Owner)
+        /// <summary>
+        /// Проверяет паттерн, если есть совпадение, возвращает его номер
+        /// </summary>
+        /// <param name="pt"></param>
+        /// <param name="Owner"></param>
+        /// <returns></returns>
+        private Pattern CheckPattern(int Owner)
         {
-            //Dot d;
             var pat = from Dot d in aDots.NotEmptyNonBlockedDots
             where d.Own == Owner
             select d;
-            
-            //foreach(Dot d in pat)
-            //{
-            //    foreach(Dot dt in pt.DotsPattern)
-            //    {
-                    
-            //    }
-                    
-            //}
 
+            foreach (Dot d in pat)
+            {
+                foreach(Pattern p in Patterns)
+                {
+                    bool flag = true;
+                    foreach (DotInPattern dt in p.DotsPattern)
+                    {
+                        
+                        int enemy_own = Owner == 1 ? 2 : 1;
+                        int DotOwner = 0;
+                        switch (dt.Owner)
+                        {
+                            case "enemy":
+                                DotOwner = enemy_own;
+                                break;
+                            case "0":
+                                DotOwner = 0;
+                                break;
+                            case "Owner":
+                                DotOwner = Owner;
+                                break;
+                            default:
+                                DotOwner = Owner;
+                                break;
+                        }
+                         
+                        if (aDots[d.x + dt.dX, d.y + dt.dY].Own != DotOwner)
+                        {
+                            flag = false;    
+                            break;
+                        }
+                    }
+                    if (flag)
+                    {
+                        p.Dot = d;
+                        return p;
+                    }
+                }
+            }
+            return null;
         }
 
         public class Pattern
@@ -2361,7 +2376,21 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 }
 
             }
-            public DotInPattern ResultDot = new DotInPattern();
+            public DotInPattern dXdY_ResultDot = new DotInPattern();
+            public Dot Dot { get; set; }
+            public Dot ResultDot 
+            {
+                get
+                {
+                    return new Dot(Dot.x + dXdY_ResultDot.dX, Dot.y + dXdY_ResultDot.dY, Dot.Own);
+                }
+            }
+             
+            public override string ToString()
+            {
+                return "Pattern " + PatternNumber.ToString();
+            }
+
         }
 
         public class DotInPattern
@@ -2369,10 +2398,11 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             public int dX { get; set; }
             public int dY { get; set; }
             public string Owner { get; set; }
-            //public DotInPattern()
-            //{
-                
-            //}
+            public override string ToString()
+            {
+                return "dX = " + dX.ToString() + "; dY = " + dY.ToString();
+            }
+
         }
 
 
@@ -2412,8 +2442,8 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                             line = file.ReadLine();
                             line = line.Replace(" ", string.Empty);
                             string[] sss = line.Split(new Char[] { ',' });
-                            ptrn.ResultDot.dX = Convert.ToInt32(sss[0]);
-                            ptrn.ResultDot.dY = Convert.ToInt32(sss[1]);
+                            ptrn.dXdY_ResultDot.dX = Convert.ToInt32(sss[0]);
+                            ptrn.dXdY_ResultDot.dY = Convert.ToInt32(sss[1]);
                             line = file.ReadLine();
                         }
                         Patterns.Add(ptrn);
