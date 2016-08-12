@@ -32,10 +32,13 @@ namespace DotsGame
         public float startX = -0.5f, startY = -0.5f;
         public ArrayDots aDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
         public List<Dot> lstDots;
+
+        public List<Pattern> Patterns = new List<Pattern>();
         private List<Links> lnks;
         private Dot best_move; //ход который должен сделать комп
         private Dot last_move; //последний ход
         private List<Dot> list_moves; //список ходов
+
         private int win_player;//переменная получает номер игрока, котрый окружил точки
 
         private string status=string.Empty;
@@ -104,6 +107,7 @@ namespace DotsGame
         public Game(PictureBox CanvasGame)
         {
             pbxBoard = CanvasGame;
+            LoadPattern();
             NewGame();
         }
         public void SetLevel(int iLevel=1)
@@ -2288,6 +2292,146 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
    #endregion
 #endif
         //==========================================================================
+        private Dot CheckPattern(int Owner, ArrayDots _aDots)
+        {
+            int enemy_own = Owner == 1 ? 2 : 1;
+
+            Dot result_dot;
+
+            IEnumerable<Dot> get_non_blocked = from Dot d in _aDots where d.Blocked == false select d; //получить коллекцию незаблокированных точек
+
+            foreach(Pattern p in Patterns)
+            {
+                var pat3 = from Dot d in get_non_blocked
+                           where d.Own == Owner && d.x > 2 && d.x < iBoardSize - 2 &&
+                                                    d.y > 2 && d.y < iBoardSize - 2 &&
+
+                           _aDots[d.x + 1, d.y - 1].Own == enemy_own && _aDots[d.x + 1, d.y - 1].Blocked == false &&
+                           _aDots[d.x - 1, d.y - 1].Own == enemy_own && _aDots[d.x - 1, d.y - 1].Blocked == false &&
+                           _aDots[d.x - 1, d.y + 1].Own == enemy_own && _aDots[d.x - 1, d.y + 1].Blocked == false &&
+                           _aDots[d.x + 1, d.y + 1].Own == 0 && _aDots[d.x + 1, d.y + 1].Blocked == false &&
+                           _aDots[d.x + 1, d.y].Own == 0 && _aDots[d.x + 1, d.y].Blocked == false &&
+                           _aDots[d.x, d.y + 1].Own == 0 && _aDots[d.x, d.y + 1].Blocked == false
+                           select d;
+                if (pat3.Count() > 0)
+                {
+                    result_dot = new Dot(pat3.First().x + 1, pat3.First().y + 1);
+                    result_dot.iNumberPattern = iNumberPattern;
+                    return result_dot;
+                }
+
+
+            }
+            return null;
+
+        }
+
+        private void CheckPattern(Pattern pt, int Owner)
+        {
+            //Dot d;
+            var pat = from Dot d in aDots.NotEmptyNonBlockedDots
+            where d.Own == Owner
+            select d;
+            
+            //foreach(Dot d in pat)
+            //{
+            //    foreach(Dot dt in pt.DotsPattern)
+            //    {
+                    
+            //    }
+                    
+            //}
+
+        }
+
+        public class Pattern
+        {
+            public int PatternNumber { get; set; }
+            List<DotInPattern> _DotsPattern = new List<DotInPattern>();
+            public string Where { get; set; }
+            public List<DotInPattern> DotsPattern
+            {
+                get
+                {
+                    return _DotsPattern;
+                }
+                set
+                {
+                    _DotsPattern = value;
+                }
+
+            }
+            public DotInPattern ResultDot = new DotInPattern();
+        }
+
+        public class DotInPattern
+        {
+            public int dX { get; set; }
+            public int dY { get; set; }
+            public string Owner { get; set; }
+            //public DotInPattern()
+            //{
+                
+            //}
+        }
+
+
+        public void LoadPattern()
+        {
+            string path_pattern = @"d:\Proj\PointsCSharp\PointsCSharp\patterns.dts"; 
+            //Application.CommonAppDataPath + @"\patterns.dts";
+            try
+            {
+                int counter = 0;
+                string line;
+                //List<string> lstPattern  = new List<string>();
+                // Read the file and display it line by line.
+                System.IO.StreamReader file = new System.IO.StreamReader(path_pattern);
+                Pattern ptrn=new Pattern();
+                while ((line = file.ReadLine()) != null)
+                {
+                    if (line.Trim() == "Begin")
+                    {
+                        ptrn = new Pattern();
+                        while (line!="End")
+                        {
+                            line = file.ReadLine();
+                            ptrn.PatternNumber = Convert.ToInt32(line);
+                            ptrn.Where = file.ReadLine();
+                            while ((line = file.ReadLine().Trim()) != "Result")
+                            {
+                                line = line.Replace(" ", string.Empty);
+                                string[] ss = line.Split(new Char[] { ',' });
+                                DotInPattern dtp = new DotInPattern();
+                                dtp.dX = Convert.ToInt32(ss[0]);
+                                dtp.dY = Convert.ToInt32(ss[1]);
+                                dtp.Owner = ss[2];
+                                ptrn.DotsPattern.Add(dtp);
+                            }
+                            //result dot - move
+                            line = file.ReadLine();
+                            line = line.Replace(" ", string.Empty);
+                            string[] sss = line.Split(new Char[] { ',' });
+                            ptrn.ResultDot.dX = Convert.ToInt32(sss[0]);
+                            ptrn.ResultDot.dY = Convert.ToInt32(sss[1]);
+                            line = file.ReadLine();
+                        }
+                        Patterns.Add(ptrn);
+                        counter++;
+
+                    }
+
+                }
+
+                file.Close();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+        }
+
         #region SAVE_LOAD Game
         public string path_savegame = Application.CommonAppDataPath + @"\dots.dts";
         public void SaveGame()
@@ -2356,4 +2500,6 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             Own = (byte)Owner;
         }
     }
+
+
 }

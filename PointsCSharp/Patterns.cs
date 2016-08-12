@@ -9,7 +9,7 @@ namespace DotsGame
 {
     public partial class Game
     {
-        private Dot CheckPattern(int Owner, ArrayDots _aDots)
+        private Dot CheckPattern(int Owner, ArrayDots _aDots, int x = 0)
         {
 
             int enemy_own = Owner == 1 ? 2 : 1;

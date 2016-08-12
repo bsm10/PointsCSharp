@@ -654,6 +654,8 @@ namespace DotsGame
         {
             return x*nSize+y;
         }
+        
+
         public List<Dot> EmptyNeibourDots(int Owner)//список не занятых точек возле определенной точки
         {
             List<Dot> ld = new List<Dot>();
@@ -687,13 +689,6 @@ namespace DotsGame
             }
             return dot.IndexRelation;
         }
-
-        //public Dot[] NotBlockedDots()
-        //{
-        //    var q = from Dot d in _Dots where d.Blocked == false select d;
-        //    return q.ToArray();
-        //}
-
         public void Clear()
         {
             foreach (Dot d in _Dots)
@@ -742,5 +737,4 @@ namespace DotsGame
             }
         }
     }
-
 }

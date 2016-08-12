@@ -1,0 +1,27 @@
+Begin
+1 
+d.Own == Owner && d.x > 2 && d.x < iBoardSize - 2 && d.y > 2 && d.y < iBoardSize - 2 && 
+  1, - 1, enemy
+- 1, - 1, enemy
+- 1,   1, enemy
+  1,   1, 0
+  1,   0, 0
+  0,   1, 0
+Result  
+  1,   1
+End
+Begin
+2
+d.Own == Owner && d.x > 2 && d.x < iBoardSize - 2 && d.y > 2 && d.y < iBoardSize - 2 && 
+1,- 1, enemy_own
+- 1,  - 1, enemy_own
+1,1, enemy_own
+- 1, 0, 0
+0, 1, 0
+- 1,  1, 0
+0, 0, Owner 
+Result  
+- 1, 1
+End
+
+      
