@@ -2343,7 +2343,9 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                                 break;
                         }
                          
-                        if (aDots[d.x + dt.dX, d.y + dt.dY].Own != DotOwner)
+                        if (d.x >= p.Xmin && d.x <= p.Xmax &&
+                            d.y >= p.Ymin && d.y <= p.Ymax &&
+                            aDots[d.x + dt.dX, d.y + dt.dY].Own != DotOwner)
                         {
                             flag = false;    
                             break;
@@ -2363,7 +2365,12 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         {
             public int PatternNumber { get; set; }
             List<DotInPattern> _DotsPattern = new List<DotInPattern>();
-            public string Where { get; set; }
+
+            public int Xmin { get; set; }
+            public int Xmax { get; set; }
+            public int Ymin { get; set; }
+            public int Ymax { get; set; }
+
             public List<DotInPattern> DotsPattern
             {
                 get
@@ -2427,7 +2434,13 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                         {
                             line = file.ReadLine();
                             ptrn.PatternNumber = Convert.ToInt32(line);
-                            ptrn.Where = file.ReadLine();
+                            line = file.ReadLine();
+                            string[] sMinMax = line.Split(new Char[] { ',' });
+                            ptrn.Xmin = Convert.ToInt32(sMinMax[0]);
+                            ptrn.Xmax = iBoardSize - Convert.ToInt32(sMinMax[0]);
+                            ptrn.Ymin = Convert.ToInt32(sMinMax[1]);
+                            ptrn.Ymax = iBoardSize - Convert.ToInt32(sMinMax[1]);
+
                             while ((line = file.ReadLine().Trim()) != "Result")
                             {
                                 line = line.Replace(" ", string.Empty);
