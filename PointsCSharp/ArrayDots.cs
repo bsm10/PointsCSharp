@@ -75,7 +75,7 @@ namespace DotsGame
     //            {
     //                Dots[i, j] = new Dot(i, j);
     //                Dots[i, j].IndexDot = counter;
-    //                if (i == 0 | i == (size - 1) | j == 0 | j == (size - 1)) Dots[i, j].Fixed = true;
+    //                if (i == 0 | i == (size -1) | j == 0 | j == (size -1)) Dots[i, j].Fixed = true;
     //                counter += 1;
     //            }
     //        }
@@ -108,8 +108,8 @@ namespace DotsGame
     //        {
     //            if (i < 0) i = 0;
     //            if (j < 0) j = 0;
-    //            if (i >= nSize) i = nSize - 1;
-    //            if (j >= nSize) j = nSize - 1;
+    //            if (i >= nSize) i = nSize -1;
+    //            if (j >= nSize) j = nSize -1;
     //            return Dots[i,j];
     //        }
     //        set
@@ -178,7 +178,7 @@ namespace DotsGame
     //    }
     //    public float Distance(Dot dot1, Dot dot2)//расстояние между точками
     //    {
-    //        return (float)Math.Sqrt(Math.Pow((dot1.x - dot2.x),2) + Math.Pow((dot1.y - dot2.y), 2));
+    //        return (float)Math.Sqrt(Math.Pow((dot1.x -dot2.x),2) + Math.Pow((dot1.y -dot2.y), 2));
     //    }
     //    public bool Contains(Dot dot)//проверяет, есть ли точка с такими координатами в массиве
     //    {
@@ -254,11 +254,11 @@ namespace DotsGame
     //    {
     //        var q = from Dot d in Dots
     //                where d.Blocked == false & d.Own == 0 & 
-    //                Dots[d.x + 1, d.y - 1].Blocked == false & Dots[d.x + 1, d.y - 1].Own == Owner & Dots[d.x + 1, d.y + 1].Blocked == false & Dots[d.x + 1, d.y + 1].Own == Owner
-    //                | d.Own == 0 & Dots[d.x, d.y - 1].Blocked == false & Dots[d.x, d.y - 1].Own == Owner & Dots[d.x, d.y + 1].Blocked == false & Dots[d.x, d.y + 1].Own == Owner
-    //                | d.Own == 0 & Dots[d.x-1, d.y - 1].Blocked == false & Dots[d.x-1, d.y - 1].Own == Owner & Dots[d.x-1, d.y + 1].Blocked == false & Dots[d.x-1, d.y + 1].Own == Owner
-    //                | d.Own == 0 & Dots[d.x-1, d.y - 1].Blocked == false & Dots[d.x-1, d.y - 1].Own == Owner & Dots[d.x+1, d.y + 1].Blocked == false & Dots[d.x+1, d.y + 1].Own == Owner
-    //                | d.Own == 0 & Dots[d.x-1, d.y + 1].Blocked == false & Dots[d.x-1, d.y + 1].Own == Owner & Dots[d.x+1, d.y - 1].Blocked == false & Dots[d.x+1, d.y - 1].Own == Owner
+    //                Dots[d.x + 1, d.y -1].Blocked == false & Dots[d.x + 1, d.y -1].Own == Owner & Dots[d.x + 1, d.y + 1].Blocked == false & Dots[d.x + 1, d.y + 1].Own == Owner
+    //                | d.Own == 0 & Dots[d.x, d.y -1].Blocked == false & Dots[d.x, d.y -1].Own == Owner & Dots[d.x, d.y + 1].Blocked == false & Dots[d.x, d.y + 1].Own == Owner
+    //                | d.Own == 0 & Dots[d.x-1, d.y -1].Blocked == false & Dots[d.x-1, d.y -1].Own == Owner & Dots[d.x-1, d.y + 1].Blocked == false & Dots[d.x-1, d.y + 1].Own == Owner
+    //                | d.Own == 0 & Dots[d.x-1, d.y -1].Blocked == false & Dots[d.x-1, d.y -1].Own == Owner & Dots[d.x+1, d.y + 1].Blocked == false & Dots[d.x+1, d.y + 1].Own == Owner
+    //                | d.Own == 0 & Dots[d.x-1, d.y + 1].Blocked == false & Dots[d.x-1, d.y + 1].Own == Owner & Dots[d.x+1, d.y -1].Blocked == false & Dots[d.x+1, d.y -1].Own == Owner
     //                select d;
     //        return q.Count();
     //    }
@@ -340,12 +340,12 @@ namespace DotsGame
     //            int i = position / nSize;
     //            if (position / nSize == nSize)
     //            {
-    //                i = nSize - 1;
+    //                i = nSize -1;
     //            }
     //            int j = position % nSize;
     //            if (position % nSize == nSize)
     //            {
-    //                j = nSize - 1;
+    //                j = nSize -1;
     //            }
     //            return Dots[i, position % nSize];
     //        }
@@ -422,7 +422,7 @@ namespace DotsGame
                     ind = IndexDot(i, j);
                     _Dots.Add(new Dot(i, j));
                     _Dots[ind].IndexDot = ind;
-                    if (i == 0 | i == (size - 1) | j == 0 | j == (size - 1)) _Dots[ind].Fixed = true;
+                    if (i == 0 | i == (size -1) | j == 0 | j == (size -1)) _Dots[ind].Fixed = true;
                     counter += 1;
                 }
             }
@@ -455,8 +455,8 @@ namespace DotsGame
             {
                 if (i < 0) i = 0;
                 if (j < 0) j = 0;
-                if (i >= nSize) i = nSize - 1;
-                if (j >= nSize) j = nSize - 1;
+                if (i >= nSize) i = nSize -1;
+                if (j >= nSize) j = nSize -1;
                 return _Dots[IndexDot(i, j)];
             }
         }
@@ -468,7 +468,7 @@ namespace DotsGame
                 _Dots[ind].Own = Owner;
                 if (Owner != 0) _Dots[ind].IndexRelation = _Dots[ind].IndexDot;
                 _Dots[ind].Blocked = false;
-                if (dot.x == 0 | dot.x == (nSize - 1) | dot.y == 0 | dot.y == (nSize - 1)) _Dots[ind].Fixed = true;
+                if (dot.x == 0 | dot.x == (nSize -1) | dot.y == 0 | dot.y == (nSize -1)) _Dots[ind].Fixed = true;
                 AddNeibor(_Dots[ind]);
             }
         }
@@ -525,20 +525,20 @@ namespace DotsGame
         }
         public float Distance(Dot dot1, Dot dot2)//расстояние между точками
         {
-            return (float)Math.Sqrt(Math.Pow((dot1.x - dot2.x), 2) + Math.Pow((dot1.y - dot2.y), 2));
+            return (float)Math.Sqrt(Math.Pow((dot1.x -dot2.x), 2) + Math.Pow((dot1.y -dot2.y), 2));
         }
         /// <summary>
         /// возвращает список соседних точек заданной точки
         /// </summary>
         /// <param name="dot"> точка Dot из массива точек типа ArrayDots </param>
         /// <returns> список точек </returns>
-        public List<Dot> NeiborDotsSNWE(Dot dot)//SNWE - S - South, N - North, W - West, E - East
+        public List<Dot> NeiborDotsSNWE(Dot dot)//SNWE -S -South, N -North, W -West, E -East
         {
             Dot[] dts = new Dot[4] {
                                     this[dot.x + 1, dot.y],
-                                    this[dot.x - 1, dot.y],
+                                    this[dot.x -1, dot.y],
                                     this[dot.x, dot.y + 1],
-                                    this[dot.x, dot.y - 1]
+                                    this[dot.x, dot.y -1]
                                     };
             return dts.ToList();
         }
@@ -547,13 +547,13 @@ namespace DotsGame
         {
             Dot[] dts = new Dot[8] {
                                     this[dot.x + 1, dot.y],
-                                    this[dot.x - 1, dot.y],
+                                    this[dot.x -1, dot.y],
                                     this[dot.x, dot.y + 1],
-                                    this[dot.x, dot.y - 1],
+                                    this[dot.x, dot.y -1],
                                     this[dot.x + 1, dot.y + 1],
-                                    this[dot.x - 1, dot.y - 1],
-                                    this[dot.x - 1, dot.y + 1],
-                                    this[dot.x + 1, dot.y - 1]
+                                    this[dot.x -1, dot.y -1],
+                                    this[dot.x -1, dot.y + 1],
+                                    this[dot.x + 1, dot.y -1]
                                     };
             return dts.ToList();
         }
@@ -635,12 +635,12 @@ namespace DotsGame
         {
             var q = from Dot d in _Dots
                     where d.Blocked == false & d.Own == 0 &
-                    _Dots[IndexDot(d.x + 1, d.y - 1)].Blocked == false & _Dots[IndexDot(d.x + 1, d.y - 1)].Own == Owner & 
+                    _Dots[IndexDot(d.x + 1, d.y -1)].Blocked == false & _Dots[IndexDot(d.x + 1, d.y -1)].Own == Owner & 
                     _Dots[IndexDot(d.x + 1, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x + 1, d.y + 1)].Own == Owner
-                    | d.Own == 0 & _Dots[IndexDot(d.x, d.y - 1)].Blocked == false & _Dots[IndexDot(d.x, d.y - 1)].Own == Owner & _Dots[IndexDot(d.x, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x, d.y + 1)].Own == Owner
-                    | d.Own == 0 & _Dots[IndexDot(d.x - 1, d.y - 1)].Blocked == false & _Dots[IndexDot(d.x - 1, d.y - 1)].Own == Owner & _Dots[IndexDot(d.x - 1, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x - 1, d.y + 1)].Own == Owner
-                    | d.Own == 0 & _Dots[IndexDot(d.x - 1, d.y - 1)].Blocked == false & _Dots[IndexDot(d.x - 1, d.y - 1)].Own == Owner & _Dots[IndexDot(d.x + 1, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x + 1, d.y + 1)].Own == Owner
-                    | d.Own == 0 & _Dots[IndexDot(d.x - 1, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x - 1, d.y + 1)].Own == Owner & _Dots[IndexDot(d.x + 1, d.y - 1)].Blocked == false & _Dots[IndexDot(d.x + 1, d.y - 1)].Own == Owner
+                    | d.Own == 0 & _Dots[IndexDot(d.x, d.y -1)].Blocked == false & _Dots[IndexDot(d.x, d.y -1)].Own == Owner & _Dots[IndexDot(d.x, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x, d.y + 1)].Own == Owner
+                    | d.Own == 0 & _Dots[IndexDot(d.x -1, d.y -1)].Blocked == false & _Dots[IndexDot(d.x -1, d.y -1)].Own == Owner & _Dots[IndexDot(d.x -1, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x -1, d.y + 1)].Own == Owner
+                    | d.Own == 0 & _Dots[IndexDot(d.x -1, d.y -1)].Blocked == false & _Dots[IndexDot(d.x -1, d.y -1)].Own == Owner & _Dots[IndexDot(d.x + 1, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x + 1, d.y + 1)].Own == Owner
+                    | d.Own == 0 & _Dots[IndexDot(d.x -1, d.y + 1)].Blocked == false & _Dots[IndexDot(d.x -1, d.y + 1)].Own == Owner & _Dots[IndexDot(d.x + 1, d.y -1)].Blocked == false & _Dots[IndexDot(d.x + 1, d.y -1)].Own == Owner
                     select d;
             return q.Count();
         }
@@ -726,12 +726,12 @@ namespace DotsGame
                 int i = position / nSize;
                 if (position / nSize == nSize)
                 {
-                    i = nSize - 1;
+                    i = nSize -1;
                 }
                 int j = position % nSize;
                 if (position % nSize == nSize)
                 {
-                    j = nSize - 1;
+                    j = nSize -1;
                 }
                 return _Dots[IndexDot(i, position % nSize)];
             }

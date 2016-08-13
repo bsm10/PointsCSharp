@@ -60,7 +60,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Dots.ico</ApplicationIcon>
@@ -93,7 +93,6 @@
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
     <Compile Include="Game.cs" />
-    <Compile Include="Patterns.cs" />
     <Compile Include="PatternsMove.cs" />
     <Compile Include="Pattern_vilka.cs" />
     <Compile Include="Program.cs" />
@@ -151,7 +150,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Лист.png" />
+    <EmbeddedResource Include="Resources\patterns.dts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dots.jpg" />

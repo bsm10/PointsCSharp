@@ -40,7 +40,7 @@ namespace DotsGame
         {
             this.Dot1 = Dot1;
             this.Dot2 = Dot2;
-            if (Math.Abs(Dot1.x - Dot2.x) + Math.Abs(Dot1.y - Dot2.y) < 2)
+            if (Math.Abs(Dot1.x -Dot2.x) + Math.Abs(Dot1.y -Dot2.y) < 2)
             {
                 cost = 1;
             }
@@ -53,7 +53,7 @@ namespace DotsGame
         {
             Dot1 = new Dot(x1, y1);
             Dot2 = new Dot(x2, y2);
-            if (Math.Abs(Dot1.x - Dot2.x) + Math.Abs(Dot1.y - Dot2.y) < 2)
+            if (Math.Abs(Dot1.x -Dot2.x) + Math.Abs(Dot1.y -Dot2.y) < 2)
             {
                 cost = 1;
             }
@@ -154,7 +154,7 @@ namespace DotsGame
                 rating = value;
                 //foreach(Dot d in NeiborDots)
                 //{
-                //    //if(Math.Sqrt(Math.Pow(Math.Abs(d.x - x),2) + Math.Pow(Math.Abs(d.y - y),2))==1)
+                //    //if(Math.Sqrt(Math.Pow(Math.Abs(d.x -x),2) + Math.Pow(Math.Abs(d.y -y),2))==1)
                 //    //{
                 //        if (rating < d.rating) d.Rating = rating;
                 //        else rating = d.Rating;
@@ -231,7 +231,7 @@ namespace DotsGame
             {
                 return false;
             }
-            return Math.Abs(x - dot.x) <= 1 & Math.Abs(y - dot.y) <= 1;
+            return Math.Abs(x -dot.x) <= 1 & Math.Abs(y -dot.y) <= 1;
 
         }
         private int _IndexRel;

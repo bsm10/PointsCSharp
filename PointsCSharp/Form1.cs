@@ -42,7 +42,7 @@ namespace DotsGame
         {
             game.MousePos = game.TranslateCoordinates(e.Location);
             Dot dot = new Dot(game.MousePos.X, game.MousePos.Y);
-            if (game.MousePos.X > game.startX - 0.5f & game.MousePos.Y > game.startY - 0.5f)
+            if (game.MousePos.X > game.startX -0.5f & game.MousePos.Y > game.startY -0.5f)
             {
                 switch (e.Button)
                 {
@@ -139,7 +139,7 @@ namespace DotsGame
             }
             //lstMoves.DataSource = null;
             //lstMoves.DataSource = game.ListMoves;
-            //if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
+            //if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count -1, true);
             //rtbStat.Text = game.Statistic();
         }
         public void pbxBoard_MouseWheel(object sender, MouseEventArgs e)
@@ -168,8 +168,8 @@ namespace DotsGame
                     break;
                 case MouseButtons.Middle:
                     //тягает поле, раскоментить если нужна прокрутка поля
-                    //game.startX = (t.X - (e.X / (pbxBoard.ClientSize.Width / (game.iBoardSize + 1)))) - 0.5f;
-                    //game.startY = (t.Y - (e.Y / (pbxBoard.ClientSize.Height / (game.iBoardSize + 1)))) - 0.5f;
+                    //game.startX = (t.X -(e.X / (pbxBoard.ClientSize.Width / (game.iBoardSize + 1)))) -0.5f;
+                    //game.startY = (t.Y -(e.Y / (pbxBoard.ClientSize.Height / (game.iBoardSize + 1)))) -0.5f;
                     break;
                 case MouseButtons.XButton1:
                     break;
@@ -394,7 +394,7 @@ namespace DotsGame
 
             //lstMoves.DataSource = null;
             //lstMoves.DataSource = game.ListMoves;
-            //if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
+            //if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count -1, true);
             //rtbStat.Text = game.Statistic();
             return 0;
         }
