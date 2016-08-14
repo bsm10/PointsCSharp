@@ -2429,34 +2429,42 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 while ((line = file.ReadLine()) != null)
                 {
                     counter_line++;
-                if (line.Contains("//")) goto next;
-                    if (line.Trim() == "Begin")
+                    if (line.Contains("//") | line == "") goto next;
+                #region Begin
+                if (line.Trim() == "Begin")
+                {
+                    ptrn = new Pattern();
+                    while (line != "End")
                     {
-                        ptrn = new Pattern();
-                        while (line!="End")
+                        line = file.ReadLine();
+                        counter_line++;
+                        int x;
+                        if (int.TryParse(line, out x)) ptrn.PatternNumber = x; //Convert.ToInt32(line);
+                        line = file.ReadLine();
+                        counter_line++;
+                        if (line.Trim()!="Dots")
                         {
-                            line = file.ReadLine();
-                            counter_line++;
-                            ptrn.PatternNumber = Convert.ToInt32(line);
-                            line = file.ReadLine();
-                            counter_line++;
                             string[] sMinMax = line.Replace(" ", string.Empty).Split(new char[] { ',' });
                             if (sMinMax.Length == 1)
                             {
                                 ptrn.Xmin = 0;
-                                ptrn.Xmax = iBoardSize -1;
+                                ptrn.Xmax = iBoardSize - 1;
                                 ptrn.Ymin = 0;
-                                ptrn.Ymax = iBoardSize -1;
+                                ptrn.Ymax = iBoardSize - 1;
 
                             }
                             else
                             {
                                 ptrn.Xmin = Convert.ToInt32(sMinMax[0]);
-                                ptrn.Xmax = iBoardSize -Convert.ToInt32(sMinMax[0]);
+                                ptrn.Xmax = iBoardSize - Convert.ToInt32(sMinMax[0]);
                                 ptrn.Ymin = Convert.ToInt32(sMinMax[1]);
-                                ptrn.Ymax = iBoardSize -Convert.ToInt32(sMinMax[1]);
+                                ptrn.Ymax = iBoardSize - Convert.ToInt32(sMinMax[1]);
                             }
 
+                        }
+                        #region Dots
+                        else if (line.Trim() == "Dots")
+                        {
                             while ((line = file.ReadLine().Replace(" ", string.Empty)) != "Result")
                             {
                                 counter_line++;
@@ -2468,22 +2476,26 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                                 ptrn.DotsPattern.Add(dtp);
                             }
                             counter_line++;
-                            line = file.ReadLine().Replace(" ", string.Empty); 
+                            line = file.ReadLine().Replace(" ", string.Empty);
                             counter_line++;
                             string[] sss = line.Split(new char[] { ',' });
                             ptrn.dXdY_ResultDot.dX = Convert.ToInt32(sss[0]);
                             ptrn.dXdY_ResultDot.dY = Convert.ToInt32(sss[1]);
-                            line = file.ReadLine();
+                            line = file.ReadLine().Trim();
                             counter_line++;
                         }
-                        Patterns.Add(ptrn);
-                        counter++;
+                        #endregion
 
                     }
-                next:;
-                }
+                    Patterns.Add(ptrn);
+                    counter++;
 
-                file.Close();
+                }
+                #endregion
+                next:;
+            }
+
+            file.Close();
             //}
             //catch (Exception e)
             //{

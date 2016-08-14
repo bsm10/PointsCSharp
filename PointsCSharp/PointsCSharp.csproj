@@ -150,7 +150,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\patterns.dts" />
+    <EmbeddedResource Include="Resources\patterns.dts">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dots.jpg" />
