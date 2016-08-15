@@ -2098,7 +2098,85 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             }
             set { f.tlsEditPattern.Checked = value; }
         }
+    public void WritePatternToFile(List<string> lines)
+    {
+        // Append new text to an existing file.
+        // The using statement automatically flushes AND CLOSES the stream and calls 
+        // IDisposable.Dispose on the stream object.
+        using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(path_pattern, true))
+        {
+
+            foreach (string s in lines) file.WriteLine(s);
+        }
+    }
+
+    private int GetNumberPattern()
+    {
+        int number = 0;
+        string line;
+        // Read the file and display it line by line.
+        StreamReader file = new StreamReader(path_pattern);
+        while ((line = file.ReadLine()) != null)
+        {
+            if (line.Trim() == "Begin")
+            {
+                line = file.ReadLine();
+                number = Convert.ToInt32(line);
+            }
+        }
+        file.Close();
+        number++;
+        return number;
+    }
         public void MakePattern()//сохраняет паттерн в текстовое поле
+        {
+            List<string> lines = new List<string>();
+            Dot firstDot = lstPat.Find(d=>d.PatternsFirstDot);
+            Dot moveDot = lstPat.Find(dt => dt.PatternsMoveDot);
+            //------------------------------------------------
+            lines.Add("Begin");
+            lines.Add(GetNumberPattern().ToString());
+            lines.Add("3,3");
+            lines.Add("Dots");
+            AddPatternDots(firstDot, lines);
+            lines.Add("Result");
+            lines.Add((moveDot.x - firstDot.x).ToString() + ", " +
+                      (moveDot.y - firstDot.y).ToString());
+            lines.Add("End");
+            //------------------------------------------------------
+            //rotate 90
+            //List<Dot> l = RotateMatrix(90);
+
+
+            WritePatternToFile(lines);
+            lstPat.Clear();
+            f.tlsEditPattern.Checked = false;
+            aDots.UnmarkAllDots();
+        }
+
+        private void AddPatternDots(Dot firstDot, List<string> lines)
+        {
+            string s;
+            int dx,dy;
+            for (int i = 0; i < lstPat.Count; i++)
+            {
+                string own = "";
+                if (firstDot.Own == lstPat[i].Own) own = "owner";
+                if (firstDot.Own != lstPat[i].Own) own = "enemy";
+                if (lstPat[i].Own == 0 & lstPat[i].PatternsAnyDot == false) own = "0";
+                if (lstPat[i].PatternsAnyDot) own = "!= enemy";
+                dx = lstPat[i].x - firstDot.x;
+                dy = lstPat[i].y - firstDot.y;
+                if ((dx == 0 & dy == 0) == false)
+                {
+                    s = dx.ToString() + ", " + dy.ToString() + ", " + own;
+                    lines.Add(s);
+                }
+            }
+        }
+
+        public void MakePattern_old()//сохраняет паттерн в текстовое поле
         {
             string s, strdX, strdY, sWhere = "", sMove = "";
             int dx, dy, ind;
@@ -2252,43 +2330,53 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
 
         private List<Dot> RotateMatrix(int ungle)
         {
-        Array m = new Array[lstPat.Count];
         List<Dot> l = new List<Dot>(lstPat.Count);
             if(ungle==90)
             {
-                foreach(Dot d in lstPat)
-                {
-                    int x = d.x; 
-                    int y = d.y;
-                    d.x = y; d.y = x;
-                    l.Add(d);
-                }        
+                foreach(Dot d in lstPat)l.Add(new Dot(d.y, d.x, d.Own));
+                //{
+                    //int x = d.x; 
+                    //int y = d.y;
+                    //d.x = y; d.y = x;
+                    //l.Add(d);
+                //}        
             }
+            if (ungle == 180)
+            {
+                foreach (Dot d in lstPat) l.Add(new Dot(-d.x, -d.y, d.Own));
+                //{
+                    //int x = d.x;
+                    //int y = d.y;
+                    //d.x = -x; d.y = -y;
+                    //l.Add(d);
+                //}
+            }
+
             return l;
         }
 
-        public string path_pat = Application.CommonAppDataPath + @"\patterns.dat";
-        public void SavePattern()
-        {
-            try
-            {
-                // создаем объект BinaryWriter
-                using (BinaryWriter writer = new BinaryWriter(File.Open(path_savegame, FileMode.Create)))
-                {
+        ////public string path_pat = Application.CommonAppDataPath + @"\patterns.dat";
+        //public void SavePattern()
+        //{
+        //    try
+        //    {
+        //        // создаем объект BinaryWriter
+        //        using (BinaryWriter writer = new BinaryWriter(File.Open(path_pattern, FileMode.Append)))
+        //        {
 
-                    for (int i = 0; i < list_moves.Count; i++)
-                    {
-                        writer.Write((byte)list_moves[i].x);
-                        writer.Write((byte)list_moves[i].y);
-                        writer.Write((byte)list_moves[i].Own);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-            }
-        }
+        //            for (int i = 0; i < list_moves.Count; i++)
+        //            {
+        //                writer.Write((byte)list_moves[i].x);
+        //                writer.Write((byte)list_moves[i].y);
+        //                writer.Write((byte)list_moves[i].Own);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        MessageBox.Show(e.Message);
+        //    }
+        //}
    #endregion
 #endif
         //==========================================================================
@@ -2412,12 +2500,10 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
 
         }
 
-
+        string path_pattern = Application.StartupPath + @"\Resources\patterns.dts"; //@"d:\Proj\PointsCSharp\PointsCSharp\patterns.dts"; 
+        
         public void LoadPattern()
         {
-            string path_pattern = Application.StartupPath + @"\Resources\patterns.dts"; //@"d:\Proj\PointsCSharp\PointsCSharp\patterns.dts"; 
-
-            int counter = 0;
             int counter_line = 0;
             //try
             //{
@@ -2429,21 +2515,18 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 while ((line = file.ReadLine()) != null)
                 {
                     counter_line++;
-                    if (line.Contains("//") | line == "") goto next;
-                #region Begin
-                if (line.Trim() == "Begin")
-                {
-                    ptrn = new Pattern();
-                    while (line != "End")
+                    switch (line.Trim())
                     {
-                        line = file.ReadLine();
-                        counter_line++;
-                        int x;
-                        if (int.TryParse(line, out x)) ptrn.PatternNumber = x; //Convert.ToInt32(line);
-                        line = file.ReadLine();
-                        counter_line++;
-                        if (line.Trim()!="Dots")
-                        {
+                        case "Begin":
+                            ptrn = new Pattern();
+                            //number pattern
+                            line = file.ReadLine();
+                            counter_line++;
+                            int x;
+                            if (int.TryParse(line, out x)) ptrn.PatternNumber = x; //Convert.ToInt32(line);
+                            //отступы от края поля
+                            line = file.ReadLine();
+                            counter_line++;
                             string[] sMinMax = line.Replace(" ", string.Empty).Split(new char[] { ',' });
                             if (sMinMax.Length == 1)
                             {
@@ -2460,11 +2543,8 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                                 ptrn.Ymin = Convert.ToInt32(sMinMax[1]);
                                 ptrn.Ymax = iBoardSize - Convert.ToInt32(sMinMax[1]);
                             }
-
-                        }
-                        #region Dots
-                        else if (line.Trim() == "Dots")
-                        {
+                            break;
+                        case "Dots": //точки паттерна
                             while ((line = file.ReadLine().Replace(" ", string.Empty)) != "Result")
                             {
                                 counter_line++;
@@ -2481,19 +2561,82 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                             string[] sss = line.Split(new char[] { ',' });
                             ptrn.dXdY_ResultDot.dX = Convert.ToInt32(sss[0]);
                             ptrn.dXdY_ResultDot.dY = Convert.ToInt32(sss[1]);
-                            line = file.ReadLine().Trim();
-                            counter_line++;
-                        }
-                        #endregion
+                            break;
+                        case "End":
+                           Patterns.Add(ptrn);
+                           break;
+                        default:
+                           break;
 
                     }
-                    Patterns.Add(ptrn);
-                    counter++;
 
-                }
-                #endregion
-                next:;
             }
+
+
+
+            //    if (line.Trim() == "Begin")
+            //    {
+            //        ptrn = new Pattern();
+            //        while (line != "End")
+            //        {
+            //            line = file.ReadLine();
+            //            counter_line++;
+            //            int x;
+            //            if (int.TryParse(line, out x)) ptrn.PatternNumber = x; //Convert.ToInt32(line);
+            //            line = file.ReadLine();
+            //            counter_line++;
+            //            if (line.Trim()!="Dots")
+            //            {
+            //                string[] sMinMax = line.Replace(" ", string.Empty).Split(new char[] { ',' });
+            //                if (sMinMax.Length == 1)
+            //                {
+            //                    ptrn.Xmin = 0;
+            //                    ptrn.Xmax = iBoardSize - 1;
+            //                    ptrn.Ymin = 0;
+            //                    ptrn.Ymax = iBoardSize - 1;
+
+            //                }
+            //                else
+            //                {
+            //                    ptrn.Xmin = Convert.ToInt32(sMinMax[0]);
+            //                    ptrn.Xmax = iBoardSize - Convert.ToInt32(sMinMax[0]);
+            //                    ptrn.Ymin = Convert.ToInt32(sMinMax[1]);
+            //                    ptrn.Ymax = iBoardSize - Convert.ToInt32(sMinMax[1]);
+            //                }
+
+            //            }
+            //            #region Dots
+            //            else if (line.Trim() == "Dots")
+            //            {
+            //                while ((line = file.ReadLine().Replace(" ", string.Empty)) != "Result")
+            //                {
+            //                    counter_line++;
+            //                    string[] ss = line.Split(new char[] { ',' });
+            //                    DotInPattern dtp = new DotInPattern();
+            //                    dtp.dX = Convert.ToInt32(ss[0]);
+            //                    dtp.dY = Convert.ToInt32(ss[1]);
+            //                    dtp.Owner = ss[2];
+            //                    ptrn.DotsPattern.Add(dtp);
+            //                }
+            //                counter_line++;
+            //                line = file.ReadLine().Replace(" ", string.Empty);
+            //                counter_line++;
+            //                string[] sss = line.Split(new char[] { ',' });
+            //                ptrn.dXdY_ResultDot.dX = Convert.ToInt32(sss[0]);
+            //                ptrn.dXdY_ResultDot.dY = Convert.ToInt32(sss[1]);
+            //                line = file.ReadLine().Trim();
+            //                counter_line++;
+            //            }
+            //            #endregion
+
+            //        }
+            //        Patterns.Add(ptrn);
+            //        counter++;
+
+            //    }
+            //    #endregion
+            //    next:;
+            //}
 
             file.Close();
             //}
