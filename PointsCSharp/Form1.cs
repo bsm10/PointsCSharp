@@ -453,5 +453,22 @@ namespace DotsGame
             game.LoadGame();
         }
 
+        private void pbxBoard_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //game.aDots.Rotate90();
+            pbxBoard.Refresh();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            //game.aDots.Rotate_Mirror_Horizontal();
+            pbxBoard.Refresh();
+        }
+
     }  
 }

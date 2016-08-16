@@ -66,7 +66,9 @@
             this.tlsStatusFoo = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.button1 = new System.Windows.Forms.Button();
             this.gameBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listMovesBindingSource)).BeginInit();
@@ -76,9 +78,9 @@
             // 
             // pbxBoard
             // 
-            this.pbxBoard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbxBoard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pbxBoard.BackColor = System.Drawing.Color.White;
             this.pbxBoard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pbxBoard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -87,6 +89,7 @@
             this.pbxBoard.Size = new System.Drawing.Size(346, 417);
             this.pbxBoard.TabIndex = 0;
             this.pbxBoard.TabStop = false;
+            this.pbxBoard.Click += new System.EventHandler(this.pbxBoard_Click);
             this.pbxBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxBoard_Paint);
             this.pbxBoard.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pbxBoard_MouseClick);
             this.pbxBoard.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pbxBoard_MouseDown);
@@ -211,7 +214,7 @@
             // 
             this.легкоToolStripMenuItem.CheckOnClick = true;
             this.легкоToolStripMenuItem.Name = "легкоToolStripMenuItem";
-            this.легкоToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.легкоToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.легкоToolStripMenuItem.Text = "легко";
             this.легкоToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.легкоToolStripMenuItem_CheckStateChanged);
             // 
@@ -219,7 +222,7 @@
             // 
             this.среднеToolStripMenuItem.CheckOnClick = true;
             this.среднеToolStripMenuItem.Name = "среднеToolStripMenuItem";
-            this.среднеToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.среднеToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.среднеToolStripMenuItem.Text = "средне";
             this.среднеToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.среднеToolStripMenuItem_CheckStateChanged);
             // 
@@ -227,7 +230,7 @@
             // 
             this.тяжелоToolStripMenuItem.CheckOnClick = true;
             this.тяжелоToolStripMenuItem.Name = "тяжелоToolStripMenuItem";
-            this.тяжелоToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.тяжелоToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.тяжелоToolStripMenuItem.Text = "тяжело";
             this.тяжелоToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.тяжелоToolStripMenuItem_CheckStateChanged);
             // 
@@ -370,15 +373,37 @@
             this.openFileDialog1.Filter = "Dots files (*.dts)|*.dts";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(247, 0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(31, 23);
+            this.button1.TabIndex = 14;
+            this.button1.Text = "90";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // gameBindingSource
             // 
             this.gameBindingSource.DataSource = typeof(DotsGame.Game);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(284, 0);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(31, 23);
+            this.button2.TabIndex = 15;
+            this.button2.Text = "z";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(346, 474);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.pbxBoard);
             this.Controls.Add(this.menuStrip);
@@ -444,6 +469,8 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem открытьПоследнююToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 

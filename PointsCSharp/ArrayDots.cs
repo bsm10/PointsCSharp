@@ -654,8 +654,29 @@ namespace DotsGame
         {
             return x*nSize+y;
         }
-        
 
+        public List<Dot> Rotate90(List<Dot> DotsForRotation)
+        {
+            int x;
+            int y;
+            foreach (Dot d in DotsForRotation)
+            {
+                x = d.x; y = d.y;
+                d.x = y; d.y = x;
+            }
+            return DotsForRotation;
+        }
+        public List<Dot> Rotate_Mirror_Horizontal(List<Dot> DotsForRotation)
+        {
+            int x;
+            int y;
+            foreach (Dot d in DotsForRotation)
+            {
+                x = nSize - d.x; 
+                d.x = x;
+            }
+            return DotsForRotation;
+        }
         public List<Dot> EmptyNeibourDots(int Owner)//список не занятых точек возле определенной точки
         {
             List<Dot> ld = new List<Dot>();

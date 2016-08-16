@@ -19,6 +19,15 @@ namespace DotsGame
         {
             return lstDbg1;
         }
+
+        public TextBox txtboxPattern
+        {
+            get
+            {
+                return this.txtPattern;
+            }
+        }
+
         public ListBox listDbg2()
         {
             return lstDbg2;
@@ -103,6 +112,16 @@ namespace DotsGame
         private void tlsКромеВражеской_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void tlsMakePattern_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnDrawPattern_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

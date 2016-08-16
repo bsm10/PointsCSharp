@@ -80,7 +80,11 @@ namespace DotsGame
         public Font drawFont = new Font("Arial", 0.22f);
         public bool Redraw {get; set;}
         //===============================================================================
-
+        public Graphics _gr;
+        public Graphics GraphicsGame
+        {
+            get { return _gr; }
+        }
         public Point MousePos;
 
         //statistic
@@ -94,7 +98,13 @@ namespace DotsGame
         private int _pause = 10;
         
 #if DEBUG
+        
         public Form2 f = new Form2();
+        public Form2 DebugWindow 
+        {
+            get {return f;}
+        }
+
 #endif
         private int iNumberPattern;
 
@@ -1913,6 +1923,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         {
             //if (антиалToolStripMenuItem.Checked)
             //{
+            _gr = gr;
             gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             //}
             //Устанавливаем масштаб
@@ -2131,22 +2142,22 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
     }
         public void MakePattern()//сохраняет паттерн в текстовое поле
         {
-            AddPatternDots(lstPat);
-            //------------------------------------------------------
-            //rotate 90
-            //List<Dot> rotatePattern = RotatePattern(90, lstPat);
-            AddPatternDots(RotatePattern(90, lstPat));//90*
+        //lstPat
+            //rotate dots in pattern
+            //List<List<Dot>> rotatePattern = new List<List<Dot>>();
 
+            foreach (List<Dot> listDots in RotatePattern(lstPat)) AddPatternDots(listDots);
             
             lstPat.Clear();
             f.tlsEditPattern.Checked = false;
             aDots.UnmarkAllDots();
         }
-
+        //----------------------------------------------------------
         private void AddPatternDots(List<Dot> ListPatternDots)
         {
             List<string> lines = new List<string>();
-            string s;
+            string s = string.Empty;
+
             int dx,dy;
             Dot firstDot = ListPatternDots.Find(d => d.PatternsFirstDot);
             Dot moveDot = ListPatternDots.Find(dt => dt.PatternsMoveDot);
@@ -2177,6 +2188,10 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             lines.Add("End");
 
             WritePatternToFile(lines);
+            s = string.Empty;
+            foreach(string st in lines) s = s + st + " \r\n";
+            DebugWindow.txtboxPattern.Text=s;
+
         }
 
         //public void MakePattern_old()//сохраняет паттерн в текстовое поле
@@ -2330,128 +2345,45 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         //    f.tlsEditPattern.Checked=false;
         //    aDots.UnmarkAllDots();
         //}
-public class Pt{ public double x; public double y; }
- 
-public class Rotation 
-    {
-        protected double _Alpha;
-        protected double a1, b1, a2, b2; // Direct translation coefficients
-        protected double ia1, ib1, ia2, ib2; // Inverse translation coefficients
-        /// <summary>
-        /// Угол поворота в радианах
-        /// </summary>
-        public double Rad { get { return _Alpha; } set { _Alpha = value; Create(_Alpha); } }
-        /// <summary>
-        /// Угол поворота в градусах
-        /// </summary>
-        public double Deg { get { return _Alpha * 180.0 / Math.PI; } set { _Alpha = value * Math.PI / 180.0; Create(_Alpha); } }        
- 
-        public Pt Direct(Pt p) {
-            Pt r = new Pt();
-            r.x = a1 * p.x + b1 * p.y;
-            r.y = a2 * p.x + b2 * p.y;
-            return r;
-        }
- 
-        public Pt Inverse(Pt p) {
-            Pt r = new Pt();
-            r.x = ia1 * p.x + ib1 * p.y;
-            r.y = ia2 * p.x + ib2 * p.y;
-            return r;
-        }
-             
-        protected void Create(double fi) {
-            a1 = Math.Cos(fi); b1 = -Math.Sin(fi);
-            a2 = Math.Sin(fi); b2 = Math.Cos(fi);
-            double dd = a1*b2 - b1*a2;
-            ia1 = b2 / dd; ib1 = -b1 / dd;
-            ia2 = -a2 / dd; ib1 = a1 / dd;
-        }        
-    }
 
-        private List<Dot> RotatePattern(int degrees, List<Dot> listPat)
-        {
-        List<Dot> l = new List<Dot>(listPat.Count);
-        Dot firstDot = listPat.Find(d => d.PatternsFirstDot);
-        Dot moveDot = listPat.Find(dt => dt.PatternsMoveDot);
+private List<List<Dot>> RotatePattern(List<Dot> listPat)
+{
+    List<List<Dot>> lstlstPat = new List<List<Dot>>();
 
+    List<Dot> l = new List<Dot>(listPat.Count);
+    Dot firstDot = listPat.Find(d => d.PatternsFirstDot);
+    Dot moveDot = listPat.Find(dt => dt.PatternsMoveDot);
 
-            if(degrees==90)
-            {
-                //Rotation r = new Rotation();
-                //r.Deg = 90;
+    lstlstPat.Add(lstPat);
+    lstlstPat.Add(aDots.Rotate90(listPat));
+    lstlstPat.Add(aDots.Rotate_Mirror_Horizontal(listPat));
+    lstlstPat.Add(aDots.Rotate90(listPat));
+    lstlstPat.Add(aDots.Rotate_Mirror_Horizontal(listPat));
+    lstlstPat.Add(aDots.Rotate90(listPat));
+    lstlstPat.Add(aDots.Rotate_Mirror_Horizontal(listPat));
+    lstlstPat.Add(aDots.Rotate90(listPat));
+    //lstlstPat.Add(aDots.Rotate_Mirror_Horizontal(listPat));
 
-                double angle = Math.PI * degrees / 180.0;
-                double sinAngle = Math.Sin(angle);
-                double cosAngle = Math.Cos(angle);
+    //foreach (Dot d in aDots.Rotate90(listPat))
+    //{
+    //    int _x = d.y;
+    //    int _y = d.x;
+    //    Dot dot = new Dot(_x, _y, d.Own);
+    //    dot.PatternsFirstDot = d.PatternsFirstDot;
+    //    dot.PatternsMoveDot = d.PatternsMoveDot;
+    //    dot.PatternsEmptyDot = d.PatternsEmptyDot;
+    //    dot.PatternsAnyDot = d.PatternsAnyDot;
+    //    l.Add(dot);
+    //    d.x = _x; d.y = _y;
+        //int x = d.x; 
+        //int y = d.y;
+        //d.x = y; d.y = x;
+        //l.Add(d);
+    //}
 
-                foreach(Dot d in listPat)
-                {
-                    //Pt pt_old = new Pt();
-                    //Pt pt_new;
-                    
-                    //pt_old.x = d.x;
-                    //pt_old.y = d.y;
+    return lstlstPat;
+}
 
-                    //pt_new = r.Direct(pt_old);
-                    //Dot dot = new Dot((int)pt_new.x, (int)pt_new.y, d.Own);
-                    
-                    //x1 = (x1 - centerX) * cos(angle) - (y1 - centerY) * sin(angle) + centerX;
-                    //y1 = (x1 - centerX) * sin(angle) + (y1 - centerY) * cos(angle) + centerY;
-                    int _x = (int)((double)(d.x - firstDot.x) * cosAngle -
-                                   (double)(d.y - firstDot.y) * sinAngle + d.x);
-                    int _y = (int)((double)(d.x - firstDot.x) * sinAngle -
-                                   (double)(d.y - firstDot.y) * cosAngle + d.y);
-
-                    Dot dot = new Dot(_x, _y, d.Own);
-                    dot.PatternsFirstDot = d.PatternsFirstDot;
-                    dot.PatternsMoveDot = d.PatternsMoveDot;
-                    dot.PatternsEmptyDot = d.PatternsEmptyDot;
-                    dot.PatternsAnyDot = d.PatternsAnyDot;
-                    l.Add(dot);
-                    //int x = d.x; 
-                    //int y = d.y;
-                    //d.x = y; d.y = x;
-                    //l.Add(d);
-                    lstPat=l;
-                }        
-            }
-            if (degrees == 180)
-            {
-                foreach (Dot d in listPat) l.Add(new Dot(-d.x, -d.y, d.Own));
-                //{
-                    //int x = d.x;
-                    //int y = d.y;
-                    //d.x = -x; d.y = -y;
-                    //l.Add(d);
-                //}
-            }
-
-            return l;
-        }
-
-        ////public string path_pat = Application.CommonAppDataPath + @"\patterns.dat";
-        //public void SavePattern()
-        //{
-        //    try
-        //    {
-        //        // создаем объект BinaryWriter
-        //        using (BinaryWriter writer = new BinaryWriter(File.Open(path_pattern, FileMode.Append)))
-        //        {
-
-        //            for (int i = 0; i < list_moves.Count; i++)
-        //            {
-        //                writer.Write((byte)list_moves[i].x);
-        //                writer.Write((byte)list_moves[i].y);
-        //                writer.Write((byte)list_moves[i].Own);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        MessageBox.Show(e.Message);
-        //    }
-        //}
    #endregion
 #endif
         //==========================================================================
@@ -2501,6 +2433,10 @@ public class Rotation
                             case "owner":
                                 DotOwner = Owner;
                                 break;
+                            case "!=enemy":
+                                DotOwner = Owner | 0;
+                                break;
+
                             default:
                                 DotOwner = Owner;
                                 break;
