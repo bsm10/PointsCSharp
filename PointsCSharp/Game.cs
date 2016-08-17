@@ -2146,7 +2146,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             //rotate dots in pattern
             //List<List<Dot>> rotatePattern = new List<List<Dot>>();
 
-            foreach (List<Dot> listDots in RotatePattern(lstPat)) AddPatternDots(listDots);
+            foreach (List<Dot> listDots in ListRotatePatterns(lstPat)) AddPatternDots(listDots);
             
             lstPat.Clear();
             f.tlsEditPattern.Checked = false;
@@ -2346,24 +2346,31 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         //    aDots.UnmarkAllDots();
         //}
 
-private List<List<Dot>> RotatePattern(List<Dot> listPat)
+private List<List<Dot>> ListRotatePatterns(List<Dot> listPat)
 {
     List<List<Dot>> lstlstPat = new List<List<Dot>>();
 
-    List<Dot> l = new List<Dot>(listPat.Count);
+    //List<Dot> l = new List<Dot>(listPat.Count);
     Dot firstDot = listPat.Find(d => d.PatternsFirstDot);
     Dot moveDot = listPat.Find(dt => dt.PatternsMoveDot);
 
-    lstlstPat.Add(lstPat);
-    lstlstPat.Add(aDots.Rotate90(listPat));
-    lstlstPat.Add(aDots.Rotate_Mirror_Horizontal(listPat));
-    lstlstPat.Add(aDots.Rotate90(listPat));
-    lstlstPat.Add(aDots.Rotate_Mirror_Horizontal(listPat));
-    lstlstPat.Add(aDots.Rotate90(listPat));
-    lstlstPat.Add(aDots.Rotate_Mirror_Horizontal(listPat));
-    lstlstPat.Add(aDots.Rotate90(listPat));
-    //lstlstPat.Add(aDots.Rotate_Mirror_Horizontal(listPat));
+    lstlstPat.Add(listPat);
+    listPat = aDots.Rotate90(listPat);
+    lstlstPat.Add(listPat);
+    listPat = aDots.Rotate_Mirror_Horizontal(listPat);
+    lstlstPat.Add(listPat);
+    listPat = aDots.Rotate90(listPat);
+    lstlstPat.Add(listPat);
+    listPat = aDots.Rotate_Mirror_Horizontal(listPat);
+    lstlstPat.Add(listPat);
+    listPat = aDots.Rotate90(listPat);
+    lstlstPat.Add(listPat);
+    listPat = aDots.Rotate_Mirror_Horizontal(listPat);
+    lstlstPat.Add(listPat);
+    listPat = aDots.Rotate90(listPat);
+    lstlstPat.Add(listPat);
 
+    //lstlstPat.Add(aDots.Rotate_Mirror_Horizontal(listPat));
     //foreach (Dot d in aDots.Rotate90(listPat))
     //{
     //    int _x = d.y;

@@ -460,13 +460,13 @@ namespace DotsGame
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //game.aDots.Rotate90();
+            game.aDots.Dots=game.aDots.Rotate90(game.aDots.Dots);
             pbxBoard.Refresh();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //game.aDots.Rotate_Mirror_Horizontal();
+            game.aDots.Dots=game.aDots.Rotate_Mirror_Horizontal(game.aDots.Dots);
             pbxBoard.Refresh();
         }
 
