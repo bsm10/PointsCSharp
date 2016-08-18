@@ -2370,24 +2370,6 @@ private List<List<Dot>> ListRotatePatterns(List<Dot> listPat)
     listPat = aDots.Rotate90(listPat);
     lstlstPat.Add(listPat);
 
-    //lstlstPat.Add(aDots.Rotate_Mirror_Horizontal(listPat));
-    //foreach (Dot d in aDots.Rotate90(listPat))
-    //{
-    //    int _x = d.y;
-    //    int _y = d.x;
-    //    Dot dot = new Dot(_x, _y, d.Own);
-    //    dot.PatternsFirstDot = d.PatternsFirstDot;
-    //    dot.PatternsMoveDot = d.PatternsMoveDot;
-    //    dot.PatternsEmptyDot = d.PatternsEmptyDot;
-    //    dot.PatternsAnyDot = d.PatternsAnyDot;
-    //    l.Add(dot);
-    //    d.x = _x; d.y = _y;
-        //int x = d.x; 
-        //int y = d.y;
-        //d.x = y; d.y = x;
-        //l.Add(d);
-    //}
-
     return lstlstPat;
 }
 
@@ -2449,9 +2431,10 @@ private List<List<Dot>> ListRotatePatterns(List<Dot> listPat)
                                 break;
                         }
                          
-                        if (d.x < p.Xmin | d.x > p.Xmax |  //если заданы границы, проверяем
-                            d.y < p.Ymin | d.y > p.Ymax |  //
-                            aDots[d.x + dt.dX, d.y + dt.dY].Own != DotOwner) 
+                        //if (d.x < p.Xmin | d.x > p.Xmax |  //если заданы границы, проверяем
+                        //    d.y < p.Ymin | d.y > p.Ymax |  //
+                        //    aDots[d.x + dt.dX, d.y + dt.dY].Own != DotOwner) 
+                        if (aDots[d.x + dt.dX, d.y + dt.dY].Own != DotOwner) 
                         {
                             flag = false;    
                             break;
