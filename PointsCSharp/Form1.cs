@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.IO;
 namespace DotsGame
 {
     public partial class Form1 : Form
@@ -50,32 +51,32 @@ namespace DotsGame
                        
                         #region PatternEditor
                         #if DEBUG
-                        if (game.PE_On==true)
+                        if (game.EditMode==true)
                         {
-                            if(game.ListPatterns.Contains(game.aDots[dot.x, dot.y])==false)
+                            if(ListPatterns.Contains(game.aDots[dot.x, dot.y])==false)
                             {
-                                 game.ListPatterns.Add(game.aDots[dot.x, dot.y]);
+                                 ListPatterns.Add(game.aDots[dot.x, dot.y]);
                             }
-                            if (game.PE_EmptyDot)
+                            if (PE_EmptyDot)
                             {
                                 if (game.aDots[dot.x, dot.y].PatternsAnyDot) game.aDots[dot.x, dot.y].PatternsAnyDot = false;
                                 game.aDots[dot.x, dot.y].PatternsEmptyDot = true;
                             }
-                            if (game.PE_FirstDot)
+                            if (PE_FirstDot)
                             {
                                 game.aDots[dot.x, dot.y].PatternsFirstDot = true;
-                                game.PE_FirstDot = false;
+                                PE_FirstDot = false;
                                 pbxBoard.Invalidate();
-                                game.PE_MoveDot = true;
+                                PE_MoveDot = true;
                                 MessageBox.Show("Ставьте точку хода (ЛКМ), на точку отмеченную как пустую");
                                 break;
                             }
-                            if (game.PE_MoveDot)
+                            if (PE_MoveDot)
                             {
                                 game.aDots[dot.x, dot.y].PatternsMoveDot = true;
-                                game.PE_MoveDot = false;
+                                PE_MoveDot = false;
                             }
-                            if (game.PE_AnyDot)
+                            if (PE_AnyDot)
                             {
                                 if (game.aDots[dot.x, dot.y].PatternsEmptyDot) game.aDots[dot.x, dot.y].PatternsEmptyDot = false;
                                 game.aDots[dot.x, dot.y].PatternsAnyDot = true;
@@ -114,9 +115,9 @@ namespace DotsGame
                         break;
                  #if DEBUG //паттерны и пр.
                     case MouseButtons.Right:
-                        if (game.PE_On == true)
+                        if (game.EditMode == true)
                         {
-                            game.MakePattern();
+                            MakePattern();
                             break;
                         }
                         else { 
@@ -125,9 +126,9 @@ namespace DotsGame
                         }
                         break;
                     case MouseButtons.Middle:
-                        if (game.PE_On == true)
+                        if (game.EditMode == true)
                         {
-                            game.ListPatterns.Remove(game.aDots[dot.x, dot.y]);
+                            ListPatterns.Remove(game.aDots[dot.x, dot.y]);
                             break;
                         }
 
@@ -468,6 +469,86 @@ namespace DotsGame
         {
             game.aDots.Dots=game.aDots.Rotate_Mirror_Horizontal(game.aDots.Dots);
             pbxBoard.Refresh();
+        }
+
+        private void редакторПаттерновToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolEditorPattern.Visible = toolEditorPattern.Visible ? false : true;
+            game.EditMode=true;
+        }
+        private void tlsEditPattern_Click(object sender, EventArgs e)
+        {
+            //switch (toolEditorPattern.Checked)
+            //{
+            //    case true:
+            //        tlsEditPattern.Checked = false;
+            //        tlsТочкаОтсчета.Enabled = false;
+            //        tlsПустая.Enabled = false;
+            //        tlsПустая.Checked = false;
+            //        tlsТочкаХода.Enabled = false;
+            //        tlsКромеВражеской.Enabled = false;
+
+            //        break;
+            //    case false:
+            //        tlsEditPattern.Checked = true;
+            //        tlsТочкаОтсчета.Enabled = true;
+            //        tlsПустая.Enabled = true;
+            //        tlsПустая.Checked = true;
+            //        tlsТочкаХода.Enabled = true;
+            //        tlsКромеВражеской.Enabled = true;
+            //        break;
+            //}
+        }
+
+        private void Form2_MouseEnter(object sender, EventArgs e)
+        {
+            Activate();
+        }
+
+        private void tlsТочкаОтсчета_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tlsТочкаОтсчета.Checked)
+            {
+                tlsКромеВражеской.Checked = false;
+                tlsТочкаХода.Checked = false;
+                tlsПустая.Checked = false;
+            }
+        }
+
+        private void tlsПустая_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tlsПустая.Checked)
+            {
+                tlsКромеВражеской.Checked = false;
+                tlsТочкаХода.Checked = false;
+                tlsТочкаОтсчета.Checked = false;
+            }
+        }
+
+        private void tlsКромеВражеской_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tlsКромеВражеской.Checked)
+            {
+                tlsПустая.Checked = false;
+                tlsТочкаХода.Checked = false;
+                tlsТочкаОтсчета.Checked = false;
+            }
+        }
+
+        private void tlsТочкаХода_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tlsТочкаХода.Checked)
+            {
+                tlsПустая.Checked = false;
+                tlsКромеВражеской.Checked = false;
+                tlsТочкаОтсчета.Checked = false;
+            }
+        }
+
+        private void toolExit_Click(object sender, EventArgs e)
+        {
+            toolEditorPattern.Visible = false;
+            game.EditMode = false;
         }
 
     }  

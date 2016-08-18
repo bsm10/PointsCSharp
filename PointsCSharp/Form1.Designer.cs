@@ -54,6 +54,7 @@
             this.цветИгрокаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.цветПротивникаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.autoplayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.редакторПаттерновToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.справкаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.содержаниеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -67,12 +68,20 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.button1 = new System.Windows.Forms.Button();
-            this.gameBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.button2 = new System.Windows.Forms.Button();
+            this.toolEditorPattern = new System.Windows.Forms.ToolStrip();
+            this.tlsТочкаОтсчета = new System.Windows.Forms.ToolStripButton();
+            this.tlsПустая = new System.Windows.Forms.ToolStripButton();
+            this.tlsКромеВражеской = new System.Windows.Forms.ToolStripButton();
+            this.tlsТочкаХода = new System.Windows.Forms.ToolStripButton();
+            this.tlsMakePattern = new System.Windows.Forms.ToolStripButton();
+            this.toolExit = new System.Windows.Forms.ToolStripButton();
+            this.gameBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listMovesBindingSource)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            this.toolEditorPattern.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gameBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,9 +93,9 @@
             this.pbxBoard.BackColor = System.Drawing.Color.White;
             this.pbxBoard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pbxBoard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbxBoard.Location = new System.Drawing.Point(0, 26);
+            this.pbxBoard.Location = new System.Drawing.Point(0, 27);
             this.pbxBoard.Name = "pbxBoard";
-            this.pbxBoard.Size = new System.Drawing.Size(346, 417);
+            this.pbxBoard.Size = new System.Drawing.Size(371, 416);
             this.pbxBoard.TabIndex = 0;
             this.pbxBoard.TabStop = false;
             this.pbxBoard.Click += new System.EventHandler(this.pbxBoard_Click);
@@ -194,7 +203,8 @@
             this.цветКурсораToolStripMenuItem,
             this.цветИгрокаToolStripMenuItem,
             this.цветПротивникаToolStripMenuItem,
-            this.autoplayToolStripMenuItem});
+            this.autoplayToolStripMenuItem,
+            this.редакторПаттерновToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.optionsToolStripMenuItem.Text = "&Опции";
@@ -294,6 +304,13 @@
             this.autoplayToolStripMenuItem.Text = "Autoplay";
             this.autoplayToolStripMenuItem.Click += new System.EventHandler(this.autoplayToolStripMenuItem_Click);
             // 
+            // редакторПаттерновToolStripMenuItem
+            // 
+            this.редакторПаттерновToolStripMenuItem.Name = "редакторПаттерновToolStripMenuItem";
+            this.редакторПаттерновToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.редакторПаттерновToolStripMenuItem.Text = "Редактор паттернов";
+            this.редакторПаттерновToolStripMenuItem.Click += new System.EventHandler(this.редакторПаттерновToolStripMenuItem_Click);
+            // 
             // справкаToolStripMenuItem
             // 
             this.справкаToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -338,7 +355,7 @@
             this.statusStrip1.Location = new System.Drawing.Point(0, 446);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(346, 28);
+            this.statusStrip1.Size = new System.Drawing.Size(371, 28);
             this.statusStrip1.TabIndex = 13;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -383,10 +400,6 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // gameBindingSource
-            // 
-            this.gameBindingSource.DataSource = typeof(DotsGame.Game);
-            // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(284, 0);
@@ -397,11 +410,95 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // toolEditorPattern
+            // 
+            this.toolEditorPattern.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolEditorPattern.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolEditorPattern.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tlsТочкаОтсчета,
+            this.tlsПустая,
+            this.tlsКромеВражеской,
+            this.tlsТочкаХода,
+            this.tlsMakePattern,
+            this.toolExit});
+            this.toolEditorPattern.Location = new System.Drawing.Point(0, 0);
+            this.toolEditorPattern.Name = "toolEditorPattern";
+            this.toolEditorPattern.Size = new System.Drawing.Size(371, 27);
+            this.toolEditorPattern.TabIndex = 31;
+            this.toolEditorPattern.Text = "toolStrip1";
+            this.toolEditorPattern.Visible = false;
+            // 
+            // tlsТочкаОтсчета
+            // 
+            this.tlsТочкаОтсчета.CheckOnClick = true;
+            this.tlsТочкаОтсчета.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsТочкаОтсчета.Image = ((System.Drawing.Image)(resources.GetObject("tlsТочкаОтсчета.Image")));
+            this.tlsТочкаОтсчета.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsТочкаОтсчета.Name = "tlsТочкаОтсчета";
+            this.tlsТочкаОтсчета.Size = new System.Drawing.Size(24, 24);
+            this.tlsТочкаОтсчета.Text = "Точка отсчета";
+            // 
+            // tlsПустая
+            // 
+            this.tlsПустая.CheckOnClick = true;
+            this.tlsПустая.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsПустая.Image = ((System.Drawing.Image)(resources.GetObject("tlsПустая.Image")));
+            this.tlsПустая.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsПустая.Name = "tlsПустая";
+            this.tlsПустая.Size = new System.Drawing.Size(24, 24);
+            this.tlsПустая.Text = "Отметить точку";
+            // 
+            // tlsКромеВражеской
+            // 
+            this.tlsКромеВражеской.CheckOnClick = true;
+            this.tlsКромеВражеской.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsКромеВражеской.Image = ((System.Drawing.Image)(resources.GetObject("tlsКромеВражеской.Image")));
+            this.tlsКромеВражеской.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsКромеВражеской.Name = "tlsКромеВражеской";
+            this.tlsКромеВражеской.Size = new System.Drawing.Size(24, 24);
+            this.tlsКромеВражеской.Text = "Любая, кроме вражеской";
+            // 
+            // tlsТочкаХода
+            // 
+            this.tlsТочкаХода.CheckOnClick = true;
+            this.tlsТочкаХода.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsТочкаХода.Image = ((System.Drawing.Image)(resources.GetObject("tlsТочкаХода.Image")));
+            this.tlsТочкаХода.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsТочкаХода.Name = "tlsТочкаХода";
+            this.tlsТочкаХода.Size = new System.Drawing.Size(24, 24);
+            this.tlsТочкаХода.Text = "Точка хода";
+            // 
+            // tlsMakePattern
+            // 
+            this.tlsMakePattern.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsMakePattern.Image = global::DotsGame.Properties.Resources.Лист;
+            this.tlsMakePattern.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsMakePattern.Name = "tlsMakePattern";
+            this.tlsMakePattern.Size = new System.Drawing.Size(24, 24);
+            this.tlsMakePattern.Text = "MakePattern";
+            this.tlsMakePattern.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            // 
+            // toolExit
+            // 
+            this.toolExit.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolExit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolExit.Image = ((System.Drawing.Image)(resources.GetObject("toolExit.Image")));
+            this.toolExit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolExit.Name = "toolExit";
+            this.toolExit.Size = new System.Drawing.Size(115, 24);
+            this.toolExit.Text = "Выйти из редактора";
+            this.toolExit.Click += new System.EventHandler(this.toolExit_Click);
+            // 
+            // gameBindingSource
+            // 
+            this.gameBindingSource.DataSource = typeof(DotsGame.Game);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(346, 474);
+            this.ClientSize = new System.Drawing.Size(371, 474);
+            this.Controls.Add(this.toolEditorPattern);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.statusStrip1);
@@ -423,6 +520,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.listMovesBindingSource)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.toolEditorPattern.ResumeLayout(false);
+            this.toolEditorPattern.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gameBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -471,6 +570,14 @@
         private System.Windows.Forms.ToolStripMenuItem открытьПоследнююToolStripMenuItem;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        public System.Windows.Forms.ToolStrip toolEditorPattern;
+        public System.Windows.Forms.ToolStripButton tlsТочкаОтсчета;
+        public System.Windows.Forms.ToolStripButton tlsПустая;
+        public System.Windows.Forms.ToolStripButton tlsКромеВражеской;
+        public System.Windows.Forms.ToolStripButton tlsТочкаХода;
+        private System.Windows.Forms.ToolStripButton tlsMakePattern;
+        private System.Windows.Forms.ToolStripMenuItem редакторПаттерновToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton toolExit;
     }
 }
 

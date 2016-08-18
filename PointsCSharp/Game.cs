@@ -33,7 +33,6 @@ namespace DotsGame
         public ArrayDots aDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
         public List<Dot> lstDots;
 
-        public List<Pattern> Patterns = new List<Pattern>();
         private List<Links> lnks;
         private Dot best_move; //ход который должен сделать комп
         private Dot last_move; //последний ход
@@ -51,6 +50,12 @@ namespace DotsGame
         {
             get { return list_moves; }   
         }
+        public bool Autoplay
+        {
+            get { return f.rbtnHand.Checked; }
+            //set { f.rbtnHand.Checked = value; }
+        }
+
         public Dot LastMove
         {
             get
@@ -2065,315 +2070,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             f.Top = top;
             f.Left = left + width;
         }
-        #region Pattern Editor
-        private List<Dot> lstPat;
-        public List<Dot> ListPatterns
-        {
-            get { return lstPat; }
-        }
-        public bool Autoplay
-        {
-            get { return f.rbtnHand.Checked; }
-            //set { f.rbtnHand.Checked = value; }
-        }
-        public bool PE_FirstDot
-        {
-            get { return f.tlsТочкаОтсчета.Checked; }
-            set { f.tlsТочкаОтсчета.Checked = value; }
-        }
-        public bool PE_EmptyDot
-        {
-            get { return f.tlsПустая.Checked; }
-            set { f.tlsПустая.Checked = value; }
 
-        }
-        public bool PE_AnyDot
-        {
-            get { return f.tlsКромеВражеской.Checked; }
-            set { f.tlsКромеВражеской.Checked = value; }
-
-        }
-        public bool PE_MoveDot
-        {
-            get { return f.tlsТочкаХода.Checked; }
-            set { f.tlsТочкаХода.Checked = value; }
-
-        }
-        public bool PE_On
-        {
-            get
-            {
-                if (f.tlsEditPattern.Checked & lstPat==null) lstPat = new List<Dot>();
-                return f.tlsEditPattern.Checked;
-
-            }
-            set { f.tlsEditPattern.Checked = value; }
-        }
-    public void WritePatternToFile(List<string> lines)
-    {
-        // Append new text to an existing file.
-        // The using statement automatically flushes AND CLOSES the stream and calls 
-        // IDisposable.Dispose on the stream object.
-        using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(path_pattern, true))
-        {
-
-            foreach (string s in lines) file.WriteLine(s);
-        }
-    }
-
-    private int GetNumberPattern()
-    {
-        int number = 0;
-        string line;
-        // Read the file and display it line by line.
-        StreamReader file = new StreamReader(path_pattern);
-        while ((line = file.ReadLine()) != null)
-        {
-            if (line.Trim() == "Begin")
-            {
-                line = file.ReadLine();
-                number = Convert.ToInt32(line);
-            }
-        }
-        file.Close();
-        number++;
-        return number;
-    }
-        public void MakePattern()//сохраняет паттерн в текстовое поле
-        {
-        //lstPat
-            //rotate dots in pattern
-            //List<List<Dot>> rotatePattern = new List<List<Dot>>();
-
-            foreach (List<Dot> listDots in ListRotatePatterns(lstPat)) AddPatternDots(listDots);
-            
-            lstPat.Clear();
-            f.tlsEditPattern.Checked = false;
-            aDots.UnmarkAllDots();
-        }
-        //----------------------------------------------------------
-        private void AddPatternDots(List<Dot> ListPatternDots)
-        {
-            List<string> lines = new List<string>();
-            string s = string.Empty;
-
-            int dx,dy;
-            Dot firstDot = ListPatternDots.Find(d => d.PatternsFirstDot);
-            Dot moveDot = ListPatternDots.Find(dt => dt.PatternsMoveDot);
-            //------------------------------------------------
-            lines.Add("Begin");
-            lines.Add(GetNumberPattern().ToString());
-            lines.Add("3,3");
-            lines.Add("Dots");
-
-            for (int i = 0; i < ListPatternDots.Count; i++)
-            {
-                string own = "";
-                if (firstDot.Own == ListPatternDots[i].Own) own = "owner";
-                if (firstDot.Own != ListPatternDots[i].Own) own = "enemy";
-                if (ListPatternDots[i].Own == 0 & ListPatternDots[i].PatternsAnyDot == false) own = "0";
-                if (ListPatternDots[i].PatternsAnyDot) own = "!= enemy";
-                dx = ListPatternDots[i].x - firstDot.x;
-                dy = ListPatternDots[i].y - firstDot.y;
-                if ((dx == 0 & dy == 0) == false)
-                {
-                    s = dx.ToString() + ", " + dy.ToString() + ", " + own;
-                    lines.Add(s);
-                }
-            }
-            lines.Add("Result");
-            lines.Add((moveDot.x - firstDot.x).ToString() + ", " +
-                      (moveDot.y - firstDot.y).ToString());
-            lines.Add("End");
-
-            WritePatternToFile(lines);
-            s = string.Empty;
-            foreach(string st in lines) s = s + st + " \r\n";
-            DebugWindow.txtboxPattern.Text=s;
-
-        }
-
-        //public void MakePattern_old()//сохраняет паттерн в текстовое поле
-        //{
-        //    string s, strdX, strdY, sWhere = "", sMove = "";
-        //    int dx, dy, ind;
-        //    ind = lstPat.FindIndex(
-        //        delegate (Dot dt)
-        //        {
-        //            return dt.PatternsFirstDot == true;
-        //        });
-        //    var random = new Random(DateTime.Now.Millisecond);
-        //    string n = random.Next(1, 1000).ToString();
-        //    for (int i = 0; i < lstPat.Count; i++)
-        //    {
-        //        string own = "";
-        //        if (lstPat[ind].Own == lstPat[i].Own) own = "== Owner";
-        //        if (lstPat[ind].Own != lstPat[i].Own) own = "== enemy_own";
-        //        if (lstPat[i].Own == 0 & lstPat[i].PatternsAnyDot==false) own = " == 0";
-        //        if (lstPat[i].PatternsAnyDot) own = " != enemy_own";
-
-        //        dx = lstPat[i].x -lstPat[ind].x;
-        //        if (dx == 0) strdX = "";
-        //        else if (dx > 0) strdX = "+" + dx.ToString();
-        //        else strdX = dx.ToString();
-
-        //        dy = lstPat[i].y -lstPat[ind].y;
-        //        if (dy == 0) strdY = "";
-        //        else if (dy > 0) strdY = "+" + dy.ToString();
-        //        else strdY = dy.ToString();
-
-        //        if ((dx == 0 & dy == 0) == false) sWhere += " && aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " && aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
-
-        //        if (lstPat[i].PatternsMoveDot)
-        //        {
-        //            //sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
-        //            sMove = " if (pat" + n + ".Count() > 0) \r\n " + "{" +
-        //            "result_dot = new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + "); \r\n" +
-        //            "result_dot.iNumberPattern = iNumberPattern; \r\n" +
-        //            "return result_dot; \r\n " + "}";
-
-        //        }
-        //    }
-        //    s = "iNumberPattern = " + n + "; \r\n";
-        //    s += "var pat" + n + " = from Dot d in aDots where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
-        //    n += "_2";
-        //    sWhere = ""; sMove = "";
-        //    for (int i = 0; i < lstPat.Count ; i++)
-        //    {
-        //        string own = "";
-        //        if (lstPat[ind].Own == lstPat[i].Own) own = "== Owner";
-        //        if (lstPat[ind].Own != lstPat[i].Own) own = "== enemy_own";
-        //        if (lstPat[i].Own == 0 & lstPat[i].PatternsAnyDot == false) own = " == 0";
-        //        if (lstPat[i].PatternsAnyDot) own = " != enemy_own";
-
-        //        dx = lstPat[ind].x -lstPat[i].x;
-        //        if (dx == 0) strdX = "";
-        //        else if (dx > 0) strdX = "+" + dx.ToString();
-        //        else strdX = dx.ToString();
-
-        //        dy = lstPat[ind].y -lstPat[i].y;
-        //        if (dy == 0) strdY = "";
-        //        else if (dy > 0) strdY = "+" + dy.ToString();
-        //        else strdY = dy.ToString();
-        //        if ((dx == 0 & dy == 0) == false) sWhere += " && aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " && aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
-        //        if (lstPat[i].PatternsMoveDot)
-        //        {
-        //            //sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
-        //            sMove = " if (pat" + n + ".Count() > 0) \r\n " + "{" +
-        //            "result_dot = new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + "); \r\n" +
-        //            "result_dot.iNumberPattern = iNumberPattern; \r\n" +
-        //            "return result_dot; \r\n " + "}";
-        //        }
-
-        //    }
-        //    s += "//180 Rotate=========================================================================================================== \r\n";
-        //    s += "var pat" + n + " = from Dot d in aDots where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
-            
-        //    n += "_3";
-        //    sWhere = ""; sMove = "";
-        //    List<Dot> l =RotateMatrix(90);
-        //    for (int i = 0; i < l.Count ; i++)
-        //    {
-        //        string own = "";
-        //        if (l[ind].Own == l[i].Own) own = "== Owner";
-        //        if (l[ind].Own != l[i].Own) own = "== enemy_own";
-        //        if (l[i].Own == 0 & l[i].PatternsAnyDot == false) own = " == 0";
-        //        if (l[i].PatternsAnyDot) own = " != enemy_own";
-
-        //        dx = l[ind].x -l[i].x;
-        //        if (dx == 0) strdX = "";
-        //        else if (dx > 0) strdX = "+" + dx.ToString();
-        //        else strdX = dx.ToString();
-
-        //        dy = l[ind].y -l[i].y;
-        //        if (dy == 0) strdY = "";
-        //        else if (dy > 0) strdY = "+" + dy.ToString();
-        //        else strdY = dy.ToString();
-        //        if ((dx == 0 & dy == 0) == false) sWhere += " && aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " && aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
-        //        if (l[i].PatternsMoveDot)
-        //        {
-        //            //sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
-        //            sMove = " if (pat" + n + ".Count() > 0) \r\n " + "{" +
-        //            "result_dot = new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + "); \r\n" +
-        //            "result_dot.iNumberPattern = iNumberPattern; \r\n" +
-        //            "return result_dot; \r\n" + "}";
-
-        //        }
-        //    }
-        //    s += "//--------------Rotate on 90-----------------------------------\r\n";
-        //    s += "var pat" + n + " = from Dot d in aDots where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
-        //    n += "_4";
-        //    sWhere = ""; sMove = "";
-        //    for (int i = 0; i < l.Count ; i++)
-        //    {
-        //        string own = "";
-        //        if (l[ind].Own == l[i].Own) own = "== Owner";
-        //        if (l[ind].Own != l[i].Own) own = "== enemy_own";
-        //        if (l[i].Own == 0 & l[i].PatternsAnyDot == false) own = " == 0";
-        //        if (l[i].PatternsAnyDot) own = " != enemy_own";
-
-        //        dx = l[i].x -l[ind].x;
-        //        if (dx == 0) strdX = "";
-        //        else if (dx > 0) strdX = "+" + dx.ToString();
-        //        else strdX = dx.ToString();
-
-        //        dy = l[i].y -l[ind].y;
-        //        if (dy == 0) strdY = "";
-        //        else if (dy > 0) strdY = "+" + dy.ToString();
-        //        else strdY = dy.ToString();
-        //        if ((dx == 0 & dy == 0) == false) sWhere += " && aDots[d.x" + strdX + ", d.y" + strdY + "].Own " + own + " && aDots[d.x" + strdX + ", d.y" + strdY + "].Blocked == false \r\n";
-        //        if (l[i].PatternsMoveDot)
-        //        {
-        //            //sMove = " if (pat" + n + ".Count() > 0) return new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + ");";
-        //            sMove = " if (pat" + n + ".Count() > 0) \r\n " + "{" +
-        //            "result_dot = new Dot(pat" + n + ".First().x" + strdX + "," + "pat" + n + ".First().y" + strdY + "); \r\n" +
-        //            "result_dot.iNumberPattern = iNumberPattern; \r\n" +
-        //            "return result_dot; \r\n" + "}";
-
-        //        }
-        //    }
-        //    s += "//--------------Rotate on 90 -2-----------------------------------\r\n";
-        //    s += "var pat" + n + " = from Dot d in aDots where d.Own == Owner \r\n" + sWhere + "select d; \r\n" + sMove + "\r\n";
-        //    s += "//============================================================================================================== \r\n";
-        //    f.txtDebug.Text = s;
-        //    MessageBox.Show("Into clipboard!");
-        //    Clipboard.Clear();
-        //    Clipboard.SetText(s);
-
-        //    lstPat.Clear();
-        //    f.tlsEditPattern.Checked=false;
-        //    aDots.UnmarkAllDots();
-        //}
-
-private List<List<Dot>> ListRotatePatterns(List<Dot> listPat)
-{
-    List<List<Dot>> lstlstPat = new List<List<Dot>>();
-
-    //List<Dot> l = new List<Dot>(listPat.Count);
-    Dot firstDot = listPat.Find(d => d.PatternsFirstDot);
-    Dot moveDot = listPat.Find(dt => dt.PatternsMoveDot);
-
-    lstlstPat.Add(listPat);
-    listPat = aDots.Rotate90(listPat);
-    lstlstPat.Add(listPat);
-    listPat = aDots.Rotate_Mirror_Horizontal(listPat);
-    lstlstPat.Add(listPat);
-    listPat = aDots.Rotate90(listPat);
-    lstlstPat.Add(listPat);
-    listPat = aDots.Rotate_Mirror_Horizontal(listPat);
-    lstlstPat.Add(listPat);
-    listPat = aDots.Rotate90(listPat);
-    lstlstPat.Add(listPat);
-    listPat = aDots.Rotate_Mirror_Horizontal(listPat);
-    lstlstPat.Add(listPat);
-    listPat = aDots.Rotate90(listPat);
-    lstlstPat.Add(listPat);
-
-    return lstlstPat;
-}
-
-   #endregion
 #endif
         //==========================================================================
         private Dot CheckPattern(int Owner, ArrayDots _aDots)
@@ -2450,58 +2147,13 @@ private List<List<Dot>> ListRotatePatterns(List<Dot> listPat)
             return null;
         }
 
-        public class Pattern
-        {
-            public int PatternNumber { get; set; }
-            List<DotInPattern> _DotsPattern = new List<DotInPattern>();
-
-            public int Xmin { get; set; }
-            public int Xmax { get; set; }
-            public int Ymin { get; set; }
-            public int Ymax { get; set; }
-
-            public List<DotInPattern> DotsPattern
+        public string Path_PatternData {
+            get
             {
-                get
-                {
-                    return _DotsPattern;
-                }
-                set
-                {
-                    _DotsPattern = value;
-                }
-
+                return Application.StartupPath + @"\Resources\patterns.dts"; //@"d:\Proj\PointsCSharp\PointsCSharp\patterns.dts"; 
             }
-            public DotInPattern dXdY_ResultDot = new DotInPattern();
-            public Dot Dot { get; set; }
-            public Dot ResultDot 
-            {
-                get
-                {
-                    return new Dot(Dot.x + dXdY_ResultDot.dX, Dot.y + dXdY_ResultDot.dY, Dot.Own);
-                }
-            }
-             
-            public override string ToString()
-            {
-                return "Pattern " + PatternNumber.ToString();
-            }
-
         }
 
-        public class DotInPattern
-        {
-            public int dX { get; set; }
-            public int dY { get; set; }
-            public string Owner { get; set; }
-            public override string ToString()
-            {
-                return "dX = " + dX.ToString() + "; dY = " + dY.ToString();
-            }
-
-        }
-
-        string path_pattern = Application.StartupPath + @"\Resources\patterns.dts"; //@"d:\Proj\PointsCSharp\PointsCSharp\patterns.dts"; 
         
         public void LoadPattern()
         {
@@ -2511,7 +2163,7 @@ private List<List<Dot>> ListRotatePatterns(List<Dot> listPat)
                 
                 string line;
                 // Read the file and display it line by line.
-                StreamReader file = new StreamReader(path_pattern);
+                StreamReader file = new StreamReader(Path_PatternData);
                 Pattern ptrn=new Pattern();
                 while ((line = file.ReadLine()) != null)
                 {
