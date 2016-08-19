@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 namespace DotsGame
 {
     public partial class Form1 : Form
@@ -65,16 +66,16 @@ namespace DotsGame
                             if (PE_FirstDot)
                             {
                                 game.aDots[dot.x, dot.y].PatternsFirstDot = true;
-                                PE_FirstDot = false;
-                                pbxBoard.Invalidate();
-                                PE_MoveDot = true;
-                                MessageBox.Show("Ставьте точку хода (ЛКМ), на точку отмеченную как пустую");
+                                //PE_FirstDot = false;
+                                //pbxBoard.Invalidate();
+                                //PE_MoveDot = true;
+                                //MessageBox.Show("Ставьте точку хода (ЛКМ), на точку отмеченную как пустую");
                                 break;
                             }
                             if (PE_MoveDot)
                             {
                                 game.aDots[dot.x, dot.y].PatternsMoveDot = true;
-                                PE_MoveDot = false;
+                                //PE_MoveDot = false;
                             }
                             if (PE_AnyDot)
                             {
@@ -506,7 +507,15 @@ namespace DotsGame
 
         private void tlsMakePattern_Click(object sender, EventArgs e)
         {
+            if (game.lstDotsInPattern.Where(dot=>dot.PatternsFirstDot).Count()==0 |
+            game.lstDotsInPattern.Where(dot => dot.PatternsMoveDot).Count() == 0)
+            {
+                MessageBox.Show("Проверь первую точку (FirstDot) и точку куда ходить (MoveDot)");
+                return;
+                //Ставьте точку хода (ЛКМ), на точку отмеченную как пустую
+            }
             MakePattern();
+            
         }
 
         private void tlsТочкаОтсчета_CheckStateChanged(object sender, EventArgs e)
