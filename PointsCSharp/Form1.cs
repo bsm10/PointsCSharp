@@ -81,7 +81,12 @@ namespace DotsGame
                                 if (game.aDots[dot.x, dot.y].PatternsEmptyDot) game.aDots[dot.x, dot.y].PatternsEmptyDot = false;
                                 game.aDots[dot.x, dot.y].PatternsAnyDot = true;
                             }
-                        
+                            else if (!PE_EmptyDot & !PE_FirstDot & !PE_MoveDot & !PE_AnyDot)
+                            //расстановка точек в режиме редактирования паттернов
+                            {
+                                MoveGamer(PE_Player, new Dot(game.MousePos.X, game.MousePos.Y, 1));
+                                break;
+                            }
                             break;
                         }
                         #endif
@@ -92,7 +97,7 @@ namespace DotsGame
                         if (player_move == 2 | player_move == 0)
                         {
                         #if DEBUG
-                            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift | game.Autoplay)
+                            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift | game.Autoplay )
                             {
                                 MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1));
                                 break;
@@ -115,15 +120,15 @@ namespace DotsGame
                         break;
                  #if DEBUG //паттерны и пр.
                     case MouseButtons.Right:
-                        if (game.EditMode == true)
-                        {
-                            MakePattern();
-                            break;
-                        }
-                        else { 
+                        //if (game.EditMode == true)
+                        //{
+                        //    MakePattern();
+                        //    break;
+                        //}
+                        //else { 
                         //============Ход компьютера  в ручном режиме=================
                         MoveGamer(2, new Dot(dot.x, dot.y, 2));
-                        }
+                        //}
                         break;
                     case MouseButtons.Middle:
                         if (game.EditMode == true)
@@ -476,73 +481,10 @@ namespace DotsGame
             toolEditorPattern.Visible = toolEditorPattern.Visible ? false : true;
             game.EditMode=true;
         }
-        private void tlsEditPattern_Click(object sender, EventArgs e)
-        {
-            //switch (toolEditorPattern.Checked)
-            //{
-            //    case true:
-            //        tlsEditPattern.Checked = false;
-            //        tlsТочкаОтсчета.Enabled = false;
-            //        tlsПустая.Enabled = false;
-            //        tlsПустая.Checked = false;
-            //        tlsТочкаХода.Enabled = false;
-            //        tlsКромеВражеской.Enabled = false;
-
-            //        break;
-            //    case false:
-            //        tlsEditPattern.Checked = true;
-            //        tlsТочкаОтсчета.Enabled = true;
-            //        tlsПустая.Enabled = true;
-            //        tlsПустая.Checked = true;
-            //        tlsТочкаХода.Enabled = true;
-            //        tlsКромеВражеской.Enabled = true;
-            //        break;
-            //}
-        }
 
         private void Form2_MouseEnter(object sender, EventArgs e)
         {
             Activate();
-        }
-
-        private void tlsТочкаОтсчета_CheckedChanged(object sender, EventArgs e)
-        {
-            if (tlsТочкаОтсчета.Checked)
-            {
-                tlsКромеВражеской.Checked = false;
-                tlsТочкаХода.Checked = false;
-                tlsПустая.Checked = false;
-            }
-        }
-
-        private void tlsПустая_CheckedChanged(object sender, EventArgs e)
-        {
-            if (tlsПустая.Checked)
-            {
-                tlsКромеВражеской.Checked = false;
-                tlsТочкаХода.Checked = false;
-                tlsТочкаОтсчета.Checked = false;
-            }
-        }
-
-        private void tlsКромеВражеской_CheckedChanged(object sender, EventArgs e)
-        {
-            if (tlsКромеВражеской.Checked)
-            {
-                tlsПустая.Checked = false;
-                tlsТочкаХода.Checked = false;
-                tlsТочкаОтсчета.Checked = false;
-            }
-        }
-
-        private void tlsТочкаХода_CheckedChanged(object sender, EventArgs e)
-        {
-            if (tlsТочкаХода.Checked)
-            {
-                tlsПустая.Checked = false;
-                tlsКромеВражеской.Checked = false;
-                tlsТочкаОтсчета.Checked = false;
-            }
         }
 
         private void toolExit_Click(object sender, EventArgs e)
@@ -550,6 +492,67 @@ namespace DotsGame
             toolEditorPattern.Visible = false;
             game.EditMode = false;
         }
+
+
+        private void tlsRedDot_CheckStateChanged(object sender, EventArgs e)
+        {
+            tlsBlueDot.Checked = tlsRedDot.Checked ? false : true;
+        }
+
+        private void tlsBlueDot_CheckStateChanged(object sender, EventArgs e)
+        {
+            tlsRedDot.Checked = tlsBlueDot.Checked ? false : true;
+        }
+
+        private void tlsMakePattern_Click(object sender, EventArgs e)
+        {
+            MakePattern();
+        }
+
+        private void tlsТочкаОтсчета_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (tlsТочкаОтсчета.Checked)
+            {
+                tlsКромеВражеской.Checked = false;
+                tlsТочкаХода.Checked = false;
+                tlsПустая.Checked = false;
+            }
+
+        }
+
+        private void tlsКромеВражеской_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (tlsКромеВражеской.Checked)
+            {
+                tlsПустая.Checked = false;
+                tlsТочкаХода.Checked = false;
+                tlsТочкаОтсчета.Checked = false;
+            }
+
+        }
+
+        private void tlsТочкаХода_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (tlsТочкаХода.Checked)
+            {
+                tlsПустая.Checked = false;
+                tlsКромеВражеской.Checked = false;
+                tlsТочкаОтсчета.Checked = false;
+            }
+
+        }
+
+        private void tlsПустая_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (tlsПустая.Checked)
+            {
+                tlsКромеВражеской.Checked = false;
+                tlsТочкаХода.Checked = false;
+                tlsТочкаОтсчета.Checked = false;
+            }
+
+        }
+
 
     }  
 }

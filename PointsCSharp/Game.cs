@@ -1515,6 +1515,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             aDots = new ArrayDots(iBoardSize);
 
             lstDots = new List<Dot>(iBoardSize);
+            lstDotsInPattern = new List<Dot>();
 
             lnks = new List<Links>();
             dots_in_region = new List<Dot>();
@@ -2165,6 +2166,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 // Read the file and display it line by line.
                 StreamReader file = new StreamReader(Path_PatternData);
                 Pattern ptrn=new Pattern();
+                Patterns.Clear();
                 while ((line = file.ReadLine()) != null)
                 {
                     counter_line++;

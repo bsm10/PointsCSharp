@@ -87,6 +87,17 @@ namespace DotsGame
             set { tlsТочкаХода.Checked = value; }
 
         }
+
+        public int PE_Player
+        {
+            get { 
+                    return tlsRedDot.Checked ? 1 : 2; 
+                }
+
+            //set { tlsТочкаХода.Checked = value; }
+
+        }
+
         //public bool PE_On
         //{
         //    get
@@ -131,6 +142,7 @@ namespace DotsGame
         }
         public void MakePattern()//сохраняет паттерн в текстовое поле
         {
+            if(game.lstDotsInPattern.Count==0) return;
             List<Dot> lstPat = game.lstDotsInPattern;
             //rotate dots in pattern
             //List<List<Dot>> rotatePattern = new List<List<Dot>>();
@@ -140,6 +152,7 @@ namespace DotsGame
             lstPat.Clear();
             //tlsEditPattern.Checked = false;
             game.aDots.UnmarkAllDots();
+            game.LoadPattern();
         }
         //----------------------------------------------------------
         private void AddPatternDots(List<Dot> ListPatternDots)

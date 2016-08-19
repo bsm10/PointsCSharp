@@ -52,12 +52,12 @@
             this.tlsПустая = new System.Windows.Forms.ToolStripButton();
             this.tlsКромеВражеской = new System.Windows.Forms.ToolStripButton();
             this.tlsТочкаХода = new System.Windows.Forms.ToolStripButton();
+            this.tlsMakePattern = new System.Windows.Forms.ToolStripButton();
             this.lblBestMove = new System.Windows.Forms.Label();
             this.txtBestMove = new System.Windows.Forms.TextBox();
             this.txtPattern = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnDrawPattern = new System.Windows.Forms.Button();
-            this.tlsMakePattern = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -146,6 +146,7 @@
             this.rbtnHand.TabStop = true;
             this.rbtnHand.Text = "Ручной";
             this.rbtnHand.UseVisualStyleBackColor = true;
+            this.rbtnHand.CheckedChanged += new System.EventHandler(this.rbtnHand_CheckedChanged);
             // 
             // label4
             // 
@@ -422,6 +423,17 @@
             this.tlsТочкаХода.Text = "Точка хода";
             this.tlsТочкаХода.CheckedChanged += new System.EventHandler(this.tlsТочкаХода_CheckedChanged);
             // 
+            // tlsMakePattern
+            // 
+            this.tlsMakePattern.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsMakePattern.Image = global::DotsGame.Properties.Resources.Лист;
+            this.tlsMakePattern.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsMakePattern.Name = "tlsMakePattern";
+            this.tlsMakePattern.Size = new System.Drawing.Size(24, 24);
+            this.tlsMakePattern.Text = "MakePattern";
+            this.tlsMakePattern.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.tlsMakePattern.Click += new System.EventHandler(this.tlsMakePattern_Click);
+            // 
             // lblBestMove
             // 
             this.lblBestMove.AutoSize = true;
@@ -475,17 +487,6 @@
             this.btnDrawPattern.Text = "DrawPattern";
             this.btnDrawPattern.UseVisualStyleBackColor = true;
             this.btnDrawPattern.Click += new System.EventHandler(this.btnDrawPattern_Click);
-            // 
-            // tlsMakePattern
-            // 
-            this.tlsMakePattern.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tlsMakePattern.Image = global::DotsGame.Properties.Resources.Лист;
-            this.tlsMakePattern.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tlsMakePattern.Name = "tlsMakePattern";
-            this.tlsMakePattern.Size = new System.Drawing.Size(24, 24);
-            this.tlsMakePattern.Text = "MakePattern";
-            this.tlsMakePattern.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.tlsMakePattern.Click += new System.EventHandler(this.tlsMakePattern_Click);
             // 
             // Form2
             // 

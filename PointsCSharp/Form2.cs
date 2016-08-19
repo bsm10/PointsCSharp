@@ -123,5 +123,10 @@ namespace DotsGame
         {
 
         }
+
+        private void rbtnHand_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

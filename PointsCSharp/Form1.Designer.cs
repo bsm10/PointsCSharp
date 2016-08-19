@@ -67,15 +67,17 @@
             this.tlsStatusFoo = new System.Windows.Forms.ToolStripStatusLabel();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.toolEditorPattern = new System.Windows.Forms.ToolStrip();
+            this.tlsRedDot = new System.Windows.Forms.ToolStripButton();
+            this.tlsBlueDot = new System.Windows.Forms.ToolStripButton();
             this.tlsТочкаОтсчета = new System.Windows.Forms.ToolStripButton();
             this.tlsПустая = new System.Windows.Forms.ToolStripButton();
             this.tlsКромеВражеской = new System.Windows.Forms.ToolStripButton();
             this.tlsТочкаХода = new System.Windows.Forms.ToolStripButton();
-            this.tlsMakePattern = new System.Windows.Forms.ToolStripButton();
             this.toolExit = new System.Windows.Forms.ToolStripButton();
+            this.tlsMakePattern = new System.Windows.Forms.ToolStripButton();
+            this.tlsMirror = new System.Windows.Forms.ToolStripButton();
+            this.tlsRotate90 = new System.Windows.Forms.ToolStripButton();
             this.gameBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
@@ -390,43 +392,52 @@
             this.openFileDialog1.Filter = "Dots files (*.dts)|*.dts";
             this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(247, 0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(31, 23);
-            this.button1.TabIndex = 14;
-            this.button1.Text = "90";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(284, 0);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(31, 23);
-            this.button2.TabIndex = 15;
-            this.button2.Text = "z";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // toolEditorPattern
             // 
+            this.toolEditorPattern.Dock = System.Windows.Forms.DockStyle.Left;
             this.toolEditorPattern.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolEditorPattern.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolEditorPattern.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tlsRedDot,
+            this.tlsBlueDot,
             this.tlsТочкаОтсчета,
             this.tlsПустая,
             this.tlsКромеВражеской,
             this.tlsТочкаХода,
+            this.toolExit,
             this.tlsMakePattern,
-            this.toolExit});
+            this.tlsMirror,
+            this.tlsRotate90});
             this.toolEditorPattern.Location = new System.Drawing.Point(0, 0);
             this.toolEditorPattern.Name = "toolEditorPattern";
-            this.toolEditorPattern.Size = new System.Drawing.Size(371, 27);
+            this.toolEditorPattern.Size = new System.Drawing.Size(32, 446);
             this.toolEditorPattern.TabIndex = 31;
             this.toolEditorPattern.Text = "toolStrip1";
             this.toolEditorPattern.Visible = false;
+            // 
+            // tlsRedDot
+            // 
+            this.tlsRedDot.Checked = true;
+            this.tlsRedDot.CheckOnClick = true;
+            this.tlsRedDot.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tlsRedDot.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsRedDot.Image = ((System.Drawing.Image)(resources.GetObject("tlsRedDot.Image")));
+            this.tlsRedDot.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsRedDot.Name = "tlsRedDot";
+            this.tlsRedDot.Size = new System.Drawing.Size(29, 24);
+            this.tlsRedDot.Text = "toolStripButton2";
+            this.tlsRedDot.CheckStateChanged += new System.EventHandler(this.tlsRedDot_CheckStateChanged);
+            // 
+            // tlsBlueDot
+            // 
+            this.tlsBlueDot.CheckOnClick = true;
+            this.tlsBlueDot.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsBlueDot.Image = ((System.Drawing.Image)(resources.GetObject("tlsBlueDot.Image")));
+            this.tlsBlueDot.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsBlueDot.Name = "tlsBlueDot";
+            this.tlsBlueDot.Size = new System.Drawing.Size(29, 24);
+            this.tlsBlueDot.Text = "toolStripButton2";
+            this.tlsBlueDot.CheckStateChanged += new System.EventHandler(this.tlsBlueDot_CheckStateChanged);
             // 
             // tlsТочкаОтсчета
             // 
@@ -435,8 +446,9 @@
             this.tlsТочкаОтсчета.Image = ((System.Drawing.Image)(resources.GetObject("tlsТочкаОтсчета.Image")));
             this.tlsТочкаОтсчета.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsТочкаОтсчета.Name = "tlsТочкаОтсчета";
-            this.tlsТочкаОтсчета.Size = new System.Drawing.Size(24, 24);
+            this.tlsТочкаОтсчета.Size = new System.Drawing.Size(29, 24);
             this.tlsТочкаОтсчета.Text = "Точка отсчета";
+            this.tlsТочкаОтсчета.CheckStateChanged += new System.EventHandler(this.tlsТочкаОтсчета_CheckStateChanged);
             // 
             // tlsПустая
             // 
@@ -445,8 +457,9 @@
             this.tlsПустая.Image = ((System.Drawing.Image)(resources.GetObject("tlsПустая.Image")));
             this.tlsПустая.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsПустая.Name = "tlsПустая";
-            this.tlsПустая.Size = new System.Drawing.Size(24, 24);
+            this.tlsПустая.Size = new System.Drawing.Size(29, 24);
             this.tlsПустая.Text = "Отметить точку";
+            this.tlsПустая.CheckStateChanged += new System.EventHandler(this.tlsПустая_CheckStateChanged);
             // 
             // tlsКромеВражеской
             // 
@@ -455,8 +468,9 @@
             this.tlsКромеВражеской.Image = ((System.Drawing.Image)(resources.GetObject("tlsКромеВражеской.Image")));
             this.tlsКромеВражеской.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsКромеВражеской.Name = "tlsКромеВражеской";
-            this.tlsКромеВражеской.Size = new System.Drawing.Size(24, 24);
+            this.tlsКромеВражеской.Size = new System.Drawing.Size(29, 24);
             this.tlsКромеВражеской.Text = "Любая, кроме вражеской";
+            this.tlsКромеВражеской.CheckStateChanged += new System.EventHandler(this.tlsКромеВражеской_CheckStateChanged);
             // 
             // tlsТочкаХода
             // 
@@ -465,18 +479,9 @@
             this.tlsТочкаХода.Image = ((System.Drawing.Image)(resources.GetObject("tlsТочкаХода.Image")));
             this.tlsТочкаХода.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsТочкаХода.Name = "tlsТочкаХода";
-            this.tlsТочкаХода.Size = new System.Drawing.Size(24, 24);
+            this.tlsТочкаХода.Size = new System.Drawing.Size(29, 24);
             this.tlsТочкаХода.Text = "Точка хода";
-            // 
-            // tlsMakePattern
-            // 
-            this.tlsMakePattern.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tlsMakePattern.Image = global::DotsGame.Properties.Resources.Лист;
-            this.tlsMakePattern.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tlsMakePattern.Name = "tlsMakePattern";
-            this.tlsMakePattern.Size = new System.Drawing.Size(24, 24);
-            this.tlsMakePattern.Text = "MakePattern";
-            this.tlsMakePattern.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.tlsТочкаХода.CheckStateChanged += new System.EventHandler(this.tlsТочкаХода_CheckStateChanged);
             // 
             // toolExit
             // 
@@ -485,9 +490,39 @@
             this.toolExit.Image = ((System.Drawing.Image)(resources.GetObject("toolExit.Image")));
             this.toolExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolExit.Name = "toolExit";
-            this.toolExit.Size = new System.Drawing.Size(115, 24);
-            this.toolExit.Text = "Выйти из редактора";
+            this.toolExit.Size = new System.Drawing.Size(29, 17);
+            this.toolExit.Text = "&X";
             this.toolExit.Click += new System.EventHandler(this.toolExit_Click);
+            // 
+            // tlsMakePattern
+            // 
+            this.tlsMakePattern.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tlsMakePattern.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsMakePattern.Image = ((System.Drawing.Image)(resources.GetObject("tlsMakePattern.Image")));
+            this.tlsMakePattern.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsMakePattern.Name = "tlsMakePattern";
+            this.tlsMakePattern.Size = new System.Drawing.Size(29, 24);
+            this.tlsMakePattern.Text = "Сохранить паттерн";
+            this.tlsMakePattern.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.tlsMakePattern.Click += new System.EventHandler(this.tlsMakePattern_Click);
+            // 
+            // tlsMirror
+            // 
+            this.tlsMirror.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsMirror.Image = ((System.Drawing.Image)(resources.GetObject("tlsMirror.Image")));
+            this.tlsMirror.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsMirror.Name = "tlsMirror";
+            this.tlsMirror.Size = new System.Drawing.Size(29, 24);
+            this.tlsMirror.Text = "mirrir";
+            // 
+            // tlsRotate90
+            // 
+            this.tlsRotate90.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsRotate90.Image = ((System.Drawing.Image)(resources.GetObject("tlsRotate90.Image")));
+            this.tlsRotate90.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsRotate90.Name = "tlsRotate90";
+            this.tlsRotate90.Size = new System.Drawing.Size(29, 24);
+            this.tlsRotate90.Text = "toolStripButton2";
             // 
             // gameBindingSource
             // 
@@ -499,8 +534,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(371, 474);
             this.Controls.Add(this.toolEditorPattern);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.pbxBoard);
             this.Controls.Add(this.menuStrip);
@@ -568,8 +601,6 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.ToolStripMenuItem открытьПоследнююToolStripMenuItem;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         public System.Windows.Forms.ToolStrip toolEditorPattern;
         public System.Windows.Forms.ToolStripButton tlsТочкаОтсчета;
         public System.Windows.Forms.ToolStripButton tlsПустая;
@@ -578,6 +609,10 @@
         private System.Windows.Forms.ToolStripButton tlsMakePattern;
         private System.Windows.Forms.ToolStripMenuItem редакторПаттерновToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolExit;
+        private System.Windows.Forms.ToolStripButton tlsRedDot;
+        private System.Windows.Forms.ToolStripButton tlsBlueDot;
+        private System.Windows.Forms.ToolStripButton tlsMirror;
+        private System.Windows.Forms.ToolStripButton tlsRotate90;
     }
 }
 
