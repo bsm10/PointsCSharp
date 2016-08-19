@@ -1995,20 +1995,22 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                     switch (p.Own)
                     {
                         case 1:
-                            SetColorAndDrawDots(gr, colorGamer1, p);
+                            SetColorAndDrawDots(gr, p, colorGamer1);
                             break;
                         case 2:
-                            SetColorAndDrawDots(gr, colorGamer2, p);
+                            SetColorAndDrawDots(gr, p, colorGamer2);
                             break;
                         case 0:
-                            if (p.PatternsEmptyDot) SetColorAndDrawDots(gr, Color.Bisque, p);
-                            if (p.PatternsAnyDot) SetColorAndDrawDots(gr, Color.DarkOrange, p);
+                            if (EditMode)SetColorAndDrawDots(gr, p, Color.FromArgb(50, Color.WhiteSmoke));
+                            //if (p.PatternsEmptyDot) SetColorAndDrawDots(gr, Color.Bisque, p);
+                            //if (p.PatternsAnyDot) SetColorAndDrawDots(gr, Color.DarkOrange, p);
+                            //if (p.PatternsFirstDot) SetColorAndDrawDots(gr, Color.DarkOrange, p);
                             break;
                     }
                 }
             }
         }
-        private void SetColorAndDrawDots(Graphics gr, Color colorGamer, Dot p) //Вспомогательная функция для DrawPoints. Выбор цвета точки в зависимости от ее состояния и рисование элипса
+        private void SetColorAndDrawDots(Graphics gr, Dot p, Color colorGamer) //Вспомогательная функция для DrawPoints. Выбор цвета точки в зависимости от ее состояния и рисование элипса
         {
             
             Color c;
@@ -2031,7 +2033,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             }
             if (p.PatternsEmptyDot)
             {
-                gr.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.WhiteSmoke)), p.x -PointWidth, p.y -PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.Bisque)), p.x -PointWidth, p.y -PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(Color.Transparent, 0.08f), p.x -PointWidth, p.y -PointWidth, PointWidth * 2, PointWidth * 2);
             }
             if (p.PatternsMoveDot)

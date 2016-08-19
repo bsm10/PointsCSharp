@@ -94,21 +94,8 @@ namespace DotsGame
                     return tlsRedDot.Checked ? 1 : 2; 
                 }
 
-            //set { tlsТочкаХода.Checked = value; }
-
         }
 
-        //public bool PE_On
-        //{
-        //    get
-        //    {
-        //        if (f.tlsEditPattern.Checked & lstPat == null) lstPat = new List<Dot>();
-        //        return f.tlsEditPattern.Checked;
-
-        //    }
-        //    set { f.tlsEditPattern.Checked = value; }
-
-        //}
         public void WritePatternToFile(List<string> lines)
         {
             // Append new text to an existing file.
@@ -145,8 +132,6 @@ namespace DotsGame
             if(game.lstDotsInPattern.Count==0) return;
             List<Dot> lstPat = game.lstDotsInPattern;
             //rotate dots in pattern
-            //List<List<Dot>> rotatePattern = new List<List<Dot>>();
-
             foreach (List<Dot> listDots in ListRotatePatterns(lstPat)) AddPatternDots(listDots);
 
             lstPat.Clear();

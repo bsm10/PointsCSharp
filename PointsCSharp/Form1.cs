@@ -65,16 +65,15 @@ namespace DotsGame
                             }
                             if (PE_FirstDot)
                             {
+                                if (game.lstDotsInPattern.Where(d => d.PatternsFirstDot).Count() == 0)
                                 game.aDots[dot.x, dot.y].PatternsFirstDot = true;
-                                //PE_FirstDot = false;
-                                //pbxBoard.Invalidate();
-                                //PE_MoveDot = true;
-                                //MessageBox.Show("Ставьте точку хода (ЛКМ), на точку отмеченную как пустую");
                                 break;
                             }
                             if (PE_MoveDot)
                             {
-                                game.aDots[dot.x, dot.y].PatternsMoveDot = true;
+                                if (game.lstDotsInPattern.Where(d=>d.PatternsMoveDot).Count()==0)
+                                    game.aDots[dot.x, dot.y].PatternsMoveDot = true;
+                                
                                 //PE_MoveDot = false;
                             }
                             if (PE_AnyDot)

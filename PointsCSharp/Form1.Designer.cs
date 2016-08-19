@@ -396,7 +396,7 @@
             // 
             this.toolEditorPattern.Dock = System.Windows.Forms.DockStyle.Left;
             this.toolEditorPattern.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolEditorPattern.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolEditorPattern.ImageScalingSize = new System.Drawing.Size(30, 30);
             this.toolEditorPattern.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tlsRedDot,
             this.tlsBlueDot,
@@ -410,7 +410,7 @@
             this.tlsRotate90});
             this.toolEditorPattern.Location = new System.Drawing.Point(0, 0);
             this.toolEditorPattern.Name = "toolEditorPattern";
-            this.toolEditorPattern.Size = new System.Drawing.Size(32, 446);
+            this.toolEditorPattern.Size = new System.Drawing.Size(35, 446);
             this.toolEditorPattern.TabIndex = 31;
             this.toolEditorPattern.Text = "toolStrip1";
             this.toolEditorPattern.Visible = false;
@@ -424,7 +424,7 @@
             this.tlsRedDot.Image = ((System.Drawing.Image)(resources.GetObject("tlsRedDot.Image")));
             this.tlsRedDot.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsRedDot.Name = "tlsRedDot";
-            this.tlsRedDot.Size = new System.Drawing.Size(29, 24);
+            this.tlsRedDot.Size = new System.Drawing.Size(32, 34);
             this.tlsRedDot.Text = "toolStripButton2";
             this.tlsRedDot.CheckStateChanged += new System.EventHandler(this.tlsRedDot_CheckStateChanged);
             // 
@@ -435,7 +435,7 @@
             this.tlsBlueDot.Image = ((System.Drawing.Image)(resources.GetObject("tlsBlueDot.Image")));
             this.tlsBlueDot.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsBlueDot.Name = "tlsBlueDot";
-            this.tlsBlueDot.Size = new System.Drawing.Size(29, 24);
+            this.tlsBlueDot.Size = new System.Drawing.Size(32, 34);
             this.tlsBlueDot.Text = "toolStripButton2";
             this.tlsBlueDot.CheckStateChanged += new System.EventHandler(this.tlsBlueDot_CheckStateChanged);
             // 
@@ -446,7 +446,7 @@
             this.tlsТочкаОтсчета.Image = ((System.Drawing.Image)(resources.GetObject("tlsТочкаОтсчета.Image")));
             this.tlsТочкаОтсчета.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsТочкаОтсчета.Name = "tlsТочкаОтсчета";
-            this.tlsТочкаОтсчета.Size = new System.Drawing.Size(29, 24);
+            this.tlsТочкаОтсчета.Size = new System.Drawing.Size(32, 34);
             this.tlsТочкаОтсчета.Text = "Точка отсчета";
             this.tlsТочкаОтсчета.CheckStateChanged += new System.EventHandler(this.tlsТочкаОтсчета_CheckStateChanged);
             // 
@@ -457,7 +457,7 @@
             this.tlsПустая.Image = ((System.Drawing.Image)(resources.GetObject("tlsПустая.Image")));
             this.tlsПустая.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsПустая.Name = "tlsПустая";
-            this.tlsПустая.Size = new System.Drawing.Size(29, 24);
+            this.tlsПустая.Size = new System.Drawing.Size(32, 34);
             this.tlsПустая.Text = "Отметить точку";
             this.tlsПустая.CheckStateChanged += new System.EventHandler(this.tlsПустая_CheckStateChanged);
             // 
@@ -468,7 +468,7 @@
             this.tlsКромеВражеской.Image = ((System.Drawing.Image)(resources.GetObject("tlsКромеВражеской.Image")));
             this.tlsКромеВражеской.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsКромеВражеской.Name = "tlsКромеВражеской";
-            this.tlsКромеВражеской.Size = new System.Drawing.Size(29, 24);
+            this.tlsКромеВражеской.Size = new System.Drawing.Size(32, 34);
             this.tlsКромеВражеской.Text = "Любая, кроме вражеской";
             this.tlsКромеВражеской.CheckStateChanged += new System.EventHandler(this.tlsКромеВражеской_CheckStateChanged);
             // 
@@ -479,7 +479,7 @@
             this.tlsТочкаХода.Image = ((System.Drawing.Image)(resources.GetObject("tlsТочкаХода.Image")));
             this.tlsТочкаХода.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsТочкаХода.Name = "tlsТочкаХода";
-            this.tlsТочкаХода.Size = new System.Drawing.Size(29, 24);
+            this.tlsТочкаХода.Size = new System.Drawing.Size(32, 34);
             this.tlsТочкаХода.Text = "Точка хода";
             this.tlsТочкаХода.CheckStateChanged += new System.EventHandler(this.tlsТочкаХода_CheckStateChanged);
             // 
@@ -490,7 +490,7 @@
             this.toolExit.Image = ((System.Drawing.Image)(resources.GetObject("toolExit.Image")));
             this.toolExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolExit.Name = "toolExit";
-            this.toolExit.Size = new System.Drawing.Size(29, 17);
+            this.toolExit.Size = new System.Drawing.Size(32, 17);
             this.toolExit.Text = "&X";
             this.toolExit.Click += new System.EventHandler(this.toolExit_Click);
             // 
@@ -501,7 +501,7 @@
             this.tlsMakePattern.Image = ((System.Drawing.Image)(resources.GetObject("tlsMakePattern.Image")));
             this.tlsMakePattern.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsMakePattern.Name = "tlsMakePattern";
-            this.tlsMakePattern.Size = new System.Drawing.Size(29, 24);
+            this.tlsMakePattern.Size = new System.Drawing.Size(32, 34);
             this.tlsMakePattern.Text = "Сохранить паттерн";
             this.tlsMakePattern.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.tlsMakePattern.Click += new System.EventHandler(this.tlsMakePattern_Click);
@@ -512,7 +512,7 @@
             this.tlsMirror.Image = ((System.Drawing.Image)(resources.GetObject("tlsMirror.Image")));
             this.tlsMirror.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsMirror.Name = "tlsMirror";
-            this.tlsMirror.Size = new System.Drawing.Size(29, 24);
+            this.tlsMirror.Size = new System.Drawing.Size(32, 34);
             this.tlsMirror.Text = "mirrir";
             // 
             // tlsRotate90
@@ -521,7 +521,7 @@
             this.tlsRotate90.Image = ((System.Drawing.Image)(resources.GetObject("tlsRotate90.Image")));
             this.tlsRotate90.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsRotate90.Name = "tlsRotate90";
-            this.tlsRotate90.Size = new System.Drawing.Size(29, 24);
+            this.tlsRotate90.Size = new System.Drawing.Size(32, 34);
             this.tlsRotate90.Text = "toolStripButton2";
             // 
             // gameBindingSource
