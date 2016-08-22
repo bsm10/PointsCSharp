@@ -137,9 +137,8 @@ namespace DotsGame
                             game.aDots[dot.x, dot.y].PatternsRemove();
                             break;
                         }
-
-                            game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
-                            game.UndoMove(dot.x, dot.y, game.aDots);
+                        game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
+                        game.UndoMove(dot.x, dot.y, game.aDots);
                         break;
                  #endif
                 }
@@ -467,14 +466,10 @@ namespace DotsGame
 
         private void button1_Click(object sender, EventArgs e)
         {
-            game.aDots.Dots=game.aDots.Rotate90(game.aDots.Dots);
-            pbxBoard.Refresh();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            game.aDots.Dots=game.aDots.Rotate_Mirror_Horizontal(game.aDots.Dots);
-            pbxBoard.Refresh();
         }
 
         private void редакторПаттерновToolStripMenuItem_Click(object sender, EventArgs e)
@@ -525,6 +520,7 @@ namespace DotsGame
                 tlsКромеВражеской.Checked = false;
                 tlsТочкаХода.Checked = false;
                 tlsПустая.Checked = false;
+                tlsDotClean.Checked = false;
             }
 
         }
@@ -536,6 +532,7 @@ namespace DotsGame
                 tlsПустая.Checked = false;
                 tlsТочкаХода.Checked = false;
                 tlsТочкаОтсчета.Checked = false;
+                tlsDotClean.Checked = false;
             }
 
         }
@@ -547,6 +544,7 @@ namespace DotsGame
                 tlsПустая.Checked = false;
                 tlsКромеВражеской.Checked = false;
                 tlsТочкаОтсчета.Checked = false;
+                tlsDotClean.Checked = false;
             }
 
         }
@@ -558,9 +556,37 @@ namespace DotsGame
                 tlsКромеВражеской.Checked = false;
                 tlsТочкаХода.Checked = false;
                 tlsТочкаОтсчета.Checked = false;
+                tlsDotClean.Checked = false;
             }
 
         }
+
+        private void tlsDotClean_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (tlsDotClean.Checked)
+            {
+                tlsКромеВражеской.Checked = false;
+                tlsТочкаХода.Checked = false;
+                tlsТочкаОтсчета.Checked = false;
+                tlsПустая.Checked = false;
+            }
+        }
+
+        private void tlsMirror_Click(object sender, EventArgs e)
+        {
+            game.aDots.Dots = game.aDots.Rotate_Mirror_Horizontal(game.aDots.Dots);
+            game.RebuildDots();
+            pbxBoard.Refresh();
+
+        }
+
+        private void tlsRotate90_Click(object sender, EventArgs e)
+        {
+            game.aDots.Dots = game.aDots.Rotate90(game.aDots.Dots);
+            game.RebuildDots();
+            pbxBoard.Refresh();
+        }
+
 
 
     }  

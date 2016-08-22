@@ -61,6 +61,7 @@
             this.опрограммеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.listMovesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.gameBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -78,13 +79,13 @@
             this.tlsMakePattern = new System.Windows.Forms.ToolStripButton();
             this.tlsMirror = new System.Windows.Forms.ToolStripButton();
             this.tlsRotate90 = new System.Windows.Forms.ToolStripButton();
-            this.gameBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.tlsDotClean = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listMovesBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameBindingSource)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.toolEditorPattern.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gameBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // pbxBoard
@@ -347,6 +348,10 @@
             this.listMovesBindingSource.DataMember = "ListMoves";
             this.listMovesBindingSource.DataSource = this.gameBindingSource;
             // 
+            // gameBindingSource
+            // 
+            this.gameBindingSource.DataSource = typeof(DotsGame.Game);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -406,6 +411,7 @@
             this.tlsТочкаХода,
             this.toolExit,
             this.tlsMakePattern,
+            this.tlsDotClean,
             this.tlsMirror,
             this.tlsRotate90});
             this.toolEditorPattern.Location = new System.Drawing.Point(0, 0);
@@ -514,6 +520,7 @@
             this.tlsMirror.Name = "tlsMirror";
             this.tlsMirror.Size = new System.Drawing.Size(32, 34);
             this.tlsMirror.Text = "mirrir";
+            this.tlsMirror.Click += new System.EventHandler(this.tlsMirror_Click);
             // 
             // tlsRotate90
             // 
@@ -523,10 +530,18 @@
             this.tlsRotate90.Name = "tlsRotate90";
             this.tlsRotate90.Size = new System.Drawing.Size(32, 34);
             this.tlsRotate90.Text = "toolStripButton2";
+            this.tlsRotate90.Click += new System.EventHandler(this.tlsRotate90_Click);
             // 
-            // gameBindingSource
+            // tlsDotClean
             // 
-            this.gameBindingSource.DataSource = typeof(DotsGame.Game);
+            this.tlsDotClean.CheckOnClick = true;
+            this.tlsDotClean.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsDotClean.Image = ((System.Drawing.Image)(resources.GetObject("tlsDotClean.Image")));
+            this.tlsDotClean.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsDotClean.Name = "tlsDotClean";
+            this.tlsDotClean.Size = new System.Drawing.Size(32, 34);
+            this.tlsDotClean.Text = "Сбросить точку";
+            this.tlsDotClean.CheckStateChanged += new System.EventHandler(this.tlsDotClean_CheckStateChanged);
             // 
             // Form1
             // 
@@ -551,11 +566,11 @@
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listMovesBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gameBindingSource)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.toolEditorPattern.ResumeLayout(false);
             this.toolEditorPattern.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gameBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -613,6 +628,7 @@
         private System.Windows.Forms.ToolStripButton tlsBlueDot;
         private System.Windows.Forms.ToolStripButton tlsMirror;
         private System.Windows.Forms.ToolStripButton tlsRotate90;
+        private System.Windows.Forms.ToolStripButton tlsDotClean;
     }
 }
 

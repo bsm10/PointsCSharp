@@ -360,7 +360,7 @@ namespace DotsGame
     }
     public class ArrayDots : IEnumerator, IEnumerable
     {
-        private List<Dot> _Dots;
+        private List<Dot> _Dots; // главная коллекция
         public List<Dot> Dots
         {
             get
@@ -408,12 +408,15 @@ namespace DotsGame
 
         int position = -1;
         private int nSize;//размер поля
-
+        public int BoardSize
+        {
+            get {return nSize;}
+        }
         public ArrayDots(int size)
         {
             int counter = 0;
             int ind;
-            _Dots = new List<Dot>(size*size);
+            _Dots = new List<Dot>(size*size); // главная коллекция точек
             nSize = size;
             for (int i = 0; i < size; i++)
             {
@@ -582,13 +585,6 @@ namespace DotsGame
         public void UnmarkAllDots()
         {
             foreach (Dot d in _Dots) d.UnmarkDot();
-            //{
-            //    d.Marked = false;
-            //    d.PatternsFirstDot = false;
-            //    d.PatternsMoveDot = false;
-            //    d.PatternsAnyDot = false;
-            //    d.PatternsEmptyDot = false;
-            //}
         }
         public int MinX()
         {
@@ -668,7 +664,6 @@ namespace DotsGame
                 dot.x = y;
                 dot.y = x;
                 newList.Add(dot);
-
             }
             return newList;
         }
@@ -732,6 +727,28 @@ namespace DotsGame
             }
 
         }
+
+        /// <summary>
+        /// Пересканирует блокированные точки и устанавливает статус Blocked
+        /// </summary>
+        public void RescanBlockedDots()
+        {
+            //-------------------Rescan Blocked Dots------------------
+            var dots_bl = from Dot d in Dots
+                          where d.BlokingDots.Count > 0
+                          select d.Blocked = true;
+
+            //-------------------Rescan Blocked EmptyDots---------------------
+
+            while ((from Dot d in Dots
+                where d.Own == 0 && d.Blocked == false &&
+                      this[d.x + 1, d.y].Blocked |
+                      this[d.x - 1, d.y].Blocked |
+                      this[d.x, d.y + 1].Blocked |
+                      this[d.x, d.y - 1].Blocked
+                select d.Blocked = true).Count()!=0);
+        }
+
 
         //IEnumerator and IEnumerable require these methods.
         public IEnumerator GetEnumerator()
