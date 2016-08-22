@@ -19,6 +19,8 @@ namespace DotsGame
         }
         public bool Blocked{get;set;}
 
+
+
         //{
         //    get
         //    {
@@ -207,8 +209,16 @@ namespace DotsGame
             this.PatternsAnyDot = false;
             this.PatternsEmptyDot = false;
         }
-
-
+        /// <summary>
+        /// Удаляем метки паттернов
+        /// </summary>
+        public void PatternsRemove()
+        {
+            PatternsFirstDot = false;
+            PatternsMoveDot  = false;
+            PatternsAnyDot   = false;
+            PatternsEmptyDot = false;
+        }
         public bool PatternsFirstDot {get; set;}
         public bool PatternsMoveDot { get; set; }
         public bool PatternsAnyDot { get; set; }

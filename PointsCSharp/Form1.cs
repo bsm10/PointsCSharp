@@ -134,6 +134,7 @@ namespace DotsGame
                         if (game.EditMode == true)
                         {
                             ListPatterns.Remove(game.aDots[dot.x, dot.y]);
+                            game.aDots[dot.x, dot.y].PatternsRemove();
                             break;
                         }
 

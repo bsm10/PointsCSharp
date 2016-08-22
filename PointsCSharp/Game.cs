@@ -2033,23 +2033,26 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             }
             if (p.PatternsEmptyDot)
             {
-                gr.FillEllipse(new SolidBrush(Color.FromArgb(100, Color.Bisque)), p.x -PointWidth, p.y -PointWidth, PointWidth * 2, PointWidth * 2);
-                gr.DrawEllipse(new Pen(Color.Transparent, 0.08f), p.x -PointWidth, p.y -PointWidth, PointWidth * 2, PointWidth * 2);
+                //gr.FillEllipse(new SolidBrush(Color.FromArgb(50, Color.Bisque)), p.x -PointWidth, p.y -PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.DrawEllipse(new Pen(Color.DarkOliveGreen, 0.05f), p.x - PointWidth * 1.3f, p.y - PointWidth * 1.3f, PointWidth * 1.3f * 2, PointWidth * 1.3f * 2);
             }
             if (p.PatternsMoveDot)
             {
                 //gr.FillEllipse(new SolidBrush(Color.FromArgb(50, Color.Plum)), p.x -PointWidth, p.y -PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(Color.LimeGreen, 0.08f), p.x -PointWidth, p.y -PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.DrawEllipse(new Pen(Color.DarkOliveGreen, 0.05f), p.x - PointWidth * 1.3f, p.y - PointWidth * 1.3f, PointWidth * 1.3f * 2, PointWidth * 1.3f * 2);
             }
             if (p.PatternsFirstDot)
             {
                 //gr.FillEllipse(new SolidBrush(Color.FromArgb(50, Color.ForestGreen)), p.x -PointWidth, p.y -PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(Color.DarkSeaGreen, 0.08f), p.x -PointWidth, p.y -PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.DrawEllipse(new Pen(Color.DarkOliveGreen, 0.05f), p.x - PointWidth * 1.3f, p.y - PointWidth * 1.3f, PointWidth * 1.3f * 2, PointWidth * 1.3f * 2);
             }
             if (p.PatternsAnyDot)
             {
                 gr.FillEllipse(new SolidBrush(Color.Yellow), p.x -PointWidth, p.y -PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(Color.Orange, 0.08f), p.x -PointWidth, p.y -PointWidth, PointWidth * 2, PointWidth * 2);
+                gr.DrawEllipse(new Pen(Color.DarkOliveGreen, 0.05f), p.x - PointWidth * 1.3f, p.y - PointWidth * 1.3f, PointWidth * 1.3f * 2, PointWidth * 1.3f * 2);
             }
 
         }
