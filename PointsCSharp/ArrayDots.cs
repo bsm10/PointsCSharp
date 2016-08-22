@@ -659,7 +659,6 @@ namespace DotsGame
             foreach (Dot d in DotsForRotation)
             {
                 x = d.x; y = d.y;
-                //d.x = y; d.y = x;
                 Dot dot = d.DotCopy; 
                 dot.x = y;
                 dot.y = x;
