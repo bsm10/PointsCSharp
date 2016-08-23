@@ -42,6 +42,7 @@ namespace DotsGame
             }
         }
     }
+
     //public class ArrayDots_old : IEnumerator, IEnumerable
     //{
     //    private Dot[,] Dots;//основной массив, где хранятся точки

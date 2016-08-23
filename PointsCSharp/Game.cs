@@ -1618,8 +1618,29 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         //------------------------------------------------------------------------------------
         public void LinkDots(ArrayDots _aDots)//устанавливает связь между двумя точками и возвращает массив связей 
         {
+            var qry = from Dot d1 in _aDots
+                      where d1.BlokingDots.Count > 0 & d1.Blocked == false
+                      from Dot d2 in _aDots
+                      where d2.BlokingDots.Count > 0 & d2.Blocked == false & _aDots.Distance(d1, d2) < 2 & _aDots.Distance(d1, d2) > 0
+                      select new Links(d1,d2);
+
+
+
+            foreach (Links link in qry)
+            {
+                if (link.LinkExist(lnks.ToArray()) == -1)
+                {
+                    lnks.Add(link);
+                }
+            }
+
+            lnks = qry.ToList();
+
+        }
+        public void LinkDots(ArrayDots _aDots, int old)//устанавливает связь между двумя точками и возвращает массив связей 
+        {
             var qry = from Dot d in _aDots
-                      where d.BlokingDots.Count > 0 
+                      where d.BlokingDots.Count > 0
                       select d;
             Dot[] dts = qry.ToArray();
             Links l;
@@ -1638,6 +1659,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 }
             }
         }
+
         private float SquarePolygon(int nBlockedDots, int nRegionDots)
         {
             return nBlockedDots + nRegionDots / 2.0f -1;//Формула Пика

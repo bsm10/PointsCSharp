@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DotsGame
 {
-    public class Links
+    public class Links : IEquatable<Links>
     {
         public Dot Dot1;
         public Dot Dot2;
@@ -85,6 +85,16 @@ namespace DotsGame
 
             }
             return -1;
+        }
+
+
+        public bool Equals(Links otherLink)//Проверяет равенство связей по точкам
+        {
+
+            return (Dot1.x == otherLink.Dot1.x) & (Dot1.y == otherLink.Dot1.y) |
+                   (Dot2.x == otherLink.Dot2.x) & (Dot2.y == otherLink.Dot2.y) |
+                   (Dot2.x == otherLink.Dot1.x) & (Dot2.y == otherLink.Dot1.y) |
+                   (Dot1.x == otherLink.Dot2.x) & (Dot1.y == otherLink.Dot2.y) ;
         }
     }
     public class Dot: IEquatable<Dot>
