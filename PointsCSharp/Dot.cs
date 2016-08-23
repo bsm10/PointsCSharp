@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DotsGame
 {
-    public class Links : IEquatable<Links>
+    public class Links //: IEqualityComparer<Links>
     {
         public Dot Dot1;
         public Dot Dot2;
@@ -19,14 +19,6 @@ namespace DotsGame
         }
         public bool Blocked{get;set;}
 
-
-
-        //{
-        //    get
-        //    {
-        //        return Dot1.Blocked & Dot2.Blocked;    
-        //    }
-        //}
         public float CostLink
         {
             get
@@ -42,7 +34,7 @@ namespace DotsGame
         {
             this.Dot1 = Dot1;
             this.Dot2 = Dot2;
-            if (Math.Abs(Dot1.x -Dot2.x) + Math.Abs(Dot1.y -Dot2.y) < 2)
+            if (Math.Abs(Dot1.x - Dot2.x) + Math.Abs(Dot1.y - Dot2.y) < 2)
             {
                 cost = 1;
             }
@@ -55,7 +47,7 @@ namespace DotsGame
         {
             Dot1 = new Dot(x1, y1);
             Dot2 = new Dot(x2, y2);
-            if (Math.Abs(Dot1.x -Dot2.x) + Math.Abs(Dot1.y -Dot2.y) < 2)
+            if (Math.Abs(Dot1.x - Dot2.x) + Math.Abs(Dot1.y - Dot2.y) < 2)
             {
                 cost = 1;
             }
@@ -90,12 +82,40 @@ namespace DotsGame
 
         public bool Equals(Links otherLink)//Проверяет равенство связей по точкам
         {
-
-            return (Dot1.x == otherLink.Dot1.x) & (Dot1.y == otherLink.Dot1.y) |
+            if ((Dot1.x == otherLink.Dot1.x) & (Dot1.y == otherLink.Dot1.y) |
                    (Dot2.x == otherLink.Dot2.x) & (Dot2.y == otherLink.Dot2.y) |
                    (Dot2.x == otherLink.Dot1.x) & (Dot2.y == otherLink.Dot1.y) |
-                   (Dot1.x == otherLink.Dot2.x) & (Dot1.y == otherLink.Dot2.y) ;
+                   (Dot1.x == otherLink.Dot2.x) & (Dot1.y == otherLink.Dot2.y)) 
+                   return true;
+            return false;
         }
+
+    }
+    class LinksComparer : IEqualityComparer<Links>
+    {
+        public bool Equals(Links link1, Links link2)
+        {
+            return link1.Equals(link2);
+        }
+
+        // If Equals() returns true for a pair of objects 
+        // then GetHashCode() must return the same value for these objects.
+
+        public int GetHashCode(Links links)
+        {
+            //Check whether the object is null
+            if (Object.ReferenceEquals(links, null)) return 0;
+
+            //Get hash code for the Name field if it is not null.
+            int hashLinkDot1 = links.Dot1.GetHashCode();
+
+            //Get hash code for the Code field.
+            int hashLinkDot2 = links.Dot2.GetHashCode();
+
+            //Calculate the hash code for the product.
+            return hashLinkDot1 * hashLinkDot2;
+        }
+
     }
     public class Dot: IEquatable<Dot>
     {

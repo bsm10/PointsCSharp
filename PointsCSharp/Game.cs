@@ -1624,18 +1624,11 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                       where d2.BlokingDots.Count > 0 & d2.Blocked == false & _aDots.Distance(d1, d2) < 2 & _aDots.Distance(d1, d2) > 0
                       select new Links(d1,d2);
 
-
-
-            foreach (Links link in qry)
+            var temp = qry.Distinct(new LinksComparer());                 
+            foreach (Links link in temp)
             {
-                if (link.LinkExist(lnks.ToArray()) == -1)
-                {
-                    lnks.Add(link);
-                }
+                lnks.Add(link);
             }
-
-            lnks = qry.ToList();
-
         }
         public void LinkDots(ArrayDots _aDots, int old)//устанавливает связь между двумя точками и возвращает массив связей 
         {
