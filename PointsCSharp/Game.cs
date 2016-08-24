@@ -1580,41 +1580,21 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             return false;
         }
 
-        //private bool DotIsFree(Dot dot, ArrayDots _aDots)
-        //{
-        //    if (dot.Fixed) return true;
-        //    var q = from Dot fd in _aDots where fd.Blocked == false & fd.Own==dot.Own | fd.Own==PLAYER_NONE
-        //    orderby _aDots.Distance(dot,fd) 
-        //    select fd;
-        //    List<Dot> lstDot = q.ToList<Dot>();
-        //    //int ind = 0;
-        //    int indDot = 0;
-        //    //float dist = 0;
+        private bool DotIsFree(Dot dot, ArrayDots _aDots)
+        {
+            if (dot.Fixed) return true;
+            var qry = from Dot d1 in _aDots
+                      where d1.Blocked == false && d1.Own == dot.Own | d1.Own == 0
+                      from Dot d2 in _aDots
+                      where d2.Blocked == false && d2.Own == dot.Own | d2.Own == 0 & _aDots.Distance(d1, d2) == 1
+                      select new Links(d1, d2);
 
-        //    do
-        //    {
-                
-        //        IEnumerable<Dot> dd = from Dot d in lstDot 
-        //                              where lstDot[indDot].Marked == false & _aDots.Distance(lstDot[indDot], d) == 1
-        //                              orderby d.Fixed == false
-        //                              select d;
-        //        if (dd.Count() == 0) return false;
-        //        if (dd.First().Fixed) return true;
+            //if (qry.Where(dt => dt.Fixed).Count()>0) return true;
 
-        //        lstDot[indDot].Marked = true;
-        //        indDot++;
-        //        if(lstDot.Count==indDot) return false;
-        //    } while (true);
+            //List<Dot> lstDot = qry.ToList();
+            return false;
 
-        //    //for (int i = 0; i < lstDot.Count; i++)
-        //    //{
-        //    //    ind = i==lstDot.Count-1 ? 0 : i+1;
-        //    //    dist = _aDots.Distance(lstDot[i],lstDot[ind]);
-        //    //    if (dist==1 & lstDot[ind].Fixed) return true;
-        //    //    //else if (dist>1) return false;
-        //    //}
-        //    //return false;
-        //}
+        }
         //------------------------------------------------------------------------------------
         public void LinkDots(ArrayDots _aDots)//устанавливает связь между двумя точками и возвращает массив связей 
         {
@@ -1717,7 +1697,8 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             foreach (Dot d in arrDot)
             {
                 arrDots.UnmarkAllDots();
-                if (DotIsFree(d, d.Own, arrDots) == false)
+                //if (DotIsFree(d, d.Own, arrDots) == false)
+                if (DotIsFree(d, arrDots) == false)
                 {
                     if (d.Own != 0) d.Blocked = true;
                     d.IndexRelation=0;

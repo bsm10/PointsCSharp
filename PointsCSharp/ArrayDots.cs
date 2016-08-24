@@ -540,9 +540,9 @@ namespace DotsGame
         {
             Dot[] dts = new Dot[4] {
                                     this[dot.x + 1, dot.y],
-                                    this[dot.x -1, dot.y],
+                                    this[dot.x - 1, dot.y],
                                     this[dot.x, dot.y + 1],
-                                    this[dot.x, dot.y -1]
+                                    this[dot.x, dot.y - 1]
                                     };
             return dts.ToList();
         }
@@ -551,13 +551,13 @@ namespace DotsGame
         {
             Dot[] dts = new Dot[8] {
                                     this[dot.x + 1, dot.y],
-                                    this[dot.x -1, dot.y],
+                                    this[dot.x - 1, dot.y],
                                     this[dot.x, dot.y + 1],
-                                    this[dot.x, dot.y -1],
+                                    this[dot.x, dot.y - 1],
                                     this[dot.x + 1, dot.y + 1],
-                                    this[dot.x -1, dot.y -1],
-                                    this[dot.x -1, dot.y + 1],
-                                    this[dot.x + 1, dot.y -1]
+                                    this[dot.x - 1, dot.y - 1],
+                                    this[dot.x - 1, dot.y + 1],
+                                    this[dot.x + 1, dot.y - 1]
                                     };
             return dts.ToList();
         }
