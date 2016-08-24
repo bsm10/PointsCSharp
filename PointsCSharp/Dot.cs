@@ -12,12 +12,22 @@ namespace DotsGame
         private float cost;
         public override string ToString()
         {
-            string s;
-            if (Dot1.Own == 1) s = " Player";
-            else s = " Computer";
-            return Dot1.x + ":" + Dot1.y + "-" + Dot2.x + ":" + Dot2.y + s;
+            string s = string.Empty;
+            if (Dot1.Own == 1 & Dot2.Own == 1) s = " Player";
+            if (Dot1.Own == 2 & Dot2.Own == 2) s = " Computer";
+            if (Dot1.Own == 0 | Dot2.Own == 0) s = " None";
+
+            return Dot1.x + ":" + Dot1.y + "-" + Dot2.x + ":" + Dot2.y + s + " Cost - " + CostLink.ToString() + " Fixed " + Fixed.ToString();
         }
         public bool Blocked{get;set;}
+        public bool Fixed
+        {
+            get
+            {
+                return (Dot1.Fixed | Dot2.Fixed);
+            }
+        }
+
 
         public float CostLink
         {
@@ -30,6 +40,14 @@ namespace DotsGame
                 cost = value;
             }
         }
+        public int LinksDistance (Links link)
+        {
+            decimal d1, d2;
+            d1 = Math.Round((decimal)(Dot1.x + link.Dot1.x + Dot2.x + link.Dot2.x) / 4);
+            d2 = Math.Round((decimal)(Dot1.y + link.Dot1.y + Dot2.y + link.Dot2.y) / 4);
+            return (int)Math.Round((d1+d2)/4);
+        }
+
         public Links(Dot Dot1, Dot Dot2)
         {
             this.Dot1 = Dot1;
@@ -104,7 +122,7 @@ namespace DotsGame
         public int GetHashCode(Links links)
         {
             //Check whether the object is null
-            if (Object.ReferenceEquals(links, null)) return 0;
+            if (object.ReferenceEquals(links, null)) return 0;
 
             //Get hash code for the Name field if it is not null.
             int hashLinkDot1 = links.Dot1.GetHashCode();

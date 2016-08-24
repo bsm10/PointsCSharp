@@ -1585,14 +1585,42 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             if (dot.Fixed) return true;
             var qry = from Dot d1 in _aDots
                       where d1.Blocked == false && d1.Own == dot.Own | d1.Own == 0
+                      orderby _aDots.Distance(dot, d1)
                       from Dot d2 in _aDots
-                      where d2.Blocked == false && d2.Own == dot.Own | d2.Own == 0 & _aDots.Distance(d1, d2) == 1
+                      where d2.Blocked == false && _aDots.Distance(d1, d2) == 1 && d2.Own == dot.Own | d2.Own == 0  
                       select new Links(d1, d2);
+            //var qry1 = from Dot d1 in _aDots
+            //           where d1.Blocked == false && d1.Own == dot.Own | d1.Own == 0
+            //           orderby _aDots.Distance(dot, d1)
+            //           from Dot d2 in _aDots
+            //           where d2.Blocked == false && _aDots.Distance(d1, d2) == 1 && d2.Own == dot.Own | d2.Own == 0
+            //           orderby _aDots.Distance(dot, d2)
+            //           select d2;
 
-            //if (qry.Where(dt => dt.Fixed).Count()>0) return true;
+            var temp = qry.Distinct(new LinksComparer());
+            List<Links> links = temp.ToList();
+            //int i = 0;
+            int dist = 0;
+            for (int i = 0; i < links.Count-1; i++)
+            {
+                dist = links[i].LinksDistance(links[i + 1]);
+                if (dist > 1) return true;
+                if (links[i + 1].Fixed) return true;
+                i++;
+
+            }
+
+
+            //var ld = qry1.ToList().Distinct();
+
+
+
+            if (temp.Where(dt => dt.Fixed).Count()>0) return true;
+
+            
 
             //List<Dot> lstDot = qry.ToList();
-            return false;
+            return true;
 
         }
         //------------------------------------------------------------------------------------
