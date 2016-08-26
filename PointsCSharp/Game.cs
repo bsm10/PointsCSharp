@@ -1634,6 +1634,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         //------------------------------------------------------------------------------------
         public void LinkDots(ArrayDots _aDots)//устанавливает связь между двумя точками и возвращает массив связей 
         {
+            lnks.Clear();
             var qry = from Dot d1 in _aDots
                       where d1.BlokingDots.Count > 0 //& d1.Blocked == false
                       from Dot d2 in _aDots
@@ -1641,7 +1642,8 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                       & _aDots.Distance(d1, d2) < 2 & _aDots.Distance(d1, d2) > 0 
                       select new Links(d1,d2);
 
-            var temp = qry.Distinct(new LinksComparer());  
+            var temp = qry.Distinct(new LinksComparer());
+              
             lnks = temp.ToList(); //обновляем основной массив связей - lnks              
             //foreach (Links link in temp)
             //{
@@ -1928,6 +1930,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             //if(dot!=null) Undo(dot.x, dot.y, arrDots);
 
             //Dot dt = list_moves.Where(d=>d == dot).First(); //list_moves.Where(d=> d.x== x & d.y == y);
+
             list_moves.Remove(dot);
             arrDots.Remove(dot);
 
@@ -2424,6 +2427,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         public void RebuildDots()
         {
             ArrayDots _aDots = new ArrayDots(aDots.BoardSize);
+            
             foreach(Dot dot in list_moves)
             {
                 MakeMove(dot,_aDots, dot.Own);
@@ -2431,6 +2435,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
 
             LinkDots(_aDots);//восстанавливаем связи между точками
             _aDots.RescanBlockedDots();
+            aDots = _aDots;
         }
 
         public void LoadGame()
