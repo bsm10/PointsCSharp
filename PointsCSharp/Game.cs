@@ -1642,10 +1642,10 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                       select new Links(d1,d2);
 
             var temp = qry.Distinct(new LinksComparer());  
-            lnks = temp.ToList();               
+            lnks = temp.ToList(); //обновляем основной массив связей - lnks              
             //foreach (Links link in temp)
             //{
-            //    lnks.Add(link);//добавляем связи в основной массив связей - lnks
+            //    lnks.Add(link);
             //}
         }
         //public void LinkDots(ArrayDots _aDots, int old)//устанавливает связь между двумя точками и возвращает массив связей 
