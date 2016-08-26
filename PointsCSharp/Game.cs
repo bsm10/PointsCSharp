@@ -1925,8 +1925,19 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         }
         public void UndoMove(Dot dot, ArrayDots arrDots)//поле отмена хода
         {
-            if(dot!=null) Undo(dot.x, dot.y, arrDots);
+            //if(dot!=null) Undo(dot.x, dot.y, arrDots);
+
+            //Dot dt = list_moves.Where(d=>d == dot).First(); //list_moves.Where(d=> d.x== x & d.y == y);
+            list_moves.Remove(dot);
+            arrDots.Remove(dot);
+
+            RebuildDots();
+            LinkDots(arrDots);
+
+            last_move = list_moves.Count == 0 ? null : list_moves.Last(); 
+
         }
+
         private void Undo(int x, int y, ArrayDots arrDots)//отмена хода
         {
             List<Dot> bl_dot = new List<Dot>();
@@ -1991,8 +2002,9 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             //ScanBlockedFreeDots();            
             arrDots.UnmarkAllDots();
             LinkDots(arrDots);
-            last_move = list_moves.Count == 0 ? null : list_moves.Last(); 
+            last_move = list_moves.Count == 0 ? null : list_moves.Last();
         }
+
         #region RENDER
         public Point TranslateCoordinates(Point MousePos)
         {
