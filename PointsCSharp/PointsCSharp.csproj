@@ -93,7 +93,9 @@
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
     <Compile Include="Game.cs" />
-    <Compile Include="PatternEditor.cs" />
+    <Compile Include="PatternEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PatternsMove.cs" />
     <Compile Include="Pattern_vilka.cs" />
     <Compile Include="Program.cs" />

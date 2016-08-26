@@ -6,42 +6,6 @@ using System.Reflection;
 
 namespace DotsGame
 {
-    public class ComparerDots : IComparer<Dot>
-    {
-        public int Compare(Dot d1, Dot d2)
-        {
-            if (d1.x.CompareTo(d2.x) != 0)
-            {
-                return d1.x.CompareTo(d2.x);
-            }
-            else if (d1.y.CompareTo(d2.y) != 0)
-            {
-                return d1.y.CompareTo(d2.y);
-            }
-            else
-            {
-                return 0;
-            }
-        }
-    }
-    public class ComparerDotsByOwn : IComparer<Dot>
-    {
-        public int Compare(Dot d1, Dot d2)
-        {
-            if (d1.x.CompareTo(d2.Own) != 0)
-            {
-                return d1.Own.CompareTo(d2.Own);
-            }
-            else if (d1.Own.CompareTo(d2.Own) != 0)
-            {
-                return d1.Own.CompareTo(d2.Own);
-            }
-            else
-            {
-                return 0;
-            }
-        }
-    }
 
     //public class ArrayDots_old : IEnumerator, IEnumerable
     //{

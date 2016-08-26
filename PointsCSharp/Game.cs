@@ -1598,11 +1598,19 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             //           select d2;
 
             var temp = qry.Distinct(new LinksComparer());
-            List<Links> links = temp.ToList();
+
+            var ddd = from Links lks in temp
+                      where lks.Dot1 == dot | lks.Dot2 == dot
+                      select lks;
+                        
+
+
+            List <Links> links = temp.ToList();
             //int i = 0;
             int dist = 0;
             for (int i = 0; i < links.Count-1; i++)
             {
+                
                 dist = links[i].LinksDistance(links[i + 1]);
                 if (dist > 1) return true;
                 if (links[i + 1].Fixed) return true;
@@ -1627,39 +1635,41 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
         public void LinkDots(ArrayDots _aDots)//устанавливает связь между двумя точками и возвращает массив связей 
         {
             var qry = from Dot d1 in _aDots
-                      where d1.BlokingDots.Count > 0 & d1.Blocked == false
+                      where d1.BlokingDots.Count > 0 //& d1.Blocked == false
                       from Dot d2 in _aDots
-                      where d2.BlokingDots.Count > 0 & d2.Blocked == false & _aDots.Distance(d1, d2) < 2 & _aDots.Distance(d1, d2) > 0
+                      where d2.Own == d1.Own && d2.BlokingDots.Count > 0 //& d2.Blocked == false 
+                      & _aDots.Distance(d1, d2) < 2 & _aDots.Distance(d1, d2) > 0 
                       select new Links(d1,d2);
 
-            var temp = qry.Distinct(new LinksComparer());                 
-            foreach (Links link in temp)
-            {
-                lnks.Add(link);
-            }
+            var temp = qry.Distinct(new LinksComparer());  
+            lnks = temp.ToList();               
+            //foreach (Links link in temp)
+            //{
+            //    lnks.Add(link);//добавляем связи в основной массив связей - lnks
+            //}
         }
-        public void LinkDots(ArrayDots _aDots, int old)//устанавливает связь между двумя точками и возвращает массив связей 
-        {
-            var qry = from Dot d in _aDots
-                      where d.BlokingDots.Count > 0
-                      select d;
-            Dot[] dts = qry.ToArray();
-            Links l;
-            foreach (Dot d in dts)
-            {
-                for (int i = 0; i < dts.Length; i++)
-                {
-                    if (d.Equals(dts[i]) == false & d.IsNeiborDots(dts[i]) & d.Blocked == false & dts[i].Blocked == false)
-                    {
-                        l = new Links(dts[i], d);
-                        if (l.LinkExist(lnks.ToArray()) == -1)
-                        {
-                            lnks.Add(l);
-                        }
-                    }
-                }
-            }
-        }
+        //public void LinkDots(ArrayDots _aDots, int old)//устанавливает связь между двумя точками и возвращает массив связей 
+        //{
+        //    var qry = from Dot d in _aDots
+        //              where d.BlokingDots.Count > 0
+        //              select d;
+        //    Dot[] dts = qry.ToArray();
+        //    Links l;
+        //    foreach (Dot d in dts)
+        //    {
+        //        for (int i = 0; i < dts.Length; i++)
+        //        {
+        //            if (d.Equals(dts[i]) == false & d.IsNeiborDots(dts[i]) & d.Blocked == false & dts[i].Blocked == false)
+        //            {
+        //                l = new Links(dts[i], d);
+        //                if (l.LinkExist(lnks.ToArray()) == -1)
+        //                {
+        //                    lnks.Add(l);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         private float SquarePolygon(int nBlockedDots, int nRegionDots)
         {
@@ -1725,8 +1735,8 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
             foreach (Dot d in arrDot)
             {
                 arrDots.UnmarkAllDots();
-                //if (DotIsFree(d, d.Own, arrDots) == false)
-                if (DotIsFree(d, arrDots) == false)
+                if (DotIsFree(d, d.Own, arrDots) == false)
+                //if (DotIsFree(d, arrDots) == false)
                 {
                     if (d.Own != 0) d.Blocked = true;
                     d.IndexRelation=0;
@@ -2037,7 +2047,7 @@ private bool CheckDot(Dot dot, ArrayDots arrDots,int Player)
                 Pen PenGamer;
                 for (int i = 0; i < lnks.Count; i++)
                 {
-                    if(lnks[i].Dot1.Blocked)
+                    if(lnks[i].Blocked)
                     {
                         PenGamer = lnks[i].Dot1.Own == 1 ? new Pen(Color.FromArgb(130, colorGamer1), 0.1f) :
                                                            new Pen(Color.FromArgb(130, colorGamer2), 0.1f);

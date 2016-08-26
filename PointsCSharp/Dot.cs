@@ -19,7 +19,29 @@ namespace DotsGame
 
             return Dot1.x + ":" + Dot1.y + "-" + Dot2.x + ":" + Dot2.y + s + " Cost - " + CostLink.ToString() + " Fixed " + Fixed.ToString();
         }
-        public bool Blocked{get;set;}
+        public override int GetHashCode()
+        {
+            //Check whether the object is null
+            if (object.ReferenceEquals(this, null)) return 0;
+
+            //Get hash code for the Dot1
+            int hashLinkDot1 = Dot1.GetHashCode();
+
+            //Get hash code for the Dot2
+            int hashLinkDot2 = Dot2.GetHashCode();
+
+            //Calculate the hash code for the Links
+            return hashLinkDot1 * hashLinkDot2;
+        }
+
+        public bool Blocked
+        {
+            get
+            {
+                return (Dot1.Blocked & Dot2.Blocked);
+            }
+        }
+
         public bool Fixed
         {
             get
@@ -61,6 +83,7 @@ namespace DotsGame
                 cost = 2;
             }
         }
+
         public Links(int x1, int y1, int x2, int y2)
         {
             Dot1 = new Dot(x1, y1);
@@ -74,38 +97,39 @@ namespace DotsGame
                 cost = 0.5f;
             }
         }
-        public int LinkExist(Links[] arr_lnks)
-        {
-            if (arr_lnks != null)
-            {
-                for (int i = 0; i < arr_lnks.Length; i++)
-                {
-                    if(arr_lnks[i]!=null)
-                    {
-                        if ((Dot1.x == arr_lnks[i].Dot1.x) & (Dot1.y == arr_lnks[i].Dot1.y) &
-                           ((Dot2.x == arr_lnks[i].Dot2.x) & (Dot2.y == arr_lnks[i].Dot2.y)) |
-                            ((Dot2.x == arr_lnks[i].Dot1.x) & (Dot2.y == arr_lnks[i].Dot1.y) &
-                           ((Dot1.x == arr_lnks[i].Dot2.x) & (Dot1.y == arr_lnks[i].Dot2.y))))
-                        {
-                            return i;
-                        }
+        //public int LinkExist(Links[] arr_lnks)
+        //{
+        //    if (arr_lnks != null)
+        //    {
+        //        for (int i = 0; i < arr_lnks.Length; i++)
+        //        {
+        //            if(arr_lnks[i]!=null)
+        //            {
+        //                if ((Dot1.x == arr_lnks[i].Dot1.x) & (Dot1.y == arr_lnks[i].Dot1.y) &
+        //                   ((Dot2.x == arr_lnks[i].Dot2.x) & (Dot2.y == arr_lnks[i].Dot2.y)) |
+        //                    ((Dot2.x == arr_lnks[i].Dot1.x) & (Dot2.y == arr_lnks[i].Dot1.y) &
+        //                   ((Dot1.x == arr_lnks[i].Dot2.x) & (Dot1.y == arr_lnks[i].Dot2.y))))
+        //                {
+        //                    return i;
+        //                }
 
-                    }
-                }
+        //            }
+        //        }
 
-            }
-            return -1;
-        }
+        //    }
+        //    return -1;
+        //}
 
 
         public bool Equals(Links otherLink)//Проверяет равенство связей по точкам
         {
-            if ((Dot1.x == otherLink.Dot1.x) & (Dot1.y == otherLink.Dot1.y) |
-                   (Dot2.x == otherLink.Dot2.x) & (Dot2.y == otherLink.Dot2.y) |
-                   (Dot2.x == otherLink.Dot1.x) & (Dot2.y == otherLink.Dot1.y) |
-                   (Dot1.x == otherLink.Dot2.x) & (Dot1.y == otherLink.Dot2.y)) 
-                   return true;
-            return false;
+            //if ((Dot1.x == otherLink.Dot1.x) & (Dot1.y == otherLink.Dot1.y) |
+            //       (Dot2.x == otherLink.Dot2.x) & (Dot2.y == otherLink.Dot2.y) |
+            //       (Dot2.x == otherLink.Dot1.x) & (Dot2.y == otherLink.Dot1.y) |
+            //       (Dot1.x == otherLink.Dot2.x) & (Dot1.y == otherLink.Dot2.y)) 
+            //       return true;
+            //return false;
+            return GetHashCode().Equals(otherLink.GetHashCode());
         }
 
     }
@@ -113,9 +137,10 @@ namespace DotsGame
     {
         public bool Equals(Links link1, Links link2)
         {
+            
             return link1.Equals(link2);
         }
-
+        
         // If Equals() returns true for a pair of objects 
         // then GetHashCode() must return the same value for these objects.
 
@@ -134,6 +159,42 @@ namespace DotsGame
             return hashLinkDot1 * hashLinkDot2;
         }
 
+    }
+    public class ComparerDots : IComparer<Dot>
+    {
+        public int Compare(Dot d1, Dot d2)
+        {
+            if (d1.x.CompareTo(d2.x) != 0)
+            {
+                return d1.x.CompareTo(d2.x);
+            }
+            else if (d1.y.CompareTo(d2.y) != 0)
+            {
+                return d1.y.CompareTo(d2.y);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+    public class ComparerDotsByOwn : IComparer<Dot>
+    {
+        public int Compare(Dot d1, Dot d2)
+        {
+            if (d1.x.CompareTo(d2.Own) != 0)
+            {
+                return d1.Own.CompareTo(d2.Own);
+            }
+            else if (d1.Own.CompareTo(d2.Own) != 0)
+            {
+                return d1.Own.CompareTo(d2.Own);
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
     public class Dot: IEquatable<Dot>
     {
