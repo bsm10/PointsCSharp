@@ -329,7 +329,6 @@
             this.содержаниеToolStripMenuItem.Name = "содержаниеToolStripMenuItem";
             this.содержаниеToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.содержаниеToolStripMenuItem.Text = "&Содержание";
-            this.содержаниеToolStripMenuItem.Click += new System.EventHandler(this.содержаниеToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
@@ -350,7 +349,7 @@
             // 
             // gameBindingSource
             // 
-            this.gameBindingSource.DataSource = typeof(DotsGame.Game);
+            this.gameBindingSource.DataSource = typeof(DotsGame.GameEngine);
             // 
             // statusStrip1
             // 
@@ -557,7 +556,6 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Dots";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.MouseEnter += new System.EventHandler(this.Form1_MouseEnter);
             this.Move += new System.EventHandler(this.Form1_Move);
@@ -566,7 +564,6 @@
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listMovesBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gameBindingSource)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.toolEditorPattern.ResumeLayout(false);

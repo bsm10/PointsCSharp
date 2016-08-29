@@ -78,7 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArrayDots.cs" />
+    <Compile Include="GameDots.cs" />
     <Compile Include="Dot.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -92,10 +92,8 @@
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Game.cs" />
-    <Compile Include="PatternEditor.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="GameEngine.cs" />
+    <Compile Include="PEditor.cs" />
     <Compile Include="PatternsMove.cs" />
     <Compile Include="Pattern_vilka.cs" />
     <Compile Include="Program.cs" />

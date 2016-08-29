@@ -9,7 +9,7 @@ namespace DotsGame
 {
     public partial class Form1 : Form
     {
-        public Game game;
+        public GameEngine game;
         private Point t;
 
         public Form1()
@@ -23,7 +23,7 @@ namespace DotsGame
             Height = 4 * Yres / 5;
             Width = Height-50;
 
-            game = new Game(pbxBoard);
+            game = new GameEngine(pbxBoard);
             //game.SetLevel(2);
             toolStripStatusLabel2.ForeColor = game.colorGamer1;
             toolStripStatusLabel2.Text = "Ход игрока";
@@ -54,32 +54,32 @@ namespace DotsGame
                         #if DEBUG
                         if (game.EditMode==true)
                         {
-                            if(ListPatterns.Contains(game.aDots[dot.x, dot.y])==false)
+                            if(ListPatterns.Contains(game.gameDots[dot.x, dot.y])==false)
                             {
-                                 ListPatterns.Add(game.aDots[dot.x, dot.y]);
+                                 ListPatterns.Add(game.gameDots[dot.x, dot.y]);
                             }
                             if (PE_EmptyDot)
                             {
-                                if (game.aDots[dot.x, dot.y].PatternsAnyDot) game.aDots[dot.x, dot.y].PatternsAnyDot = false;
-                                game.aDots[dot.x, dot.y].PatternsEmptyDot = true;
+                                if (game.gameDots[dot.x, dot.y].PatternsAnyDot) game.gameDots[dot.x, dot.y].PatternsAnyDot = false;
+                                game.gameDots[dot.x, dot.y].PatternsEmptyDot = true;
                             }
                             if (PE_FirstDot)
                             {
                                 if (game.lstDotsInPattern.Where(d => d.PatternsFirstDot).Count() == 0)
-                                game.aDots[dot.x, dot.y].PatternsFirstDot = true;
+                                game.gameDots[dot.x, dot.y].PatternsFirstDot = true;
                                 break;
                             }
                             if (PE_MoveDot)
                             {
                                 if (game.lstDotsInPattern.Where(d=>d.PatternsMoveDot).Count()==0)
-                                    game.aDots[dot.x, dot.y].PatternsMoveDot = true;
+                                    game.gameDots[dot.x, dot.y].PatternsMoveDot = true;
                                 
                                 //PE_MoveDot = false;
                             }
                             if (PE_AnyDot)
                             {
-                                if (game.aDots[dot.x, dot.y].PatternsEmptyDot) game.aDots[dot.x, dot.y].PatternsEmptyDot = false;
-                                game.aDots[dot.x, dot.y].PatternsAnyDot = true;
+                                if (game.gameDots[dot.x, dot.y].PatternsEmptyDot) game.gameDots[dot.x, dot.y].PatternsEmptyDot = false;
+                                game.gameDots[dot.x, dot.y].PatternsAnyDot = true;
                             }
                             else if (!PE_EmptyDot & !PE_FirstDot & !PE_MoveDot & !PE_AnyDot)
                             //расстановка точек в режиме редактирования паттернов
@@ -93,7 +93,7 @@ namespace DotsGame
                         #endregion
 
                         #region Ходы игроков
-                        if (game.aDots[game.MousePos.X, game.MousePos.Y].Own > 0) break;//предовращение хода если клик был по занятой точке
+                        if (game.gameDots[game.MousePos.X, game.MousePos.Y].Own > 0) break;//предовращение хода если клик был по занятой точке
                         if (player_move == 2 | player_move == 0)
                         {
                         #if DEBUG
@@ -133,12 +133,12 @@ namespace DotsGame
                     case MouseButtons.Middle:
                         if (game.EditMode == true)
                         {
-                            ListPatterns.Remove(game.aDots[dot.x, dot.y]);
-                            game.aDots[dot.x, dot.y].PatternsRemove();
+                            ListPatterns.Remove(game.gameDots[dot.x, dot.y]);
+                            game.gameDots[dot.x, dot.y].PatternsRemove();
                             break;
                         }
-                        game.ListMoves.Remove(game.aDots[dot.x, dot.y]);
-                        game.UndoMove(dot.x, dot.y, game.aDots);
+                        game.gameDots.ListMoves.Remove(game.gameDots[dot.x, dot.y]);
+                        game.gameDots.UndoMove(dot.x, dot.y);
                         break;
                  #endif
                 }
@@ -259,9 +259,6 @@ namespace DotsGame
                     break;
             }
         }
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-        }
         private void Form1_MouseDown(object sender, MouseEventArgs e)
         {
             switch (e.Button)
@@ -338,17 +335,6 @@ namespace DotsGame
         {
             openFileDialog1.ShowDialog();
         }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void содержаниеToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void autoplayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(autoplayToolStripMenuItem.Checked) 
@@ -385,8 +371,8 @@ namespace DotsGame
                 return 1;
             } 
             pl_move.Own=Player;
-            game.MakeMove(pl_move, game.aDots,Player);
-            game.ListMoves.Add(pl_move);
+            game.gameDots.MakeMove(pl_move, Player);
+            //game.gameDots.ListMoves.Add(pl_move);
             pbxBoard.Invalidate();
             statusStrip1.Refresh();
             int pl = Player == 1 ? 2 : 1;
@@ -435,71 +421,51 @@ namespace DotsGame
                 game.SetLevel(2);
             }
         }
-
         private void сохранитькакToolStripMenuItem_Click(object sender, EventArgs e)
         {
             saveFileDialog1.ShowDialog();
         }
-
         private void saveFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             game.path_savegame = saveFileDialog1.FileName;
             game.SaveGame();
         }
-
         private void открытьПоследнююToolStripMenuItem_Click(object sender, EventArgs e)
         {
             game.path_savegame = Application.CommonAppDataPath + @"\dots.dts";
             game.LoadGame();
         }
-
         private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             game.path_savegame = openFileDialog1.FileName;
             game.LoadGame();
         }
-
         private void pbxBoard_Click(object sender, EventArgs e)
         {
 
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-        }
-
         private void редакторПаттерновToolStripMenuItem_Click(object sender, EventArgs e)
         {
             toolEditorPattern.Visible = toolEditorPattern.Visible ? false : true;
             game.EditMode=true;
         }
-
         private void Form2_MouseEnter(object sender, EventArgs e)
         {
             Activate();
         }
-
         private void toolExit_Click(object sender, EventArgs e)
         {
             toolEditorPattern.Visible = false;
             game.EditMode = false;
         }
-
-
         private void tlsRedDot_CheckStateChanged(object sender, EventArgs e)
         {
             tlsBlueDot.Checked = tlsRedDot.Checked ? false : true;
         }
-
         private void tlsBlueDot_CheckStateChanged(object sender, EventArgs e)
         {
             tlsRedDot.Checked = tlsBlueDot.Checked ? false : true;
         }
-
         private void tlsMakePattern_Click(object sender, EventArgs e)
         {
             if (game.lstDotsInPattern.Where(dot=>dot.PatternsFirstDot).Count()==0 |
@@ -509,10 +475,9 @@ namespace DotsGame
                 return;
                 //Ставьте точку хода (ЛКМ), на точку отмеченную как пустую
             }
-            MakePattern();
+            game.MakePattern();
             
         }
-
         private void tlsТочкаОтсчета_CheckStateChanged(object sender, EventArgs e)
         {
             if (tlsТочкаОтсчета.Checked)
@@ -524,7 +489,6 @@ namespace DotsGame
             }
 
         }
-
         private void tlsКромеВражеской_CheckStateChanged(object sender, EventArgs e)
         {
             if (tlsКромеВражеской.Checked)
@@ -536,7 +500,6 @@ namespace DotsGame
             }
 
         }
-
         private void tlsТочкаХода_CheckStateChanged(object sender, EventArgs e)
         {
             if (tlsТочкаХода.Checked)
@@ -548,7 +511,6 @@ namespace DotsGame
             }
 
         }
-
         private void tlsПустая_CheckStateChanged(object sender, EventArgs e)
         {
             if (tlsПустая.Checked)
@@ -560,7 +522,6 @@ namespace DotsGame
             }
 
         }
-
         private void tlsDotClean_CheckStateChanged(object sender, EventArgs e)
         {
             if (tlsDotClean.Checked)
@@ -571,23 +532,59 @@ namespace DotsGame
                 tlsПустая.Checked = false;
             }
         }
-
         private void tlsMirror_Click(object sender, EventArgs e)
         {
-            game.aDots.Dots = game.aDots.Rotate_Mirror_Horizontal(game.aDots.Dots);
-            game.RebuildDots();
+            game.gameDots.Dots = game.gameDots.Rotate_Mirror_Horizontal(game.gameDots.Dots);
+            game.gameDots.RebuildDots(game.gameDots.Dots);
             pbxBoard.Refresh();
 
         }
-
         private void tlsRotate90_Click(object sender, EventArgs e)
         {
-            game.aDots.Dots = game.aDots.Rotate90(game.aDots.Dots);
-            game.RebuildDots();
+            game.gameDots.Dots = game.gameDots.Rotate90(game.gameDots.Dots);
+            game.gameDots.RebuildDots(game.gameDots.ListMoves);
             pbxBoard.Refresh();
         }
 
+            //#region Pattern Editor
+            public List<Dot> ListPatterns
+            {
+                get { return game.lstDotsInPattern; }
+            }
+            public bool PE_FirstDot
+            {
+                get { return tlsТочкаОтсчета.Checked; }
+                set { tlsТочкаОтсчета.Checked = value; }
+            }
+            public bool PE_EmptyDot
+            {
+                get { return tlsПустая.Checked; }
+                set { tlsПустая.Checked = value; }
 
+            }
+            public bool PE_AnyDot
+            {
+                get { return tlsКромеВражеской.Checked; }
+                set { tlsКромеВражеской.Checked = value; }
 
-    }  
+            }
+            public bool PE_MoveDot
+            {
+                get { return tlsТочкаХода.Checked; }
+                set { tlsТочкаХода.Checked = value; }
+
+            }
+
+            public int PE_Player
+            {
+                get
+                {
+                    return tlsRedDot.Checked ? 1 : 2;
+                }
+
+            }
+
+            //#endregion
+
+    }
 }
