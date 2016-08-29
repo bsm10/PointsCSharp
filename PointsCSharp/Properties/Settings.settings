@@ -14,8 +14,11 @@
     <Setting Name="Level" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
-    <Setting Name="BoardSize" Type="System.Int32" Scope="User">
+    <Setting Name="BoardWidth" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">15</Value>
+    </Setting>
+    <Setting Name="BoardHeight" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
     </Setting>
   </Settings>
 </SettingsFile>

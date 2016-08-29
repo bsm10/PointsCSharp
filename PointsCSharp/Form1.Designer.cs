@@ -48,6 +48,7 @@
             this.тяжелоToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.boardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
             this.networkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.антиалToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.цветКурсораToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -77,9 +78,9 @@
             this.tlsТочкаХода = new System.Windows.Forms.ToolStripButton();
             this.toolExit = new System.Windows.Forms.ToolStripButton();
             this.tlsMakePattern = new System.Windows.Forms.ToolStripButton();
+            this.tlsDotClean = new System.Windows.Forms.ToolStripButton();
             this.tlsMirror = new System.Windows.Forms.ToolStripButton();
             this.tlsRotate90 = new System.Windows.Forms.ToolStripButton();
-            this.tlsDotClean = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.listMovesBindingSource)).BeginInit();
@@ -120,7 +121,7 @@
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(164, 24);
+            this.menuStrip.Size = new System.Drawing.Size(256, 24);
             this.menuStrip.TabIndex = 2;
             // 
             // файлToolStripMenuItem
@@ -250,7 +251,8 @@
             // boardToolStripMenuItem
             // 
             this.boardToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBox1});
+            this.toolStripTextBox1,
+            this.toolStripTextBox2});
             this.boardToolStripMenuItem.Name = "boardToolStripMenuItem";
             this.boardToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.boardToolStripMenuItem.Text = "&Размер доски";
@@ -262,6 +264,14 @@
             this.toolStripTextBox1.Text = "10";
             this.toolStripTextBox1.ToolTipText = "Enter decimal number";
             this.toolStripTextBox1.TextChanged += new System.EventHandler(this.toolStripTextBox1_TextChanged);
+            // 
+            // toolStripTextBox2
+            // 
+            this.toolStripTextBox2.Name = "toolStripTextBox2";
+            this.toolStripTextBox2.Size = new System.Drawing.Size(100, 21);
+            this.toolStripTextBox2.Text = "10";
+            this.toolStripTextBox2.ToolTipText = "Enter decimal number";
+            this.toolStripTextBox2.TextChanged += new System.EventHandler(this.toolStripTextBox2_TextChanged);
             // 
             // networkToolStripMenuItem
             // 
@@ -511,6 +521,17 @@
             this.tlsMakePattern.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.tlsMakePattern.Click += new System.EventHandler(this.tlsMakePattern_Click);
             // 
+            // tlsDotClean
+            // 
+            this.tlsDotClean.CheckOnClick = true;
+            this.tlsDotClean.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsDotClean.Image = ((System.Drawing.Image)(resources.GetObject("tlsDotClean.Image")));
+            this.tlsDotClean.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsDotClean.Name = "tlsDotClean";
+            this.tlsDotClean.Size = new System.Drawing.Size(32, 34);
+            this.tlsDotClean.Text = "Сбросить точку";
+            this.tlsDotClean.CheckStateChanged += new System.EventHandler(this.tlsDotClean_CheckStateChanged);
+            // 
             // tlsMirror
             // 
             this.tlsMirror.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -530,17 +551,6 @@
             this.tlsRotate90.Size = new System.Drawing.Size(32, 34);
             this.tlsRotate90.Text = "toolStripButton2";
             this.tlsRotate90.Click += new System.EventHandler(this.tlsRotate90_Click);
-            // 
-            // tlsDotClean
-            // 
-            this.tlsDotClean.CheckOnClick = true;
-            this.tlsDotClean.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tlsDotClean.Image = ((System.Drawing.Image)(resources.GetObject("tlsDotClean.Image")));
-            this.tlsDotClean.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tlsDotClean.Name = "tlsDotClean";
-            this.tlsDotClean.Size = new System.Drawing.Size(32, 34);
-            this.tlsDotClean.Text = "Сбросить точку";
-            this.tlsDotClean.CheckStateChanged += new System.EventHandler(this.tlsDotClean_CheckStateChanged);
             // 
             // Form1
             // 
@@ -626,6 +636,7 @@
         private System.Windows.Forms.ToolStripButton tlsMirror;
         private System.Windows.Forms.ToolStripButton tlsRotate90;
         private System.Windows.Forms.ToolStripButton tlsDotClean;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
     }
 }
 

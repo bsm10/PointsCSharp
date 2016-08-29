@@ -12,6 +12,11 @@ using System.Threading.Tasks;
 
 namespace DotsGame
 {
+    public static class GameMessages
+    {
+        public static string Message {get;set;}
+
+    }
     public partial class GameEngine
     {
         private const int PLAYER_DRAW = -1;
@@ -24,23 +29,15 @@ namespace DotsGame
 
         //-------------------------------------------------
         public int iScaleCoef = 1;//-коэффициент масштаба
-        public int iBoardSize = 10;//-количество клеток квадрата в длинну
-        //public int iMapSize;//-количество клеток квадрата в длинну -размер всей карты
-        public const int iBoardSizeMin = 5;
-        public const int iBoardSizeMax = 20;
+        //public int iBoardSize = 10;//-количество клеток квадрата в длинну
+        //public const int iBoardSizeMin = 5;
+        //public const int iBoardSizeMax = 20;
 
         public float startX = -0.5f, startY = -0.5f;
         private GameDots aDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
         public GameDots gameDots {get {return aDots;}}
-
-        //public List<Dot> lstDots;
-
-        //private List<Links> lnks;
         private Dot best_move; //ход который должен сделать комп
         private Dot last_move; //последний ход
-
-        //private int win_player;//переменная получает номер игрока, котрый окружил точки
-
         private string status=string.Empty;
         public string  Status
         {
@@ -50,7 +47,6 @@ namespace DotsGame
         public bool Autoplay
         {
             get { return f.rbtnHand.Checked; }
-            //set { f.rbtnHand.Checked = value; }
         }
 
         public Dot LastMove
@@ -60,8 +56,9 @@ namespace DotsGame
                 if(last_move==null)//когда выбирается первая точка для хода
                 {
                     var random = new Random(DateTime.Now.Millisecond);
-                    var q = from Dot d in aDots where d.x <= iBoardSize / 2 & d.x > iBoardSize / 3 
-                                                    & d.y <= iBoardSize / 2 & d.y > iBoardSize / 3
+                    var q = from Dot d in aDots
+                            where d.x <= gameDots.BoardWidth / 2 & d.x > gameDots.BoardWidth / 3
+                                                    & d.y <= gameDots.BoardHeight / 2 & d.y > gameDots.BoardHeight / 3
                                                     orderby (random.Next())
                                                     select d;
                     
@@ -1179,17 +1176,11 @@ namespace DotsGame
         }
         public void NewGame()
         {
-            //iMapSize = iBoardSize * iScaleCoef;
-            //aDots = new ArrayDots(iMapSize);
-            iBoardSize = Properties.Settings.Default.BoardSize;
-            aDots = new GameDots(iBoardSize, iBoardSize);
+            aDots = new GameDots(Properties.Settings.Default.BoardWidth,
+                                 Properties.Settings.Default.BoardHeight);
 
-            //lstDots = new List<Dot>(iBoardSize);
             lstDotsInPattern = new List<Dot>();
-
-            //lnks = new List<Links>();
             dots_in_region = new List<Dot>();
-            //list_moves = aDots.ListMoves;//new List<Dot>();
             count_dot1 = 0; count_dot2 = 0;
             startX = -0.5f;
             startY = -0.5f;
@@ -1218,10 +1209,12 @@ namespace DotsGame
             return nBlockedDots + nRegionDots / 2.0f -1;//Формула Пика
         }
 
-        public void ResizeBoard(int newSize)//изменение размера доски
+        public void ResizeBoard(int newSizeWidth, int newSizeHeight)//изменение размера доски
         {
-            iBoardSize=newSize;
-            Properties.Settings.Default.BoardSize=newSize;
+            gameDots.BoardHeight = newSizeHeight;
+            gameDots.BoardWidth = newSizeWidth;
+            Properties.Settings.Default.BoardWidth = newSizeWidth;
+            Properties.Settings.Default.BoardHeight = newSizeHeight;
             NewGame();
             pbxBoard.Invalidate();
         }
@@ -1527,17 +1520,17 @@ namespace DotsGame
                             if (sMinMax.Length == 1)
                             {
                                 ptrn.Xmin = 0;
-                                ptrn.Xmax = iBoardSize - 1;
+                                ptrn.Xmax = gameDots.BoardWidth - 1;
                                 ptrn.Ymin = 0;
-                                ptrn.Ymax = iBoardSize - 1;
+                                ptrn.Ymax = gameDots.BoardHeight - 1;
 
                             }
                             else
                             {
                                 ptrn.Xmin = Convert.ToInt32(sMinMax[0]);
-                                ptrn.Xmax = iBoardSize - Convert.ToInt32(sMinMax[0]);
+                                ptrn.Xmax = gameDots.BoardWidth - Convert.ToInt32(sMinMax[0]);
                                 ptrn.Ymin = Convert.ToInt32(sMinMax[1]);
-                                ptrn.Ymax = iBoardSize - Convert.ToInt32(sMinMax[1]);
+                                ptrn.Ymax = gameDots.BoardHeight - Convert.ToInt32(sMinMax[1]);
                             }
                             break;
                         case "Dots": //точки паттерна
@@ -1719,7 +1712,7 @@ namespace DotsGame
             //Устанавливаем масштаб
 
             SetScale(gr, pbxBoard.ClientSize.Width, pbxBoard.ClientSize.Height,
-                startX, startX + iBoardSize, startY, iBoardSize + startY);
+                startX, startX + gameDots.BoardWidth, startY, gameDots.BoardHeight + startY);
 
             //Рисуем доску
             DrawBoard(gr);
@@ -1736,15 +1729,15 @@ namespace DotsGame
         public void DrawBoard(Graphics gr)//рисуем доску из клеток
         {
             Pen pen = new Pen(new SolidBrush(Color.MediumSeaGreen), 0.15f);// 0
-            for (float i = 0; i <= iBoardSize; i++)
+            for (float i = 0; i <= gameDots.BoardHeight; i++)
             {
                 SolidBrush drB = i == 0 ? new SolidBrush(Color.MediumSeaGreen) : drawBrush;
 #if DEBUG
                 gr.DrawString("y" + (i + startY + 0.5f).ToString(), drawFont, drB, startX, i + startY + 0.5f - 0.2f);
                 gr.DrawString("x" + (i + startX + 0.5f).ToString(), drawFont, drB, i + startX + 0.5f - 0.2f, startY);
 #endif
-                gr.DrawLine(boardPen, i + startX + 0.5f, startY + 0.5f, i + startX + 0.5f, iBoardSize + startY - 0.5f);
-                gr.DrawLine(boardPen, startX + 0.5f, i + startY + 0.5f, iBoardSize + startX - 0.5f, i + startY + 0.5f);
+                gr.DrawLine(boardPen, i + startX + 0.5f, startY + 0.5f, i + startX + 0.5f, gameDots.BoardHeight + startY - 0.5f);
+                gr.DrawLine(boardPen, startX + 0.5f, i + startY + 0.5f, gameDots.BoardWidth + startX - 0.5f, i + startY + 0.5f);
             }
         }
         public void DrawLinks(Graphics gr)//отрисовка связей

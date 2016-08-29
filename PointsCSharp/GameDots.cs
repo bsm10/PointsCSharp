@@ -645,7 +645,9 @@ namespace DotsGame
         /// <returns></returns>
         public int IndexDot(int x, int y)
         {
-            return x * BoardWidth + y;
+            return x*y;
+            //if(BoardWidth>0) return x % BoardWidth + y;
+            //else return 0;
         }
 
 

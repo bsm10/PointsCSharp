@@ -28,7 +28,8 @@ namespace DotsGame
             toolStripStatusLabel2.ForeColor = game.colorGamer1;
             toolStripStatusLabel2.Text = "Ход игрока";
 
-            toolStripTextBox1.Text = game.iBoardSize.ToString();
+            toolStripTextBox1.Text = game.gameDots.BoardWidth.ToString();
+            toolStripTextBox2.Text = game.gameDots.BoardHeight.ToString();
 
             if(Properties.Settings.Default.Level==0) легкоToolStripMenuItem.Checked=true;
             if (Properties.Settings.Default.Level == 1) среднеToolStripMenuItem.Checked = true;
@@ -232,8 +233,26 @@ namespace DotsGame
         }
         private void toolStripTextBox1_TextChanged(object sender, EventArgs e)
         {
-            ChangeBoardSize(toolStripTextBox1.Text);
+            ChangeBoardSize();
         }
+
+        private void toolStripTextBox2_TextChanged(object sender, EventArgs e)
+        {
+            ChangeBoardSize();
+        }
+
+        private void ChangeBoardSize()
+        {
+            decimal x,y;
+
+            if (decimal.TryParse(toolStripTextBox1.Text, out x) &
+                decimal.TryParse(toolStripTextBox2.Text, out y))
+                game.ResizeBoard((int)x, (int)y);
+
+        }
+
+
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -287,14 +306,6 @@ namespace DotsGame
             MessageBox.Show(message + Application.ProductVersion, caption,
                                          MessageBoxButtons.OK,
                                          MessageBoxIcon.Information);
-        }
-        private void ChangeBoardSize(string strSize)
-        {
-            decimal i;
-            if (decimal.TryParse(strSize, out i))
-            {
-                game.ResizeBoard((int)i);
-            }
         }
         private void цветКурсораToolStripMenuItem_Click(object sender, EventArgs e)
         {
