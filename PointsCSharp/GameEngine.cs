@@ -29,9 +29,6 @@ namespace DotsGame
 
         //-------------------------------------------------
         public int iScaleCoef = 1;//-коэффициент масштаба
-        //public int iBoardSize = 10;//-количество клеток квадрата в длинну
-        //public const int iBoardSizeMin = 5;
-        //public const int iBoardSizeMax = 20;
 
         public float startX = -0.5f, startY = -0.5f;
         private GameDots aDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
@@ -115,8 +112,8 @@ namespace DotsGame
         public GameEngine(PictureBox CanvasGame)
         {
             pbxBoard = CanvasGame;
-            LoadPattern();
             NewGame();
+            LoadPattern();
         }
         public void SetLevel(int iLevel=1)
         {
@@ -856,137 +853,6 @@ namespace DotsGame
             return PLAYER_NONE;
         }
 
-        //******************************************************************************************************************
-//        private int OldPlay1(ref Dot best_move, Dot move1, Dot move2, int player, ref int count_moves,
-//                               ref int recursion_depth, Dot lastmove, ref int counter_root)//возвращает Owner кто побеждает в результате хода
-//        {
-//#if DEBUG
-//            SkillDepth = (int)f.numericUpDown2.Value;
-//            SkillNumSq = (int)f.numericUpDown4.Value;
-//            SkillLevel = (int)f.numericUpDown3.Value;
-//#endif
-//            recursion_depth++;
-//            //if (recursion_depth >= SkillDepth)
-//            if (recursion_depth >= 4)
-//            {
-//                return 0;
-//            }
-//            Dot enemy_move = null;
-
-//            var qry = from Dot d in aDots
-//                      where d.Own == PLAYER_NONE & d.Blocked == false & Math.Abs(d.x -lastmove.x) < SkillNumSq
-//                                                                    & Math.Abs(d.y -lastmove.y) < SkillNumSq
-//                      orderby Math.Sqrt(Math.Pow(Math.Abs(d.x -lastmove.x), 2) + Math.Pow(Math.Abs(d.y -lastmove.y), 2))
-//                      select d;
-//            Dot[] ad = qry.ToArray();
-//            int i = ad.Length;
-//            if (i != 0)
-//            {
-//                foreach (Dot d in ad)
-//                {
-//                    //**************делаем ход***********************************
-//                    d.Own = player == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
-//                    int res_last_move = (int)MakeMove(d);
-//                    count_moves++;
-//                    #region проверить не замыкается ли регион
-//                    //проверяем ход который ведет сразу к окружению
-//                    Dot dt = CheckMove(player, false);
-//                    if (dt != null)
-//                    {
-//                        if (recursion_depth < 2)
-//                        {
-//                            counter_root = recursion_depth;
-//                            best_move = dt.Own == PLAYER_COMPUTER ? d : dt;
-//                            lst_best_move.Clear();
-//                            lst_best_move.Add(best_move);
-//#if DEBUG
-//                            f.lstDbg2.Items.Add(recursion_depth + " CheckMove(Play) " + best_move.x + ":" + best_move.y + "; win player " + player);
-//#endif
-//                            UndoMove(d);
-//                            return player;
-//                        }
-//                    }
-//                    #endregion
-//                    player = d.Own;
-//                    if (player == 1 & recursion_depth < 3) move1 = d;
-//                    if (player == 2 & recursion_depth < 2) move2 = d;
-//                    //-----показывает проверяемые ходы--------
-                    
-//                    #region Debug
-//#if DEBUG
-//                    if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
-//                    f.lstDbg1.Items.Add(d.Own + " -" + d.x + ":" + d.y);
-//                    f.txtDebug.Text = "Общее число ходов: " + count_moves.ToString() +
-//                                       "\r\n Глубина просчета: " + recursion_depth.ToString() +
-//                                       "\r\n проверка вокруг точки " + lastmove +
-//                                       "\r\n move1 " + move1 +
-//                                       "\r\n move2 " + move2 +
-//                                       "\r\n время поиска " + stopWatch.ElapsedMilliseconds;
-//#endif
-//                    #endregion
-//                    #region Проверка res_last_move если больше нуля значит кто-то окружает
-//                    //-----------------------------------
-//                    if (res_last_move != 0 & aDots[d.x, d.y].Blocked)//если ход в окруженный регион
-//                    {
-//                        best_move = null;
-//                        UndoMove(d);
-//                        return d.Own == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
-//                    }
-//                    if (d.Own == 1 & res_last_move != 0)
-//                    {
-//                        if (recursion_depth < counter_root)
-//                        {
-//                            counter_root = recursion_depth;
-//                            best_move = new Dot(move1.x, move1.y);
-//                            lst_best_move.Clear();
-//                            lst_best_move.Add(best_move);
-//#if DEBUG
-//                            f.lstDbg2.Items.Add(recursion_depth + "ход на " + best_move.x + ":" + best_move.y + "; win HUMAN");
-//#endif
-//                        }
-//                        UndoMove(d);
-//                        return PLAYER_HUMAN;//побеждает игрок
-//                    }
-//                    else if (d.Own == 2 & res_last_move != 0 | d.Own == 1 & aDots[d.x, d.y].Blocked)
-//                    {
-//                        if (recursion_depth < counter_root)
-//                        {
-//                            counter_root = recursion_depth;
-//                            best_move = new Dot(move2.x, move2.y);
-//                            lst_best_move.Clear();
-//                            lst_best_move.Add(best_move);
-//#if DEBUG
-//                            f.lstDbg2.Items.Add(recursion_depth + " ход на " + best_move.x + ":" + best_move.y + "; win COM");
-//#endif
-//                        }
-//                        UndoMove(d);
-//                        return PLAYER_COMPUTER;//побеждает компьютер
-//                    }
-//                    #endregion
-//                    //теперь ходит другой игрок =========================================================================================
-//                    int result = Play1(ref enemy_move, move1, move2, player, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
-//                    //отменить ход
-//                    UndoMove(d);
-//                    recursion_depth--;
-//#if DEBUG
-//                    if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count -1);
-//#endif
-//                    if (enemy_move == null & recursion_depth > 2)
-//                        break;
-//                    //if (count_moves > SkillLevel * 10)
-//                    if (count_moves > 4)
-//                        return PLAYER_NONE;
-//                    //if (result != 0)
-//                    //{
-//                    //    best_move = enemy_move;
-//                    //    return result;
-//                    //}
-//                }
-//            }
-//            return PLAYER_NONE;
-//        }
-
-        //**************************************************************************************************************
         private int FindMove(ref Dot move, Dot last_mv)//возвращает Owner кто побеждает в результате хода
         {
             int depth = 0, counter = 0, counter_root = 1000, own;
@@ -1211,6 +1077,11 @@ namespace DotsGame
 
         public void ResizeBoard(int newSizeWidth, int newSizeHeight)//изменение размера доски
         {
+            if (newSizeWidth < 5) newSizeWidth = 5;
+            else if (newSizeWidth > 40) newSizeWidth = 40;
+            if (newSizeHeight < 5) newSizeHeight = 5;
+            else if (newSizeHeight > 40) newSizeHeight = 40;
+
             gameDots.BoardHeight = newSizeHeight;
             gameDots.BoardWidth = newSizeWidth;
             Properties.Settings.Default.BoardWidth = newSizeWidth;
@@ -1493,9 +1364,8 @@ namespace DotsGame
         public void LoadPattern()
         {
             int counter_line = 0;
-            //try
-            //{
-                
+            try
+            {
                 string line;
                 // Read the file and display it line by line.
                 StreamReader file = new StreamReader(Path_PatternData);
@@ -1558,82 +1428,13 @@ namespace DotsGame
                            break;
 
                     }
-
             }
-
-
-
-            //    if (line.Trim() == "Begin")
-            //    {
-            //        ptrn = new Pattern();
-            //        while (line != "End")
-            //        {
-            //            line = file.ReadLine();
-            //            counter_line++;
-            //            int x;
-            //            if (int.TryParse(line, out x)) ptrn.PatternNumber = x; //Convert.ToInt32(line);
-            //            line = file.ReadLine();
-            //            counter_line++;
-            //            if (line.Trim()!="Dots")
-            //            {
-            //                string[] sMinMax = line.Replace(" ", string.Empty).Split(new char[] { ',' });
-            //                if (sMinMax.Length == 1)
-            //                {
-            //                    ptrn.Xmin = 0;
-            //                    ptrn.Xmax = iBoardSize - 1;
-            //                    ptrn.Ymin = 0;
-            //                    ptrn.Ymax = iBoardSize - 1;
-
-            //                }
-            //                else
-            //                {
-            //                    ptrn.Xmin = Convert.ToInt32(sMinMax[0]);
-            //                    ptrn.Xmax = iBoardSize - Convert.ToInt32(sMinMax[0]);
-            //                    ptrn.Ymin = Convert.ToInt32(sMinMax[1]);
-            //                    ptrn.Ymax = iBoardSize - Convert.ToInt32(sMinMax[1]);
-            //                }
-
-            //            }
-            //            #region Dots
-            //            else if (line.Trim() == "Dots")
-            //            {
-            //                while ((line = file.ReadLine().Replace(" ", string.Empty)) != "Result")
-            //                {
-            //                    counter_line++;
-            //                    string[] ss = line.Split(new char[] { ',' });
-            //                    DotInPattern dtp = new DotInPattern();
-            //                    dtp.dX = Convert.ToInt32(ss[0]);
-            //                    dtp.dY = Convert.ToInt32(ss[1]);
-            //                    dtp.Owner = ss[2];
-            //                    ptrn.DotsPattern.Add(dtp);
-            //                }
-            //                counter_line++;
-            //                line = file.ReadLine().Replace(" ", string.Empty);
-            //                counter_line++;
-            //                string[] sss = line.Split(new char[] { ',' });
-            //                ptrn.dXdY_ResultDot.dX = Convert.ToInt32(sss[0]);
-            //                ptrn.dXdY_ResultDot.dY = Convert.ToInt32(sss[1]);
-            //                line = file.ReadLine().Trim();
-            //                counter_line++;
-            //            }
-            //            #endregion
-
-            //        }
-            //        Patterns.Add(ptrn);
-            //        counter++;
-
-            //    }
-            //    #endregion
-            //    next:;
-            //}
-
             file.Close();
-            //}
-            //catch (Exception e)
-            //{
-            //    MessageBox.Show(e.Message + " \r\n LoadPattern() -" + counter.ToString() +
-            //       " \r\n line -" + counter_line.ToString());
-            //}
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
 
         }
 
@@ -1729,16 +1530,27 @@ namespace DotsGame
         public void DrawBoard(Graphics gr)//рисуем доску из клеток
         {
             Pen pen = new Pen(new SolidBrush(Color.MediumSeaGreen), 0.15f);// 0
+            for (float i = 0; i <= gameDots.BoardWidth; i++)
+            {
+                SolidBrush drB = i == 0 ? new SolidBrush(Color.MediumSeaGreen) : drawBrush;
+#if DEBUG
+                //gr.DrawString("y" + (i + startY + 0.5f).ToString(), drawFont, drB, startX, i + startY + 0.5f - 0.2f);
+                gr.DrawString("x" + (i + startX + 0.5f).ToString(), drawFont, drB, i + startX + 0.5f - 0.2f, startY);
+#endif
+                gr.DrawLine(boardPen, i + startX + 0.5f, startY + 0.5f, i + startX + 0.5f, gameDots.BoardHeight + startY - 0.5f);
+                //gr.DrawLine(boardPen, startX + 0.5f, i + startY + 0.5f, gameDots.BoardWidth + startX - 0.5f, i + startY + 0.5f);
+            }
             for (float i = 0; i <= gameDots.BoardHeight; i++)
             {
                 SolidBrush drB = i == 0 ? new SolidBrush(Color.MediumSeaGreen) : drawBrush;
 #if DEBUG
                 gr.DrawString("y" + (i + startY + 0.5f).ToString(), drawFont, drB, startX, i + startY + 0.5f - 0.2f);
-                gr.DrawString("x" + (i + startX + 0.5f).ToString(), drawFont, drB, i + startX + 0.5f - 0.2f, startY);
+                //gr.DrawString("x" + (i + startX + 0.5f).ToString(), drawFont, drB, i + startX + 0.5f - 0.2f, startY);
 #endif
-                gr.DrawLine(boardPen, i + startX + 0.5f, startY + 0.5f, i + startX + 0.5f, gameDots.BoardHeight + startY - 0.5f);
+                //gr.DrawLine(boardPen, i + startX + 0.5f, startY + 0.5f, i + startX + 0.5f, gameDots.BoardHeight + startY - 0.5f);
                 gr.DrawLine(boardPen, startX + 0.5f, i + startY + 0.5f, gameDots.BoardWidth + startX - 0.5f, i + startY + 0.5f);
             }
+
         }
         public void DrawLinks(Graphics gr)//отрисовка связей
         {

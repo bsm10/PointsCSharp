@@ -1260,9 +1260,9 @@ namespace DotsGame
         {
             lnks.Clear();
             var qry = from Dot d1 in this
-                      where d1.BlokingDots.Count > 0 //& d1.Blocked == false
+                      where d1.BlokingDots.Count > 0 
                       from Dot d2 in this
-                      where d2.Own == d1.Own && d2.BlokingDots.Count > 0 //& d2.Blocked == false 
+                      where d2.Own == d1.Own && d1.Blocked == d2.Blocked && d2.BlokingDots.Count > 0 
                       & Distance(d1, d2) < 2 & Distance(d1, d2) > 0
                       select new Links(d1, d2);
 

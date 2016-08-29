@@ -28,10 +28,10 @@ namespace DotsGame
             toolStripStatusLabel2.ForeColor = game.colorGamer1;
             toolStripStatusLabel2.Text = "Ход игрока";
 
-            toolStripTextBox1.Text = game.gameDots.BoardWidth.ToString();
-            toolStripTextBox2.Text = game.gameDots.BoardHeight.ToString();
+            toolStripTextBox1.Text = Properties.Settings.Default.BoardWidth.ToString();
+            toolStripTextBox2.Text = Properties.Settings.Default.BoardHeight.ToString();
 
-            if(Properties.Settings.Default.Level==0) легкоToolStripMenuItem.Checked=true;
+            if (Properties.Settings.Default.Level==0) легкоToolStripMenuItem.Checked=true;
             if (Properties.Settings.Default.Level == 1) среднеToolStripMenuItem.Checked = true;
             if (Properties.Settings.Default.Level == 2) тяжелоToolStripMenuItem.Checked = true;
         }
@@ -192,7 +192,7 @@ namespace DotsGame
 #else
                
 #endif
-            toolStripStatusLabel1.Text = p.X + " : " + p.Y;
+            toolStripStatusLabel1.Text = p.X + " : " + p.Y + "; " + "IndexDot " + game.gameDots.IndexDot(p.X, p.Y);
             if (game.Redraw) pbxBoard.Invalidate();
         }
         private void pbxBoard_MouseDown(object sender, MouseEventArgs e)
@@ -243,7 +243,7 @@ namespace DotsGame
 
         private void ChangeBoardSize()
         {
-            decimal x,y;
+            decimal x, y;
 
             if (decimal.TryParse(toolStripTextBox1.Text, out x) &
                 decimal.TryParse(toolStripTextBox2.Text, out y))
