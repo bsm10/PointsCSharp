@@ -20,13 +20,17 @@ namespace DotsGame
             int Yres = Screen.PrimaryScreen.WorkingArea.Height;
             float scl_coef=(float)Xres/ Yres;
 
-            Height = 4 * Yres / 5;
-            Width = Height-50;
+            Height = 800; //4 * Yres / 5;
+            Width = 400;//Height-50;
 
             game = new GameEngine(pbxBoard);
+
             //game.SetLevel(2);
             toolStripStatusLabel2.ForeColor = game.colorGamer1;
             toolStripStatusLabel2.Text = "Ход игрока";
+
+            scl_coef = (float)pbxBoard.ClientSize.Height/ pbxBoard.ClientSize.Width;
+            Properties.Settings.Default.BoardHeight = (int)Math.Round(Properties.Settings.Default.BoardWidth * (double)scl_coef);
 
             toolStripTextBox1.Text = Properties.Settings.Default.BoardWidth.ToString();
             toolStripTextBox2.Text = Properties.Settings.Default.BoardHeight.ToString();
