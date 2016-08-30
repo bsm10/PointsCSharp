@@ -143,7 +143,7 @@ namespace DotsGame
                             break;
                         }
                         game.gameDots.ListMoves.Remove(game.gameDots[dot.x, dot.y]);
-                        game.gameDots.UndoMove(dot.x, dot.y);
+                        game.gameDots.UndoMove(dot);
                         break;
                  #endif
                 }
@@ -267,7 +267,7 @@ namespace DotsGame
         }
         private void создатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            game.NewGame();
+            game.NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
             //lstMoves.DataSource = null;
         }
         private void антиалToolStripMenuItem_Click(object sender, EventArgs e)
@@ -382,12 +382,11 @@ namespace DotsGame
             if (pl_move == null)
             {
                 MessageBox.Show("Сдаюсь! \r\n" + game.Statistic());
-                game.NewGame();
+                game.NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
                 return 1;
             } 
             pl_move.Own=Player;
-            game.gameDots.MakeMove(pl_move, Player);
-            //game.gameDots.ListMoves.Add(pl_move);
+            game.gameDots.MakeMove(pl_move);
             pbxBoard.Invalidate();
             statusStrip1.Refresh();
             int pl = Player == 1 ? 2 : 1;
@@ -399,9 +398,9 @@ namespace DotsGame
                 return 1;
             }
 
-            //lstMoves.DataSource = null;
-            //lstMoves.DataSource = game.ListMoves;
-            //if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count -1, true);
+            lstMoves.DataSource = null;
+            lstMoves.DataSource = game.gameDots.ListMoves;
+            if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
             //rtbStat.Text = game.Statistic();
             return 0;
         }
@@ -550,14 +549,12 @@ namespace DotsGame
         private void tlsMirror_Click(object sender, EventArgs e)
         {
             game.gameDots.Dots = game.gameDots.Rotate_Mirror_Horizontal(game.gameDots.Dots);
-            game.gameDots.RebuildDots(game.gameDots.Dots);
             pbxBoard.Refresh();
 
         }
         private void tlsRotate90_Click(object sender, EventArgs e)
         {
             game.gameDots.Dots = game.gameDots.Rotate90(game.gameDots.Dots);
-            game.gameDots.RebuildDots(game.gameDots.ListMoves);
             pbxBoard.Refresh();
         }
 

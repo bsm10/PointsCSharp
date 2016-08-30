@@ -31,10 +31,16 @@ namespace DotsGame
         public int iScaleCoef = 1;//-коэффициент масштаба
 
         public float startX = -0.5f, startY = -0.5f;
+        //==========================================================================================================
         private GameDots aDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
+        //===========================================================================================================
         public GameDots gameDots {get {return aDots;}}
         private Dot best_move; //ход который должен сделать комп
-        private Dot last_move; //последний ход
+        
+        private Dot last_move//последний ход
+        {
+            get { return gameDots.ListMoves.Last(); } 
+        }
         private string status=string.Empty;
         public string  Status
         {
@@ -50,18 +56,24 @@ namespace DotsGame
         {
             get
             {
-                if(last_move==null)//когда выбирается первая точка для хода
+                if (gameDots.ListMoves.Count==0)//когда выбирается первая точка для хода
                 {
                     var random = new Random(DateTime.Now.Millisecond);
                     var q = from Dot d in aDots
                             where d.x <= gameDots.BoardWidth / 2 & d.x > gameDots.BoardWidth / 3
                                                     & d.y <= gameDots.BoardHeight / 2 & d.y > gameDots.BoardHeight / 3
-                                                    orderby (random.Next())
-                                                    select d;
+                            orderby (random.Next())
+                            select d;
+                            return q.First();
                     
-                    last_move = q.First();//это для того чтобы поставить первую точку                
                 }
-                return last_move;
+                else
+                {
+                    return gameDots.ListMoves.Last();
+                }
+                //это для того чтобы поставить первую точку                
+                //last_move=gameDots.ListMoves.Last();
+                // last_move;
             }
         }
 
@@ -112,7 +124,7 @@ namespace DotsGame
         public GameEngine(PictureBox CanvasGame)
         {
             pbxBoard = CanvasGame;
-            NewGame();
+            NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
             LoadPattern();
         }
         public void SetLevel(int iLevel=1)
@@ -178,8 +190,6 @@ namespace DotsGame
             int pl1=0; int pl2=0;
             pl1 = enemy_move.Own == PLAYER_HUMAN ? PLAYER_HUMAN : PLAYER_COMPUTER;
             pl2 = pl1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
-            //if (enemy_move.Own == PLAYER_HUMAN) { pl1 = PLAYER_HUMAN; pl2 = PLAYER_COMPUTER; }
-            //else if (enemy_move.Own == PLAYER_COMPUTER) { pl1 = PLAYER_COMPUTER; pl2 = PLAYER_HUMAN; }
             best_move=null;
             int depth=0;
             var t1 = DateTime.Now.Millisecond;
@@ -188,7 +198,6 @@ namespace DotsGame
 #endif
             Dot lm = new Dot(last_move.x, last_move.y);//точка последнего хода
             //проверяем ход который ведет сразу к окружению и паттерны
-            //BestMove(pl1, pl2);
             int c1 = 0, c_root = 1000;// , dpth=0;
             lst_best_move.Clear();
 
@@ -197,12 +206,9 @@ namespace DotsGame
                 f.lstDbg1.Items.Clear();
 #endif
                 Dot dot1 = null, dot2 =null;
-                //PLAYER_HUMAN -ставим в параметр -первым ходит игрок1(человек)
                 Play(ref best_move, dot1, dot2, PLAYER_HUMAN, PLAYER_COMPUTER, ref depth, ref c1, lm, ref c_root);
-                //Play1(ref best_move, dot1, dot2, PLAYER_HUMAN, ref depth, ref c1, lm, ref c_root);
             if (best_move == null)
             {
-                //MessageBox.Show("best_move == null");
                 var random = new Random(DateTime.Now.Millisecond);
                 var q = from Dot d in aDots//любая точка
                         where d.Blocked == false & d.Own == PLAYER_NONE 
@@ -779,7 +785,7 @@ namespace DotsGame
                     player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     //if (count_moves>SkillLevel) break;
                     //**************делаем ход***********************************
-                    res_last_move = aDots.MakeMove(d,player2);
+                    res_last_move = aDots.MakeMove(new Dot(d.x,d.y,player2));
                     count_moves++;
                     #region проверка на окружение
 
@@ -924,7 +930,8 @@ namespace DotsGame
                                 break;
                         }
                         //ход делает комп, если последним ходил игрок
-                        int res_last_move = aDots.MakeMove(d,own);
+                        d.Own=own;
+                        int res_last_move = aDots.MakeMove(d);
                         mvs.Add(d); 
                         //-----показывает проверяемые ходы-----------------------------------------------
 #if DEBUG
@@ -939,8 +946,6 @@ namespace DotsGame
                         if (res_last_move != 0 & aDots[d.x, d.y].Blocked)//если ход в окруженный регион
                         {
                             move = null;
-                            //UndoMove(d);
-                            //return d.Own == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                             break;
                         }
                         if (d.Own == 1 & res_last_move != 0)
@@ -1040,11 +1045,9 @@ namespace DotsGame
             pbxBoard.Invalidate();
             System.Threading.Thread.Sleep(ms);
         }
-        public void NewGame()
+        public void NewGame(int boardWidth, int boardHeigth)
         {
-            aDots = new GameDots(Properties.Settings.Default.BoardWidth,
-                                 Properties.Settings.Default.BoardHeight);
-
+            aDots = new GameDots(boardWidth,boardHeigth); 
             lstDotsInPattern = new List<Dot>();
             dots_in_region = new List<Dot>();
             count_dot1 = 0; count_dot2 = 0;
@@ -1086,7 +1089,7 @@ namespace DotsGame
             gameDots.BoardWidth = newSizeWidth;
             Properties.Settings.Default.BoardWidth = newSizeWidth;
             Properties.Settings.Default.BoardHeight = newSizeHeight;
-            NewGame();
+            NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
             pbxBoard.Invalidate();
         }
 
@@ -1465,8 +1468,6 @@ namespace DotsGame
         public void LoadGame()
         {
             aDots.Clear();
-            aDots.ListLinks.Clear();
-            aDots.ListMoves.Clear();
             Dot d=null;
             try
             {
@@ -1476,15 +1477,12 @@ namespace DotsGame
                 while (reader.PeekChar() > -1)
                 {
                     d = new Dot((int)reader.ReadByte(), (int)reader.ReadByte(), (int)reader.ReadByte());
-                    aDots.MakeMove(d, d.Own);
-                    aDots.ListMoves.Add(aDots[d.x, d.y]);
+                    aDots.MakeMove(d);
+                    //aDots.ListMoves.Add(d);
                 }
-                last_move = d;
-                //CheckBlocked();//проверяем блокировку
-                aDots.LinkDots();//восстанавливаем связи между точками
-                aDots.RescanBlockedDots();
-                //RescanBlocked();
-                //ScanBlockedFreeDots();
+                //aDots.RebuildDots();
+                //aDots.LinkDots();//восстанавливаем связи между точками
+                //aDots.RescanBlockedDots();
                 reader.Close();
             }
             catch (Exception e)
@@ -1578,9 +1576,31 @@ namespace DotsGame
         public void DrawPoints(Graphics gr)//рисуем поставленные точки
         {
             //отрисовываем поставленные точки
-            if (aDots.Count > 0)
+            foreach (Dot p in gameDots.ListMoves)
             {
-                foreach (Dot p in aDots)
+                switch (p.Own)
+                {
+                    case 1:
+                        SetColorAndDrawDots(gr, p, colorGamer1);
+                        break;
+                    case 2:
+                        SetColorAndDrawDots(gr, p, colorGamer2);
+                        break;
+                    case 0:
+                        if (EditMode) SetColorAndDrawDots(gr, p, Color.FromArgb(150, Color.WhiteSmoke));
+                        break;
+                }
+            }
+        }
+
+        public void DrawPoints1(Graphics gr)//рисуем поставленные точки
+        {
+            //отрисовываем поставленные точки
+            //if (aDots.Count > 0)
+            //{
+            //    foreach (Dot p in aDots)
+                foreach (Dot p in gameDots.ListMoves)
+
                 {
                     switch (p.Own)
                     {
@@ -1598,17 +1618,16 @@ namespace DotsGame
                             break;
                     }
                 }
-            }
         }
         private void SetColorAndDrawDots(Graphics gr, Dot p, Color colorGamer) //Вспомогательная функция для DrawPoints. Выбор цвета точки в зависимости от ее состояния и рисование элипса
         {
 
             Color c;
-            if (p.Blocked)
-            {
-                gr.FillEllipse(new SolidBrush(Color.FromArgb(130, colorGamer)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
-            }
-            else if (last_move != null && p.x == last_move.x & p.y == last_move.y)//точка последнего хода должна для удовства выделяться
+            //if (p.Blocked)
+            //{
+            //    gr.FillEllipse(new SolidBrush(Color.FromArgb(130, colorGamer)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+            //}
+            if (last_move != null && p.x == last_move.x & p.y == last_move.y)//точка последнего хода должна для удовства выделяться
             {
                 gr.FillEllipse(new SolidBrush(Color.FromArgb(140, colorGamer)), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
                 gr.DrawEllipse(new Pen(Color.FromArgb(140, Color.WhiteSmoke), 0.08f), p.x - PointWidth / 2, p.y - PointWidth / 2, PointWidth, PointWidth);
@@ -1616,10 +1635,10 @@ namespace DotsGame
             }
             else
             {
-                int G = colorGamer.G > 50 ? colorGamer.G - 50 : 120;
-                c = p.BlokingDots.Count > 0 ? Color.FromArgb(255, colorGamer.R, G, colorGamer.B) : colorGamer;
-                gr.FillEllipse(new SolidBrush(colorGamer), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
-                gr.DrawEllipse(new Pen(c, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                //int G = colorGamer.G > 50 ? colorGamer.G - 50 : 120;
+                c = p.Blocked ? Color.FromArgb(130, colorGamer) : Color.FromArgb(255, colorGamer);
+                gr.FillEllipse(new SolidBrush(c), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
+                //gr.DrawEllipse(new Pen(c, 0.08f), p.x - PointWidth, p.y - PointWidth, PointWidth * 2, PointWidth * 2);
             }
             if (p.PatternsEmptyDot)
             {

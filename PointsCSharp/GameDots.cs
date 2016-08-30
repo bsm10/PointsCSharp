@@ -17,9 +17,12 @@ namespace DotsGame
     public class GameDots : IEnumerator, IEnumerable
     {
         private List<Dot> list_moves; //список ходов
+
+
         public List<Dot> ListMoves
         {
             get { return list_moves; }
+            set { list_moves = value; }
         }
 
         private List<Dot> _Dots; // главная коллекция
@@ -62,12 +65,15 @@ namespace DotsGame
                     ad._Dots[i].x = Dots[i].x;
                     ad._Dots[i].y = Dots[i].y;
                 }
-                //ad.Dots = _Dots.ConvertAll(dot => new Dot(dot.x, dot.y, dot.Own));
                 return ad;
             }
         }
 
-        private Dot last_move; //последний ход
+        
+        private Dot last_move //последний ход
+        {
+            get { return ListMoves.Last(); }
+        }
         public int win_player;//переменная получает номер игрока, котрый окружил точки
 
         int position = -1;
@@ -160,6 +166,9 @@ namespace DotsGame
                 if (dot.x == 0 | dot.x == (BoardWidth - 1) | dot.y == 0 | 
                     dot.y == (BoardHeight - 1)) _Dots[ind].Fixed = true;
                 AddNeibor(_Dots[ind]);
+
+                ListMoves.Add(_Dots[ind]);
+
             //}
         }
 
@@ -196,23 +205,25 @@ namespace DotsGame
             _Dots[ind] = new Dot(dot.x, dot.y);
             _Dots[ind].IndexDot = i;
             _Dots[ind].IndexRelation = i;
-        }
-        private void Remove(int x, int y)//удаляет точку из массива
-        {
-            //if (Contains(x, y))
-            //{
-                int ind = IndexDot(x,y);
 
-                RemoveNeibor(Dots[ind]);
-                int i = Dots[ind].IndexDot;
-                _Dots[ind] = new Dot(x, y);
-                _Dots[ind].IndexDot = i;
-                _Dots[ind].IndexRelation = i;
-                _Dots[ind].NeiborDots.Clear();
-                _Dots[ind].BlokingDots.Clear();
-                _Dots[ind].Own = 0;
-            //}
+            ListMoves.Remove(dot);
         }
+        //private void Remove(int x, int y)//удаляет точку из массива
+        //{
+        //    //if (Contains(x, y))
+        //    //{
+        //        int ind = IndexDot(x,y);
+
+        //        RemoveNeibor(Dots[ind]);
+        //        int i = Dots[ind].IndexDot;
+        //        _Dots[ind] = new Dot(x, y);
+        //        _Dots[ind].IndexDot = i;
+        //        _Dots[ind].IndexRelation = i;
+        //        _Dots[ind].NeiborDots.Clear();
+        //        _Dots[ind].BlokingDots.Clear();
+        //        _Dots[ind].Own = 0;
+        //    //}
+        //}
         public float Distance(Dot dot1, Dot dot2)//расстояние между точками
         {
             return (float)Math.Sqrt(Math.Pow((dot1.x -dot2.x), 2) + Math.Pow((dot1.y -dot2.y), 2));
@@ -360,6 +371,7 @@ namespace DotsGame
                 dot.y = x;
                 newList.Add(dot);
             }
+            RebuildDots();
             return newList;
         }
         public List<Dot> Rotate_Mirror_Horizontal(List<Dot> DotsForRotation)
@@ -375,6 +387,7 @@ namespace DotsGame
                 dot.x = x;
                 newList.Add(dot);
             }
+            RebuildDots();
             return newList;
         }
         public List<Dot> EmptyNeibourDots(int Owner)//список не занятых точек возле определенной точки
@@ -420,6 +433,9 @@ namespace DotsGame
                 d.BlokingDots.Clear();
                 d.Rating = 0;
             }
+            ListLinks.Clear();
+            ListMoves.Clear();
+
         }
 
         /// <summary>
@@ -565,106 +581,105 @@ namespace DotsGame
 
         //}
 
-        public void RebuildDots(List<Dot> listMoves)
+        public void RebuildDots()
         {
             GameDots _aDots = new GameDots(BoardWidth,BoardHeight);
 
-            foreach (Dot dot in listMoves)
+            foreach (Dot dot in ListMoves)
             {
                 _aDots.MakeMove(dot, dot.Own);
             }
-
-            _aDots.LinkDots();//восстанавливаем связи между точками
             _aDots.RescanBlockedDots();
             Dots = _aDots.Dots;
+            ListMoves = _aDots.ListMoves;
+
+            LinkDots();
         }
 
-        public void UndoMove(int x, int y)//поле отмена хода
-        {
-            Undo(x, y);
-        }
+        //public void UndoMove(int x, int y)//поле отмена хода
+        //{
+        //    Undo(x, y);
+        //}
         public void UndoMove(Dot dot)//поле отмена хода
         {
             //if(dot!=null) Undo(dot.x, dot.y, arrDots);
 
             //Dot dt = list_moves.Where(d=>d == dot).First(); //list_moves.Where(d=> d.x== x & d.y == y);
 
-            list_moves.Remove(dot);
+            //list_moves.Remove(dot);
             Remove(dot);
+            RebuildDots();
 
-            RebuildDots(list_moves);
-            LinkDots();
-
-            last_move = list_moves.Count == 0 ? null : list_moves.Last();
+            //last_move = list_moves.Count == 0 ? null : list_moves.Last();
 
         }
 
-        private void Undo(int x, int y)//отмена хода
-        {
-            List<Dot> bl_dot = new List<Dot>();
-            List<Links> ln = new List<Links>();
-            if (this[x, y].Blocked)//если точка была блокирована, удалить ее из внутренних списков у блокирующих точек
-            {
-                lst_blocked_dots.Remove(this[x, y]);
-                bl_dot.Add(this[x, y]);
-                foreach (Dot d in lst_in_region_dots)
-                {
-                    d.BlokingDots.Remove(this[x, y]);
-                }
-                count_blocked_dots = CheckBlocked();
-            }
-            if (this[x, y].BlokingDots.Count > 0)
-            {
-                //снимаем блокировку с точки bd, которая была блокирована UndoMove(int x, int y)
-                foreach (Dot d in this[x, y].BlokingDots)
-                {
-                    bl_dot.Add(d);
-                }
-            }
+        //private void Undo(int x, int y)//отмена хода
+        //{
+        //    List<Dot> bl_dot = new List<Dot>();
+        //    List<Links> ln = new List<Links>();
+        //    if (this[x, y].Blocked)//если точка была блокирована, удалить ее из внутренних списков у блокирующих точек
+        //    {
+        //        lst_blocked_dots.Remove(this[x, y]);
+        //        bl_dot.Add(this[x, y]);
+        //        foreach (Dot d in lst_in_region_dots)
+        //        {
+        //            d.BlokingDots.Remove(this[x, y]);
+        //        }
+        //        count_blocked_dots = CheckBlocked();
+        //    }
+        //    if (this[x, y].BlokingDots.Count > 0)
+        //    {
+        //        //снимаем блокировку с точки bd, которая была блокирована UndoMove(int x, int y)
+        //        foreach (Dot d in this[x, y].BlokingDots)
+        //        {
+        //            bl_dot.Add(d);
+        //        }
+        //    }
 
-            foreach (Dot d in bl_dot)
-            {
-                foreach (Links l in lnks)//подготовка связей которые блокировали точку
-                {
-                    if (l.Dot1.BlokingDots.Contains(d) | l.Dot2.BlokingDots.Contains(d))
-                    {
-                        ln.Add(l);
-                    }
-                }
-                //удаляем из списка блокированных точек
-                foreach (Dot bd in this)
-                {
-                    if (bd.BlokingDots.Count > 0)
-                    {
-                        bd.BlokingDots.Remove(d);
-                    }
-                }
-                //восстанавливаем связи у которых одна из точек стала свободной
-                var q_lnks = from lnk in lnks
-                             where lnk.Dot1.x == d.x & lnk.Dot1.y == d.y | lnk.Dot2.x == d.x & lnk.Dot2.y == d.y
-                             select lnk;
-                foreach (Links l in q_lnks)
-                {
-                    l.Dot1.Blocked = false;
-                    l.Dot2.Blocked = false;
-                }
+        //    foreach (Dot d in bl_dot)
+        //    {
+        //        foreach (Links l in lnks)//подготовка связей которые блокировали точку
+        //        {
+        //            if (l.Dot1.BlokingDots.Contains(d) | l.Dot2.BlokingDots.Contains(d))
+        //            {
+        //                ln.Add(l);
+        //            }
+        //        }
+        //        //удаляем из списка блокированных точек
+        //        foreach (Dot bd in this)
+        //        {
+        //            if (bd.BlokingDots.Count > 0)
+        //            {
+        //                bd.BlokingDots.Remove(d);
+        //            }
+        //        }
+        //        //восстанавливаем связи у которых одна из точек стала свободной
+        //        var q_lnks = from lnk in lnks
+        //                     where lnk.Dot1.x == d.x & lnk.Dot1.y == d.y | lnk.Dot2.x == d.x & lnk.Dot2.y == d.y
+        //                     select lnk;
+        //        foreach (Links l in q_lnks)
+        //        {
+        //            l.Dot1.Blocked = false;
+        //            l.Dot2.Blocked = false;
+        //        }
 
-            }
-            //удаляем связи
-            foreach (Links l in ln)
-            {
-                lnks.Remove(l);
-            }
-            ln = null;
-            bl_dot = null;
+        //    }
+        //    //удаляем связи
+        //    foreach (Links l in ln)
+        //    {
+        //        lnks.Remove(l);
+        //    }
+        //    ln = null;
+        //    bl_dot = null;
 
-            Remove(x, y);
-            count_blocked_dots = CheckBlocked();
-            //ScanBlockedFreeDots();            
-            UnmarkAllDots();
-            LinkDots();
-            last_move = list_moves.Count == 0 ? null : list_moves.Last();
-        }
+        //    Remove(x, y);
+        //    count_blocked_dots = CheckBlocked();
+        //    //ScanBlockedFreeDots();            
+        //    UnmarkAllDots();
+        //    LinkDots();
+        //    last_move = list_moves.Count == 0 ? null : list_moves.Last();
+        //}
 
         public Dot CheckPattern(int Owner)
         {
@@ -753,21 +768,28 @@ namespace DotsGame
             //if (arrDots.Contains(dot) == false) return 0;
             if (this[dot.x, dot.y].Own == 0)//если точка не занята
             {
-                if (Owner == 0) this.Add(dot, dot.Own);
-                else this.Add(dot, Owner);
+                if (Owner == 0) Add(dot, dot.Own);
+                else Add(dot, Owner);
             }
             //--------------------------------
             int res = CheckBlocked(dot.Own);
             //--------------------------------
             var q = from Dot d in Dots where d.Blocked select d;
             count_blocked_dots = q.Count();
-            last_move = dot;//зафиксировать последний ход
+            
+            //ListMoves.Add(dot);
+
+            //last_move=ListMoves.Last();
+            //last_move = dot;//зафиксировать последний ход
             if (res != 0)
             {
                 LinkDots();
             }
-            ListMoves.Add(dot);
+
+            
+            
             return res;
+
         }
         /// <summary>
         /// проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек

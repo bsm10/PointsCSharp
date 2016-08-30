@@ -79,6 +79,7 @@
             this.tlsDotClean = new System.Windows.Forms.ToolStripButton();
             this.tlsMirror = new System.Windows.Forms.ToolStripButton();
             this.tlsRotate90 = new System.Windows.Forms.ToolStripButton();
+            this.lstMoves = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -93,10 +94,9 @@
             this.pbxBoard.BackColor = System.Drawing.Color.White;
             this.pbxBoard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pbxBoard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbxBoard.Location = new System.Drawing.Point(0, 33);
-            this.pbxBoard.Margin = new System.Windows.Forms.Padding(4);
+            this.pbxBoard.Location = new System.Drawing.Point(0, 27);
             this.pbxBoard.Name = "pbxBoard";
-            this.pbxBoard.Size = new System.Drawing.Size(494, 512);
+            this.pbxBoard.Size = new System.Drawing.Size(393, 346);
             this.pbxBoard.TabIndex = 0;
             this.pbxBoard.TabStop = false;
             this.pbxBoard.Click += new System.EventHandler(this.pbxBoard_Click);
@@ -117,8 +117,8 @@
             this.справкаToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip.Size = new System.Drawing.Size(211, 28);
+            this.menuStrip.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
+            this.menuStrip.Size = new System.Drawing.Size(164, 24);
             this.menuStrip.TabIndex = 2;
             // 
             // файлToolStripMenuItem
@@ -133,7 +133,7 @@
             this.toolStripSeparator2,
             this.выходToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
-            this.файлToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
+            this.файлToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
             this.файлToolStripMenuItem.Text = "&Файл";
             // 
             // создатьToolStripMenuItem
@@ -141,14 +141,14 @@
             this.создатьToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.создатьToolStripMenuItem.Name = "создатьToolStripMenuItem";
             this.создатьToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.создатьToolStripMenuItem.Size = new System.Drawing.Size(280, 26);
+            this.создатьToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.создатьToolStripMenuItem.Text = "&Создать";
             this.создатьToolStripMenuItem.Click += new System.EventHandler(this.создатьToolStripMenuItem_Click);
             // 
             // открытьПоследнююToolStripMenuItem
             // 
             this.открытьПоследнююToolStripMenuItem.Name = "открытьПоследнююToolStripMenuItem";
-            this.открытьПоследнююToolStripMenuItem.Size = new System.Drawing.Size(280, 26);
+            this.открытьПоследнююToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.открытьПоследнююToolStripMenuItem.Text = "Быстая загрузка";
             this.открытьПоследнююToolStripMenuItem.Click += new System.EventHandler(this.открытьПоследнююToolStripMenuItem_Click);
             // 
@@ -157,40 +157,40 @@
             this.открытьToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
             this.открытьToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(280, 26);
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.открытьToolStripMenuItem.Text = "&Открыть...";
             this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
             // 
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(277, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(225, 6);
             // 
             // сохранитьToolStripMenuItem
             // 
             this.сохранитьToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
             this.сохранитьToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(280, 26);
+            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.сохранитьToolStripMenuItem.Text = "&Быстрое сохранение";
             this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
             // 
             // сохранитькакToolStripMenuItem
             // 
             this.сохранитькакToolStripMenuItem.Name = "сохранитькакToolStripMenuItem";
-            this.сохранитькакToolStripMenuItem.Size = new System.Drawing.Size(280, 26);
+            this.сохранитькакToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.сохранитькакToolStripMenuItem.Text = "Сохранить &как";
             this.сохранитькакToolStripMenuItem.Click += new System.EventHandler(this.сохранитькакToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(277, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(225, 6);
             // 
             // выходToolStripMenuItem
             // 
             this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
-            this.выходToolStripMenuItem.Size = new System.Drawing.Size(280, 26);
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(228, 22);
             this.выходToolStripMenuItem.Text = "Вы&ход";
             this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
             // 
@@ -207,7 +207,7 @@
             this.autoplayToolStripMenuItem,
             this.редакторПаттерновToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(68, 24);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.optionsToolStripMenuItem.Text = "&Опции";
             // 
             // levelToolStripMenuItem
@@ -217,7 +217,7 @@
             this.среднеToolStripMenuItem,
             this.тяжелоToolStripMenuItem});
             this.levelToolStripMenuItem.Name = "levelToolStripMenuItem";
-            this.levelToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.levelToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.levelToolStripMenuItem.Text = "&Сложность";
             this.levelToolStripMenuItem.Visible = false;
             // 
@@ -225,7 +225,7 @@
             // 
             this.легкоToolStripMenuItem.CheckOnClick = true;
             this.легкоToolStripMenuItem.Name = "легкоToolStripMenuItem";
-            this.легкоToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
+            this.легкоToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.легкоToolStripMenuItem.Text = "легко";
             this.легкоToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.легкоToolStripMenuItem_CheckStateChanged);
             // 
@@ -233,7 +233,7 @@
             // 
             this.среднеToolStripMenuItem.CheckOnClick = true;
             this.среднеToolStripMenuItem.Name = "среднеToolStripMenuItem";
-            this.среднеToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
+            this.среднеToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.среднеToolStripMenuItem.Text = "средне";
             this.среднеToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.среднеToolStripMenuItem_CheckStateChanged);
             // 
@@ -241,7 +241,7 @@
             // 
             this.тяжелоToolStripMenuItem.CheckOnClick = true;
             this.тяжелоToolStripMenuItem.Name = "тяжелоToolStripMenuItem";
-            this.тяжелоToolStripMenuItem.Size = new System.Drawing.Size(134, 26);
+            this.тяжелоToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.тяжелоToolStripMenuItem.Text = "тяжело";
             this.тяжелоToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.тяжелоToolStripMenuItem_CheckStateChanged);
             // 
@@ -251,13 +251,13 @@
             this.toolStripTextBox1,
             this.toolStripTextBox2});
             this.boardToolStripMenuItem.Name = "boardToolStripMenuItem";
-            this.boardToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.boardToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.boardToolStripMenuItem.Text = "&Размер доски";
             // 
             // toolStripTextBox1
             // 
             this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 27);
+            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 21);
             this.toolStripTextBox1.Text = "10";
             this.toolStripTextBox1.ToolTipText = "Enter decimal number";
             this.toolStripTextBox1.TextChanged += new System.EventHandler(this.toolStripTextBox1_TextChanged);
@@ -265,7 +265,7 @@
             // toolStripTextBox2
             // 
             this.toolStripTextBox2.Name = "toolStripTextBox2";
-            this.toolStripTextBox2.Size = new System.Drawing.Size(100, 27);
+            this.toolStripTextBox2.Size = new System.Drawing.Size(100, 21);
             this.toolStripTextBox2.Text = "10";
             this.toolStripTextBox2.ToolTipText = "Enter decimal number";
             this.toolStripTextBox2.TextChanged += new System.EventHandler(this.toolStripTextBox2_TextChanged);
@@ -273,7 +273,7 @@
             // networkToolStripMenuItem
             // 
             this.networkToolStripMenuItem.Name = "networkToolStripMenuItem";
-            this.networkToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.networkToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.networkToolStripMenuItem.Text = "&Настройки сети";
             this.networkToolStripMenuItem.Visible = false;
             // 
@@ -282,42 +282,42 @@
             this.антиалToolStripMenuItem.Checked = true;
             this.антиалToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.антиалToolStripMenuItem.Name = "антиалToolStripMenuItem";
-            this.антиалToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.антиалToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.антиалToolStripMenuItem.Text = "&Smoothing mode(Антиалиасинг)";
             this.антиалToolStripMenuItem.Click += new System.EventHandler(this.антиалToolStripMenuItem_Click);
             // 
             // цветКурсораToolStripMenuItem
             // 
             this.цветКурсораToolStripMenuItem.Name = "цветКурсораToolStripMenuItem";
-            this.цветКурсораToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.цветКурсораToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.цветКурсораToolStripMenuItem.Text = "Цвет курсора...";
             this.цветКурсораToolStripMenuItem.Click += new System.EventHandler(this.цветКурсораToolStripMenuItem_Click);
             // 
             // цветИгрокаToolStripMenuItem
             // 
             this.цветИгрокаToolStripMenuItem.Name = "цветИгрокаToolStripMenuItem";
-            this.цветИгрокаToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.цветИгрокаToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.цветИгрокаToolStripMenuItem.Text = "Цвет игрока...";
             this.цветИгрокаToolStripMenuItem.Click += new System.EventHandler(this.цветИгрокаToolStripMenuItem_Click);
             // 
             // цветПротивникаToolStripMenuItem
             // 
             this.цветПротивникаToolStripMenuItem.Name = "цветПротивникаToolStripMenuItem";
-            this.цветПротивникаToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.цветПротивникаToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.цветПротивникаToolStripMenuItem.Text = "Цвет противника...";
             this.цветПротивникаToolStripMenuItem.Click += new System.EventHandler(this.цветПротивникаToolStripMenuItem_Click);
             // 
             // autoplayToolStripMenuItem
             // 
             this.autoplayToolStripMenuItem.Name = "autoplayToolStripMenuItem";
-            this.autoplayToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.autoplayToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.autoplayToolStripMenuItem.Text = "Autoplay";
             this.autoplayToolStripMenuItem.Click += new System.EventHandler(this.autoplayToolStripMenuItem_Click);
             // 
             // редакторПаттерновToolStripMenuItem
             // 
             this.редакторПаттерновToolStripMenuItem.Name = "редакторПаттерновToolStripMenuItem";
-            this.редакторПаттерновToolStripMenuItem.Size = new System.Drawing.Size(308, 26);
+            this.редакторПаттерновToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.редакторПаттерновToolStripMenuItem.Text = "Редактор паттернов";
             this.редакторПаттерновToolStripMenuItem.Click += new System.EventHandler(this.редакторПаттерновToolStripMenuItem_Click);
             // 
@@ -328,24 +328,24 @@
             this.toolStripSeparator5,
             this.опрограммеToolStripMenuItem});
             this.справкаToolStripMenuItem.Name = "справкаToolStripMenuItem";
-            this.справкаToolStripMenuItem.Size = new System.Drawing.Size(79, 24);
+            this.справкаToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.справкаToolStripMenuItem.Text = "Спра&вка";
             // 
             // содержаниеToolStripMenuItem
             // 
             this.содержаниеToolStripMenuItem.Name = "содержаниеToolStripMenuItem";
-            this.содержаниеToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
+            this.содержаниеToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.содержаниеToolStripMenuItem.Text = "&Содержание";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(185, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(158, 6);
             // 
             // опрограммеToolStripMenuItem
             // 
             this.опрограммеToolStripMenuItem.Name = "опрограммеToolStripMenuItem";
-            this.опрограммеToolStripMenuItem.Size = new System.Drawing.Size(188, 26);
+            this.опрограммеToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.опрограммеToolStripMenuItem.Text = "&О программе...";
             this.опрограммеToolStripMenuItem.Click += new System.EventHandler(this.опрограммеToolStripMenuItem_Click);
             // 
@@ -357,10 +357,10 @@
             this.toolStripStatusLabel2,
             this.tlsStatusFoo,
             this.toolStripStatusLabel3});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 555);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 451);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 13, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(495, 28);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(393, 23);
             this.statusStrip1.TabIndex = 13;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -369,24 +369,24 @@
             this.toolStripStatusLabel1.Font = new System.Drawing.Font("Arial Narrow", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.toolStripStatusLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 23);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 18);
             // 
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(182, 23);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(140, 18);
             this.toolStripStatusLabel2.Text = "toolStripStatusLabel2";
             // 
             // tlsStatusFoo
             // 
             this.tlsStatusFoo.Name = "tlsStatusFoo";
-            this.tlsStatusFoo.Size = new System.Drawing.Size(0, 23);
+            this.tlsStatusFoo.Size = new System.Drawing.Size(0, 18);
             // 
             // toolStripStatusLabel3
             // 
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(151, 23);
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(109, 18);
             this.toolStripStatusLabel3.Text = "toolStripStatusLabel3";
             // 
             // saveFileDialog1
@@ -419,7 +419,7 @@
             this.tlsRotate90});
             this.toolEditorPattern.Location = new System.Drawing.Point(0, 0);
             this.toolEditorPattern.Name = "toolEditorPattern";
-            this.toolEditorPattern.Size = new System.Drawing.Size(40, 555);
+            this.toolEditorPattern.Size = new System.Drawing.Size(35, 451);
             this.toolEditorPattern.TabIndex = 31;
             this.toolEditorPattern.Text = "toolStrip1";
             this.toolEditorPattern.Visible = false;
@@ -444,7 +444,7 @@
             this.tlsBlueDot.Image = ((System.Drawing.Image)(resources.GetObject("tlsBlueDot.Image")));
             this.tlsBlueDot.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsBlueDot.Name = "tlsBlueDot";
-            this.tlsBlueDot.Size = new System.Drawing.Size(37, 34);
+            this.tlsBlueDot.Size = new System.Drawing.Size(32, 34);
             this.tlsBlueDot.Text = "toolStripButton2";
             this.tlsBlueDot.CheckStateChanged += new System.EventHandler(this.tlsBlueDot_CheckStateChanged);
             // 
@@ -455,7 +455,7 @@
             this.tlsТочкаОтсчета.Image = ((System.Drawing.Image)(resources.GetObject("tlsТочкаОтсчета.Image")));
             this.tlsТочкаОтсчета.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsТочкаОтсчета.Name = "tlsТочкаОтсчета";
-            this.tlsТочкаОтсчета.Size = new System.Drawing.Size(37, 34);
+            this.tlsТочкаОтсчета.Size = new System.Drawing.Size(32, 34);
             this.tlsТочкаОтсчета.Text = "Точка отсчета";
             this.tlsТочкаОтсчета.CheckStateChanged += new System.EventHandler(this.tlsТочкаОтсчета_CheckStateChanged);
             // 
@@ -466,7 +466,7 @@
             this.tlsПустая.Image = ((System.Drawing.Image)(resources.GetObject("tlsПустая.Image")));
             this.tlsПустая.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsПустая.Name = "tlsПустая";
-            this.tlsПустая.Size = new System.Drawing.Size(37, 34);
+            this.tlsПустая.Size = new System.Drawing.Size(32, 34);
             this.tlsПустая.Text = "Отметить точку";
             this.tlsПустая.CheckStateChanged += new System.EventHandler(this.tlsПустая_CheckStateChanged);
             // 
@@ -477,7 +477,7 @@
             this.tlsКромеВражеской.Image = ((System.Drawing.Image)(resources.GetObject("tlsКромеВражеской.Image")));
             this.tlsКромеВражеской.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsКромеВражеской.Name = "tlsКромеВражеской";
-            this.tlsКромеВражеской.Size = new System.Drawing.Size(37, 34);
+            this.tlsКромеВражеской.Size = new System.Drawing.Size(32, 34);
             this.tlsКромеВражеской.Text = "Любая, кроме вражеской";
             this.tlsКромеВражеской.CheckStateChanged += new System.EventHandler(this.tlsКромеВражеской_CheckStateChanged);
             // 
@@ -488,7 +488,7 @@
             this.tlsТочкаХода.Image = ((System.Drawing.Image)(resources.GetObject("tlsТочкаХода.Image")));
             this.tlsТочкаХода.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsТочкаХода.Name = "tlsТочкаХода";
-            this.tlsТочкаХода.Size = new System.Drawing.Size(37, 34);
+            this.tlsТочкаХода.Size = new System.Drawing.Size(32, 34);
             this.tlsТочкаХода.Text = "Точка хода";
             this.tlsТочкаХода.CheckStateChanged += new System.EventHandler(this.tlsТочкаХода_CheckStateChanged);
             // 
@@ -499,7 +499,7 @@
             this.toolExit.Image = ((System.Drawing.Image)(resources.GetObject("toolExit.Image")));
             this.toolExit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolExit.Name = "toolExit";
-            this.toolExit.Size = new System.Drawing.Size(37, 24);
+            this.toolExit.Size = new System.Drawing.Size(32, 17);
             this.toolExit.Text = "&X";
             this.toolExit.Click += new System.EventHandler(this.toolExit_Click);
             // 
@@ -510,7 +510,7 @@
             this.tlsMakePattern.Image = ((System.Drawing.Image)(resources.GetObject("tlsMakePattern.Image")));
             this.tlsMakePattern.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsMakePattern.Name = "tlsMakePattern";
-            this.tlsMakePattern.Size = new System.Drawing.Size(37, 34);
+            this.tlsMakePattern.Size = new System.Drawing.Size(32, 34);
             this.tlsMakePattern.Text = "Сохранить паттерн";
             this.tlsMakePattern.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.tlsMakePattern.Click += new System.EventHandler(this.tlsMakePattern_Click);
@@ -522,7 +522,7 @@
             this.tlsDotClean.Image = ((System.Drawing.Image)(resources.GetObject("tlsDotClean.Image")));
             this.tlsDotClean.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDotClean.Name = "tlsDotClean";
-            this.tlsDotClean.Size = new System.Drawing.Size(37, 34);
+            this.tlsDotClean.Size = new System.Drawing.Size(32, 34);
             this.tlsDotClean.Text = "Сбросить точку";
             this.tlsDotClean.CheckStateChanged += new System.EventHandler(this.tlsDotClean_CheckStateChanged);
             // 
@@ -532,7 +532,7 @@
             this.tlsMirror.Image = ((System.Drawing.Image)(resources.GetObject("tlsMirror.Image")));
             this.tlsMirror.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsMirror.Name = "tlsMirror";
-            this.tlsMirror.Size = new System.Drawing.Size(37, 34);
+            this.tlsMirror.Size = new System.Drawing.Size(32, 34);
             this.tlsMirror.Text = "mirrir";
             this.tlsMirror.Click += new System.EventHandler(this.tlsMirror_Click);
             // 
@@ -542,22 +542,32 @@
             this.tlsRotate90.Image = ((System.Drawing.Image)(resources.GetObject("tlsRotate90.Image")));
             this.tlsRotate90.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsRotate90.Name = "tlsRotate90";
-            this.tlsRotate90.Size = new System.Drawing.Size(37, 34);
+            this.tlsRotate90.Size = new System.Drawing.Size(32, 34);
             this.tlsRotate90.Text = "toolStripButton2";
             this.tlsRotate90.Click += new System.EventHandler(this.tlsRotate90_Click);
             // 
+            // lstMoves
+            // 
+            this.lstMoves.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lstMoves.FormattingEnabled = true;
+            this.lstMoves.Location = new System.Drawing.Point(0, 379);
+            this.lstMoves.Name = "lstMoves";
+            this.lstMoves.Size = new System.Drawing.Size(119, 67);
+            this.lstMoves.TabIndex = 32;
+            this.lstMoves.Visible = false;
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(495, 583);
+            this.ClientSize = new System.Drawing.Size(393, 474);
+            this.Controls.Add(this.lstMoves);
             this.Controls.Add(this.toolEditorPattern);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.pbxBoard);
             this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Dots";
@@ -629,6 +639,7 @@
         private System.Windows.Forms.ToolStripButton tlsDotClean;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
+        public System.Windows.Forms.ListBox lstMoves;
     }
 }
 

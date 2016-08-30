@@ -97,38 +97,9 @@ namespace DotsGame
                 cost = 0.5f;
             }
         }
-        //public int LinkExist(Links[] arr_lnks)
-        //{
-        //    if (arr_lnks != null)
-        //    {
-        //        for (int i = 0; i < arr_lnks.Length; i++)
-        //        {
-        //            if(arr_lnks[i]!=null)
-        //            {
-        //                if ((Dot1.x == arr_lnks[i].Dot1.x) & (Dot1.y == arr_lnks[i].Dot1.y) &
-        //                   ((Dot2.x == arr_lnks[i].Dot2.x) & (Dot2.y == arr_lnks[i].Dot2.y)) |
-        //                    ((Dot2.x == arr_lnks[i].Dot1.x) & (Dot2.y == arr_lnks[i].Dot1.y) &
-        //                   ((Dot1.x == arr_lnks[i].Dot2.x) & (Dot1.y == arr_lnks[i].Dot2.y))))
-        //                {
-        //                    return i;
-        //                }
-
-        //            }
-        //        }
-
-        //    }
-        //    return -1;
-        //}
-
 
         public bool Equals(Links otherLink)//Проверяет равенство связей по точкам
         {
-            //if ((Dot1.x == otherLink.Dot1.x) & (Dot1.y == otherLink.Dot1.y) |
-            //       (Dot2.x == otherLink.Dot2.x) & (Dot2.y == otherLink.Dot2.y) |
-            //       (Dot2.x == otherLink.Dot1.x) & (Dot2.y == otherLink.Dot1.y) |
-            //       (Dot1.x == otherLink.Dot2.x) & (Dot1.y == otherLink.Dot2.y)) 
-            //       return true;
-            //return false;
             return GetHashCode().Equals(otherLink.GetHashCode());
         }
 
@@ -338,7 +309,9 @@ namespace DotsGame
             if (Own == 1) s = " Player";
             else if (Own == 2) s = " Computer";
             else s = " None";
-                return x + ":" + y + s;
+            
+            s = Blocked ? x + ":" + y + s + " Blocked" : x + ":" + y + s;
+                return s;
             }
         public bool Equals(Dot dot)//Проверяет равенство точек по координатам
         {
