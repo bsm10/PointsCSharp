@@ -123,7 +123,7 @@ namespace DotsGame
                         }
                         #endregion
                         break;
-                 #if DEBUG //паттерны и пр.
+                 #if DEBUG 
                     case MouseButtons.Right:
                         //if (game.EditMode == true)
                         //{

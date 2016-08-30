@@ -1478,11 +1478,7 @@ namespace DotsGame
                 {
                     d = new Dot((int)reader.ReadByte(), (int)reader.ReadByte(), (int)reader.ReadByte());
                     aDots.MakeMove(d);
-                    //aDots.ListMoves.Add(d);
                 }
-                //aDots.RebuildDots();
-                //aDots.LinkDots();//восстанавливаем связи между точками
-                //aDots.RescanBlockedDots();
                 reader.Close();
             }
             catch (Exception e)
@@ -1503,16 +1499,11 @@ namespace DotsGame
         }
         public void DrawGame(Graphics gr)//отрисовка хода игры
         {
-            //if (антиалToolStripMenuItem.Checked)
-            //{
             _gr = gr;
             gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            //}
             //Устанавливаем масштаб
-
             SetScale(gr, pbxBoard.ClientSize.Width, pbxBoard.ClientSize.Height,
                 startX, startX + gameDots.BoardWidth, startY, gameDots.BoardHeight + startY);
-
             //Рисуем доску
             DrawBoard(gr);
             //Рисуем точки
@@ -1575,8 +1566,9 @@ namespace DotsGame
         }
         public void DrawPoints(Graphics gr)//рисуем поставленные точки
         {
+            List<Dot> lstDotsForDraw = EditMode ? gameDots.Dots : gameDots.ListMoves;
             //отрисовываем поставленные точки
-            foreach (Dot p in gameDots.ListMoves)
+            foreach (Dot p in lstDotsForDraw)
             {
                 switch (p.Own)
                 {
