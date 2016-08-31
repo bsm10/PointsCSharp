@@ -127,13 +127,14 @@ namespace DotsGame
         {
             public override int GetHashCode(Dot dot)
             {
-                int hCode = dot.x * dot.y;
+                int hCode = dot.x ^ dot.y;
                 return hCode.GetHashCode();
             }
 
             public override bool Equals(Dot d1, Dot d2)
             {
-                return Default.Equals(d1, d2);
+                //return Default.Equals(d1, d2);
+                return (d1.x == d2.x & d1.y == d2.y); 
             }
         }
 

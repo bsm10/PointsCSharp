@@ -1170,7 +1170,7 @@ namespace DotsGame
                             line = file.ReadLine();
                             counter_line++;
                             string[] sMinMax = line.Replace(" ", string.Empty).Split(new char[] { ',' });
-                            if (sMinMax.Length == 1)
+                            if (sMinMax.Length < 4)
                             {
                                 ptrn.minX = 0;
                                 ptrn.maxX = gameDots.BoardWidth - 1;
@@ -1221,7 +1221,7 @@ namespace DotsGame
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show("LoadPattern \r\n" + e.Message);
             }
 
         }

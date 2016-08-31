@@ -137,9 +137,10 @@ namespace DotsGame
                         {
                             ListPatterns.Remove(game.gameDots[dot.x, dot.y]);
                             game.gameDots[dot.x, dot.y].PatternsRemove();
-                            break;
+
+                            //break;
                         }
-                        game.gameDots.ListMoves.Remove(game.gameDots[dot.x, dot.y]);
+                        //game.gameDots.ListMoves.Remove(game.gameDots[dot.x, dot.y]);
                         game.gameDots.UndoMove(dot);
                         break;
                  #endif
@@ -450,10 +451,6 @@ namespace DotsGame
         {
             game.path_savegame = openFileDialog1.FileName;
             game.LoadGame();
-        }
-        private void pbxBoard_Click(object sender, EventArgs e)
-        {
-
         }
         private void редакторПаттерновToolStripMenuItem_Click(object sender, EventArgs e)
         {
