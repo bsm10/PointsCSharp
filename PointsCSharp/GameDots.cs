@@ -155,13 +155,13 @@ namespace DotsGame
                 return _Dots[IndexDot(i, j)];
             }
         }
-        private void Add(Dot dot, int Owner)//добавляет точку в массив
+        private void Add(Dot dot)//добавляет точку в массив
         {
             int ind = IndexDot(dot.x, dot.y);
             //if (Contains(dot))
             //{
-                _Dots[ind].Own = Owner;
-                if (Owner != 0) _Dots[ind].IndexRelation = _Dots[ind].IndexDot;
+            _Dots[ind].Own = dot.Own;
+            if (dot.Own != 0) _Dots[ind].IndexRelation = _Dots[ind].IndexDot;
                 _Dots[ind].Blocked = false;
                 if (dot.x == 0 | dot.x == (BoardWidth - 1) | dot.y == 0 | 
                     dot.y == (BoardHeight - 1)) _Dots[ind].Fixed = true;
@@ -596,22 +596,10 @@ namespace DotsGame
             LinkDots();
         }
 
-        //public void UndoMove(int x, int y)//поле отмена хода
-        //{
-        //    Undo(x, y);
-        //}
         public void UndoMove(Dot dot)//поле отмена хода
         {
-            //if(dot!=null) Undo(dot.x, dot.y, arrDots);
-
-            //Dot dt = list_moves.Where(d=>d == dot).First(); //list_moves.Where(d=> d.x== x & d.y == y);
-
-            //list_moves.Remove(dot);
             Remove(dot);
             RebuildDots();
-
-            //last_move = list_moves.Count == 0 ? null : list_moves.Last();
-
         }
 
         //private void Undo(int x, int y)//отмена хода
@@ -736,10 +724,10 @@ namespace DotsGame
                                 break;
                         }
 
-                        //if (d.x < p.Xmin | d.x > p.Xmax |  //если заданы границы, проверяем
-                        //    d.y < p.Ymin | d.y > p.Ymax |  //
-                        //    this[d.x + dt.dX, d.y + dt.dY].Own != DotOwner) 
-                        if (this[d.x + dt.dX, d.y + dt.dY].Own != DotOwner)
+                        if (d.x < p.minX | d.x > p.maxX |  //если заданы границы, проверяем
+                            d.y < p.minY | d.y > p.maxY |  //
+                            this[d.x + dt.dX, d.y + dt.dY].Own != DotOwner) 
+                        //if (this[d.x + dt.dX, d.y + dt.dY].Own != DotOwner)
                         {
                             flag = false;
                             break;
@@ -765,31 +753,14 @@ namespace DotsGame
         /// <returns>количество окруженных точек</returns>
         public int MakeMove(Dot dot, int Owner = 0)//
         {
-            //if (arrDots.Contains(dot) == false) return 0;
-            if (this[dot.x, dot.y].Own == 0)//если точка не занята
-            {
-                if (Owner == 0) Add(dot, dot.Own);
-                else Add(dot, Owner);
-            }
+            if(Owner!=0) dot.Own = Owner;
+            if (this[dot.x, dot.y].Own == 0) Add(dot); //если точка не занята
             //--------------------------------
             int res = CheckBlocked(dot.Own);
             //--------------------------------
-            var q = from Dot d in Dots where d.Blocked select d;
-            count_blocked_dots = q.Count();
-            
-            //ListMoves.Add(dot);
-
-            //last_move=ListMoves.Last();
-            //last_move = dot;//зафиксировать последний ход
-            if (res != 0)
-            {
-                LinkDots();
-            }
-
-            
-            
+            count_blocked_dots = (from Dot d in Dots where d.Blocked select d).Count();
+            if (res != 0) LinkDots();//перестроить связи точек
             return res;
-
         }
         /// <summary>
         /// проверяет блокировку точек, маркирует точки которые блокируют, возвращает количество окруженных точек
@@ -944,30 +915,7 @@ namespace DotsGame
             }
         }
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        public void ScanBlockedFreeDots()//сканирует не занятые узлы на предмет блокировки
-        {
-            var q = from Dot d in this where d.Own == 0 && d.Blocked == false select d;
-            if (q.Count() == 0) return;
-            foreach (Dot dot in q)
-            {
-                Dot[] dts = new Dot[4] {this[dot.x + 1, dot.y], this[dot.x -1, dot.y],
-                                        this[dot.x, dot.y + 1], this[dot.x, dot.y -1]};
-                foreach (Dot neibour_dot in dts)
-                {
-                    if (neibour_dot.Blocked)
-                    {
-                        dot.Blocked = true;
-                        ScanBlockedFreeDots();
-                        break;
-                    }
-                }
-            }
-
-        }
-
-
         private List<Links> lnks;
-
         public List<Links> ListLinks 
         { 
             get {return lnks;}
@@ -996,11 +944,9 @@ namespace DotsGame
         /// <returns></returns>
         public bool CheckDot(Dot dot, int Player)
         {
-            //ArrayDots this = arrDots.CopyArray;
             int res = MakeMove(dot, Player);
             int pl = Player == 2 ? 1 : 2;
-            //if (win_player==pl || CheckMove(pl) != null) // первое условие -ход в уже оеруженный регион, 
-            if (win_player == pl)
+            if (win_player == pl)// первое условие -ход в уже оеруженный регион, 
             {
                 UndoMove(dot);
                 return true; // да будет окружена
@@ -1010,10 +956,8 @@ namespace DotsGame
             if (dotEnemy != null)
             {
                 res = MakeMove(dotEnemy, pl);
-                //bool flag = dot.Blocked;
                 UndoMove(dotEnemy);
                 UndoMove(dot);
-                //return flag; // да будет окружена
                 return true; // да будет окружена
             }
             //нет не будет

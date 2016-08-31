@@ -125,15 +125,12 @@ namespace DotsGame
                         break;
                  #if DEBUG 
                     case MouseButtons.Right:
-                        //if (game.EditMode == true)
-                        //{
-                        //    MakePattern();
-                        //    break;
-                        //}
-                        //else { 
+                        if (game.EditMode == true)
+                        {
+                            break;
+                        }
                         //============Ход компьютера  в ручном режиме=================
                         MoveGamer(2, new Dot(dot.x, dot.y, 2));
-                        //}
                         break;
                     case MouseButtons.Middle:
                         if (game.EditMode == true)
@@ -462,6 +459,7 @@ namespace DotsGame
         {
             toolEditorPattern.Visible = toolEditorPattern.Visible ? false : true;
             game.EditMode=true;
+            
         }
         private void Form2_MouseEnter(object sender, EventArgs e)
         {
@@ -594,6 +592,13 @@ namespace DotsGame
                     return tlsRedDot.Checked ? 1 : 2;
                 }
 
+            }
+
+            private void tlsDist_Click(object sender, EventArgs e)
+            {
+               frmDlgPE dlg = new frmDlgPE();
+               
+               dlg.ShowDialog();
             }
 
             //#endregion

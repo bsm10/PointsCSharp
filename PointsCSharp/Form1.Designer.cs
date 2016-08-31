@@ -80,6 +80,7 @@
             this.tlsMirror = new System.Windows.Forms.ToolStripButton();
             this.tlsRotate90 = new System.Windows.Forms.ToolStripButton();
             this.lstMoves = new System.Windows.Forms.ListBox();
+            this.tlsDist = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -416,7 +417,8 @@
             this.tlsMakePattern,
             this.tlsDotClean,
             this.tlsMirror,
-            this.tlsRotate90});
+            this.tlsRotate90,
+            this.tlsDist});
             this.toolEditorPattern.Location = new System.Drawing.Point(0, 0);
             this.toolEditorPattern.Name = "toolEditorPattern";
             this.toolEditorPattern.Size = new System.Drawing.Size(35, 451);
@@ -556,6 +558,17 @@
             this.lstMoves.TabIndex = 32;
             this.lstMoves.Visible = false;
             // 
+            // tlsDist
+            // 
+            this.tlsDist.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsDist.Image = ((System.Drawing.Image)(resources.GetObject("tlsDist.Image")));
+            this.tlsDist.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsDist.Name = "tlsDist";
+            this.tlsDist.Size = new System.Drawing.Size(32, 34);
+            this.tlsDist.Text = "toolStripButton1";
+            this.tlsDist.ToolTipText = "Расстояние первой точки до края доски";
+            this.tlsDist.Click += new System.EventHandler(this.tlsDist_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -640,6 +653,7 @@
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
         public System.Windows.Forms.ListBox lstMoves;
+        private System.Windows.Forms.ToolStripButton tlsDist;
     }
 }
 
