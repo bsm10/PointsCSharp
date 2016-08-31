@@ -1098,29 +1098,51 @@ namespace DotsGame
         {
             List<List<Dot>> lstlstPat = new List<List<Dot>>();
 
-            //List<Dot> l = new List<Dot>(listPat.Count);
-            Dot firstDot = listPat.Find(d => d.PatternsFirstDot);
-            Dot moveDot = listPat.Find(dt => dt.PatternsMoveDot);
-
+            
+            //Dot moveDot = listPat.Find(dt => dt.PatternsMoveDot);
+            NormMinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate90(listPat);
+            Rotate90MinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate_Mirror_Horizontal(listPat);
+            NormMinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate90(listPat);
+            Rotate90MinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate_Mirror_Horizontal(listPat);
+            NormMinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate90(listPat);
+            Rotate90MinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate_Mirror_Horizontal(listPat);
+            NormMinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate90(listPat);
+            Rotate90MinMaxXY(listPat);
             lstlstPat.Add(listPat);
 
             return lstlstPat;
         }
 
+        private void NormMinMaxXY(List<Dot> listPat)
+        {
+            Dot firstDot = listPat.Find(d => d.PatternsFirstDot);
+            firstDot.PE_XY.minX = PEminXY.minX;
+            firstDot.PE_XY.maxX = PEminXY.maxX;
+            firstDot.PE_XY.minY = PEminXY.minY;
+            firstDot.PE_XY.maxY = PEminXY.maxY;
+        }
+        private void Rotate90MinMaxXY(List<Dot> listPat)
+        {
+            Dot firstDot = listPat.Find(d => d.PatternsFirstDot);
+            firstDot.PE_XY.minX = PEminXY.minY;
+            firstDot.PE_XY.maxX = PEminXY.maxY;
+            firstDot.PE_XY.minY = PEminXY.minX;
+            firstDot.PE_XY.maxY = PEminXY.maxX;
+        }
         
         public void LoadPattern()
         {
