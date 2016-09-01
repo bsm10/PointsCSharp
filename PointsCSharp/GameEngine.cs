@@ -1100,49 +1100,49 @@ namespace DotsGame
 
             
             //Dot moveDot = listPat.Find(dt => dt.PatternsMoveDot);
-            NormMinMaxXY(listPat);
+            //NormMinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate90(listPat);
-            Rotate90MinMaxXY(listPat);
+            //Rotate90MinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate_Mirror_Horizontal(listPat);
-            NormMinMaxXY(listPat);
+            //NormMinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate90(listPat);
-            Rotate90MinMaxXY(listPat);
+            //Rotate90MinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate_Mirror_Horizontal(listPat);
-            NormMinMaxXY(listPat);
+            //NormMinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate90(listPat);
-            Rotate90MinMaxXY(listPat);
+            //Rotate90MinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate_Mirror_Horizontal(listPat);
-            NormMinMaxXY(listPat);
+            //NormMinMaxXY(listPat);
             lstlstPat.Add(listPat);
             listPat = aDots.Rotate90(listPat);
-            Rotate90MinMaxXY(listPat);
+            //Rotate90MinMaxXY(listPat);
             lstlstPat.Add(listPat);
 
             return lstlstPat;
         }
 
-        private void NormMinMaxXY(List<Dot> listPat)
-        {
-            Dot firstDot = listPat.Find(d => d.PatternsFirstDot);
-            firstDot.PE_XY.minX = PEminXY.minX;
-            firstDot.PE_XY.maxX = PEminXY.maxX;
-            firstDot.PE_XY.minY = PEminXY.minY;
-            firstDot.PE_XY.maxY = PEminXY.maxY;
-        }
-        private void Rotate90MinMaxXY(List<Dot> listPat)
-        {
-            Dot firstDot = listPat.Find(d => d.PatternsFirstDot);
-            firstDot.PE_XY.minX = PEminXY.minY;
-            firstDot.PE_XY.maxX = PEminXY.maxY;
-            firstDot.PE_XY.minY = PEminXY.minX;
-            firstDot.PE_XY.maxY = PEminXY.maxX;
-        }
+        //private void NormMinMaxXY(List<Dot> listPat)
+        //{
+        //    Dot firstDot = listPat.Find(d => d.PatternsFirstDot);
+        //    firstDot.PE_XY.minX = PEminXY.minX;
+        //    firstDot.PE_XY.maxX = PEminXY.maxX;
+        //    firstDot.PE_XY.minY = PEminXY.minY;
+        //    firstDot.PE_XY.maxY = PEminXY.maxY;
+        //}
+        //private void Rotate90MinMaxXY(List<Dot> listPat)
+        //{
+        //    Dot firstDot = listPat.Find(d => d.PatternsFirstDot);
+        //    firstDot.PE_XY.minX = PEminXY.minY;
+        //    firstDot.PE_XY.maxX = PEminXY.maxY;
+        //    firstDot.PE_XY.minY = PEminXY.minX;
+        //    firstDot.PE_XY.maxY = PEminXY.maxX;
+        //}
         
         public void LoadPattern()
         {
@@ -1167,29 +1167,29 @@ namespace DotsGame
                             int x;
                             if (int.TryParse(line, out x)) ptrn.PatternNumber = x; //Convert.ToInt32(line);
                             //отступы от края поля
-                            line = file.ReadLine();
-                            counter_line++;
-                            string[] sMinMax = line.Replace(" ", string.Empty).Split(new char[] { ',' });
-                            if (sMinMax.Length < 4)
-                            {
-                                ptrn.minX = 0;
-                                ptrn.maxX = gameDots.BoardWidth - 1;
-                                ptrn.minY = 0;
-                                ptrn.maxY = gameDots.BoardHeight - 1;
-                            }
-                            else
-                            {
-                                ptrn.minX = Convert.ToInt32(sMinMax[0]);
-                                ptrn.maxX = gameDots.BoardWidth - 1 - Convert.ToInt32(sMinMax[1]); 
-                                ptrn.minY = Convert.ToInt32(sMinMax[2]);
-                                ptrn.maxY = gameDots.BoardHeight - 1 - Convert.ToInt32(sMinMax[3]);
+                            //line = file.ReadLine();
+                            //counter_line++;
+                            //string[] sMinMax = line.Replace(" ", string.Empty).Split(new char[] { ',' });
+                            //if (sMinMax.Length < 4)
+                            //{
+                            //    ptrn.minX = 0;
+                            //    ptrn.maxX = gameDots.BoardWidth - 1;
+                            //    ptrn.minY = 0;
+                            //    ptrn.maxY = gameDots.BoardHeight - 1;
+                            //}
+                            //else
+                            //{
+                            //    ptrn.minX = Convert.ToInt32(sMinMax[0]);
+                            //    ptrn.maxX = gameDots.BoardWidth - 1 - Convert.ToInt32(sMinMax[1]); 
+                            //    ptrn.minY = Convert.ToInt32(sMinMax[2]);
+                            //    ptrn.maxY = gameDots.BoardHeight - 1 - Convert.ToInt32(sMinMax[3]);
 
-                                //ptrn.minX = Convert.ToInt32(sMinMax[0]);
-                                //ptrn.maxX = gameDots.BoardWidth - Convert.ToInt32(sMinMax[0]);
-                                //ptrn.minY = Convert.ToInt32(sMinMax[1]);
-                                //ptrn.maxY = gameDots.BoardHeight - Convert.ToInt32(sMinMax[1]);
+                            //    //ptrn.minX = Convert.ToInt32(sMinMax[0]);
+                            //    //ptrn.maxX = gameDots.BoardWidth - Convert.ToInt32(sMinMax[0]);
+                            //    //ptrn.minY = Convert.ToInt32(sMinMax[1]);
+                            //    //ptrn.maxY = gameDots.BoardHeight - Convert.ToInt32(sMinMax[1]);
 
-                            }
+                            //}
                             break;
                         case "Dots": //точки паттерна
                             while ((line = file.ReadLine().Replace(" ", string.Empty)) != "Result")

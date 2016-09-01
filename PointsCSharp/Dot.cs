@@ -304,16 +304,16 @@ namespace DotsGame
         public bool PatternsAnyDot { get; set; }
         public bool PatternsEmptyDot { get; set; }
 
-        public PE_XYminmax PE_XY = new PE_XYminmax();
+        //public PE_XYminmax PE_XY = new PE_XYminmax();
 
 
-        public class PE_XYminmax
-        {
-            public int minX { get; set; }
-            public int maxX { get; set; }
-            public int minY { get; set; }
-            public int maxY { get; set; }
-        }
+        //public class PE_XYminmax
+        //{
+        //    public int minX { get; set; }
+        //    public int maxX { get; set; }
+        //    public int minY { get; set; }
+        //    public int maxY { get; set; }
+        //}
 
         public override string ToString()
             {

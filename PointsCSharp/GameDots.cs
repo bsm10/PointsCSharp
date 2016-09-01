@@ -150,27 +150,27 @@ namespace DotsGame
             get
             {
                 if (i >= BoardWidth) i = BoardWidth - 1;
-                if (j >= BoardHeight) j = BoardHeight -1;
+                if (j >= BoardHeight) j = BoardHeight - 1;
                 if (i < 0) i = 0;
                 if (j < 0) j = 0;
+                //return DotIndexCheck(i,j) ? null : _Dots[IndexDot(i, j)];
                 return _Dots[IndexDot(i, j)];
             }
         }
         private void Add(Dot dot)//добавляет точку в массив
         {
             int ind = IndexDot(dot.x, dot.y);
-            //if (Contains(dot))
-            //{
-            _Dots[ind].Own = dot.Own;
-            if (dot.Own != 0) _Dots[ind].IndexRelation = _Dots[ind].IndexDot;
+            if (DotIndexCheck(dot.x, dot.y))
+            {
+                _Dots[ind].Own = dot.Own;
+                if (dot.Own != 0) _Dots[ind].IndexRelation = _Dots[ind].IndexDot;
                 _Dots[ind].Blocked = false;
                 if (dot.x == 0 | dot.x == (BoardWidth - 1) | dot.y == 0 | 
                     dot.y == (BoardHeight - 1)) _Dots[ind].Fixed = true;
                 AddNeibor(_Dots[ind]);
 
                 ListMoves.Add(_Dots[ind]);
-
-            //}
+            }
         }
 
         private void AddNeibor(Dot dot)
@@ -201,13 +201,15 @@ namespace DotsGame
         private void Remove(Dot dot)//удаляет точку из массива
         {
             int ind = IndexDot(dot.x, dot.y);
-            int i = _Dots[ind].IndexDot;
-            RemoveNeibor(dot);
-            _Dots[ind] = new Dot(dot.x, dot.y);
-            _Dots[ind].IndexDot = i;
-            _Dots[ind].IndexRelation = i;
-
-            ListMoves.Remove(dot);
+            if (DotIndexCheck(dot.x, dot.y))
+            {
+                int i = _Dots[ind].IndexDot;
+                RemoveNeibor(dot);
+                _Dots[ind] = new Dot(dot.x, dot.y);
+                _Dots[ind].IndexDot = i;
+                _Dots[ind].IndexRelation = i;
+                ListMoves.Remove(dot);
+            }
         }
         //private void Remove(int x, int y)//удаляет точку из массива
         //{
@@ -348,14 +350,20 @@ namespace DotsGame
         /// <returns></returns>
         public int IndexDot(int x, int y)
         {
-            if (x < 0) x = 0;
-            else if (x > BoardWidth) x = BoardWidth - 1;
-            if (y < 0) y = 0;
-            else if (y > BoardHeight) y = BoardHeight - 1;
 
             int index = x * BoardHeight + y;
 
             return index;
+        }
+
+        /// <summary>
+        /// Проверка, находится ли точка на игровой доске
+        /// </summary>
+        /// <returns></returns>
+        public bool DotIndexCheck(int x, int y)
+        {
+            return (x >= 0 && x < BoardWidth &&
+                    y >= 0 && y < BoardHeight);
         }
 
 
@@ -453,6 +461,8 @@ namespace DotsGame
 
             while ((from Dot d in Dots
                 where d.Own == 0 && d.Blocked == false &&
+                      d.x + 1 < BoardWidth && d.x - 1 > - 1 &&
+                      d.y + 1 < BoardHeight && d.y - 1 > - 1 &&
                       this[d.x + 1, d.y].Blocked |
                       this[d.x - 1, d.y].Blocked |
                       this[d.x, d.y + 1].Blocked |
@@ -702,7 +712,6 @@ namespace DotsGame
                     bool flag = true;
                     foreach (DotInPattern dt in p.DotsPattern)
                     {
-
                         int enemy_own = Owner == 1 ? 2 : 1;
                         int DotOwner = 0;
                         switch (dt.Owner)
@@ -725,10 +734,8 @@ namespace DotsGame
                                 break;
                         }
 
-                        if (d.x < p.minX | d.x > p.maxX |  //если заданы границы, проверяем
-                            d.y < p.minY | d.y > p.maxY |  //
-                            this[d.x + dt.dX, d.y + dt.dY].Own != DotOwner) 
-                        //if (this[d.x + dt.dX, d.y + dt.dY].Own != DotOwner)
+                        if (DotIndexCheck(d.x + dt.dX, d.y + dt.dY) == false || 
+                            this[d.x + dt.dX, d.y + dt.dY].Own != DotOwner)
                         {
                             flag = false;
                             break;
@@ -1023,7 +1030,11 @@ namespace DotsGame
             List<Dot> happy_dots = new List<Dot>();
             var qry = FreeDots.Where(
             #region Query patterns Check
-d =>
+
+                         d => d.x + 1 < BoardWidth && d.x - 1 > -1 &&
+                              d.y + 1 < BoardHeight && d.y - 1 > -1 &&
+
+    
                                 //       + 
                                 //    d  
                                 //       +
@@ -1248,8 +1259,8 @@ d =>
             iNumberPattern = 1;
 
             var pat1 = from Dot d in get_non_blocked
-                       where d.Own == Owner
-                           & this[d.x - 1, d.y + 1].Own == Owner & this[d.x - 1, d.y + 1].Blocked == false
+                       where d.Own == Owner &&
+                           this[d.x - 1, d.y + 1].Own == Owner & this[d.x - 1, d.y + 1].Blocked == false
                            & this[d.x + 1, d.y - 1].Own == Owner & this[d.x + 1, d.y - 1].Blocked == false
                            & this[d.x + 1, d.y].Own == enemy_own & this[d.x + 1, d.y].Blocked == false
                            & this[d.x, d.y + 1].Own == enemy_own & this[d.x, d.y + 1].Blocked == false
@@ -1265,8 +1276,8 @@ d =>
             //                                              *       
 
             var pat1_2 = from Dot d in get_non_blocked
-                         where d.Own == Owner
-                             & this[d.x + 1, d.y - 1].Own == Owner & this[d.x + 1, d.y - 1].Blocked == false
+                         where d.Own == Owner &&
+                             this[d.x + 1, d.y - 1].Own == Owner & this[d.x + 1, d.y - 1].Blocked == false
                              & this[d.x - 1, d.y + 1].Own == Owner & this[d.x - 1, d.y + 1].Blocked == false
                              & this[d.x - 1, d.y].Own == enemy_own & this[d.x - 1, d.y].Blocked == false
                              & this[d.x, d.y - 1].Own == enemy_own & this[d.x, d.y - 1].Blocked == false
@@ -1283,8 +1294,8 @@ d =>
             //                                              +  d    
             //                                              m  +  * 
             var pat1_3 = from Dot d in get_non_blocked
-                         where d.Own == Owner
-                             & this[d.x + 1, d.y + 1].Own == Owner & this[d.x + 1, d.y + 1].Blocked == false
+                         where d.Own == Owner &&
+                             this[d.x + 1, d.y + 1].Own == Owner & this[d.x + 1, d.y + 1].Blocked == false
                              & this[d.x - 1, d.y - 1].Own == Owner & this[d.x - 1, d.y - 1].Blocked == false
                              & this[d.x - 1, d.y].Own == enemy_own & this[d.x - 1, d.y].Blocked == false
                              & this[d.x, d.y + 1].Own == enemy_own & this[d.x, d.y + 1].Blocked == false
@@ -1304,8 +1315,8 @@ d =>
             //                                                 d  +  
             //                                                    * 
             var pat1_4 = from Dot d in get_non_blocked
-                         where d.Own == Owner
-                             & this[d.x - 1, d.y - 1].Own == Owner & this[d.x - 1, d.y - 1].Blocked == false
+                         where d.Own == Owner &&
+                             this[d.x - 1, d.y - 1].Own == Owner & this[d.x - 1, d.y - 1].Blocked == false
                              & this[d.x + 1, d.y + 1].Own == Owner & this[d.x + 1, d.y + 1].Blocked == false
                              & this[d.x + 1, d.y].Own == enemy_own & this[d.x + 1, d.y].Blocked == false
                              & this[d.x, d.y - 1].Own == enemy_own & this[d.x, d.y - 1].Blocked == false
@@ -1328,8 +1339,8 @@ d =>
             //     * 
             iNumberPattern = 938;
             var pat938 = from Dot d in get_non_blocked
-                         where d.Own == Owner
-                             & this[d.x + 1, d.y - 1].Own == Owner & this[d.x + 1, d.y - 1].Blocked == false
+                         where d.Own == Owner &&
+                             this[d.x + 1, d.y - 1].Own == Owner & this[d.x + 1, d.y - 1].Blocked == false
                              & this[d.x + 2, d.y].Own == 0 & this[d.x + 2, d.y].Blocked == false
                              & this[d.x + 1, d.y].Own == enemy_own & this[d.x + 1, d.y].Blocked == false
                              & this[d.x, d.y + 1].Own == enemy_own & this[d.x, d.y + 1].Blocked == false
@@ -1344,8 +1355,8 @@ d =>
             if (pat938.Count() > 0) return new Dot(pat938.First().x + 1, pat938.First().y + 1);
             //180 Rotate=========================================================================================================== 
             var pat938_2 = from Dot d in get_non_blocked
-                           where d.Own == Owner
-                               & this[d.x - 1, d.y + 1].Own == Owner & this[d.x - 1, d.y + 1].Blocked == false
+                           where d.Own == Owner &&
+                               this[d.x - 1, d.y + 1].Own == Owner & this[d.x - 1, d.y + 1].Blocked == false
                                & this[d.x - 2, d.y].Own == 0 & this[d.x - 2, d.y].Blocked == false
                                & this[d.x - 1, d.y].Own == enemy_own & this[d.x - 1, d.y].Blocked == false
                                & this[d.x, d.y - 1].Own == enemy_own & this[d.x, d.y - 1].Blocked == false
@@ -1360,8 +1371,10 @@ d =>
             if (pat938_2.Count() > 0) return new Dot(pat938_2.First().x - 1, pat938_2.First().y - 1);
             //--------------Rotate on 90-----------------------------------
             var pat938_2_3 = from Dot d in get_non_blocked
-                             where d.Own == Owner
-                                 & this[d.x + 1, d.y - 1].Own == Owner & this[d.x + 1, d.y - 1].Blocked == false
+                             where d.Own == Owner &&
+                                 d.x + 1 < BoardWidth && d.x - 1 > -1 &&
+                                 d.y + 1 < BoardHeight && d.y - 1 > -1 &&
+                                 this[d.x + 1, d.y - 1].Own == Owner & this[d.x + 1, d.y - 1].Blocked == false
                                  & this[d.x, d.y - 2].Own == 0 & this[d.x, d.y - 2].Blocked == false
                                  & this[d.x, d.y - 1].Own == enemy_own & this[d.x, d.y - 1].Blocked == false
                                  & this[d.x - 1, d.y].Own == enemy_own & this[d.x - 1, d.y].Blocked == false

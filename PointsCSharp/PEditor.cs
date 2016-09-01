@@ -11,10 +11,10 @@ namespace DotsGame
     {
         public int PatternNumber { get; set; }
         List<DotInPattern> _DotsPattern = new List<DotInPattern>();
-        public int minX { get; set; }
-        public int maxX { get; set; }
-        public int minY { get; set; }
-        public int maxY { get; set; }
+        //public int minX { get; set; }
+        //public int maxX { get; set; }
+        //public int minY { get; set; }
+        //public int maxY { get; set; }
 
         public List<DotInPattern> DotsPattern
         {
@@ -57,13 +57,13 @@ namespace DotsGame
 
     }
 
-    public static class PEminXY
-    {
-        public static int minX = 0;
-        public static int maxX = 0;
-        public static int minY = 0;
-        public static int maxY = 0;
-    }
+    //public static class PEminXY
+    //{
+    //    public static int minX = 0;
+    //    public static int maxX = 0;
+    //    public static int minY = 0;
+    //    public static int maxY = 0;
+    //}
     public partial class GameEngine
     {
         private bool _EditMode;
@@ -148,10 +148,10 @@ namespace DotsGame
             //------------------------------------------------
             lines.Add("Begin");
             lines.Add(GetNumberPattern().ToString());
-            lines.Add(PEminXY.minX.ToString() + "," +
-                      PEminXY.maxX.ToString() + "," +
-                      PEminXY.minY.ToString() + "," +
-                      PEminXY.maxY.ToString());
+            //lines.Add(firstDot.PE_XY.minX.ToString() + "," +
+            //          firstDot.PE_XY.maxX.ToString() + "," +
+            //          firstDot.PE_XY.minY.ToString() + "," +
+            //          firstDot.PE_XY.maxY.ToString());
             lines.Add("Dots");
 
             for (int i = 0; i < ListPatternDots.Count; i++)

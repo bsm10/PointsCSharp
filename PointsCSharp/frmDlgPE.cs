@@ -18,10 +18,10 @@ namespace DotsGame
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            PEminXY.minX = (int)numericUpDownX.Value;
-            PEminXY.minY = (int)numericUpDownY.Value;
-            PEminXY.maxX = (int)numericUpDownXmax.Value;
-            PEminXY.maxY = (int)numericUpDownYmax.Value;
+            //PEminXY.minX = (int)numericUpDownX.Value;
+            //PEminXY.minY = (int)numericUpDownY.Value;
+            //PEminXY.maxX = (int)numericUpDownXmax.Value;
+            //PEminXY.maxY = (int)numericUpDownYmax.Value;
             this.Hide();
         }
 
