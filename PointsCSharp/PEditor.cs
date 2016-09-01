@@ -127,10 +127,7 @@ namespace DotsGame
             if (lstDotsInPattern.Count == 0) return;
             List<Dot> lstPat = lstDotsInPattern;
             //rotate dots in pattern
-            foreach (List<Dot> listDots in ListRotatePatterns(lstPat)) 
-            {
-                AddPatternDots(listDots);
-            }
+            foreach (List<Dot> listDots in ListRotatePatterns(lstPat)) AddPatternDots(listDots);
 
             lstPat.Clear();
             aDots.UnmarkAllDots();
