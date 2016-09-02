@@ -376,7 +376,7 @@ namespace DotsGame
             toolStripStatusLabel2.ForeColor = Player == 1 ? game.colorGamer1 : game.colorGamer2;
             toolStripStatusLabel2.Text = "Ход игрока" + Player + "...";
             Application.DoEvents();
-            if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove);
+            if (pl_move== null) pl_move = game.gameDots.PickComputerMove(game.gameDots.LastMove);
             if (pl_move == null)
             {
                 MessageBox.Show("Сдаюсь! \r\n" + game.Statistic());
@@ -390,7 +390,7 @@ namespace DotsGame
             int pl = Player == 1 ? 2 : 1;
             toolStripStatusLabel2.ForeColor = pl == 1 ? game.colorGamer1 : game.colorGamer2;
             toolStripStatusLabel2.Text = "Ход игрока" + pl + "...";
-            if (game.GameOver())
+            if (game.gameDots.FreeDots.Count == 0)
             {
                 MessageBox.Show("Game over! \r\n" + game.Statistic());
                 return 1;
