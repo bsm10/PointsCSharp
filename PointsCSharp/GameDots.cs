@@ -24,6 +24,11 @@ namespace DotsGame
         private const int PLAYER_NONE = 0;
         private const int PLAYER_HUMAN = 1;
         private const int PLAYER_COMPUTER = 2;
+
+        public int SkillLevel = 5;
+        public int SkillDepth = 5;
+        public int SkillNumSq = 3;
+
         //statistic
         public float square1;//площадь занятая игроком1
         public float square2;
@@ -119,10 +124,10 @@ namespace DotsGame
         Stopwatch sW2 = new Stopwatch();
 #endif
         
-        private Dot last_move //последний ход
-        {
-            get { return ListMoves.Last(); }
-        }
+        //private Dot last_move //последний ход
+        //{
+        //    get { return ListMoves.Last(); }
+        //}
         public int win_player;//переменная получает номер игрока, котрый окружил точки
 
         int position = -1;
@@ -148,6 +153,16 @@ namespace DotsGame
                 return nBoardWidth * nBoardHeight;
             }
         }
+#if DEBUG
+
+        private Form2 f = new Form2();
+        public Form2 DebugWindow
+        {
+            get { return f; }
+        }
+
+#endif
+
         public GameDots(int boardwidth, int boardheight)
         {
             int counter = 0;
@@ -2550,7 +2565,7 @@ namespace DotsGame
 #if DEBUG
             stopWatch.Start();
 #endif
-            Dot lm = new Dot(last_move.x, last_move.y);//точка последнего хода
+            Dot lm = new Dot(LastMove.x, LastMove.y);//точка последнего хода
             //проверяем ход который ведет сразу к окружению и паттерны
             int c1 = 0, c_root = 1000;// , dpth=0;
             lst_best_move.Clear();
@@ -2630,7 +2645,7 @@ namespace DotsGame
                 #region DEBUG
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern_vilochka " + Dots.iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
                 #endregion
@@ -2644,7 +2659,7 @@ namespace DotsGame
 #if DEBUG
 
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern_vilochka " + Dots.iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
                 #endregion
@@ -2692,13 +2707,13 @@ namespace DotsGame
             //#endregion
             #endregion
             #region CheckPatternVilkaNextMove
-            bm = Dots.CheckPatternVilkaNextMove(pl2);
+            bm = CheckPatternVilkaNextMove(pl2);
             if (bm != null)
             {
                 #region DEBUG
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + Dots.iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
                 }
 #endif
                 #endregion
@@ -2776,7 +2791,7 @@ namespace DotsGame
                 #region DEBUG
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + Dots.iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + iNumberPattern);
                 }
 #endif
                 #endregion
@@ -2788,7 +2803,7 @@ namespace DotsGame
                 #region DEBUG
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + Dots.iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + iNumberPattern);
                 }
 #endif
                 #endregion
@@ -2881,7 +2896,7 @@ namespace DotsGame
                 #region DEBUG
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern_vilochka " + Dots.iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
                 #endregion
@@ -2897,7 +2912,7 @@ namespace DotsGame
 #if DEBUG
 
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern_vilochka " + Dots.iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
                 #endregion
@@ -2951,7 +2966,7 @@ namespace DotsGame
                 #region DEBUG
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + Dots.iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
                 }
 #endif
                 #endregion
@@ -3028,7 +3043,7 @@ namespace DotsGame
                 #region DEBUG
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + Dots.iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + iNumberPattern);
                 }
 #endif
                 #endregion
@@ -3040,7 +3055,7 @@ namespace DotsGame
                 #region DEBUG
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + Dots.iNumberPattern);
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + iNumberPattern);
                 }
 #endif
                 #endregion
@@ -3183,7 +3198,7 @@ namespace DotsGame
                     //теперь ходит другой игрок ===========================================================================
                     int result = Play(ref enemy_move, move1, move2, player2, player1, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
                     //отменить ход
-                    Dots.UndoMove(d);
+                    UndoMove(d);
                     recursion_depth--;
 #if DEBUG
                     if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
@@ -3208,10 +3223,10 @@ namespace DotsGame
             own = PLAYER_HUMAN;//последним ходил игрок
             List<Dot> mvs = new List<Dot>();
             Dot[] ad = null;
-            int minX = Dots.MinX();
-            int minY = Dots.MinY();
-            int maxX = Dots.MaxX();
-            int maxY = Dots.MaxY();
+            int minX = MinX();
+            int minY = MinY();
+            int maxX = MaxX();
+            int maxY = MaxY();
 
             int i = 0;
             do
@@ -3229,7 +3244,7 @@ namespace DotsGame
                     {
                         foreach (Dot d in mvs)
                         {
-                            Dots.UndoMove(d);
+                            UndoMove(d);
                         }
                         mvs.Clear();
                         qry = null;
@@ -3274,7 +3289,7 @@ namespace DotsGame
                         }
                         //ход делает комп, если последним ходил игрок
                         d.Own = own;
-                        int res_last_move = Dots.MakeMove(d);
+                        int res_last_move = MakeMove(d);
                         mvs.Add(d);
                         //-----показывает проверяемые ходы-----------------------------------------------
 #if DEBUG
@@ -3283,10 +3298,10 @@ namespace DotsGame
                         f.lstDbg1.Items.Add(d.Own + " -" + d.x + ":" + d.y);
                         f.txtDebug.Text = "Общее число ходов: " + depth.ToString() +
                                 "\r\n Глубина просчета: " + counter.ToString() +
-                                "\r\n проверка вокруг точки " + last_move;
+                                "\r\n проверка вокруг точки " + LastMove.ToString();
 #endif
                         //------------------------------------------------------------------------------
-                        if (res_last_move != 0 & Dots[d.x, d.y].Blocked)//если ход в окруженный регион
+                        if (res_last_move != 0 & this[d.x, d.y].Blocked)//если ход в окруженный регион
                         {
                             move = null;
                             break;
@@ -3304,7 +3319,7 @@ namespace DotsGame
                             //UndoMove(d);
                             break;//return PLAYER_HUMAN;//побеждает игрок
                         }
-                        else if (d.Own == 2 & res_last_move != 0 | d.Own == 1 & Dots[d.x, d.y].Blocked)
+                        else if (d.Own == 2 & res_last_move != 0 | d.Own == 1 & this[d.x, d.y].Blocked)
                         {
                             if (counter < counter_root)
                             {
@@ -3334,6 +3349,67 @@ namespace DotsGame
         private float SquarePolygon(int nBlockedDots, int nRegionDots)
         {
             return nBlockedDots + nRegionDots / 2.0f - 1;//Формула Пика
+        }
+
+        public void SetLevel(int iLevel = 1)
+        {
+            switch (iLevel)
+            {
+                case 0://easy
+                    SkillLevel = 10;
+                    SkillDepth = 5;
+                    SkillNumSq = 3;
+                    break;
+                case 1://mid
+                    SkillLevel = 30;
+                    SkillDepth = 10;//20;
+                    SkillNumSq = 4;
+                    break;
+                case 2://hard
+                    SkillLevel = 50;
+                    SkillDepth = 50;//50;
+                    SkillNumSq = 2;//5;
+                    break;
+            }
+            Properties.Settings.Default.Level = iLevel;
+            Properties.Settings.Default.Save();
+#if DEBUG
+            f.numericUpDown2.Value = SkillDepth;
+            f.numericUpDown4.Value = SkillNumSq;
+            f.numericUpDown3.Value = SkillLevel;
+#endif
+        }
+
+        private int _pause = 10;
+
+        public int pause
+        {
+            get
+            {
+                return _pause;
+                //
+            }
+            set
+            {
+                _pause = value;
+            }
+        }
+        private void Pause()
+        {
+#if DEBUG
+            if (f.Pause > 0)
+            {
+                Application.DoEvents();
+                //pbxBoard.Invalidate();
+                System.Threading.Thread.Sleep(f.Pause);
+            }
+#endif
+        }
+        public void Pause(int ms)
+        {
+            Application.DoEvents();
+            //pbxBoard.Invalidate();
+            System.Threading.Thread.Sleep(ms);
         }
 
 

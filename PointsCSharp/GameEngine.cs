@@ -19,9 +19,6 @@ namespace DotsGame
     }
     public partial class GameEngine
     {
-        public int SkillLevel = 5;
-        public int SkillDepth = 5;
-        public int SkillNumSq = 3;
 
         //-------------------------------------------------
         public int iScaleCoef = 1;//-коэффициент масштаба
@@ -37,6 +34,7 @@ namespace DotsGame
             get{return status;}
             set{status=value;}
         }
+        private Form2 f;
         public bool Autoplay
         {
             get { return f.rbtnHand.Checked; }
@@ -62,17 +60,7 @@ namespace DotsGame
 
        
         private PictureBox pbxBoard;
-        private int _pause = 10;
         
-#if DEBUG
-        
-        public Form2 f = new Form2();
-        public Form2 DebugWindow 
-        {
-            get {return f;}
-        }
-
-#endif
 
 
         public GameEngine(PictureBox CanvasGame)
@@ -80,34 +68,6 @@ namespace DotsGame
             pbxBoard = CanvasGame;
             NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
             LoadPattern();
-        }
-        public void SetLevel(int iLevel=1)
-        {
-            switch (iLevel)
-            {
-                case 0://easy
-                    SkillLevel = 10;
-                    SkillDepth = 5;
-                    SkillNumSq = 3;
-                    break;
-                case 1://mid
-                    SkillLevel = 30;
-                    SkillDepth = 10;//20;
-                    SkillNumSq = 4;
-                    break;
-                case 2://hard
-                    SkillLevel = 50;
-                    SkillDepth = 50;//50;
-                    SkillNumSq = 2;//5;
-                    break;
-            }
-            Properties.Settings.Default.Level=iLevel;
-            Properties.Settings.Default.Save();
-#if DEBUG
-            f.numericUpDown2.Value = SkillDepth;
-            f.numericUpDown4.Value = SkillNumSq;
-            f.numericUpDown3.Value = SkillLevel;
-#endif
         }
         //  ************************************************
         public string Statistic()
@@ -131,48 +91,20 @@ namespace DotsGame
                               "X: " + aDots[x, y].x + "; Y: " + aDots[x, y].y;
                #endif
         }
-        public int pause 
-           {
-            get
-                {
-                 return _pause;
-                 //
-                }
-            set
-            {
-                _pause = value;
-            }
-            }
-        private void Pause()
-        {
-        #if DEBUG
-            if (f.Pause>0)
-            {
-                Application.DoEvents();
-                pbxBoard.Invalidate();
-                System.Threading.Thread.Sleep(f.Pause);
-            }
-        #endif
-        }
-        public void Pause(int ms)
-        {
-            Application.DoEvents();
-            pbxBoard.Invalidate();
-            System.Threading.Thread.Sleep(ms);
-        }
         public void NewGame(int boardWidth, int boardHeigth)
         {
             aDots = new GameDots(boardWidth,boardHeigth); 
             lstDotsInPattern = new List<Dot>();
             startX = -0.5f;
             startY = -0.5f;
-            SetLevel(Properties.Settings.Default.Level);
+            aDots.SetLevel(Properties.Settings.Default.Level);
             Redraw=true;
-#if DEBUG
-        f.Show();
-
-#endif
             pbxBoard.Invalidate();
+#if DEBUG
+            f = gameDots.DebugWindow;
+            f.Show();
+#endif
+
         }
         //------------------------------------------------------------------------------------
 
@@ -418,7 +350,7 @@ namespace DotsGame
         }
         private void SetColorAndDrawDots(Graphics gr, Dot p, Color colorGamer) //Вспомогательная функция для DrawPoints. Выбор цвета точки в зависимости от ее состояния и рисование элипса
         {
-
+            Dot last_move =  gameDots.LastMove;
             Color c;
             if (last_move != null && p.x == last_move.x & p.y == last_move.y)//точка последнего хода должна для удовства выделяться
             {

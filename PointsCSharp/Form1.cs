@@ -412,7 +412,7 @@ namespace DotsGame
             {
                 тяжелоToolStripMenuItem.Checked = false;
                 легкоToolStripMenuItem.Checked = false;
-                game.SetLevel(1);
+                game.gameDots.SetLevel(1);
             }
         }
         private void легкоToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
@@ -421,7 +421,7 @@ namespace DotsGame
             {
                 тяжелоToolStripMenuItem.Checked = false;
                 среднеToolStripMenuItem.Checked = false;
-                game.SetLevel(0);
+                game.gameDots.SetLevel(0);
             }
         }
         private void тяжелоToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
@@ -430,7 +430,7 @@ namespace DotsGame
             {
                 легкоToolStripMenuItem.Checked = false;
                 среднеToolStripMenuItem.Checked = false;
-                game.SetLevel(2);
+                game.gameDots.SetLevel(2);
             }
         }
         private void сохранитькакToolStripMenuItem_Click(object sender, EventArgs e)
