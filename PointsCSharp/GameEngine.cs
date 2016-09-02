@@ -27,23 +27,33 @@ namespace DotsGame
         //==========================================================================================================
         private GameDots _gameDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
         //===========================================================================================================
-        public GameDots gameDots 
+        private GameDots gameDots 
         {
             get 
               {
                 return _gameDots;
               }
         }
+
+        public Dot DOT(int x, int y)
+        {
+            return _gameDots[x,y];
+        }
+        public Dot DOT(Dot d)
+        {
+            return _gameDots[d.x, d.y];
+        }
+
         private string status=string.Empty;
         public string  Status
         {
             get{return status;}
             set{status=value;}
         }
-        private Form2 f;
+        //private Form2 f;
         public bool Autoplay
         {
-            get { return f.rbtnHand.Checked; }
+            get { return gameDots.DebugWindow.rbtnHand.Checked; }
         }
 
 
@@ -75,8 +85,7 @@ namespace DotsGame
             NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
             LoadPattern();
 #if DEBUG
-            f = gameDots.DebugWindow;
-            f.Show();
+            gameDots.DebugWindow.Show();
 #endif
 
         }
@@ -92,7 +101,7 @@ namespace DotsGame
         public void Statistic(int x, int y)
         {
                 #if DEBUG
-                f.txtDotStatus.Text = "Blocked: " + _gameDots[x, y].Blocked + "\r\n" +
+            gameDots.DebugWindow.txtDotStatus.Text = "Blocked: " + _gameDots[x, y].Blocked + "\r\n" +
                               "BlokingDots.Count: " + _gameDots[x, y].BlokingDots.Count + "\r\n" +
                               "NeiborDots.Count: " + _gameDots[x, y].NeiborDots.Count + "\r\n" +
                               "Rating: " + _gameDots[x, y].Rating + "\r\n" +
@@ -210,7 +219,20 @@ namespace DotsGame
             }
 
         }
-
+        public Dot this[int i, int j]//Индексатор возвращает элемент из массива по его индексу
+        {
+            get
+            {
+                return gameDots[i, j];
+            }
+        }
+        public Dot this[Dot dot]//Индексатор возвращает элемент из массива по его индексу
+        {
+            get
+            {
+                return gameDots[dot.x, dot.y];
+            }
+        }
         #region SAVE_LOAD Game
         public string path_savegame = Application.CommonAppDataPath + @"\dots.dts";
         public void SaveGame()
@@ -403,13 +425,16 @@ namespace DotsGame
         }
 
         #endregion
-
+        public void UndoDot (Dot dot_move)
+        {
+            gameDots.UndoMove(dot_move);
+        }
         //=========================================================================
 #if DEBUG
         public void MoveDebugWindow(int top, int left, int width)
         {
-            f.Top = top;
-            f.Left = left + width;
+            gameDots.DebugWindow.Top = top;
+            gameDots.DebugWindow.Left = left + width;
         }
 
 #endif

@@ -68,8 +68,7 @@ namespace DotsGame
             }
         }
         private Dot best_move; //ход который должен сделать комп
-        
-        private Dot last_move;//последний ход
+
         public List<Dot> dots_in_region;//записывает сюда точки, которые окружают точку противника
 
         private List<Dot> _Dots; // главная коллекция
@@ -124,28 +123,20 @@ namespace DotsGame
         Stopwatch sW2 = new Stopwatch();
 #endif
         
-        //private Dot last_move //последний ход
-        //{
-        //    get { return ListMoves.Last(); }
-        //}
         public int win_player;//переменная получает номер игрока, котрый окружил точки
-
         int position = -1;
         private int nBoardWidth;//размер поля
         private int nBoardHeight;//размер поля
-
         public int BoardWidth
         {
             get { return nBoardWidth; }
             set { nBoardWidth = value; }
         }
-
         public int BoardHeight
         {
             get { return nBoardHeight; }
             set { nBoardHeight = value; }
         }
-
         public int BoardSize
         {
             get
@@ -192,7 +183,6 @@ namespace DotsGame
             count_dot1 = 0; count_dot2 = 0;
 
         }
-
         public class DotEq : EqualityComparer<Dot>
         {
             public override int GetHashCode(Dot dot)
@@ -207,7 +197,6 @@ namespace DotsGame
                 return (d1.x == d2.x & d1.y == d2.y); 
             }
         }
-
         public int Count
         {
             get
@@ -242,7 +231,6 @@ namespace DotsGame
                 ListMoves.Add(_Dots[ind]);
             }
         }
-
         private void AddNeibor(Dot dot)
         {
             //выбрать соседние точки, если такие есть
@@ -259,7 +247,6 @@ namespace DotsGame
             }
             MakeIndexRelation(dot);
         }
-
         private void RemoveNeibor(Dot dot)
         {
             foreach (Dot d in Dots)
@@ -267,7 +254,6 @@ namespace DotsGame
                 if (d.NeiborDots.Contains(dot)) d.NeiborDots.Remove(dot);
             }
         }
-
         private void Remove(Dot dot)//удаляет точку из массива
         {
             int ind = IndexDot(dot.x, dot.y);
@@ -300,7 +286,6 @@ namespace DotsGame
                                     };
             return dts.ToList();
         }
-
         public List<Dot> NeiborDotsAll(Dot dot)
         {
             Dot[] dts = new Dot[8] {
@@ -315,8 +300,6 @@ namespace DotsGame
                                     };
             return dts.ToList();
         }
-
-
         public void UnmarkAllDots()
         {
             foreach (Dot d in _Dots) d.UnmarkDot();
@@ -361,7 +344,6 @@ namespace DotsGame
             }
             return minY;
         }
-
         public int CountNeibourDots(int Owner)//количество точек определенного цвета возле пустой точки
         {
             var q = from Dot d in _Dots
@@ -388,7 +370,6 @@ namespace DotsGame
 
             return index;
         }
-
         /// <summary>
         /// Проверка, находится ли точка на игровой доске
         /// </summary>
@@ -398,8 +379,6 @@ namespace DotsGame
             return (x >= 0 && x < BoardWidth &&
                     y >= 0 && y < BoardHeight);
         }
-
-
         public List<Dot> Rotate90(List<Dot> DotsForRotation)
         {
             int x;
@@ -450,7 +429,6 @@ namespace DotsGame
             }
             return ld;
         }
-
         public int MakeIndexRelation(Dot dot)
         {
             if (dot.NeiborDots.Count > 0)
@@ -479,7 +457,6 @@ namespace DotsGame
             ListMoves.Clear();
 
         }
-
         /// <summary>
         /// Пересканирует блокированные точки и устанавливает статус Blocked
         /// </summary>
@@ -502,7 +479,6 @@ namespace DotsGame
                       this[d.x, d.y - 1].Blocked
                 select d.Blocked = true).Count()!=0);
         }
-
         /// <summary>
         /// проверяет заблокирована ли точка. Перед использованием функции надо установить flg_own
         /// </summary>
@@ -540,7 +516,6 @@ namespace DotsGame
             }
             return false;
         }
-
         public void RebuildDots()
         {
             GameDots _Dots = new GameDots(BoardWidth,BoardHeight);
@@ -555,13 +530,11 @@ namespace DotsGame
 
             LinkDots();
         }
-
         public void UndoMove(Dot dot)//поле отмена хода
         {
             Remove(dot);
             RebuildDots();
         }
-
         public Dot CheckPattern(int Owner)
         {
             Pattern p = CheckPatternInPatterns(Owner);
@@ -574,7 +547,6 @@ namespace DotsGame
             return null;
 
         }
-
         /// <summary>
         /// Проверяет паттерн, если есть совпадение, возвращает его номер
         /// </summary>
@@ -744,38 +716,6 @@ namespace DotsGame
                 }
             }
         }
-        private void MarkDotsInRegion_old(Dot blocked_dot, int flg_own)
-        {
-            blocked_dot.Marked = true;
-            Dot[] dts = new Dot[4] {
-                                    this[blocked_dot.x + 1, blocked_dot.y],
-                                    this[blocked_dot.x -1, blocked_dot.y],
-                                    this[blocked_dot.x, blocked_dot.y + 1],
-                                    this[blocked_dot.x, blocked_dot.y -1],
-                                    };
-            //добавим точки которые попали в окружение
-            if (lst_blocked_dots.Contains(blocked_dot) == false)
-            {
-                lst_blocked_dots.Add(blocked_dot);
-            }
-            foreach (Dot _d in dts)
-            //foreach (Dot _d in this.SetNeiborDotsSNWE(blocked_dot))
-            {
-                if (_d.Own != 0 & _d.Blocked == false & _d.Own != flg_own)//_d-точка которая окружает
-                {
-                    //добавим в коллекцию точки которые окружают
-                    if (lst_in_region_dots.Contains(_d) == false) lst_in_region_dots.Add(_d);
-                }
-                else
-                {
-                    if (_d.Marked == false & _d.Fixed == false)
-                    {
-                        _d.Blocked = true;
-                        MarkDotsInRegion(_d, flg_own);
-                    }
-                }
-            }
-        }
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         private void MakeRating()//возвращает массив вражеских точек вокруг заданной точки
         {
@@ -810,7 +750,6 @@ namespace DotsGame
         { 
             get {return lnks;}
         }
-        
         public void LinkDots()//устанавливает связь между двумя точками и возвращает массив связей 
         {
             lnks.Clear();
@@ -1098,7 +1037,6 @@ namespace DotsGame
             return null;
         }
         public int iNumberPattern;
-
         public Dot CheckPattern_vilochka(int Owner)
         {
             int enemy_own = Owner == 1 ? 2 : 1;
@@ -2175,23 +2113,6 @@ namespace DotsGame
                                    && this[d.x, d.y - 1].Own == 0 && this[d.x, d.y - 1].Blocked == false
                              select d;
             if (pat2_2_3_4.Count() > 0) return new Dot(pat2_2_3_4.First().x, pat2_2_3_4.First().y - 1);
-            ////============================================================================================================== 
-            //iNumberPattern = 3;
-            //var pat3 = from Dot d in this
-            //           where d.Own == Owner && d.Blocked == false
-            //                 && this[d.x + 1, d.y -1].Own == Owner && this[d.x + 1, d.y -1].Blocked == false
-            //                 && this[d.x + 1, d.y].Blocked == false && this[d.x + 1, d.y].Own !=Owner
-            //                 && this[d.x, d.y -1].Blocked == false && this[d.x, d.y -1].Own !=Owner
-            //             select d;
-            //Dot[] ad = pat3.ToArray();
-            //foreach (Dot d in ad)
-            //{
-            //    if (this[d.x+1, d.y].Own == 0) return new Dot(d.x+1, d.y);
-            //    if (this[d.x, d.y -1].Own == 0) return new Dot(d.x, d.y -1);
-            //}
-            //       *
-            //     m
-            //  d*
             iNumberPattern = 4;
             var pat4 = from Dot d in this
                        where d.Own == Owner
@@ -2348,7 +2269,6 @@ namespace DotsGame
             //=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
             return null;//если никаких паттернов не найдено возвращаем нуль
         }
-
         public List<Dot> CheckPattern2Move(int Owner) //проверка хода на гарантированное окружение(когда точки находятся через две клетки) 
         {
             List<Dot> ld = new List<Dot>();
@@ -2523,8 +2443,6 @@ namespace DotsGame
             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             return ld;
         }
-
-
         public Dot PickComputerMove(Dot enemy_move)
         {
             #region если первый ход выбираем произвольную соседнюю точку
@@ -3443,20 +3361,7 @@ namespace DotsGame
         {
             get
             {
-
-                //IndexDot = x * BoardWidth + y;  (IndexDot-y) / BoardWidth
                 return _Dots[position];
-                //int i = position / BoardWidth;
-                //if (position / BoardWidth == BoardWidth)
-                //{
-                //    i = BoardWidth - 1;
-                //}
-                //int j = position % BoardHeight;
-                //if (position % BoardHeight == BoardHeight)
-                //{
-                //    j = BoardHeight - 1;
-                //}
-                //return _Dots[IndexDot(i, position % BoardHeight)];
             }
         }
     }

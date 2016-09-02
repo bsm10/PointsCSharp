@@ -80,7 +80,6 @@
             this.tlsMirror = new System.Windows.Forms.ToolStripButton();
             this.tlsRotate90 = new System.Windows.Forms.ToolStripButton();
             this.tlsDist = new System.Windows.Forms.ToolStripButton();
-            this.lstMoves = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBoard)).BeginInit();
             this.menuStrip.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -97,7 +96,7 @@
             this.pbxBoard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbxBoard.Location = new System.Drawing.Point(0, 27);
             this.pbxBoard.Name = "pbxBoard";
-            this.pbxBoard.Size = new System.Drawing.Size(393, 346);
+            this.pbxBoard.Size = new System.Drawing.Size(393, 421);
             this.pbxBoard.TabIndex = 0;
             this.pbxBoard.TabStop = false;
             this.pbxBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.pbxBoard_Paint);
@@ -557,22 +556,11 @@
             this.tlsDist.ToolTipText = "Расстояние первой точки до края доски";
             this.tlsDist.Click += new System.EventHandler(this.tlsDist_Click);
             // 
-            // lstMoves
-            // 
-            this.lstMoves.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lstMoves.FormattingEnabled = true;
-            this.lstMoves.Location = new System.Drawing.Point(0, 379);
-            this.lstMoves.Name = "lstMoves";
-            this.lstMoves.Size = new System.Drawing.Size(119, 67);
-            this.lstMoves.TabIndex = 32;
-            this.lstMoves.Visible = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(393, 474);
-            this.Controls.Add(this.lstMoves);
             this.Controls.Add(this.toolEditorPattern);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.pbxBoard);
@@ -650,7 +638,6 @@
         private System.Windows.Forms.ToolStripButton tlsDotClean;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
         private System.Windows.Forms.ToolStripStatusLabel tlsStatus;
-        public System.Windows.Forms.ListBox lstMoves;
         private System.Windows.Forms.ToolStripButton tlsDist;
     }
 }

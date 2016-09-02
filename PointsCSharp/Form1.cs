@@ -11,7 +11,6 @@ namespace DotsGame
     {
         public GameEngine game;
         private Point t;
-
         public Form1()
         {
             InitializeComponent();
@@ -20,12 +19,11 @@ namespace DotsGame
             int Yres = Screen.PrimaryScreen.WorkingArea.Height;
             float scl_coef=(float)Xres/ Yres;
 
-            Height = 800; //4 * Yres / 5;
-            Width = 400;//Height-50;
+            Height = 4 * Yres / 5;
+            Width = (int)((float)Height / scl_coef);//-50;
 
             game = new GameEngine(pbxBoard);
 
-            //game.SetLevel(2);
             toolStripStatusLabel2.ForeColor = game.colorGamer1;
             toolStripStatusLabel2.Text = "Ход игрока";
 
@@ -54,37 +52,36 @@ namespace DotsGame
                 switch (e.Button)
                 {
                     case MouseButtons.Left:
-                       
                         #region PatternEditor
                         #if DEBUG
                         if (game.EditMode==true)
                         {
-                            if(ListPatterns.Contains(game.gameDots[dot.x, dot.y])==false)
+                            if(ListPatterns.Contains(game[dot])==false)
                             {
-                                 ListPatterns.Add(game.gameDots[dot.x, dot.y]);
+                                 ListPatterns.Add(game[dot]);
                             }
                             if (PE_EmptyDot)
                             {
-                                if (game.gameDots[dot.x, dot.y].PatternsAnyDot) game.gameDots[dot.x, dot.y].PatternsAnyDot = false;
-                                game.gameDots[dot.x, dot.y].PatternsEmptyDot = true;
+                                if (game[dot].PatternsAnyDot) game[dot].PatternsAnyDot = false;
+                                game[dot].PatternsEmptyDot = true;
                             }
                             if (PE_FirstDot)
                             {
                                 if (game.lstDotsInPattern.Where(d => d.PatternsFirstDot).Count() == 0)
-                                game.gameDots[dot.x, dot.y].PatternsFirstDot = true;
+                                game[dot].PatternsFirstDot = true;
                                 break;
                             }
                             if (PE_MoveDot)
                             {
                                 if (game.lstDotsInPattern.Where(d=>d.PatternsMoveDot).Count()==0)
-                                    game.gameDots[dot.x, dot.y].PatternsMoveDot = true;
+                                    game[dot].PatternsMoveDot = true;
                                 
                                 //PE_MoveDot = false;
                             }
                             if (PE_AnyDot)
                             {
-                                if (game.gameDots[dot.x, dot.y].PatternsEmptyDot) game.gameDots[dot.x, dot.y].PatternsEmptyDot = false;
-                                game.gameDots[dot.x, dot.y].PatternsAnyDot = true;
+                                if (game[dot].PatternsEmptyDot) game[dot].PatternsEmptyDot = false;
+                                game[dot].PatternsAnyDot = true;
                             }
                             else if (!PE_EmptyDot & !PE_FirstDot & !PE_MoveDot & !PE_AnyDot)
                             //расстановка точек в режиме редактирования паттернов
@@ -96,9 +93,8 @@ namespace DotsGame
                         }
                         #endif
                         #endregion
-
                         #region Ходы игроков
-                        if (game.gameDots[game.MousePos.X, game.MousePos.Y].Own > 0) break;//предовращение хода если клик был по занятой точке
+                        if (game[game.MousePos.X, game.MousePos.Y].Own > 0) break;//предовращение хода если клик был по занятой точке
                         if (player_move == 2 | player_move == 0)
                         {
                         #if DEBUG
@@ -135,21 +131,14 @@ namespace DotsGame
                     case MouseButtons.Middle:
                         if (game.EditMode == true)
                         {
-                            ListPatterns.Remove(game.gameDots[dot.x, dot.y]);
-                            game.gameDots[dot.x, dot.y].PatternsRemove();
-
-                            //break;
+                            ListPatterns.Remove(game[dot]);
+                            game[dot].PatternsRemove();
                         }
-                        //game.gameDots.ListMoves.Remove(game.gameDots[dot.x, dot.y]);
-                        game.gameDots.UndoMove(dot);
+                        game.UndoDot(dot);
                         break;
                  #endif
                 }
             }
-            //lstMoves.DataSource = null;
-            //lstMoves.DataSource = game.ListMoves;
-            //if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count -1, true);
-            //rtbStat.Text = game.Statistic();
         }
         public void pbxBoard_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -194,7 +183,7 @@ namespace DotsGame
 #else
                
 #endif
-            toolStripStatusLabel1.Text = p.X + " : " + p.Y + "; " + "IndexDot " + game.gameDots.IndexDot(p.X, p.Y);
+            toolStripStatusLabel1.Text = p.X + " : " + p.Y + "; " + "IndexDot " + game[p.X,p.Y].IndexDot;
             if (game.Redraw) pbxBoard.Invalidate();
         }
         private void pbxBoard_MouseDown(object sender, MouseEventArgs e)
@@ -396,9 +385,9 @@ namespace DotsGame
                 return 1;
             }
 
-            lstMoves.DataSource = null;
-            lstMoves.DataSource = game.gameDots.ListMoves;
-            if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
+            //lstMoves.DataSource = null;
+            //lstMoves.DataSource = game.gameDots.ListMoves;
+            //if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
             //rtbStat.Text = game.Statistic();
             return 0;
         }
