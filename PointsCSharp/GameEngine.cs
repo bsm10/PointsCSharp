@@ -51,9 +51,11 @@ namespace DotsGame
             set{status=value;}
         }
         //private Form2 f;
+        public DebugForm DebugWindow = new DebugForm();
+
         public bool Autoplay
         {
-            get { return gameDots.DebugWindow.rbtnHand.Checked; }
+            get { return DebugWindow.rbtnHand.Checked; }
         }
 
 
@@ -76,7 +78,14 @@ namespace DotsGame
 
        
         private PictureBox pbxBoard;
-        
+
+        public Dot LastMove
+        {
+            get
+            {
+                return gameDots.LastMove;
+            }
+        }
 
 
         public GameEngine(PictureBox CanvasGame)
@@ -84,12 +93,27 @@ namespace DotsGame
             pbxBoard = CanvasGame;
             NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
             LoadPattern();
-#if DEBUG
-            gameDots.DebugWindow.Show();
-#endif
+//#if DEBUG
+//            gameDots.DebugWindow.Show();
+//#endif
 
         }
         //  ************************************************
+
+
+        public Dot PickComputerMove(Dot LastMove)
+        {
+            return gameDots.PickComputerMove(LastMove);
+        }
+        public int MakeMove(Dot MoveDot)
+        {
+            return gameDots.MakeMove(MoveDot);
+        }
+        public bool GameOver()
+        {
+            return gameDots.FreeDots.Count == 0;
+        }
+
         public string Statistic()
         {
             var q5 = from Dot d in _gameDots where d.Own == 1 select d;
@@ -101,7 +125,7 @@ namespace DotsGame
         public void Statistic(int x, int y)
         {
                 #if DEBUG
-            gameDots.DebugWindow.txtDotStatus.Text = "Blocked: " + _gameDots[x, y].Blocked + "\r\n" +
+            DebugWindow.txtDotStatus.Text = "Blocked: " + _gameDots[x, y].Blocked + "\r\n" +
                               "BlokingDots.Count: " + _gameDots[x, y].BlokingDots.Count + "\r\n" +
                               "NeiborDots.Count: " + _gameDots[x, y].NeiborDots.Count + "\r\n" +
                               "Rating: " + _gameDots[x, y].Rating + "\r\n" +
@@ -113,7 +137,9 @@ namespace DotsGame
         }
         public void NewGame(int boardWidth, int boardHeigth)
         {
-            _gameDots = new GameDots(boardWidth,boardHeigth); 
+            //if (gameDots!=null && DebugWindow!=0)
+
+            _gameDots = new GameDots(boardWidth,boardHeigth, DebugWindow); 
             lstDotsInPattern = new List<Dot>();
             startX = -0.5f;
             startY = -0.5f;
@@ -134,7 +160,7 @@ namespace DotsGame
             gameDots.BoardWidth = newSizeWidth;
             Properties.Settings.Default.BoardWidth = newSizeWidth;
             Properties.Settings.Default.BoardHeight = newSizeHeight;
-            NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
+            //NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
             pbxBoard.Invalidate();
         }
 
@@ -433,8 +459,8 @@ namespace DotsGame
 #if DEBUG
         public void MoveDebugWindow(int top, int left, int width)
         {
-            gameDots.DebugWindow.Top = top;
-            gameDots.DebugWindow.Left = left + width;
+            DebugWindow.Top = top;
+            DebugWindow.Left = left + width;
         }
 
 #endif

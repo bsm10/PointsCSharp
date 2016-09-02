@@ -20,7 +20,7 @@ namespace DotsGame
             float scl_coef=(float)Xres/ Yres;
 
             Height = 4 * Yres / 5;
-            Width = (int)((float)Height / scl_coef);//-50;
+            Width = (int)(Height / scl_coef)+ 50;
 
             game = new GameEngine(pbxBoard);
 
@@ -255,7 +255,6 @@ namespace DotsGame
         private void создатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             game.NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
-            //lstMoves.DataSource = null;
         }
         private void антиалToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -365,7 +364,7 @@ namespace DotsGame
             toolStripStatusLabel2.ForeColor = Player == 1 ? game.colorGamer1 : game.colorGamer2;
             toolStripStatusLabel2.Text = "Ход игрока" + Player + "...";
             Application.DoEvents();
-            if (pl_move== null) pl_move = game.gameDots.PickComputerMove(game.gameDots.LastMove);
+            if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove);
             if (pl_move == null)
             {
                 MessageBox.Show("Сдаюсь! \r\n" + game.Statistic());
@@ -373,22 +372,17 @@ namespace DotsGame
                 return 1;
             } 
             pl_move.Own=Player;
-            game.gameDots.MakeMove(pl_move);
+            game.MakeMove(pl_move);
             pbxBoard.Invalidate();
             statusStrip1.Refresh();
             int pl = Player == 1 ? 2 : 1;
             toolStripStatusLabel2.ForeColor = pl == 1 ? game.colorGamer1 : game.colorGamer2;
             toolStripStatusLabel2.Text = "Ход игрока" + pl + "...";
-            if (game.gameDots.FreeDots.Count == 0)
+            if (game.GameOver())
             {
                 MessageBox.Show("Game over! \r\n" + game.Statistic());
                 return 1;
             }
-
-            //lstMoves.DataSource = null;
-            //lstMoves.DataSource = game.gameDots.ListMoves;
-            //if (lstMoves.Items.Count > 0) lstMoves.SetSelected(lstMoves.Items.Count - 1, true);
-            //rtbStat.Text = game.Statistic();
             return 0;
         }
         private void Form1_MouseEnter(object sender, EventArgs e)
@@ -401,7 +395,7 @@ namespace DotsGame
             {
                 тяжелоToolStripMenuItem.Checked = false;
                 легкоToolStripMenuItem.Checked = false;
-                game.gameDots.SetLevel(1);
+                //game.gameDots.SetLevel(1);
             }
         }
         private void легкоToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
@@ -410,7 +404,7 @@ namespace DotsGame
             {
                 тяжелоToolStripMenuItem.Checked = false;
                 среднеToolStripMenuItem.Checked = false;
-                game.gameDots.SetLevel(0);
+                //game.gameDots.SetLevel(0);
             }
         }
         private void тяжелоToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
@@ -419,7 +413,7 @@ namespace DotsGame
             {
                 легкоToolStripMenuItem.Checked = false;
                 среднеToolStripMenuItem.Checked = false;
-                game.gameDots.SetLevel(2);
+                //game.gameDots.SetLevel(2);
             }
         }
         private void сохранитькакToolStripMenuItem_Click(object sender, EventArgs e)
@@ -532,13 +526,13 @@ namespace DotsGame
         }
         private void tlsMirror_Click(object sender, EventArgs e)
         {
-            game.gameDots.Dots = game.gameDots.Rotate_Mirror_Horizontal(game.gameDots.Dots);
+            //game.gameDots.Dots = game.gameDots.Rotate_Mirror_Horizontal(game.gameDots.Dots);
             pbxBoard.Refresh();
 
         }
         private void tlsRotate90_Click(object sender, EventArgs e)
         {
-            game.gameDots.Dots = game.gameDots.Rotate90(game.gameDots.Dots);
+            //game.gameDots.Dots = game.gameDots.Rotate90(game.gameDots.Dots);
             pbxBoard.Refresh();
         }
 
@@ -568,7 +562,6 @@ namespace DotsGame
             {
                 get { return tlsТочкаХода.Checked; }
                 set { tlsТочкаХода.Checked = value; }
-
             }
 
             public int PE_Player
@@ -577,13 +570,11 @@ namespace DotsGame
                 {
                     return tlsRedDot.Checked ? 1 : 2;
                 }
-
             }
 
             private void tlsDist_Click(object sender, EventArgs e)
             {
                frmDlgPE dlg = new frmDlgPE();
-               
                dlg.ShowDialog();
             }
 

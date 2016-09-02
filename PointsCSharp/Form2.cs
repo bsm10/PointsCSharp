@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace DotsGame
 {
-    public partial class Form2 : Form
+    public partial class DebugForm : Form
     {
-        public Form2()
+        public DebugForm()
         {
             InitializeComponent();
             rbtnAuto.Checked = true;

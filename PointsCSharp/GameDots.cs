@@ -29,6 +29,8 @@ namespace DotsGame
         public int SkillDepth = 5;
         public int SkillNumSq = 3;
 
+        private DebugForm f; 
+
         //statistic
         public float square1;//площадь занятая игроком1
         public float square2;
@@ -62,9 +64,6 @@ namespace DotsGame
                 {
                     return ListMoves.Last();
                 }
-                //это для того чтобы поставить первую точку                
-                //last_move=gameDots.ListMoves.Last();
-                // last_move;
             }
         }
         private Dot best_move; //ход который должен сделать комп
@@ -144,17 +143,8 @@ namespace DotsGame
                 return nBoardWidth * nBoardHeight;
             }
         }
-#if DEBUG
 
-        private Form2 f = new Form2();
-        public Form2 DebugWindow
-        {
-            get { return f; }
-        }
-
-#endif
-
-        public GameDots(int boardwidth, int boardheight)
+        public GameDots(int boardwidth, int boardheight, DebugForm DebugWnd = null)
         {
             int counter = 0;
             int ind;
@@ -181,7 +171,11 @@ namespace DotsGame
             count_blocked1 = 0; count_blocked2 = 0;
             count_blocked = 0;
             count_dot1 = 0; count_dot2 = 0;
-
+            if (DebugWnd!=null)
+            {
+                f = DebugWnd;
+                f.Show();
+            }
         }
         public class DotEq : EqualityComparer<Dot>
         {
@@ -379,6 +373,12 @@ namespace DotsGame
             return (x >= 0 && x < BoardWidth &&
                     y >= 0 && y < BoardHeight);
         }
+        public bool DotIndexCheck(Dot dot)
+        {
+            return dot==null? false : (dot.x >= 0 && dot.x < BoardWidth &&
+                    dot.y >= 0 && dot.y < BoardHeight);
+        }
+
         public List<Dot> Rotate90(List<Dot> DotsForRotation)
         {
             int x;
@@ -821,7 +821,7 @@ namespace DotsGame
         {
             List<Dot> happy_dots = new List<Dot>();
             var qry = FreeDots.Where(
-            #region Query patterns Check
+#region Query patterns Check
 
                          d => d.x + 1 < BoardWidth && d.x - 1 > -1 &&
                               d.y + 1 < BoardHeight && d.y - 1 > -1 &&
@@ -969,7 +969,7 @@ namespace DotsGame
                         this[d.x + 1, d.y].Own != Owner &
                         this[d.x + 1, d.y + 1].Own != Owner &
                         this[d.x - 1, d.y].Own != Owner
-            #endregion
+#endregion
 );
 #if DEBUG
             Dot[] ad = qry.ToArray();
@@ -2445,7 +2445,7 @@ namespace DotsGame
         }
         public Dot PickComputerMove(Dot enemy_move)
         {
-            #region если первый ход выбираем произвольную соседнюю точку
+#region если первый ход выбираем произвольную соседнюю точку
             if (ListMoves.Count < 2)
             {
                 var random = new Random(DateTime.Now.Millisecond);
@@ -2455,8 +2455,8 @@ namespace DotsGame
                          select d;
                 return new Dot(fm.First().x, fm.First().y); //так надо чтобы best_move не ссылался на точку в Dots;
             }
-            #endregion
-            #region  Если ситуация проигрышная -сдаемся
+#endregion
+#region  Если ситуация проигрышная -сдаемся
             var q1 = from Dot d in Dots
                      where d.Own == PLAYER_COMPUTER && (d.Blocked == false)
                      select d;
@@ -2470,7 +2470,7 @@ namespace DotsGame
                 return null;
             }
 
-            #endregion
+#endregion
 
 
             float s1 = square1; float s2 = square2;
@@ -2525,7 +2525,7 @@ namespace DotsGame
         //===============================================================================================
         private Dot BestMove(int pl1, int pl2)
         {
-            String strDebug = String.Empty;
+            string strDebug = string.Empty;
             Dot bm;
 #if DEBUG
             sW2.Start();
@@ -2533,18 +2533,18 @@ namespace DotsGame
             Application.DoEvents();
 #endif
             bm = CheckMove(pl2);
-            if (bm != null)
+            if (DotIndexCheck(bm))
             {
                 bm.iNumberPattern = 777; //777-ход в результате которого получается окружение -компьютер побеждает
                 return bm;
             }
             bm = CheckMove(pl1);
-            if (bm != null)
+            if (DotIndexCheck(bm))
             {
                 bm.iNumberPattern = 666; //666-ход в результате которого получается окружение -компьютер проигрывает
                 return bm;
             }
-            #region DEBUG
+#region DEBUG
 #if DEBUG
             sW2.Stop();
             strDebug = "CheckMove pl1,pl2 -" + sW2.Elapsed.Milliseconds.ToString();
@@ -2555,35 +2555,37 @@ namespace DotsGame
             f.lblBestMove.Text = "CheckPattern_vilochka проверяем ходы на два вперед...";
             Application.DoEvents();
 #endif
-            #endregion
-            #region CheckPattern_vilochka
+#endregion
+#region CheckPattern_vilochka
             bm = CheckPattern_vilochka(pl2);
-            if (bm != null)
+            //if (bm != null)
+            if (DotIndexCheck(bm))
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
                 return bm;
             }
 
             bm = CheckPattern_vilochka(pl1);
-            if (bm != null)
+            // if (bm != null)
+            if (DotIndexCheck(bm))
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
 
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
                 return bm;
             }
-            #region DEBUG
+#region DEBUG
 
 #if DEBUG
             sW2.Stop();
@@ -2595,9 +2597,9 @@ namespace DotsGame
 
             Application.DoEvents();
 #endif
-            #endregion
-            #endregion
-            #region CheckPattern2Move проверяем ходы на два вперед
+#endregion
+#endregion
+#region CheckPattern2Move проверяем ходы на два вперед
 
             //            bm = Dots.CheckPattern2Move(pl2);
             //            if (bm != null )
@@ -2623,21 +2625,21 @@ namespace DotsGame
             //#endif
 
             //#endregion
-            #endregion
-            #region CheckPatternVilkaNextMove
+#endregion
+#region CheckPatternVilkaNextMove
             bm = CheckPatternVilkaNextMove(pl2);
-            if (bm != null)
+            if (DotIndexCheck(bm))
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
                 return bm;
             }
-            #region DEBUG
+#region DEBUG
 
 #if DEBUG
             sW2.Stop();
@@ -2648,24 +2650,24 @@ namespace DotsGame
             f.lblBestMove.Text = "CheckPattern(pl2)...";
             Application.DoEvents();
 #endif
-            #endregion
-            #endregion
-            #region CheckPattern
+#endregion
+#endregion
+#region CheckPattern
 
             bm = CheckPattern(pl2);
-            if (bm != null)
+            if (DotIndexCheck(bm))
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern " + bm.iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
 
                 if (CheckDot(bm, pl2) == false) return bm;
             }
-            #region Debug
+#region Debug
 #if DEBUG
             sW2.Stop();
             strDebug = strDebug + "\r\nCheckPattern(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
@@ -2675,21 +2677,21 @@ namespace DotsGame
             f.lblBestMove.Text = "CheckPattern(pl1)...";
             Application.DoEvents();
 #endif
-            #endregion
+#endregion
             bm = CheckPattern(pl1);
-            if (bm != null)
+            if (DotIndexCheck(bm))
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern " + bm.iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
 
                 if (CheckDot(bm, pl2) == false) return bm;
             }
-            #region DEBUG
+#region DEBUG
 #if DEBUG
             sW2.Stop();
             strDebug = strDebug + "\r\nCheckPattern(pl1) -" + sW2.Elapsed.Milliseconds.ToString();
@@ -2699,32 +2701,34 @@ namespace DotsGame
             f.lblBestMove.Text = "CheckPatternMove...";
             Application.DoEvents();
 #endif
-            #endregion
-            #endregion
+#endregion
+#endregion
 
-            #region CheckPatternMove
+#region CheckPatternMove
             bm = CheckPatternMove(pl2);
-            if (bm != null)
+            if(DotIndexCheck(bm))
+            //if (bm != null)
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
                 if (CheckDot(bm, pl2) == false) return bm;
             }
             bm = CheckPatternMove(pl1);
-            if (bm != null)
+            if (DotIndexCheck(bm))
+                //if (bm != null)
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
                 if (CheckDot(bm, pl1) == false) return bm;
             }
 #if DEBUG
@@ -2735,13 +2739,13 @@ namespace DotsGame
             sW2.Reset();
 #endif
 
-            #endregion
+#endregion
 
             return null;
         }
         private Dot BestMove_MultiTread(int pl1, int pl2)
         {
-            String strDebug = String.Empty;
+            string strDebug = string.Empty;
             Dot bm;
 #if DEBUG
             sW2.Start();
@@ -2760,7 +2764,7 @@ namespace DotsGame
                 bm.iNumberPattern = 666; //666-ход в результате которого получается окружение -компьютер проигрывает
                 return bm;
             }
-            #region DEBUG
+#region DEBUG
 #if DEBUG
             sW2.Stop();
             strDebug = "CheckMove pl1,pl2 -" + sW2.Elapsed.Milliseconds.ToString();
@@ -2771,7 +2775,7 @@ namespace DotsGame
             f.lblBestMove.Text = "CheckPattern2Move проверяем ходы на два вперед...";
             Application.DoEvents();
 #endif
-            #endregion
+#endregion
 
 
             Task<Dot>[] taskArray = new Task<Dot>[4];
@@ -2803,7 +2807,7 @@ namespace DotsGame
             var tokenSource = new CancellationTokenSource();
             var token = tokenSource.Token;
 
-            #region CheckPattern_vilochka
+#region CheckPattern_vilochka
 
             //taskArray[2].Wait();
             bm = taskArray[2].Result;
@@ -2811,13 +2815,13 @@ namespace DotsGame
 
             if (bm != null)
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
                 return bm;
             }
 
@@ -2826,17 +2830,17 @@ namespace DotsGame
             taskArray[3].Dispose();
             if (bm != null)
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
 
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern_vilochka " + iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
                 return bm;
             }
-            #region DEBUG
+#region DEBUG
 
 #if DEBUG
             sW2.Stop();
@@ -2848,9 +2852,9 @@ namespace DotsGame
 
             Application.DoEvents();
 #endif
-            #endregion
-            #endregion
-            #region CheckPattern2Move проверяем ходы на два вперед
+#endregion
+#endregion
+#region CheckPattern2Move проверяем ходы на два вперед
 
             //            bm = Dots.CheckPattern2Move(pl2);
             //            if (bm != null )
@@ -2864,7 +2868,7 @@ namespace DotsGame
             //                #endregion
             //                return bm;
             //            }
-            #region DEBUG
+#region DEBUG
 #if DEBUG
             sW2.Stop();
             strDebug = strDebug + "\r\nCheckPattern2Move(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
@@ -2875,22 +2879,22 @@ namespace DotsGame
             Application.DoEvents();
 #endif
 
-            #endregion
-            #endregion
-            #region CheckPatternVilkaNextMove
+#endregion
+#endregion
+#region CheckPatternVilkaNextMove
             bm = CheckPatternVilkaNextMove(pl2);
             if (bm != null)
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
                 return bm;
             }
-            #region DEBUG
+#region DEBUG
 
 #if DEBUG
             sW2.Stop();
@@ -2901,24 +2905,24 @@ namespace DotsGame
             f.lblBestMove.Text = "CheckPattern(pl2)...";
             Application.DoEvents();
 #endif
-            #endregion
-            #endregion
-            #region CheckPattern
+#endregion
+#endregion
+#region CheckPattern
 
             bm = taskArray[0].Result; //CheckPattern(pl2);
             if (bm != null)
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern " + bm.iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
 
                 if (CheckDot(bm, pl2) == false) return bm;
             }
-            #region Debug
+#region Debug
 #if DEBUG
             sW2.Stop();
             strDebug = strDebug + "\r\nCheckPattern(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
@@ -2928,21 +2932,21 @@ namespace DotsGame
             f.lblBestMove.Text = "CheckPattern(pl1)...";
             Application.DoEvents();
 #endif
-            #endregion
+#endregion
             bm = taskArray[1].Result; //CheckPattern(pl1);
             if (bm != null)
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern " + bm.iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
 
                 if (CheckDot(bm, pl2) == false) return bm;
             }
-            #region DEBUG
+#region DEBUG
 #if DEBUG
             sW2.Stop();
             strDebug = strDebug + "\r\nCheckPattern(pl1) -" + sW2.Elapsed.Milliseconds.ToString();
@@ -2952,31 +2956,31 @@ namespace DotsGame
             f.lblBestMove.Text = "CheckPatternMove...";
             Application.DoEvents();
 #endif
-            #endregion
-            #endregion
-            #region CheckPatternMove
+#endregion
+#endregion
+#region CheckPatternMove
             bm = CheckPatternMove(pl2);
             if (bm != null)
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
                 if (CheckDot(bm, pl2) == false) return bm;
             }
             bm = CheckPatternMove(pl1);
             if (bm != null)
             {
-                #region DEBUG
+#region DEBUG
 #if DEBUG
                 {
                     f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + iNumberPattern);
                 }
 #endif
-                #endregion
+#endregion
                 if (CheckDot(bm, pl1) == false) return bm;
             }
 #if DEBUG
@@ -2987,7 +2991,7 @@ namespace DotsGame
             sW2.Reset();
 #endif
 
-            #endregion
+#endregion
 
             return null;
         }
@@ -3008,8 +3012,8 @@ namespace DotsGame
         private int Play(ref Dot best_move, Dot move1, Dot move2, int player1, int player2, ref int count_moves,
                                ref int recursion_depth, Dot lastmove, ref int counter_root)//возвращает Owner кто побеждает в результате хода
         {
-            #region Debug Skill
-            #endregion
+#region Debug Skill
+#endregion
             recursion_depth++;
             if (recursion_depth >= 8)//SkillDepth)
             {
@@ -3054,7 +3058,7 @@ namespace DotsGame
             if (i != 0)
             {
                 string sfoo = "";
-                #region Cycle
+#region Cycle
                 foreach (Dot d in ad)
                 {
                     Application.DoEvents();
@@ -3064,7 +3068,7 @@ namespace DotsGame
                     //**************делаем ход***********************************
                     res_last_move = MakeMove(new Dot(d.x, d.y, player2));
                     count_moves++;
-                    #region проверка на окружение
+#region проверка на окружение
 
                     if (win_player == PLAYER_COMPUTER)
                     {
@@ -3080,8 +3084,8 @@ namespace DotsGame
                         continue;
                     }
 
-                    #endregion
-                    #region проверяем ход чтобы точку не окружили на следующем ходу
+#endregion
+#region проверяем ход чтобы точку не окружили на следующем ходу
                     sfoo = "CheckMove player" + player1;
                     best_move = CheckMove(player1);
                     if (best_move == null)
@@ -3100,8 +3104,8 @@ namespace DotsGame
                         UndoMove(d);
                         continue;
                     }
-                    #endregion
-                    #region Debug statistic
+#endregion
+#region Debug statistic
 #if DEBUG
                     if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
                     f.lstDbg1.Items.Add(d.Own + " -" + d.x + ":" + d.y);
@@ -3112,7 +3116,7 @@ namespace DotsGame
                                        "\r\n move2 " + move2 +
                                        "\r\n время поиска " + stopWatch.ElapsedMilliseconds;
 #endif
-                    #endregion
+#endregion
                     //теперь ходит другой игрок ===========================================================================
                     int result = Play(ref enemy_move, move1, move2, player2, player1, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
                     //отменить ход
@@ -3131,7 +3135,7 @@ namespace DotsGame
                     }
                     //это конец тела цикла
                 }
-                #endregion
+#endregion
             }
             return PLAYER_NONE;
         }
