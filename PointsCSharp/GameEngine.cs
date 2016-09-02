@@ -25,9 +25,15 @@ namespace DotsGame
 
         public float startX = -0.5f, startY = -0.5f;
         //==========================================================================================================
-        private GameDots aDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
+        private GameDots _gameDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
         //===========================================================================================================
-        public GameDots gameDots {get {return aDots;}}
+        public GameDots gameDots 
+        {
+            get 
+              {
+                return _gameDots;
+              }
+        }
         private string status=string.Empty;
         public string  Status
         {
@@ -68,43 +74,43 @@ namespace DotsGame
             pbxBoard = CanvasGame;
             NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
             LoadPattern();
-        }
-        //  ************************************************
-        public string Statistic()
-        {
-            var q5 = from Dot d in aDots where d.Own == 1 select d;
-            var q6 = from Dot d in aDots where d.Own == 2 select d;
-            var q7 = from Dot d in aDots where d.Own== 1 & d.Blocked select d;
-            var q8 = from Dot d in aDots where d.Own == 2 & d.Blocked select d;
-            return q8.Count().ToString() + ":" + q7.Count().ToString();
-        }
-        public void Statistic(int x, int y)
-        {
-                #if DEBUG
-                f.txtDotStatus.Text = "Blocked: " + aDots[x, y].Blocked + "\r\n" +
-                              "BlokingDots.Count: " + aDots[x, y].BlokingDots.Count + "\r\n" +
-                              "NeiborDots.Count: " + aDots[x, y].NeiborDots.Count + "\r\n" +
-                              "Rating: " + aDots[x, y].Rating + "\r\n" +
-                              "IndexDot: " + aDots[x, y].IndexDot + "\r\n" +
-                              "IndexRelation: " + aDots[x, y].IndexRelation + "\r\n" +
-                              "Own: " + aDots[x, y].Own + "\r\n" +
-                              "X: " + aDots[x, y].x + "; Y: " + aDots[x, y].y;
-               #endif
-        }
-        public void NewGame(int boardWidth, int boardHeigth)
-        {
-            aDots = new GameDots(boardWidth,boardHeigth); 
-            lstDotsInPattern = new List<Dot>();
-            startX = -0.5f;
-            startY = -0.5f;
-            aDots.SetLevel(Properties.Settings.Default.Level);
-            Redraw=true;
-            pbxBoard.Invalidate();
 #if DEBUG
             f = gameDots.DebugWindow;
             f.Show();
 #endif
 
+        }
+        //  ************************************************
+        public string Statistic()
+        {
+            var q5 = from Dot d in _gameDots where d.Own == 1 select d;
+            var q6 = from Dot d in _gameDots where d.Own == 2 select d;
+            var q7 = from Dot d in _gameDots where d.Own== 1 & d.Blocked select d;
+            var q8 = from Dot d in _gameDots where d.Own == 2 & d.Blocked select d;
+            return q8.Count().ToString() + ":" + q7.Count().ToString();
+        }
+        public void Statistic(int x, int y)
+        {
+                #if DEBUG
+                f.txtDotStatus.Text = "Blocked: " + _gameDots[x, y].Blocked + "\r\n" +
+                              "BlokingDots.Count: " + _gameDots[x, y].BlokingDots.Count + "\r\n" +
+                              "NeiborDots.Count: " + _gameDots[x, y].NeiborDots.Count + "\r\n" +
+                              "Rating: " + _gameDots[x, y].Rating + "\r\n" +
+                              "IndexDot: " + _gameDots[x, y].IndexDot + "\r\n" +
+                              "IndexRelation: " + _gameDots[x, y].IndexRelation + "\r\n" +
+                              "Own: " + _gameDots[x, y].Own + "\r\n" +
+                              "X: " + _gameDots[x, y].x + "; Y: " + _gameDots[x, y].y;
+               #endif
+        }
+        public void NewGame(int boardWidth, int boardHeigth)
+        {
+            _gameDots = new GameDots(boardWidth,boardHeigth); 
+            lstDotsInPattern = new List<Dot>();
+            startX = -0.5f;
+            startY = -0.5f;
+            gameDots.SetLevel(Properties.Settings.Default.Level);
+            Redraw=true;
+            pbxBoard.Invalidate();
         }
         //------------------------------------------------------------------------------------
 
@@ -129,19 +135,19 @@ namespace DotsGame
             List<List<Dot>> lstlstPat = new List<List<Dot>>();
             
             lstlstPat.Add(listPat);
-            listPat = aDots.Rotate90(listPat);
+            listPat = _gameDots.Rotate90(listPat);
             lstlstPat.Add(listPat);
-            listPat = aDots.Rotate_Mirror_Horizontal(listPat);
+            listPat = _gameDots.Rotate_Mirror_Horizontal(listPat);
             lstlstPat.Add(listPat);
-            listPat = aDots.Rotate90(listPat);
+            listPat = _gameDots.Rotate90(listPat);
             lstlstPat.Add(listPat);
-            listPat = aDots.Rotate_Mirror_Horizontal(listPat);
+            listPat = _gameDots.Rotate_Mirror_Horizontal(listPat);
             lstlstPat.Add(listPat);
-            listPat = aDots.Rotate90(listPat);
+            listPat = _gameDots.Rotate90(listPat);
             lstlstPat.Add(listPat);
-            listPat = aDots.Rotate_Mirror_Horizontal(listPat);
+            listPat = _gameDots.Rotate_Mirror_Horizontal(listPat);
             lstlstPat.Add(listPat);
-            listPat = aDots.Rotate90(listPat);
+            listPat = _gameDots.Rotate90(listPat);
             lstlstPat.Add(listPat);
 
             return lstlstPat;
@@ -215,11 +221,11 @@ namespace DotsGame
                 using (BinaryWriter writer = new BinaryWriter(File.Open(path_savegame, FileMode.Create)))
                 {
 
-        		for (int i = 0; i < aDots.ListMoves.Count; i++)
+        		for (int i = 0; i < _gameDots.ListMoves.Count; i++)
            			{
-                        writer.Write((byte)aDots.ListMoves[i].x);
-                        writer.Write((byte)aDots.ListMoves[i].y);
-                        writer.Write((byte)aDots.ListMoves[i].Own);
+                        writer.Write((byte)_gameDots.ListMoves[i].x);
+                        writer.Write((byte)_gameDots.ListMoves[i].y);
+                        writer.Write((byte)_gameDots.ListMoves[i].Own);
                 	}
             	}
             }
@@ -231,7 +237,7 @@ namespace DotsGame
 
         public void LoadGame()
         {
-            aDots.Clear();
+            _gameDots.Clear();
             Dot d=null;
             try
             {
@@ -241,7 +247,7 @@ namespace DotsGame
                 while (reader.PeekChar() > -1)
                 {
                     d = new Dot((int)reader.ReadByte(), (int)reader.ReadByte(), (int)reader.ReadByte());
-                    aDots.MakeMove(d);
+                    _gameDots.MakeMove(d);
                 }
                 reader.Close();
             }
@@ -307,7 +313,7 @@ namespace DotsGame
         }
         public void DrawLinks(Graphics gr)//отрисовка связей
         {
-            List<Links> lnks = aDots.ListLinks;
+            List<Links> lnks = _gameDots.ListLinks;
             if (lnks != null)
             {
                 Pen PenGamer;

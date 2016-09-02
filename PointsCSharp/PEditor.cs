@@ -130,7 +130,7 @@ namespace DotsGame
             foreach (List<Dot> listDots in ListRotatePatterns(lstPat)) AddPatternDots(listDots);
 
             lstPat.Clear();
-            aDots.UnmarkAllDots();
+            _gameDots.UnmarkAllDots();
             LoadPattern();
         }
         //----------------------------------------------------------
