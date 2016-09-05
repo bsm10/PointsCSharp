@@ -694,3 +694,195 @@ Dots
 Result
 1, 0
 End
+Begin
+33
+Dots
+-2, 0, enemy
+2, 1, enemy
+-1, 0, 0
+-1, 1, 0
+1, 0, 0
+1, 1, 0
+0, 1, 0
+Result
+0, 1
+End
+Begin
+34
+Dots
+0, -2, enemy
+1, 2, enemy
+0, -1, 0
+1, -1, 0
+0, 1, 0
+1, 1, 0
+1, 0, 0
+Result
+1, 0
+End
+Begin
+35
+Dots
+0, -2, enemy
+-1, 2, enemy
+0, -1, 0
+-1, -1, 0
+0, 1, 0
+-1, 1, 0
+-1, 0, 0
+Result
+-1, 0
+End
+Begin
+36
+Dots
+-2, 0, enemy
+2, -1, enemy
+-1, 0, 0
+-1, -1, 0
+1, 0, 0
+1, -1, 0
+0, -1, 0
+Result
+0, -1
+End
+Begin
+37
+Dots
+2, 0, enemy
+-2, -1, enemy
+1, 0, 0
+1, -1, 0
+-1, 0, 0
+-1, -1, 0
+0, -1, 0
+Result
+0, -1
+End
+Begin
+38
+Dots
+0, 2, enemy
+-1, -2, enemy
+0, 1, 0
+-1, 1, 0
+0, -1, 0
+-1, -1, 0
+-1, 0, 0
+Result
+-1, 0
+End
+Begin
+39
+Dots
+0, 2, enemy
+1, -2, enemy
+0, 1, 0
+1, 1, 0
+0, -1, 0
+1, -1, 0
+1, 0, 0
+Result
+1, 0
+End
+Begin
+40
+Dots
+2, 0, enemy
+-2, 1, enemy
+1, 0, 0
+1, 1, 0
+-1, 0, 0
+-1, 1, 0
+0, 1, 0
+Result
+0, 1
+End
+Begin
+41
+Dots
+-2, 0, enemy
+-1, 1, 0
+0, 2, enemy
+0, 1, != enemy
+-1, 0, != enemy
+Result
+-1, 1
+End
+Begin
+42
+Dots
+0, -2, enemy
+1, -1, 0
+2, 0, enemy
+1, 0, != enemy
+0, -1, != enemy
+Result
+1, -1
+End
+Begin
+43
+Dots
+0, -2, enemy
+-1, -1, 0
+-2, 0, enemy
+-1, 0, != enemy
+0, -1, != enemy
+Result
+-1, -1
+End
+Begin
+44
+Dots
+-2, 0, enemy
+-1, -1, 0
+0, -2, enemy
+0, -1, != enemy
+-1, 0, != enemy
+Result
+-1, -1
+End
+Begin
+45
+Dots
+2, 0, enemy
+1, -1, 0
+0, -2, enemy
+0, -1, != enemy
+1, 0, != enemy
+Result
+1, -1
+End
+Begin
+46
+Dots
+0, 2, enemy
+-1, 1, 0
+-2, 0, enemy
+-1, 0, != enemy
+0, 1, != enemy
+Result
+-1, 1
+End
+Begin
+47
+Dots
+0, 2, enemy
+1, 1, 0
+2, 0, enemy
+1, 0, != enemy
+0, 1, != enemy
+Result
+1, 1
+End
+Begin
+48
+Dots
+2, 0, enemy
+1, 1, 0
+0, 2, enemy
+0, 1, != enemy
+1, 0, != enemy
+Result
+1, 1
+End

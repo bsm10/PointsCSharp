@@ -468,18 +468,18 @@ namespace DotsGame
 
     }
 
-    struct Dots_sg//структура для сохранения игры в файл
-    {
-        public byte x;
-        public byte y;
-        public byte Own;
-        public Dots_sg(int X, int Y, int Owner)
-        {
-            x = (byte)X;
-            y = (byte)Y;
-            Own = (byte)Owner;
-        }
-    }
+    //struct Dots_sg//структура для сохранения игры в файл
+    //{
+    //    public byte x;
+    //    public byte y;
+    //    public byte Own;
+    //    public Dots_sg(int X, int Y, int Owner)
+    //    {
+    //        x = (byte)X;
+    //        y = (byte)Y;
+    //        Own = (byte)Owner;
+    //    }
+    //}
 
 
 }

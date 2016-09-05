@@ -535,26 +535,43 @@ namespace DotsGame
             Remove(dot);
             RebuildDots();
         }
-        public Dot CheckPattern(int Owner)
+        //public Dot CheckPattern(int Owner)
+        //{
+        //    Pattern p = CheckPatternInPatterns(Owner);
+        //    if (p != null)
+        //    {
+        //        Dot move_dot = p.ResultDot;
+        //        move_dot.iNumberPattern = p.PatternNumber;
+        //        return move_dot;
+        //    }
+        //    return null;
+
+        //}
+        public List<Dot> CheckPattern(int Owner)
         {
-            Pattern p = CheckPatternInPatterns(Owner);
-            if (p != null)
+            List<Pattern> found_patterns = CheckPatternInPatterns(Owner);
+            List<Dot> found_moves = new List<Dot>();
+            //if (p != null)
+            foreach (Pattern p in found_patterns)
             {
                 Dot move_dot = p.ResultDot;
                 move_dot.iNumberPattern = p.PatternNumber;
-                return move_dot;
+                found_moves.Add(move_dot);
+                //return move_dot;
             }
-            return null;
+            return found_moves; //null;
 
         }
+
         /// <summary>
         /// Проверяет паттерн, если есть совпадение, возвращает его номер
         /// </summary>
         /// <param name="pt"></param>
         /// <param name="Owner"></param>
         /// <returns></returns>
-        public Pattern CheckPatternInPatterns(int Owner)
+        public List<Pattern> CheckPatternInPatterns(int Owner)
         {
+            List<Pattern> ptrns = new List<Pattern>();
             var pat = from Dot d in NotEmptyNonBlockedDots
                       where d.Own == Owner
                       select d;
@@ -598,11 +615,13 @@ namespace DotsGame
                     if (flag)
                     {
                         p.Dot = d;
-                        return p;
+                        ptrns.Add(p);
+                        //return p;
                     }
                 }
             }
-            return null;
+
+            return ptrns;//null;
         }
         private int count_in_region;
         private int count_blocked_dots;
@@ -2523,10 +2542,12 @@ namespace DotsGame
         //===============================================================================================
         //-----------------------------------Поиск лучшего хода------------------------------------------
         //===============================================================================================
-        private Dot BestMove(int pl1, int pl2)
+        private List<Dot> BestMove(int pl1, int pl2)
         {
             string strDebug = string.Empty;
+            List<Dot> moves = new List<Dot>();
             Dot bm;
+
 #if DEBUG
             sW2.Start();
             f.lblBestMove.Text = "CheckMove(pl2,pl1)...";
@@ -2536,13 +2557,15 @@ namespace DotsGame
             if (DotIndexCheck(bm))
             {
                 bm.iNumberPattern = 777; //777-ход в результате которого получается окружение -компьютер побеждает
-                return bm;
+                moves.Add(bm);
+                //return bm;
             }
             bm = CheckMove(pl1);
             if (DotIndexCheck(bm))
             {
                 bm.iNumberPattern = 666; //666-ход в результате которого получается окружение -компьютер проигрывает
-                return bm;
+                //return bm;
+                moves.Add(bm);
             }
 #region DEBUG
 #if DEBUG
@@ -2568,7 +2591,7 @@ namespace DotsGame
                 }
 #endif
 #endregion
-                return bm;
+                moves.Add(bm);//return bm;
             }
 
             bm = CheckPattern_vilochka(pl1);
@@ -2583,7 +2606,7 @@ namespace DotsGame
                 }
 #endif
 #endregion
-                return bm;
+                moves.Add(bm);//return bm;
             }
 #region DEBUG
 
@@ -2637,7 +2660,7 @@ namespace DotsGame
                 }
 #endif
 #endregion
-                return bm;
+                moves.Add(bm); //return bm;
             }
 #region DEBUG
 
@@ -2653,19 +2676,21 @@ namespace DotsGame
 #endregion
 #endregion
 #region CheckPattern
-
-            bm = CheckPattern(pl2);
-            if (DotIndexCheck(bm))
-            {
-#region DEBUG
+            
+            //bm = CheckPattern(pl2);
+            foreach (Dot dt in CheckPattern(pl2))
+            {    
+                if (DotIndexCheck(dt))
+                {
+                            #region DEBUG
 #if DEBUG
                 {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern " + bm.iNumberPattern);
+                    f.lstDbg2.Items.Add(dt.x + ":" + dt.y + " player" + pl2 + " -CheckPattern " + dt.iNumberPattern);
                 }
 #endif
 #endregion
-
-                if (CheckDot(bm, pl2) == false) return bm;
+                    if (CheckDot(dt, pl2) == false) moves.Add(dt);
+                }
             }
 #region Debug
 #if DEBUG
@@ -2678,30 +2703,30 @@ namespace DotsGame
             Application.DoEvents();
 #endif
 #endregion
-            bm = CheckPattern(pl1);
-            if (DotIndexCheck(bm))
-            {
-#region DEBUG
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern " + bm.iNumberPattern);
-                }
-#endif
-#endregion
+//            bm = CheckPattern(pl1);
+//            if (DotIndexCheck(bm))
+//            {
+//#region DEBUG
+//#if DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern " + bm.iNumberPattern);
+//                }
+//#endif
+//#endregion
 
-                if (CheckDot(bm, pl2) == false) return bm;
-            }
-#region DEBUG
-#if DEBUG
-            sW2.Stop();
-            strDebug = strDebug + "\r\nCheckPattern(pl1) -" + sW2.Elapsed.Milliseconds.ToString();
-            f.txtBestMove.Text = strDebug;
-            sW2.Reset();
-            sW2.Start();
-            f.lblBestMove.Text = "CheckPatternMove...";
-            Application.DoEvents();
-#endif
-#endregion
+//                if (CheckDot(bm, pl2) == false) return bm;
+//            }
+//#region DEBUG
+//#if DEBUG
+//            sW2.Stop();
+//            strDebug = strDebug + "\r\nCheckPattern(pl1) -" + sW2.Elapsed.Milliseconds.ToString();
+//            f.txtBestMove.Text = strDebug;
+//            sW2.Reset();
+//            sW2.Start();
+//            f.lblBestMove.Text = "CheckPatternMove...";
+//            Application.DoEvents();
+//#endif
+//#endregion
 #endregion
 
 #region CheckPatternMove
@@ -2716,7 +2741,7 @@ namespace DotsGame
                 }
 #endif
 #endregion
-                if (CheckDot(bm, pl2) == false) return bm;
+                if (CheckDot(bm, pl2) == false) moves.Add(bm);//return bm;
             }
             bm = CheckPatternMove(pl1);
             if (DotIndexCheck(bm))
@@ -2729,7 +2754,7 @@ namespace DotsGame
                 }
 #endif
 #endregion
-                if (CheckDot(bm, pl1) == false) return bm;
+                if (CheckDot(bm, pl1) == false) moves.Add(bm); //return bm;
             }
 #if DEBUG
             sW2.Stop();
@@ -2741,260 +2766,260 @@ namespace DotsGame
 
 #endregion
 
-            return null;
+            return moves;
         }
-        private Dot BestMove_MultiTread(int pl1, int pl2)
-        {
-            string strDebug = string.Empty;
-            Dot bm;
-#if DEBUG
-            sW2.Start();
-            f.lblBestMove.Text = "CheckMove(pl2,pl1)...";
-            Application.DoEvents();
-#endif
-            bm = CheckMove(pl2);
-            if (bm != null)
-            {
-                bm.iNumberPattern = 777; //777-ход в результате которого получается окружение -компьютер побеждает
-                return bm;
-            }
-            bm = CheckMove(pl1);
-            if (bm != null)
-            {
-                bm.iNumberPattern = 666; //666-ход в результате которого получается окружение -компьютер проигрывает
-                return bm;
-            }
-#region DEBUG
-#if DEBUG
-            sW2.Stop();
-            strDebug = "CheckMove pl1,pl2 -" + sW2.Elapsed.Milliseconds.ToString();
-            f.txtBestMove.Text = strDebug;
-            sW2.Reset();
-            //проверяем паттерны
-            sW2.Start();
-            f.lblBestMove.Text = "CheckPattern2Move проверяем ходы на два вперед...";
-            Application.DoEvents();
-#endif
-#endregion
+//        private Dot BestMove_MultiTread(int pl1, int pl2)
+//        {
+//            string strDebug = string.Empty;
+//            Dot bm;
+//#if DEBUG
+//            sW2.Start();
+//            f.lblBestMove.Text = "CheckMove(pl2,pl1)...";
+//            Application.DoEvents();
+//#endif
+//            bm = CheckMove(pl2);
+//            if (bm != null)
+//            {
+//                bm.iNumberPattern = 777; //777-ход в результате которого получается окружение -компьютер побеждает
+//                return bm;
+//            }
+//            bm = CheckMove(pl1);
+//            if (bm != null)
+//            {
+//                bm.iNumberPattern = 666; //666-ход в результате которого получается окружение -компьютер проигрывает
+//                return bm;
+//            }
+//#region DEBUG
+//#if DEBUG
+//            sW2.Stop();
+//            strDebug = "CheckMove pl1,pl2 -" + sW2.Elapsed.Milliseconds.ToString();
+//            f.txtBestMove.Text = strDebug;
+//            sW2.Reset();
+//            //проверяем паттерны
+//            sW2.Start();
+//            f.lblBestMove.Text = "CheckPattern2Move проверяем ходы на два вперед...";
+//            Application.DoEvents();
+//#endif
+//#endregion
 
 
-            Task<Dot>[] taskArray = new Task<Dot>[4];
-            GameDots[] ad_Array = new GameDots[4] { CopyDots,
-                                                    CopyDots,
-                                                    CopyDots,
-                                                    CopyDots };
+//            Task<Dot>[] taskArray = new Task<Dot>[4];
+//            GameDots[] ad_Array = new GameDots[4] { CopyDots,
+//                                                    CopyDots,
+//                                                    CopyDots,
+//                                                    CopyDots };
 
 
-            taskArray[0] = Task<Dot>.Factory.StartNew(() =>
-            {
-                return CheckPattern(pl2);
-            }, TaskCreationOptions.AttachedToParent);
-            taskArray[1] = Task<Dot>.Factory.StartNew(() =>
-            {
-                return CheckPattern(pl1);
-            }, TaskCreationOptions.AttachedToParent);
+//            taskArray[0] = Task<Dot>.Factory.StartNew(() =>
+//            {
+//                return CheckPattern(pl2);
+//            }, TaskCreationOptions.AttachedToParent);
+//            taskArray[1] = Task<Dot>.Factory.StartNew(() =>
+//            {
+//                return CheckPattern(pl1);
+//            }, TaskCreationOptions.AttachedToParent);
 
-            taskArray[2] = Task<Dot>.Factory.StartNew(() =>
-            {
-                return CheckPattern_vilochka(pl2);
-            }, TaskCreationOptions.AttachedToParent);
+//            taskArray[2] = Task<Dot>.Factory.StartNew(() =>
+//            {
+//                return CheckPattern_vilochka(pl2);
+//            }, TaskCreationOptions.AttachedToParent);
 
-            taskArray[3] = Task<Dot>.Factory.StartNew(() =>
-            {
-                return CheckPattern_vilochka(pl1);
-            }, TaskCreationOptions.AttachedToParent);
+//            taskArray[3] = Task<Dot>.Factory.StartNew(() =>
+//            {
+//                return CheckPattern_vilochka(pl1);
+//            }, TaskCreationOptions.AttachedToParent);
 
-            var tokenSource = new CancellationTokenSource();
-            var token = tokenSource.Token;
+//            var tokenSource = new CancellationTokenSource();
+//            var token = tokenSource.Token;
 
-#region CheckPattern_vilochka
+//#region CheckPattern_vilochka
 
-            //taskArray[2].Wait();
-            bm = taskArray[2].Result;
-            taskArray[2].Dispose();
+//            //taskArray[2].Wait();
+//            bm = taskArray[2].Result;
+//            taskArray[2].Dispose();
 
-            if (bm != null)
-            {
-#region DEBUG
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern_vilochka " + iNumberPattern);
-                }
-#endif
-#endregion
-                return bm;
-            }
+//            if (bm != null)
+//            {
+//#region DEBUG
+//#if DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern_vilochka " + iNumberPattern);
+//                }
+//#endif
+//#endregion
+//                return bm;
+//            }
 
-            //taskArray[3].Wait();
-            bm = taskArray[3].Result;
-            taskArray[3].Dispose();
-            if (bm != null)
-            {
-#region DEBUG
-#if DEBUG
+//            //taskArray[3].Wait();
+//            bm = taskArray[3].Result;
+//            taskArray[3].Dispose();
+//            if (bm != null)
+//            {
+//#region DEBUG
+//#if DEBUG
 
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern_vilochka " + iNumberPattern);
-                }
-#endif
-#endregion
-                return bm;
-            }
-#region DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern_vilochka " + iNumberPattern);
+//                }
+//#endif
+//#endregion
+//                return bm;
+//            }
+//#region DEBUG
 
-#if DEBUG
-            sW2.Stop();
-            strDebug = strDebug + "\r\nCheckPattern_vilochka -" + sW2.Elapsed.Milliseconds.ToString();
-            f.txtBestMove.Text = strDebug;
-            sW2.Reset();
-            sW2.Start();
-            f.lblBestMove.Text = "CheckPatternVilkaNextMove...";
+//#if DEBUG
+//            sW2.Stop();
+//            strDebug = strDebug + "\r\nCheckPattern_vilochka -" + sW2.Elapsed.Milliseconds.ToString();
+//            f.txtBestMove.Text = strDebug;
+//            sW2.Reset();
+//            sW2.Start();
+//            f.lblBestMove.Text = "CheckPatternVilkaNextMove...";
 
-            Application.DoEvents();
-#endif
-#endregion
-#endregion
-#region CheckPattern2Move проверяем ходы на два вперед
+//            Application.DoEvents();
+//#endif
+//#endregion
+//#endregion
+//#region CheckPattern2Move проверяем ходы на два вперед
 
-            //            bm = Dots.CheckPattern2Move(pl2);
-            //            if (bm != null )
-            //            {
-            //                #region DEBUG
-            //#if DEBUG
-            //                {
-            //                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern2Move!");
-            //                }
-            //#endif
-            //                #endregion
-            //                return bm;
-            //            }
-#region DEBUG
-#if DEBUG
-            sW2.Stop();
-            strDebug = strDebug + "\r\nCheckPattern2Move(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
-            f.txtBestMove.Text = strDebug;
-            sW2.Reset();
-            sW2.Start();
-            f.lblBestMove.Text = "CheckPattern_vilochka...";
-            Application.DoEvents();
-#endif
+//            //            bm = Dots.CheckPattern2Move(pl2);
+//            //            if (bm != null )
+//            //            {
+//            //                #region DEBUG
+//            //#if DEBUG
+//            //                {
+//            //                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern2Move!");
+//            //                }
+//            //#endif
+//            //                #endregion
+//            //                return bm;
+//            //            }
+//#region DEBUG
+//#if DEBUG
+//            sW2.Stop();
+//            strDebug = strDebug + "\r\nCheckPattern2Move(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
+//            f.txtBestMove.Text = strDebug;
+//            sW2.Reset();
+//            sW2.Start();
+//            f.lblBestMove.Text = "CheckPattern_vilochka...";
+//            Application.DoEvents();
+//#endif
 
-#endregion
-#endregion
-#region CheckPatternVilkaNextMove
-            bm = CheckPatternVilkaNextMove(pl2);
-            if (bm != null)
-            {
-#region DEBUG
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
-                }
-#endif
-#endregion
-                return bm;
-            }
-#region DEBUG
+//#endregion
+//#endregion
+//#region CheckPatternVilkaNextMove
+//            bm = CheckPatternVilkaNextMove(pl2);
+//            if (bm != null)
+//            {
+//#region DEBUG
+//#if DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
+//                }
+//#endif
+//#endregion
+//                return bm;
+//            }
+//#region DEBUG
 
-#if DEBUG
-            sW2.Stop();
-            strDebug = strDebug + "\r\nCheckPatternVilkaNextMove -" + sW2.Elapsed.Milliseconds.ToString();
-            f.txtBestMove.Text = strDebug;
-            sW2.Reset();
-            sW2.Start();
-            f.lblBestMove.Text = "CheckPattern(pl2)...";
-            Application.DoEvents();
-#endif
-#endregion
-#endregion
-#region CheckPattern
+//#if DEBUG
+//            sW2.Stop();
+//            strDebug = strDebug + "\r\nCheckPatternVilkaNextMove -" + sW2.Elapsed.Milliseconds.ToString();
+//            f.txtBestMove.Text = strDebug;
+//            sW2.Reset();
+//            sW2.Start();
+//            f.lblBestMove.Text = "CheckPattern(pl2)...";
+//            Application.DoEvents();
+//#endif
+//#endregion
+//#endregion
+//#region CheckPattern
 
-            bm = taskArray[0].Result; //CheckPattern(pl2);
-            if (bm != null)
-            {
-#region DEBUG
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern " + bm.iNumberPattern);
-                }
-#endif
-#endregion
+//            bm = taskArray[0].Result; //CheckPattern(pl2);
+//            if (bm != null)
+//            {
+//#region DEBUG
+//#if DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern " + bm.iNumberPattern);
+//                }
+//#endif
+//#endregion
 
-                if (CheckDot(bm, pl2) == false) return bm;
-            }
-#region Debug
-#if DEBUG
-            sW2.Stop();
-            strDebug = strDebug + "\r\nCheckPattern(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
-            f.txtBestMove.Text = strDebug;
-            sW2.Reset();
-            sW2.Start();
-            f.lblBestMove.Text = "CheckPattern(pl1)...";
-            Application.DoEvents();
-#endif
-#endregion
-            bm = taskArray[1].Result; //CheckPattern(pl1);
-            if (bm != null)
-            {
-#region DEBUG
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern " + bm.iNumberPattern);
-                }
-#endif
-#endregion
+//                if (CheckDot(bm, pl2) == false) return bm;
+//            }
+//#region Debug
+//#if DEBUG
+//            sW2.Stop();
+//            strDebug = strDebug + "\r\nCheckPattern(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
+//            f.txtBestMove.Text = strDebug;
+//            sW2.Reset();
+//            sW2.Start();
+//            f.lblBestMove.Text = "CheckPattern(pl1)...";
+//            Application.DoEvents();
+//#endif
+//#endregion
+//            bm = taskArray[1].Result; //CheckPattern(pl1);
+//            if (bm != null)
+//            {
+//#region DEBUG
+//#if DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern " + bm.iNumberPattern);
+//                }
+//#endif
+//#endregion
 
-                if (CheckDot(bm, pl2) == false) return bm;
-            }
-#region DEBUG
-#if DEBUG
-            sW2.Stop();
-            strDebug = strDebug + "\r\nCheckPattern(pl1) -" + sW2.Elapsed.Milliseconds.ToString();
-            f.txtBestMove.Text = strDebug;
-            sW2.Reset();
-            sW2.Start();
-            f.lblBestMove.Text = "CheckPatternMove...";
-            Application.DoEvents();
-#endif
-#endregion
-#endregion
-#region CheckPatternMove
-            bm = CheckPatternMove(pl2);
-            if (bm != null)
-            {
-#region DEBUG
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + iNumberPattern);
-                }
-#endif
-#endregion
-                if (CheckDot(bm, pl2) == false) return bm;
-            }
-            bm = CheckPatternMove(pl1);
-            if (bm != null)
-            {
-#region DEBUG
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + iNumberPattern);
-                }
-#endif
-#endregion
-                if (CheckDot(bm, pl1) == false) return bm;
-            }
-#if DEBUG
-            sW2.Stop();
-            strDebug = strDebug + "\r\nCheckPatternMove(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
-            f.txtBestMove.Text = strDebug;
-            Application.DoEvents();
-            sW2.Reset();
-#endif
+//                if (CheckDot(bm, pl2) == false) return bm;
+//            }
+//#region DEBUG
+//#if DEBUG
+//            sW2.Stop();
+//            strDebug = strDebug + "\r\nCheckPattern(pl1) -" + sW2.Elapsed.Milliseconds.ToString();
+//            f.txtBestMove.Text = strDebug;
+//            sW2.Reset();
+//            sW2.Start();
+//            f.lblBestMove.Text = "CheckPatternMove...";
+//            Application.DoEvents();
+//#endif
+//#endregion
+//#endregion
+//#region CheckPatternMove
+//            bm = CheckPatternMove(pl2);
+//            if (bm != null)
+//            {
+//#region DEBUG
+//#if DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + iNumberPattern);
+//                }
+//#endif
+//#endregion
+//                if (CheckDot(bm, pl2) == false) return bm;
+//            }
+//            bm = CheckPatternMove(pl1);
+//            if (bm != null)
+//            {
+//#region DEBUG
+//#if DEBUG
+//                {
+//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPatternMove " + iNumberPattern);
+//                }
+//#endif
+//#endregion
+//                if (CheckDot(bm, pl1) == false) return bm;
+//            }
+//#if DEBUG
+//            sW2.Stop();
+//            strDebug = strDebug + "\r\nCheckPatternMove(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
+//            f.txtBestMove.Text = strDebug;
+//            Application.DoEvents();
+//            sW2.Reset();
+//#endif
 
-#endregion
+//#endregion
 
-            return null;
-        }
+//            return null;
+//        }
         private void CloseTasks(Task<Dot>[] taskArray)
         {
             for (int i = 0; i < taskArray.Length; i++)
@@ -3025,7 +3050,7 @@ namespace DotsGame
 #endif
 
             //проверяем ход который ведет сразу к окружению и паттерны
-            best_move = BestMove(player1, player2);
+            lst_best_move = BestMove(player1, player2);
 
 #if DEBUG
             sW_BM.Stop();
@@ -3033,40 +3058,47 @@ namespace DotsGame
             Application.DoEvents();
             sW_BM.Reset();
 #endif
+            best_move = lst_best_move.Where(dt=>dt.iNumberPattern == 777).FirstOrDefault();
+            if (best_move!=null) return PLAYER_COMPUTER;
+            best_move = lst_best_move.Where(dt => dt.iNumberPattern == 666).FirstOrDefault();
+            if (best_move!=null) return PLAYER_HUMAN;
+            //if (best_move != null && best_move.iNumberPattern == 777)
+            //{
+            //    return PLAYER_COMPUTER;
+            //}
+            //else if (best_move != null && best_move.iNumberPattern == 666)
+            //{
+            //    return PLAYER_HUMAN;
+            //}
+            //else if (best_move != null)
+            //{
+            //    if (CheckDot(best_move, player2)) best_move = null;
+            //    if (best_move != null) return PLAYER_COMPUTER;
+            //}
 
-            if (best_move != null && best_move.iNumberPattern == 777)
-            {
-                return PLAYER_COMPUTER;
-            }
-            else if (best_move != null && best_move.iNumberPattern == 666)
-            {
-                return PLAYER_HUMAN;
-            }
-            else if (best_move != null)
-            {
-                if (CheckDot(best_move, player2)) best_move = null;
-                if (best_move != null) return PLAYER_COMPUTER;
-            }
+            //var qry = from Dot d in Dots
+            //          where d.Own == PLAYER_NONE & d.Blocked == false & Math.Abs(d.x - lastmove.x) < SkillNumSq
+            //                                                        & Math.Abs(d.y - lastmove.y) < SkillNumSq
+            //          orderby Math.Sqrt(Math.Pow(Math.Abs(d.x - lastmove.x), 2) + Math.Pow(Math.Abs(d.y - lastmove.y), 2))
+            //          select d;
+            //Dot[] ad = qry.ToArray();
+            //int i = ad.Length;
 
-            var qry = from Dot d in Dots
-                      where d.Own == PLAYER_NONE & d.Blocked == false & Math.Abs(d.x - lastmove.x) < SkillNumSq
-                                                                    & Math.Abs(d.y - lastmove.y) < SkillNumSq
-                      orderby Math.Sqrt(Math.Pow(Math.Abs(d.x - lastmove.x), 2) + Math.Pow(Math.Abs(d.y - lastmove.y), 2))
-                      select d;
-            Dot[] ad = qry.ToArray();
-            int i = ad.Length;
-            if (i != 0)
+            if(lst_best_move.Count>0)
+            //if (i != 0)
             {
                 string sfoo = "";
 #region Cycle
-                foreach (Dot d in ad)
+                //foreach (Dot d in ad)
+                foreach (Dot d in lst_best_move)
                 {
+                    best_move = d;
                     Application.DoEvents();
                     //player2=1;
                     player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     //if (count_moves>SkillLevel) break;
                     //**************делаем ход***********************************
-                    res_last_move = MakeMove(new Dot(d.x, d.y, player2));
+                    res_last_move = MakeMove(d,player2);//(new Dot(d.x, d.y, player2));
                     count_moves++;
 #region проверка на окружение
 
@@ -3086,24 +3118,24 @@ namespace DotsGame
 
 #endregion
 #region проверяем ход чтобы точку не окружили на следующем ходу
-                    sfoo = "CheckMove player" + player1;
-                    best_move = CheckMove(player1);
-                    if (best_move == null)
-                    {
-                        sfoo = "next move win player" + player2;
-                        best_move = CheckMove(player2);
-                        if (best_move != null)
-                        {
-                            best_move = d;
-                            UndoMove(d);
-                            return player2;
-                        }
-                    }
-                    else
-                    {
-                        UndoMove(d);
-                        continue;
-                    }
+                    //sfoo = "CheckMove player" + player1;
+                    //best_move = CheckMove(player1);
+                    //if (best_move == null)
+                    //{
+                    //    sfoo = "next move win player" + player2;
+                    //    best_move = CheckMove(player2);
+                    //    if (best_move != null)
+                    //    {
+                    //        best_move = d;
+                    //        UndoMove(d);
+                    //        return player2;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    UndoMove(d);
+                    //    continue;
+                    //}
 #endregion
 #region Debug statistic
 #if DEBUG
