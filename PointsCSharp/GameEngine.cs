@@ -93,10 +93,6 @@ namespace DotsGame
             pbxBoard = CanvasGame;
             NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
             LoadPattern();
-//#if DEBUG
-//            gameDots.DebugWindow.Show();
-//#endif
-
         }
         //  ************************************************
 
@@ -467,19 +463,4 @@ namespace DotsGame
         //==========================================================================
 
     }
-
-    //struct Dots_sg//структура для сохранения игры в файл
-    //{
-    //    public byte x;
-    //    public byte y;
-    //    public byte Own;
-    //    public Dots_sg(int X, int Y, int Owner)
-    //    {
-    //        x = (byte)X;
-    //        y = (byte)Y;
-    //        Own = (byte)Owner;
-    //    }
-    //}
-
-
 }
