@@ -2492,10 +2492,10 @@ namespace DotsGame
 #endregion
 
 
-            float s1 = square1; float s2 = square2;
-            int pl1 = 0; int pl2 = 0;
-            pl1 = enemy_move.Own == PLAYER_HUMAN ? PLAYER_HUMAN : PLAYER_COMPUTER;
-            pl2 = pl1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
+            //float s1 = square1; float s2 = square2;
+            //int pl1 = 0; int pl2 = 0;
+            //pl1 = enemy_move.Own == PLAYER_HUMAN ? PLAYER_HUMAN : PLAYER_COMPUTER;
+            //pl2 = pl1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
             best_move = null;
             int depth = 0;
             var t1 = DateTime.Now.Millisecond;
@@ -2546,7 +2546,7 @@ namespace DotsGame
 #endif
 #endregion
 
-            square1 = s1; square2 = s2;
+            //square1 = s1; square2 = s2;
 
             return new Dot(best_move.x, best_move.y); //так надо чтобы best_move не ссылался на точку в Dots
         }
@@ -2730,30 +2730,32 @@ namespace DotsGame
             Application.DoEvents();
 #endif
 #endregion
-//            bm = CheckPattern(pl1);
-//            if (DotIndexCheck(bm))
-//            {
-//#region DEBUG
-//#if DEBUG
-//                {
-//                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl1 + " -CheckPattern " + bm.iNumberPattern);
-//                }
-//#endif
-//#endregion
-
-//                if (CheckDot(bm, pl2) == false) return bm;
-//            }
-//#region DEBUG
-//#if DEBUG
-//            sW2.Stop();
-//            strDebug = strDebug + "\r\nCheckPattern(pl1) -" + sW2.Elapsed.Milliseconds.ToString();
-//            f.txtBestMove.Text = strDebug;
-//            sW2.Reset();
-//            sW2.Start();
-//            f.lblBestMove.Text = "CheckPatternMove...";
-//            Application.DoEvents();
-//#endif
-//#endregion
+            foreach (Dot dt in CheckPattern(pl1))
+            {
+                if (DotIndexCheck(dt))
+                {
+                    #region DEBUG
+#if DEBUG
+                    {
+                        f.lstDbg2.Items.Add(dt.x + ":" + dt.y + " player" + pl1 + " - CheckPattern " + dt.iNumberPattern);
+                    }
+#endif
+                    #endregion
+                    if (CheckDot(dt, pl2) == false) moves.Add(dt);
+                }
+            }
+            //            }
+            #region DEBUG
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern(pl1) -" + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            sW2.Reset();
+            sW2.Start();
+            f.lblBestMove.Text = "CheckPatternMove...";
+            Application.DoEvents();
+#endif
+#endregion
 #endregion
 
 #region CheckPatternMove
@@ -3059,6 +3061,8 @@ namespace DotsGame
         }
         //==================================================================================================================
         List<Dot> lst_best_move = new List<Dot>();//сюда заносим лучшие ходы
+        List<Dot> lst_moves = new List<Dot>();//сюда заносим лучшие ходы
+        int counter_moves = 0;
         int res_last_move; //хранит результат хода
         //===================================================================================================================
         private int Play(ref Dot best_move, 
@@ -3068,27 +3072,18 @@ namespace DotsGame
                          Dot lastmove)//возвращает Owner кто побеждает в результате хода
         {
             recursion_depth++;
-            if (recursion_depth >= 8)// 4 moves
-            {
-                return PLAYER_NONE;
-            }
+            if (recursion_depth >= 16) return PLAYER_NONE;// 4 moves
             Dot enemy_move = null;
-#if DEBUG
-            sW_BM.Start();
-#endif
             //проверяем ход который ведет сразу к окружению и паттерны
             lst_best_move = BestMove(player1, player2);
 
-#if DEBUG
-            sW_BM.Stop();
-            f.lblBestMove.Text = "BestMove player" + player1 + " -" + sW_BM.Elapsed.Milliseconds.ToString();
-            Application.DoEvents();
-            sW_BM.Reset();
-#endif
+            //если есть паттерн на окружение противника тоже устанавливается бест мув
             best_move = lst_best_move.Where(dt=>dt.iNumberPattern == 777).FirstOrDefault();
             if (best_move!=null) return PLAYER_COMPUTER;
+            //если есть паттерн на окружение компа устанавливается бест мув
             best_move = lst_best_move.Where(dt => dt.iNumberPattern == 666).FirstOrDefault();
             if (best_move!=null) return PLAYER_HUMAN;
+
             if(lst_best_move.Count>0)
             {
                 string sfoo = "";
@@ -3098,14 +3093,15 @@ namespace DotsGame
                     best_move = d;
                     Application.DoEvents();
                     player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
-                    //if (count_moves>SkillLevel) break;
                     //**************делаем ход***********************************
                     res_last_move = MakeMove(d,player2);//(new Dot(d.x, d.y, player2));
+                    counter_moves++;
 #region проверка на окружение
 
                     if (win_player == PLAYER_COMPUTER)
                     {
                         best_move = d;
+                        best_move.Rating = counter_moves;
                         UndoMove(d);
                         return PLAYER_COMPUTER;
                     }
@@ -3134,7 +3130,7 @@ namespace DotsGame
 #if DEBUG
                     if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
 #endif
-                    if (recursion_depth > 8)//4 moves)
+                    if (recursion_depth > 16)//4 moves)
                         return PLAYER_NONE;
                     if (result != 0)
                     {
