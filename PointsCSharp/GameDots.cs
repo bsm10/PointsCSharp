@@ -85,14 +85,14 @@ namespace DotsGame
         /// <summary>
         /// Возвращает список не занятых точек
         /// </summary>
-        public List<Dot> FreeDots
+        public List<Dot> Board_FreeDots
         {
             get
             {
                 return (from Dot d in _Dots where d.Own == 0 && d.Blocked == false select d).ToList();
             }
         }
-        public List<Dot> NotEmptyNonBlockedDots
+        public List<Dot> Board_NotEmptyNonBlockedDots
         {
             get
             {
@@ -572,8 +572,8 @@ namespace DotsGame
         public List<Pattern> CheckPatternInPatterns(int Owner)
         {
             List<Pattern> ptrns = new List<Pattern>();
-            var pat = from Dot d in NotEmptyNonBlockedDots
-                      where d.Own == Owner
+            var pat = from Dot d in Board_NotEmptyNonBlockedDots//Dots
+                      where d.Blocked == false
                       select d;
 
             foreach (Dot d in pat)
@@ -584,39 +584,32 @@ namespace DotsGame
                     foreach (DotInPattern dt in p.DotsPattern)
                     {
                         int enemy_own = Owner == 1 ? 2 : 1;
-                        int DotOwner = 0;
+                        //int DotOwner = 0;
                         switch (dt.Owner)
                         {
                             case "enemy":
-                                DotOwner = enemy_own;
+                                if (DotIndexCheck(d.x + dt.dX, d.y + dt.dY) == false ||
+                                this[d.x + dt.dX, d.y + dt.dY].Own != enemy_own) flag = false;
                                 break;
                             case "0":
-                                DotOwner = 0;
+                                if (DotIndexCheck(d.x + dt.dX, d.y + dt.dY) == false ||
+                                this[d.x + dt.dX, d.y + dt.dY].Own != 0) flag = false;
                                 break;
                             case "owner":
-                                DotOwner = Owner;
+                                if (DotIndexCheck(d.x + dt.dX, d.y + dt.dY) == false ||
+                                this[d.x + dt.dX, d.y + dt.dY].Own != Owner) flag = false;
                                 break;
                             case "!=enemy":
-                                DotOwner = Owner | 0;
-                                break;
-
-                            default:
-                                DotOwner = Owner;
+                                if (DotIndexCheck(d.x + dt.dX, d.y + dt.dY) == false ||
+                                this[d.x + dt.dX, d.y + dt.dY].Own == enemy_own) flag = false;
                                 break;
                         }
-
-                        if (DotIndexCheck(d.x + dt.dX, d.y + dt.dY) == false || 
-                            this[d.x + dt.dX, d.y + dt.dY].Own != DotOwner)
-                        {
-                            flag = false;
-                            break;
-                        }
+                        if(flag == false)break;
                     }
                     if (flag)
                     {
                         p.Dot = d;
                         ptrns.Add(p);
-                        //return p;
                     }
                 }
             }
@@ -835,17 +828,15 @@ namespace DotsGame
         }
         //==============================================================================================
         //проверяет ход в результате которого окружение.Возвращает ход который завершает окружение
-        //private Dot CheckMove(int Owner, ArrayDots this, bool AllBoard = false)
         public Dot CheckMove(int Owner)
         {
             List<Dot> happy_dots = new List<Dot>();
-            var qry = FreeDots.Where(
+            var qry = Board_FreeDots.Where(
 #region Query patterns Check
 
-                         d => d.x + 1 < BoardWidth && d.x - 1 > -1 &&
-                              d.y + 1 < BoardHeight && d.y - 1 > -1 &&
-
-    
+                         d =>
+                         //     d.x + 1 < BoardWidth && d.x - 1 > -1 &&
+                         //     d.y + 1 < BoardHeight && d.y - 1 > -1 &&
                                 //       + 
                                 //    d  
                                 //       +
@@ -1010,15 +1001,17 @@ namespace DotsGame
                 }
                 UndoMove(d);
             }
-            var x = happy_dots.Where(dd => dd.CountBlockedDots == happy_dots.Max(dt => dt.CountBlockedDots));
+
+            //выбрать точку, которая максимально окружит
+            var x = happy_dots.Where(dd => 
+                    dd.CountBlockedDots == happy_dots.Max(dt => dt.CountBlockedDots));
 
             return x.Count() > 0 ? x.First() : null;
 
-            //return null;
         }
         public Dot CheckPatternVilkaNextMove(int Owner)
         {
-            var qry = NotEmptyNonBlockedDots.Where(dt => dt.Own == Owner);
+            var qry = Board_NotEmptyNonBlockedDots.Where(dt => dt.Own == Owner);
             Dot dot_ptn;
             if (qry.Count() != 0)
             {
@@ -2794,8 +2787,8 @@ namespace DotsGame
 #endif
 
 #endregion
-
-            return moves;
+            var result = moves.Distinct(new DotEq());
+            return result.ToList<Dot>();
         }
 //        private Dot BestMove_MultiTread(int pl1, int pl2)
 //        {

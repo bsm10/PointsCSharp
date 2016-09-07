@@ -107,7 +107,7 @@ namespace DotsGame
         }
         public bool GameOver()
         {
-            return gameDots.FreeDots.Count == 0;
+            return gameDots.Board_FreeDots.Count == 0;
         }
 
         public string Statistic()

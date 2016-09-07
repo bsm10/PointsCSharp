@@ -420,7 +420,7 @@
             this.toolEditorPattern.Name = "toolEditorPattern";
             this.toolEditorPattern.Size = new System.Drawing.Size(35, 451);
             this.toolEditorPattern.TabIndex = 31;
-            this.toolEditorPattern.Text = "toolStrip1";
+            this.toolEditorPattern.Text = "Вражеская точка";
             this.toolEditorPattern.Visible = false;
             // 
             // tlsRedDot
@@ -444,7 +444,7 @@
             this.tlsBlueDot.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsBlueDot.Name = "tlsBlueDot";
             this.tlsBlueDot.Size = new System.Drawing.Size(32, 34);
-            this.tlsBlueDot.Text = "toolStripButton2";
+            this.tlsBlueDot.Text = "Своя точка";
             this.tlsBlueDot.CheckStateChanged += new System.EventHandler(this.tlsBlueDot_CheckStateChanged);
             // 
             // tlsТочкаОтсчета

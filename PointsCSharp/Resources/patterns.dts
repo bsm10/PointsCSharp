@@ -1724,3 +1724,207 @@ Dots
 Result
 -1, 1
 End
+104
+Dots
+0, -2, enemy
+0, -1, enemy
+1, 0, enemy
+1, -1, 0
+1, -2, owner
+Result
+1, -1
+End
+Begin
+105
+Dots
+-2, 0, enemy
+-1, 0, enemy
+0, 1, enemy
+-1, 1, 0
+-2, 1, owner
+Result
+-1, 1
+End
+Begin
+106
+Dots
+2, 0, enemy
+1, 0, enemy
+0, 1, enemy
+1, 1, 0
+2, 1, owner
+Result
+1, 1
+End
+Begin
+107
+Dots
+0, 2, enemy
+0, 1, enemy
+1, 0, enemy
+1, 1, 0
+1, 2, owner
+Result
+1, 1
+End
+Begin
+108
+Dots
+0, 2, enemy
+0, 1, enemy
+-1, 0, enemy
+-1, 1, 0
+-1, 2, owner
+Result
+-1, 1
+End
+Begin
+109
+Dots
+2, 0, enemy
+1, 0, enemy
+0, -1, enemy
+1, -1, 0
+2, -1, owner
+Result
+1, -1
+End
+Begin
+110
+Dots
+-2, 0, enemy
+-1, 0, enemy
+0, -1, enemy
+-1, -1, 0
+-2, -1, owner
+Result
+-1, -1
+End
+Begin
+111
+Dots
+0, -2, enemy
+0, -1, enemy
+-1, 0, enemy
+-1, -1, 0
+-1, -2, owner
+Result
+-1, -1
+End
+Begin
+112
+Dots
+2, -2, owner
+1, 0, != enemy
+2, -1, != enemy
+1, -2, != enemy
+0, -1, != enemy
+1, -1, 0
+Result
+1, -1
+End
+Begin
+113
+Dots
+0, 0, enemy
+2, -2, enemy
+0, -1, != enemy
+1, -2, != enemy
+2, -1, != enemy
+1, 0, != enemy
+1, -1, 0
+Result
+1, -1
+End
+Begin
+114
+Dots
+0, 0, enemy
+-2, 2, enemy
+-1, 0, != enemy
+-2, 1, != enemy
+-1, 2, != enemy
+0, 1, != enemy
+-1, 1, 0
+Result
+-1, 1
+End
+Begin
+115
+Dots
+0, 0, enemy
+2, 2, enemy
+1, 0, != enemy
+2, 1, != enemy
+1, 2, != enemy
+0, 1, != enemy
+1, 1, 0
+Result
+1, 1
+End
+Begin
+116
+Dots
+0, 0, enemy
+2, 2, enemy
+0, 1, != enemy
+1, 2, != enemy
+2, 1, != enemy
+1, 0, != enemy
+1, 1, 0
+Result
+1, 1
+End
+Begin
+117
+Dots
+0, 0, enemy
+-2, 2, enemy
+0, 1, != enemy
+-1, 2, != enemy
+-2, 1, != enemy
+-1, 0, != enemy
+-1, 1, 0
+Result
+-1, 1
+End
+Begin
+118
+Dots
+0, 0, enemy
+2, -2, enemy
+1, 0, != enemy
+2, -1, != enemy
+1, -2, != enemy
+0, -1, != enemy
+1, -1, 0
+Result
+1, -1
+End
+Begin
+119
+Dots
+0, 0, enemy
+-2, -2, enemy
+-1, 0, != enemy
+-2, -1, != enemy
+-1, -2, != enemy
+0, -1, != enemy
+-1, -1, 0
+Result
+-1, -1
+End
+Begin
+120
+Dots
+0, 0, enemy
+-2, -2, enemy
+0, -1, != enemy
+-1, -2, != enemy
+-2, -1, != enemy
+-1, 0, != enemy
+-1, -1, 0
+Result
+-1, -1
+End
+

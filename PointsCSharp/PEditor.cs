@@ -145,26 +145,20 @@ namespace DotsGame
             //------------------------------------------------
             lines.Add("Begin");
             lines.Add(GetNumberPattern().ToString());
-            //lines.Add(firstDot.PE_XY.minX.ToString() + "," +
-            //          firstDot.PE_XY.maxX.ToString() + "," +
-            //          firstDot.PE_XY.minY.ToString() + "," +
-            //          firstDot.PE_XY.maxY.ToString());
             lines.Add("Dots");
-
             for (int i = 0; i < ListPatternDots.Count; i++)
             {
                 string own = "";
-                if (firstDot.Own == ListPatternDots[i].Own) own = "owner";
-                if (firstDot.Own != ListPatternDots[i].Own) own = "enemy";
+                //if (firstDot.Own == ListPatternDots[i].Own) own = "owner";
+                //if (firstDot.Own != ListPatternDots[i].Own) own = "enemy";
+                if (ListPatternDots[i].Own == 1) own = "enemy";
+                if (ListPatternDots[i].Own == 2) own = "owner";
                 if (ListPatternDots[i].Own == 0 & ListPatternDots[i].PatternsAnyDot == false) own = "0";
                 if (ListPatternDots[i].PatternsAnyDot) own = "!= enemy";
                 dx = ListPatternDots[i].x - firstDot.x;
                 dy = ListPatternDots[i].y - firstDot.y;
-                if ((dx == 0 & dy == 0) == false)
-                {
-                    s = dx.ToString() + ", " + dy.ToString() + ", " + own;
-                    lines.Add(s);
-                }
+                s = dx.ToString() + ", " + dy.ToString() + ", " + own;
+                lines.Add(s);
             }
             lines.Add("Result");
             lines.Add((moveDot.x - firstDot.x).ToString() + ", " +
