@@ -2497,7 +2497,8 @@ namespace DotsGame
             //lst_best_move.Clear();
             //recursion_depth = 0; // сбрасываем глубину рекурсии
             counter_moves = 0;
-            Play(PLAYER_HUMAN, PLAYER_COMPUTER, 0, MAX_RECURSION);
+            Play(PLAYER_HUMAN, PLAYER_COMPUTER);
+            best_move = lst_moves.FirstOrDefault();
 
             #region Если не найдено лучшего хода, берем любую точку
             if (best_move == null)
@@ -2516,7 +2517,6 @@ namespace DotsGame
                     f.lstDbg2.Items.Add(best_move.ToString() + " - random ");
                 }
 #endif
-
                 //return best_move;
             }
             #endregion
@@ -3050,12 +3050,13 @@ namespace DotsGame
         int res_last_move; //хранит результат хода
         //int recursion_depth;
         const int MAX_RECURSION = 4;
+        int recursion_depth;
         //===================================================================================================================
-        private int Play(int player1, int player2, int recursion_depth, int maxrecursion)//возвращает Owner кто побеждает в результате хода
+        private int Play(int player1, int player2 )//возвращает Owner кто побеждает в результате хода
         {
             List<Dot> lst_best_move = new List<Dot>();//сюда заносим лучшие ходы
             recursion_depth++;
-            if (recursion_depth > maxrecursion) return PLAYER_NONE;
+            if (recursion_depth > MAX_RECURSION) return PLAYER_NONE;
             //проверяем ход который ведет сразу к окружению и паттерны
             lst_best_move = BestMove(player1, player2);
 
@@ -3071,6 +3072,7 @@ namespace DotsGame
 #region Cycle
                 foreach (Dot move in lst_best_move)
                 {
+                    #region ходит комп в проверяемые точки
                     Application.DoEvents();
                     player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     //**************делаем ход***********************************
@@ -3103,30 +3105,64 @@ namespace DotsGame
                                        "\r\n время поиска " + stopWatch.ElapsedMilliseconds;
 #endif
 #endregion
-                    //теперь ходит другой игрок ===========================================================================
-                    recursion_depth++;
-
-                    //int result = Play(player2, player1, 0, 2);
-                    int result = Play(player1, player2, 0, 1);//будет ходить только комп
                     //отменить ход
                     UndoMove(move);
-                    recursion_depth--;
-                    #region Debug
+#region Debug
 #if DEBUG
+//remove from list
                     if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
 #endif
 #endregion
-                    
-                    //if (result == PLAYER_NONE) break;
+          #endregion     
+                    #region ходит игрок в проверяемые точки
+                    Application.DoEvents();
+                    player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
+                    //**************делаем ход***********************************
+                    res_last_move = MakeMove(move, player1);
+                    counter_moves++;
+                    #region проверка на окружение
 
-                    //if (result != 0)
-                    //{
-                    //    best_move = move;
-                    //    best_move.Rating = counter_moves;
-                    //    return result;
-                    //}
-                    //это конец тела цикла
+                    if (win_player == PLAYER_COMPUTER)
+                    {
+                        best_move = move;
+                        best_move.Rating = counter_moves;
+                        lst_moves.Add(best_move);
+                        UndoMove(move);
+                        continue;
+                        //return PLAYER_COMPUTER;
+                    }
+                    //если ход в заведомо окруженный регион - пропускаем такой ход
+                    if (win_player == PLAYER_HUMAN)
+                    {
+                        UndoMove(move);
+                        continue;
+                    }
+                    #endregion
+                    #region Debug statistic
+#if DEBUG
+                    if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
+                    f.lstDbg1.Items.Add(move);//(move.Own + " -" + move.x + ":" + move.y);
+                    f.txtDebug.Text = "Ходов проверено: " + counter_moves +
+                                       "\r\n проверка вокруг точки " + LastMove +
+                                       "\r\n время поиска " + stopWatch.ElapsedMilliseconds;
+#endif
+                    #endregion
+                    //отменить ход
+                    UndoMove(move);
+                    #region Debug
+#if DEBUG
+                    //remove from list
+                    if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
+#endif
+                    #endregion
+                    #endregion        
+             
                 }
+                //теперь ходит другой игрок ===========================================================================
+                int result = Play(player2, player1);
+                recursion_depth--;
+
+
 #endregion
             }
             return PLAYER_NONE;

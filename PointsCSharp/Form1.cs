@@ -226,12 +226,10 @@ namespace DotsGame
         {
             ChangeBoardSize();
         }
-
         private void toolStripTextBox2_TextChanged(object sender, EventArgs e)
         {
             ChangeBoardSize();
         }
-
         private void ChangeBoardSize()
         {
             decimal x, y;
@@ -241,9 +239,6 @@ namespace DotsGame
                 game.ResizeBoard((int)x, (int)y);
 
         }
-
-
-
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -535,7 +530,6 @@ namespace DotsGame
             //game.gameDots.Dots = game.gameDots.Rotate90(game.gameDots.Dots);
             pbxBoard.Refresh();
         }
-
             //#region Pattern Editor
             public List<Dot> ListPatterns
             {
@@ -563,8 +557,7 @@ namespace DotsGame
                 get { return tlsТочкаХода.Checked; }
                 set { tlsТочкаХода.Checked = value; }
             }
-
-            public int PE_Player
+            public int  PE_Player
             {
                 get
                 {
@@ -577,7 +570,6 @@ namespace DotsGame
                frmDlgPE dlg = new frmDlgPE();
                dlg.ShowDialog();
             }
-
             private void Form1_FormClosing(object sender, FormClosingEventArgs e)
             {
                 decimal x, y;
