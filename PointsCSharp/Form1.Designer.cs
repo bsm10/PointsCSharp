@@ -257,7 +257,6 @@
             // 
             this.toolStripTextBox1.Name = "toolStripTextBox1";
             this.toolStripTextBox1.Size = new System.Drawing.Size(100, 21);
-            this.toolStripTextBox1.Text = "10";
             this.toolStripTextBox1.ToolTipText = "Enter decimal number";
             this.toolStripTextBox1.TextChanged += new System.EventHandler(this.toolStripTextBox1_TextChanged);
             // 
@@ -265,7 +264,6 @@
             // 
             this.toolStripTextBox2.Name = "toolStripTextBox2";
             this.toolStripTextBox2.Size = new System.Drawing.Size(100, 21);
-            this.toolStripTextBox2.Text = "10";
             this.toolStripTextBox2.ToolTipText = "Enter decimal number";
             this.toolStripTextBox2.TextChanged += new System.EventHandler(this.toolStripTextBox2_TextChanged);
             // 
@@ -570,6 +568,7 @@
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Dots";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.MouseEnter += new System.EventHandler(this.Form1_MouseEnter);
             this.Move += new System.EventHandler(this.Form1_Move);

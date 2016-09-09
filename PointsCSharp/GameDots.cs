@@ -2484,13 +2484,7 @@ namespace DotsGame
 
 #endregion
 
-
-            //float s1 = square1; float s2 = square2;
-            //int pl1 = 0; int pl2 = 0;
-            //pl1 = enemy_move.Own == PLAYER_HUMAN ? PLAYER_HUMAN : PLAYER_COMPUTER;
-            //pl2 = pl1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
             best_move = null;
-            int depth = 0;
             var t1 = DateTime.Now.Millisecond;
             #region StopWatch
 #if DEBUG
@@ -2499,11 +2493,11 @@ namespace DotsGame
             f.lstDbg1.Items.Clear();
 #endif
 #endregion
-            //Dot lm = new Dot(LastMove.x, LastMove.y);//точка последнего хода
             //проверяем ход который ведет сразу к окружению и паттерны
-
-            lst_best_move.Clear();
-            Play(ref best_move, PLAYER_HUMAN, PLAYER_COMPUTER, ref depth, LastMove);
+            //lst_best_move.Clear();
+            //recursion_depth = 0; // сбрасываем глубину рекурсии
+            counter_moves = 0;
+            Play(PLAYER_HUMAN, PLAYER_COMPUTER, 0, MAX_RECURSION);
 
             #region Если не найдено лучшего хода, берем любую точку
             if (best_move == null)
@@ -2531,15 +2525,12 @@ namespace DotsGame
 #if DEBUG
             stopWatch.Stop();
 
-            f.txtDebug.Text = "Skilllevel: " + SkillLevel + "\r\n Общее число ходов: " + depth.ToString() +
-            //"\r\n Глубина просчета: " + c_root.ToString() +
-            "\r\n Ход на " + best_move.x + ":" + best_move.y +
+            f.txtDebug.Text = "Количество ходов: " + counter_moves + "\r\n Глубина рекурсии: " + MAX_RECURSION +
+            "\r\n Ход на " + best_move.ToString() +
             "\r\n время просчета " + stopWatch.ElapsedMilliseconds.ToString() + " мс";
             stopWatch.Reset();
 #endif
 #endregion
-
-            //square1 = s1; square2 = s2;
 
             return new Dot(best_move.x, best_move.y); //так надо чтобы best_move не ссылался на точку в Dots
         }
@@ -2750,7 +2741,6 @@ namespace DotsGame
 #endif
 #endregion
 #endregion
-
 #region CheckPatternMove
             bm = CheckPatternMove(pl2);
             if(DotIndexCheck(bm))
@@ -3053,20 +3043,19 @@ namespace DotsGame
             }
         }
         //==================================================================================================================
-        List<Dot> lst_best_move = new List<Dot>();//сюда заносим лучшие ходы
+        
         List<Dot> lst_moves = new List<Dot>();//сюда заносим лучшие ходы
+        //
         int counter_moves = 0;
         int res_last_move; //хранит результат хода
+        //int recursion_depth;
+        const int MAX_RECURSION = 4;
         //===================================================================================================================
-        private int Play(ref Dot best_move, 
-                         int player1,
-                         int player2, 
-                         ref int recursion_depth,
-                         Dot lastmove)//возвращает Owner кто побеждает в результате хода
+        private int Play(int player1, int player2, int recursion_depth, int maxrecursion)//возвращает Owner кто побеждает в результате хода
         {
+            List<Dot> lst_best_move = new List<Dot>();//сюда заносим лучшие ходы
             recursion_depth++;
-            if (recursion_depth >= 16) return PLAYER_NONE;// 4 moves
-            Dot enemy_move = null;
+            if (recursion_depth > maxrecursion) return PLAYER_NONE;
             //проверяем ход который ведет сразу к окружению и паттерны
             lst_best_move = BestMove(player1, player2);
 
@@ -3079,57 +3068,63 @@ namespace DotsGame
 
             if(lst_best_move.Count>0)
             {
-                string sfoo = "";
 #region Cycle
-                foreach (Dot d in lst_best_move)
+                foreach (Dot move in lst_best_move)
                 {
-                    best_move = d;
                     Application.DoEvents();
                     player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     //**************делаем ход***********************************
-                    res_last_move = MakeMove(d,player2);//(new Dot(d.x, d.y, player2));
+                    res_last_move = MakeMove(move,player2);
                     counter_moves++;
 #region проверка на окружение
 
                     if (win_player == PLAYER_COMPUTER)
                     {
-                        best_move = d;
+                        best_move = move;
                         best_move.Rating = counter_moves;
-                        UndoMove(d);
-                        return PLAYER_COMPUTER;
+                        lst_moves.Add(best_move);
+                        UndoMove(move);
+                        continue;
+                        //return PLAYER_COMPUTER;
                     }
                     //если ход в заведомо окруженный регион - пропускаем такой ход
                     if (win_player == PLAYER_HUMAN)
                     {
-                        UndoMove(d);
+                        UndoMove(move);
                         continue;
                     }
 #endregion
 #region Debug statistic
 #if DEBUG
                     if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
-                    f.lstDbg1.Items.Add(d.Own + " -" + d.x + ":" + d.y);
-                    f.txtDebug.Text = "Глубина просчета: " + recursion_depth.ToString() +
-                                       "\r\n проверка вокруг точки " + lastmove +
+                    f.lstDbg1.Items.Add(move);//(move.Own + " -" + move.x + ":" + move.y);
+                    f.txtDebug.Text = "Ходов проверено: " + counter_moves +
+                                       "\r\n проверка вокруг точки " + LastMove +
                                        "\r\n время поиска " + stopWatch.ElapsedMilliseconds;
 #endif
 #endregion
                     //теперь ходит другой игрок ===========================================================================
                     recursion_depth++;
-                    int result = Play(ref enemy_move, player2, player1, ref recursion_depth, lastmove);
+
+                    //int result = Play(player2, player1, 0, 2);
+                    int result = Play(player1, player2, 0, 1);//будет ходить только комп
                     //отменить ход
-                    UndoMove(d);
+                    UndoMove(move);
                     recursion_depth--;
+                    #region Debug
 #if DEBUG
                     if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
 #endif
-                    if (recursion_depth > 16)//4 moves)
-                        return PLAYER_NONE;
-                    if (result != 0)
-                    {
-                        best_move = d;
-                        return result;
-                    }
+#endregion
+                    
+                    //if (result == PLAYER_NONE) break;
+
+                    //if (result != 0)
+                    //{
+                    //    best_move = move;
+                    //    best_move.Rating = counter_moves;
+                    //    return result;
+                    //}
                     //это конец тела цикла
                 }
 #endregion

@@ -27,7 +27,7 @@ namespace DotsGame
         //==========================================================================================================
         private GameDots _gameDots;//Основной массив, где хранятся все поставленные точки. С єтого массива рисуются все точки
         //===========================================================================================================
-        private GameDots gameDots 
+        public GameDots gameDots 
         {
             get 
               {
@@ -96,6 +96,7 @@ namespace DotsGame
         }
         //  ************************************************
 
+        
 
         public Dot PickComputerMove(Dot LastMove)
         {
@@ -154,9 +155,7 @@ namespace DotsGame
 
             gameDots.BoardHeight = newSizeHeight;
             gameDots.BoardWidth = newSizeWidth;
-            Properties.Settings.Default.BoardWidth = newSizeWidth;
-            Properties.Settings.Default.BoardHeight = newSizeHeight;
-            //NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
+            NewGame(newSizeWidth,newSizeHeight);
             pbxBoard.Invalidate();
         }
 

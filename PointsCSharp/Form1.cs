@@ -28,10 +28,10 @@ namespace DotsGame
             toolStripStatusLabel2.Text = "Ход игрока";
 
             scl_coef = (float)pbxBoard.ClientSize.Height/ pbxBoard.ClientSize.Width;
-            Properties.Settings.Default.BoardHeight = (int)Math.Round(Properties.Settings.Default.BoardWidth * (double)scl_coef);
+            //Properties.Settings.Default.BoardHeight = (int)Math.Round(Properties.Settings.Default.BoardWidth * (double)scl_coef);
 
-            toolStripTextBox1.Text = Properties.Settings.Default.BoardWidth.ToString();
-            toolStripTextBox2.Text = Properties.Settings.Default.BoardHeight.ToString();
+            toolStripTextBox1.Text = game.gameDots.BoardWidth.ToString();
+            toolStripTextBox2.Text = game.gameDots.BoardHeight.ToString();
 
             if (Properties.Settings.Default.Level==0) легкоToolStripMenuItem.Checked=true;
             if (Properties.Settings.Default.Level == 1) среднеToolStripMenuItem.Checked = true;
@@ -254,7 +254,7 @@ namespace DotsGame
         }
         private void создатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            game.NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
+            game.NewGame(game.gameDots.BoardWidth, game.gameDots.BoardHeight);
         }
         private void антиалToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -576,6 +576,19 @@ namespace DotsGame
             {
                frmDlgPE dlg = new frmDlgPE();
                dlg.ShowDialog();
+            }
+
+            private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+            {
+                decimal x, y;
+
+                if (decimal.TryParse(toolStripTextBox1.Text, out x) &
+                    decimal.TryParse(toolStripTextBox2.Text, out y))
+                    {
+                        Properties.Settings.Default.BoardWidth = (int)x;
+                        Properties.Settings.Default.BoardHeight = (int)y;
+                        Properties.Settings.Default.Save();
+                    }
             }
 
             //#endregion
