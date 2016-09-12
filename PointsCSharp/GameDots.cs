@@ -2497,12 +2497,13 @@ namespace DotsGame
 #endregion
             counter_moves = 0;
             //lst_best_move.Clear();
-
+            lst_branch.Clear();
             //Проигрываем разные комбинации
             Play(PLAYER_HUMAN, PLAYER_COMPUTER);
 
-            best_move = lst_moves.FirstOrDefault();
-
+            lst_branch.Sort(d=>d.Rating);
+            best_move = lst_branch.FirstOrDefault();
+            
             #region Если не найдено лучшего хода, берем любую точку
             if (best_move == null)
             {
@@ -2806,14 +2807,14 @@ namespace DotsGame
             best_move = lst_best_move.Where(dt => dt.iNumberPattern == 777).FirstOrDefault();
             if (best_move != null) 
             {
-                lst_moves.Add(best_move);
+                lst_branch.Add(best_move);
                 return PLAYER_COMPUTER;
             }
             //если есть паттерн на окружение компа устанавливается бест мув
             best_move = lst_best_move.Where(dt => dt.iNumberPattern == 666).FirstOrDefault();
             if (best_move != null) 
             {
-                lst_moves.Add(best_move);
+                lst_branch.Add(best_move);
                 return PLAYER_HUMAN;
             }
 
@@ -2863,25 +2864,37 @@ namespace DotsGame
                     int result = Play(player2, player1);
 
                     recursion_depth--;
-                    
-                    switch (result)
+
+                     if (result == 0)
                     {
-                        case PLAYER_NONE:
-                            lst_moves.Remove(move);
-                            continue;
-                            //break;
-                        case PLAYER_HUMAN:
-                            lst_moves.Remove(move);
-                            return PLAYER_HUMAN;
-                        case PLAYER_COMPUTER:
-                            
-                            lst_moves.Remove(move);
-                            recursion_depth--;
-                            return PLAYER_COMPUTER;
+                        lst_moves.Remove(move);
+                        UndoMove(move);
+                        continue;
+                    }
+                    else if (result == PLAYER_COMPUTER)
+                    {
+                        if (recursion_depth == 1)
+                        {
+                            lst_moves[0].Rating = counter_moves;
+                            lst_branch.Add(lst_moves[0]);
+                        }
+                        
+                        lst_moves.Remove(move);
+                        UndoMove(move);
+                        return result;
+                    }
+                    else if (result == PLAYER_HUMAN)
+                    {
+                        if (recursion_depth == 2)
+                        {
+                            lst_moves[0].Rating = 999;
+                            lst_branch.Add(lst_moves[0]);
+                        }
+                        lst_moves.Remove(move);
+                        UndoMove(move);
+                        return result;
                     }
 
-                    //lst_moves.Remove(move);
-                    //recursion_depth--;
 
 #region Debug
 #if DEBUG
@@ -2889,15 +2902,12 @@ namespace DotsGame
                     if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
 #endif
 #endregion
-             
                 }
-
           #endregion     
-
             }
 #endregion
-            lst_moves.Remove(lst_moves.Last());
-            recursion_depth--;
+            //lst_moves.Remove(lst_moves.Last());
+            //recursion_depth--;
             return PLAYER_NONE;
         }//----------------------------Play-----------------------------------------------------
 
