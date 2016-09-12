@@ -2455,6 +2455,8 @@ namespace DotsGame
             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             return ld;
         }
+
+        List<Dot> lst_best_move = new List<Dot>();//сюда заносим лучшие ходы
         public Dot PickComputerMove(Dot enemy_move)
         {
 #region если первый ход выбираем произвольную соседнюю точку
@@ -2493,11 +2495,20 @@ namespace DotsGame
             f.lstDbg1.Items.Clear();
 #endif
 #endregion
-            //проверяем ход который ведет сразу к окружению и паттерны
-            //lst_best_move.Clear();
-            //recursion_depth = 0; // сбрасываем глубину рекурсии
             counter_moves = 0;
+            lst_best_move.Clear();
+            //проверяем ход который ведет сразу к окружению и паттерны
+            lst_best_move = BestMove(PLAYER_HUMAN, PLAYER_COMPUTER);
+            //если есть паттерн на окружение противника тоже устанавливается бест мув
+            best_move = lst_best_move.Where(dt => dt.iNumberPattern == 777).FirstOrDefault();
+            if (best_move != null) return best_move;
+            //если есть паттерн на окружение компа устанавливается бест мув
+            best_move = lst_best_move.Where(dt => dt.iNumberPattern == 666).FirstOrDefault();
+            if (best_move != null) return best_move;
+            
+            //Проигрываем разные комбинации
             Play(PLAYER_HUMAN, PLAYER_COMPUTER);
+
             best_move = lst_moves.FirstOrDefault();
 
             #region Если не найдено лучшего хода, берем любую точку
@@ -3044,28 +3055,25 @@ namespace DotsGame
         }
         //==================================================================================================================
         
-        List<Dot> lst_moves = new List<Dot>();//сюда заносим лучшие ходы
+        List<Dot> lst_moves = new List<Dot>();//сюда заносим проверяемые ходы
+        List<Dot> lst_branch = new List<Dot>();//сюда заносим начало перспективной ветки
         //
         int counter_moves = 0;
         int res_last_move; //хранит результат хода
         //int recursion_depth;
         const int MAX_RECURSION = 4;
         int recursion_depth;
+        Dot tempmove;
         //===================================================================================================================
-        private int Play(int player1, int player2 )//возвращает Owner кто побеждает в результате хода
+        private int Play(int player1, int player2)//возвращает Owner кто побеждает в результате хода
         {
-            List<Dot> lst_best_move = new List<Dot>();//сюда заносим лучшие ходы
             recursion_depth++;
             if (recursion_depth > MAX_RECURSION) return PLAYER_NONE;
-            //проверяем ход который ведет сразу к окружению и паттерны
-            lst_best_move = BestMove(player1, player2);
 
-            //если есть паттерн на окружение противника тоже устанавливается бест мув
-            best_move = lst_best_move.Where(dt=>dt.iNumberPattern == 777).FirstOrDefault();
-            if (best_move!=null) return PLAYER_COMPUTER;
-            //если есть паттерн на окружение компа устанавливается бест мув
-            best_move = lst_best_move.Where(dt => dt.iNumberPattern == 666).FirstOrDefault();
-            if (best_move!=null) return PLAYER_HUMAN;
+            if (lst_best_move.Count==0)
+            {
+                lst_best_move = BestMove(player1, player2);
+            }
 
             if(lst_best_move.Count>0)
             {
@@ -3077,14 +3085,15 @@ namespace DotsGame
                     player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
                     //**************делаем ход***********************************
                     res_last_move = MakeMove(move,player2);
+                    lst_moves.Add(move);
                     counter_moves++;
 #region проверка на окружение
 
                     if (win_player == PLAYER_COMPUTER)
                     {
-                        best_move = move;
-                        best_move.Rating = counter_moves;
-                        lst_moves.Add(best_move);
+                        Dot dt_move = lst_moves.First();
+                        dt_move.Rating = counter_moves;
+                        lst_branch.Add(dt_move);
                         UndoMove(move);
                         continue;
                         //return PLAYER_COMPUTER;
@@ -3106,65 +3115,42 @@ namespace DotsGame
 #endif
 #endregion
                     //отменить ход
-                    UndoMove(move);
+                    //UndoMove(move);
+                    //теперь ходит другой игрок ===========================================================================
+                    lst_best_move.Clear();
+                    int result = Play(player2, player1);
+                    switch (result)
+                    {
+                        case PLAYER_NONE:
+                            continue;
+                            //break;
+                        case PLAYER_HUMAN:
+                            lst_moves.Remove(move);
+                            recursion_depth--;
+                            return PLAYER_HUMAN;
+                        case PLAYER_COMPUTER:
+                            lst_moves.Remove(move);
+                            recursion_depth--;
+                            return PLAYER_COMPUTER;
+                    }
+
+                    //lst_moves.Remove(move);
+                    //recursion_depth--;
+
 #region Debug
 #if DEBUG
 //remove from list
                     if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
 #endif
 #endregion
-          #endregion     
-                    #region ходит игрок в проверяемые точки
-                    Application.DoEvents();
-                    player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
-                    //**************делаем ход***********************************
-                    res_last_move = MakeMove(move, player1);
-                    counter_moves++;
-                    #region проверка на окружение
-
-                    if (win_player == PLAYER_COMPUTER)
-                    {
-                        best_move = move;
-                        best_move.Rating = counter_moves;
-                        lst_moves.Add(best_move);
-                        UndoMove(move);
-                        continue;
-                        //return PLAYER_COMPUTER;
-                    }
-                    //если ход в заведомо окруженный регион - пропускаем такой ход
-                    if (win_player == PLAYER_HUMAN)
-                    {
-                        UndoMove(move);
-                        continue;
-                    }
-                    #endregion
-                    #region Debug statistic
-#if DEBUG
-                    if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
-                    f.lstDbg1.Items.Add(move);//(move.Own + " -" + move.x + ":" + move.y);
-                    f.txtDebug.Text = "Ходов проверено: " + counter_moves +
-                                       "\r\n проверка вокруг точки " + LastMove +
-                                       "\r\n время поиска " + stopWatch.ElapsedMilliseconds;
-#endif
-                    #endregion
-                    //отменить ход
-                    UndoMove(move);
-                    #region Debug
-#if DEBUG
-                    //remove from list
-                    if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
-#endif
-                    #endregion
-                    #endregion        
              
                 }
-                //теперь ходит другой игрок ===========================================================================
-                int result = Play(player2, player1);
-                recursion_depth--;
 
-
+          #endregion     
 #endregion
             }
+            lst_moves.Remove(lst_moves.Last());
+            recursion_depth--;
             return PLAYER_NONE;
         }//----------------------------Play-----------------------------------------------------
         
