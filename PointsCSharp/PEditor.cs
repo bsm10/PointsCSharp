@@ -29,12 +29,12 @@ namespace DotsGame
 
         }
         public DotInPattern dXdY_ResultDot = new DotInPattern();
-        public Dot Dot { get; set; }
+        public Dot FirstDot { get; set; }//Точка отсчета
         public Dot ResultDot
         {
             get
             {
-                return new Dot(Dot.x + dXdY_ResultDot.dX, Dot.y + dXdY_ResultDot.dY, Dot.Own);
+                return new Dot(FirstDot.x + dXdY_ResultDot.dX, FirstDot.y + dXdY_ResultDot.dY, FirstDot.Own);
             }
         }
 

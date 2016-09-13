@@ -89,7 +89,7 @@ namespace DotsGame
         {
             get
             {
-                return (from Dot d in _Dots where d.Own == 0 && d.Blocked == false select d).ToList();
+                return (from Dot d in _Dots where d.ValidMove select d).ToList();
             }
         }
         public List<Dot> Board_NotEmptyNonBlockedDots
@@ -225,6 +225,7 @@ namespace DotsGame
                 ListMoves.Add(_Dots[ind]);
             }
         }
+
         private void AddNeibor(Dot dot)
         {
             //выбрать соседние точки, если такие есть
@@ -581,6 +582,8 @@ namespace DotsGame
                 foreach (Pattern p in GameEngine.Patterns)
                 {
                     bool flag = true;
+                    if (!this[d.x + p.dXdY_ResultDot.dX, 
+                              d.y + p.dXdY_ResultDot.dY].ValidMove) continue; //если результирующая точка недопустимый ход, пропускаем паттерн
                     foreach (DotInPattern dt in p.DotsPattern)
                     {
                         int enemy_own = Owner == 1 ? 2 : 1;
@@ -608,7 +611,7 @@ namespace DotsGame
                     }
                     if (flag)
                     {
-                        p.Dot = d;
+                        p.FirstDot = d;
                         ptrns.Add(p);
                     }
                 }
@@ -624,11 +627,15 @@ namespace DotsGame
         /// </summary>
         /// <param name="dot">точка куда делается ход</param>
         /// <param name="Owner">владелец точки -целое 1-Игрок или 2 -Компьютер</param>
-        /// <returns>количество окруженных точек</returns>
+        /// <returns>количество окруженных точек или -1 если недопустимый ход</returns>
         public int MakeMove(Dot dot, int Owner = 0)//
         {
             if(Owner!=0) dot.Own = Owner;
-            if (this[dot.x, dot.y].Own == 0) Add(dot); //если точка не занята
+            if (this[dot.x, dot.y].ValidMove)
+            {
+                Add(dot); //если точка не занята
+            }
+            else return -1;
             //--------------------------------
             int res = CheckBlocked(dot.Own);
             //--------------------------------
@@ -1019,7 +1026,7 @@ namespace DotsGame
                 {
                     foreach (Dot dot_move in NeiborDotsSNWE(d))
                     {
-                        if (dot_move.Blocked == false & dot_move.Own == 0)
+                        if (dot_move.ValidMove)
                         {
                             //делаем ход
                             int result_last_move = MakeMove(dot_move, Owner);
@@ -2501,8 +2508,10 @@ namespace DotsGame
             //Проигрываем разные комбинации
             Play(PLAYER_HUMAN, PLAYER_COMPUTER);
 
-            lst_branch.Sort(d=>d.Rating);
-            best_move = lst_branch.FirstOrDefault();
+            best_move = lst_branch.Where(dt => dt.Rating == lst_branch.Min(d => d.Rating)).ElementAtOrDefault(0);
+
+            //best_move = lst_branch.Min(d => d.Rating);
+            //best_move = lst_branch.FirstOrDefault();
             
             #region Если не найдено лучшего хода, берем любую точку
             if (best_move == null)
@@ -2799,6 +2808,7 @@ namespace DotsGame
         private int Play(int player1, int player2)//возвращает Owner кто побеждает в результате хода
         {
             List<Dot> lst_best_move = new List<Dot>();//сюда заносим лучшие ходы
+            if (recursion_depth==1)counter_moves = 1;
             recursion_depth++;
             if (recursion_depth > MAX_RECURSION) return PLAYER_NONE;
 
@@ -2808,6 +2818,7 @@ namespace DotsGame
             if (best_move != null) 
             {
                 lst_branch.Add(best_move);
+                lst_branch.Last().Rating = counter_moves;
                 return PLAYER_COMPUTER;
             }
             //если есть паттерн на окружение компа устанавливается бест мув
@@ -2815,6 +2826,7 @@ namespace DotsGame
             if (best_move != null) 
             {
                 lst_branch.Add(best_move);
+                lst_branch.Last().Rating = counter_moves;
                 return PLAYER_HUMAN;
             }
 
@@ -2887,7 +2899,7 @@ namespace DotsGame
                     {
                         if (recursion_depth == 2)
                         {
-                            lst_moves[0].Rating = 999;
+                            lst_moves[0].Rating = counter_moves;//такой рейтинг устанавливается если выигрывает человек
                             lst_branch.Add(lst_moves[0]);
                         }
                         lst_moves.Remove(move);

@@ -104,7 +104,8 @@ namespace DotsGame
                                 break;
                             }
                         #endif
-                            if (MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1)) > 0) break;
+                            if (!game.DOT(dot).ValidMove) return;
+                            if (MoveGamer(1, dot) > 0) break;
                             player_move = 1;
                             //Application.DoEvents();
                         }

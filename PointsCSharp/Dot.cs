@@ -363,6 +363,10 @@ namespace DotsGame
             }
 
         }
-
+        
+        public bool ValidMove
+        {
+            get { return Blocked == false && Own == 0; }
+        }
     }
 }
