@@ -2816,6 +2816,7 @@ namespace DotsGame
             if (recursion_depth > MAX_RECURSION) return PLAYER_NONE;
 
             lst_best_move = BestMove(player1, player2);
+            
             //если есть паттерн на окружение противника тоже устанавливается бест мув
             best_move = lst_best_move.Where(dt => dt.iNumberPattern == 777).FirstOrDefault();
             if (best_move != null) 
@@ -2883,6 +2884,9 @@ namespace DotsGame
                      if (result == 0)
                     {
                         lst_moves.Remove(move);
+#if DEBUG
+                        f.lstDbg1.Items.Remove(move);
+#endif
                         UndoMove(move);
                         continue;
                     }
@@ -2895,6 +2899,9 @@ namespace DotsGame
                         }
                         
                         lst_moves.Remove(move);
+#if DEBUG
+                        f.lstDbg1.Items.Remove(move);
+#endif
                         UndoMove(move);
                         return result;
                     }
@@ -2906,6 +2913,10 @@ namespace DotsGame
                             lst_branch.Add(lst_moves[0]);
                         }
                         lst_moves.Remove(move);
+#if DEBUG
+                        f.lstDbg1.Items.Remove(move);
+#endif
+
                         UndoMove(move);
                         return result;
                     }
@@ -2923,6 +2934,7 @@ namespace DotsGame
 #endregion
             //lst_moves.Remove(lst_moves.Last());
             //recursion_depth--;
+            best_move = lst_best_move.Where(dt => dt.Rating == lst_best_move.Min(d => d.Rating)).ElementAtOrDefault(0);
             return PLAYER_NONE;
         }//----------------------------Play-----------------------------------------------------
 
