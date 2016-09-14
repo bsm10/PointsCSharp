@@ -33,9 +33,9 @@ namespace DotsGame
             toolStripTextBox1.Text = game.gameDots.BoardWidth.ToString();
             toolStripTextBox2.Text = game.gameDots.BoardHeight.ToString();
 
-            if (Properties.Settings.Default.Level==0) легкоToolStripMenuItem.Checked=true;
-            if (Properties.Settings.Default.Level == 1) среднеToolStripMenuItem.Checked = true;
-            if (Properties.Settings.Default.Level == 2) тяжелоToolStripMenuItem.Checked = true;
+            //if (Properties.Settings.Default.Level==0) легкоToolStripMenuItem.Checked=true;
+            //if (Properties.Settings.Default.Level == 1) среднеToolStripMenuItem.Checked = true;
+            //if (Properties.Settings.Default.Level == 2) тяжелоToolStripMenuItem.Checked = true;
         }
         private void pbxBoard_Paint(object sender, PaintEventArgs e)
         {

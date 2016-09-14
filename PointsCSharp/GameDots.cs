@@ -630,9 +630,10 @@ namespace DotsGame
         /// <returns>количество окруженных точек или -1 если недопустимый ход</returns>
         public int MakeMove(Dot dot, int Owner = 0)//
         {
-            if(Owner!=0) dot.Own = Owner;
+            
             if (this[dot.x, dot.y].ValidMove)
             {
+                if (Owner != 0) dot.Own = Owner;
                 Add(dot); //если точка не занята
             }
             else return -1;
@@ -2505,7 +2506,9 @@ namespace DotsGame
             counter_moves = 0;
             //lst_best_move.Clear();
             lst_branch.Clear();
+            
             //Проигрываем разные комбинации
+            recursion_depth = 0;
             Play(PLAYER_HUMAN, PLAYER_COMPUTER);
 
             best_move = lst_branch.Where(dt => dt.Rating == lst_branch.Min(d => d.Rating)).ElementAtOrDefault(0);
@@ -2801,7 +2804,7 @@ namespace DotsGame
         int counter_moves = 0;
         int res_last_move; //хранит результат хода
         //int recursion_depth;
-        const int MAX_RECURSION = 4;
+        const int MAX_RECURSION = 3;
         int recursion_depth;
         Dot tempmove;
         //===================================================================================================================
