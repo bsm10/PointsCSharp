@@ -9,7 +9,15 @@ namespace DotsGame
     {
         public Dot Dot1;
         public Dot Dot2;
-        private float cost;
+        //private float cost;
+        public float Distance
+        { 
+            get
+            {
+                return (float)Math.Sqrt(Math.Pow(Math.Abs(Dot1.x - Dot2.x), 2) +
+                                    Math.Pow(Math.Abs(Dot1.y - Dot2.y), 2));
+            }
+        }
         public override string ToString()
         {
             string s = string.Empty;
@@ -17,7 +25,7 @@ namespace DotsGame
             if (Dot1.Own == 2 & Dot2.Own == 2) s = " Computer";
             if (Dot1.Own == 0 | Dot2.Own == 0) s = " None";
 
-            return Dot1.x + ":" + Dot1.y + "-" + Dot2.x + ":" + Dot2.y + s + " Cost - " + CostLink.ToString() + " Fixed " + Fixed.ToString();
+            return Dot1.x + ":" + Dot1.y + "-" + Dot2.x + ":" + Dot2.y + s + " Cost - " + Distance.ToString() + " Fixed " + Fixed.ToString();
         }
         public override int GetHashCode()
         {
@@ -51,51 +59,52 @@ namespace DotsGame
         }
 
 
-        public float CostLink
-        {
-            get
-            {
-                return cost;
-            }
-            set
-            {
-                cost = value;
-            }
-        }
-        public int LinksDistance (Links link)
-        {
-            decimal d1, d2;
-            d1 = Math.Round((decimal)(Dot1.x + link.Dot1.x + Dot2.x + link.Dot2.x) / 4);
-            d2 = Math.Round((decimal)(Dot1.y + link.Dot1.y + Dot2.y + link.Dot2.y) / 4);
-            return (int)Math.Round((d1+d2)/4);
-        }
+        //public float CostLink
+        //{
+        //    get
+        //    {
+        //        return cost;
+        //    }
+        //    set
+        //    {
+        //        cost = value;
+        //    }
+        //}
+        //public int LinksDistance (Links link)
+        //{
+        //    decimal d1, d2;
+        //    d1 = Math.Round((decimal)(Dot1.x + link.Dot1.x + Dot2.x + link.Dot2.x) / 4);
+        //    d2 = Math.Round((decimal)(Dot1.y + link.Dot1.y + Dot2.y + link.Dot2.y) / 4);
+        //    return (int)Math.Round((d1+d2)/4);
+        //}
 
         public Links(Dot Dot1, Dot Dot2)
         {
             this.Dot1 = Dot1;
             this.Dot2 = Dot2;
-            if (Math.Abs(Dot1.x - Dot2.x) + Math.Abs(Dot1.y - Dot2.y) < 2)
-            {
-                cost = 1;
-            }
-            else
-            {
-                cost = 2;
-            }
+            
+            //if (Math.Abs(Dot1.x - Dot2.x) + Math.Abs(Dot1.y - Dot2.y) < 2)
+            //{
+            //    cost = 1;
+            //}
+            //else
+            //{
+            //    cost = 2;
+            //}
         }
 
         public Links(int x1, int y1, int x2, int y2)
         {
             Dot1 = new Dot(x1, y1);
             Dot2 = new Dot(x2, y2);
-            if (Math.Abs(Dot1.x - Dot2.x) + Math.Abs(Dot1.y - Dot2.y) < 2)
-            {
-                cost = 1;
-            }
-            else
-            {
-                cost = 0.5f;
-            }
+            //if (Math.Abs(Dot1.x - Dot2.x) + Math.Abs(Dot1.y - Dot2.y) < 2)
+            //{
+            //    cost = 1;
+            //}
+            //else
+            //{
+            //    cost = 0.5f;
+            //}
         }
 
         public bool Equals(Links otherLink)//Проверяет равенство связей по точкам
