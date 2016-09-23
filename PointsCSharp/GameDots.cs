@@ -85,7 +85,7 @@ namespace DotsGame
         /// <summary>
         /// Возвращает список не занятых точек
         /// </summary>
-        public List<Dot> Board_FreeDots
+        public List<Dot> Board_ValidMoves
         {
             get
             {
@@ -99,6 +99,15 @@ namespace DotsGame
                 return (from Dot d in _Dots where d.Own != 0 && d.Blocked == false select d).ToList();
             }
         }
+        public List<Dot> Board_AllNotBlockedDots
+        {
+            get
+            {
+                return _Dots.Where(d=>!d.Blocked).ToList();
+            }
+        }
+
+
         public GameDots CopyDots
         {
             get
@@ -839,7 +848,7 @@ namespace DotsGame
         public Dot CheckMove(int Owner)
         {
             List<Dot> happy_dots = new List<Dot>();
-            var qry = Board_FreeDots.Where(
+            var qry = Board_ValidMoves.Where(
 #region Query patterns Check
 
                          d =>
@@ -2289,50 +2298,88 @@ namespace DotsGame
             //=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
             return null;//если никаких паттернов не найдено возвращаем нуль
         }
-
         public List<Dot> CheckPattern2Move(int Owner) //проверка хода на гарантированное окружение(когда точки находятся через две клетки) 
         {
             List<Dot> ld = new List<Dot>();
             iNumberPattern = 1;
-            
-            
-            var x = 
-                    from Dot d0 in
-                    (
-                        from Dot d1 in Dots
-                        from Dot d2 in Dots
-                        where (d1.Own == Owner) &
-                          (d1.IndexRelation == d2.IndexRelation) &
-                          (Distance(d1, d2) >= 3 & Distance(d1, d2) < 4) &
-                          (d1.x <= d2.x)
-                         select d1  
-                          //& (d01.ValidMove & (Distance(d2, d01) < 2) & (d0.x > d01.x))
-                          //& (d02.ValidMove & (Distance(d2, d02) < 2) & Distance(d01, d02)==1)
-                    )
-                    //where (d0.ValidMove & (Distance(d1, d0) < 2) & (Distance(d2, d0) < 4) & d0.x>d1.x)
-                    select d0;// new Links(d1, d2)
-                    //into www
-                    //    from Dot d0 in Dots
-                    //    where (d0.ValidMove & (Distance(www.Dot1, d0) < 2) & (Distance(www.Dot2, d0) < 4) & d0.x>www.Dot1.x)
+            var pat1 = Board_AllNotBlockedDots.Where(d =>
+                            d.Own == Owner
+                            &&
+                            d.IndexRelation == this[d.x + 3, d.y - 1].IndexRelation
+                            & this[d.x + 1, d.y - 1].Own == 0
+                            & this[d.x + 1, d.y].Own == 0
+                            & this[d.x + 2, d.y-1].Own == 0
+                            |
+                            d.IndexRelation == this[d.x + 3, d.y - 1].IndexRelation
+                            & this[d.x + 1, d.y - 1].Own == 0
+                            & this[d.x + 1, d.y].Own == 0
+                            & this[d.x + 2, d.y].Own == 0
+                            |
+                            d.IndexRelation == this[d.x + 2, d.y].IndexRelation
+                            & this[d.x + 1, d.y - 1].Own == 0
+                            & this[d.x + 1, d.y].Own == 0
+                            |
+                            d.IndexRelation == this[d.x + 2, d.y].IndexRelation
+                            & this[d.x + 1, d.y + 1].Own == 0
+                            & this[d.x + 1, d.y].Own == 0
+                            |
+                            d.IndexRelation == this[d.x + 2, d.y + 1].IndexRelation
+                            & this[d.x + 1, d.y].Own == 0
+                            & this[d.x + 1, d.y + 1].Own == 0
+                           |
+                           d.IndexRelation == this[d.x + 1, d.y + 2].IndexRelation
+                           & this[d.x, d.y + 1].Own == 0
+                           & this[d.x + 1, d.y + 1].Own == 0
+                           |
+                           d.IndexRelation == this[d.x, d.y + 2].IndexRelation
+                           & this[d.x, d.y + 1].Own == 0
+                           & this[d.x + 1, d.y + 1].Own == 0
+                           |
+                           d.IndexRelation == this[d.x, d.y + 2].IndexRelation
+                           & this[d.x, d.y + 1].Own == 0
+                           & this[d.x - 1, d.y + 1].Own == 0
+                           |
+                           d.IndexRelation == this[d.x - 1, d.y + 2].IndexRelation
+                           & this[d.x, d.y + 1].Own == 0
+                           & this[d.x - 1, d.y + 1].Own == 0
+                           |
+                           d.IndexRelation == this[d.x - 2, d.y + 1].IndexRelation
+                           & this[d.x - 1, d.y].Own == 0
+                           & this[d.x - 1, d.y + 1].Own == 0
+                           |
+                            d.IndexRelation == this[d.x - 2, d.y].IndexRelation
+                           & this[d.x - 1, d.y].Own == 0
+                           & this[d.x - 1, d.y + 1].Own == 0
+                           |
+                            d.IndexRelation == this[d.x - 2, d.y].IndexRelation
+                           & this[d.x - 1, d.y].Own == 0
+                           & this[d.x - 1, d.y - 1].Own == 0
+                           |
+                            d.IndexRelation == this[d.x - 2, d.y - 1].IndexRelation
+                            & this[d.x - 1, d.y].Own == 0
+                            & this[d.x - 1, d.y - 1].Own == 0
+                            |
+                            d.IndexRelation == this[d.x, d.y - 2].IndexRelation
+                            & this[d.x, d.y - 1].Own == 0
+                            & this[d.x - 1, d.y - 1].Own == 0
+                            |
+                            d.IndexRelation == this[d.x - 1, d.y - 2].IndexRelation
+                            & this[d.x, d.y - 1].Own == 0
+                            & this[d.x - 1, d.y - 1].Own == 0
+                            |
+                            d.IndexRelation == this[d.x, d.y - 2].IndexRelation
+                            & this[d.x, d.y - 1].Own == 0
+                            & this[d.x + 1, d.y - 1].Own == 0
+                            |
+                            d.IndexRelation == this[d.x + 1, d.y - 2].IndexRelation
+                            & this[d.x, d.y - 1].Own == 0
+                            & this[d.x + 1, d.y - 1].Own == 0
+                            |
+                            d.IndexRelation == this[d.x + 2, d.y - 1].IndexRelation
+                           & this[d.x + 1, d.y].Own == 0
+                           & this[d.x + 1, d.y - 1].Own == 0
 
-                    ////where d0.ValidMove & Distance(www.Dot1, d0)<2
-                    //select d0;
-                    //into qqq
-                    //    from Dot d01 in Dots
-                    //    from Dot d02 in Dots
-                    //    where (d01.ValidMove & (Distance(qqq, d01) < 2) & (qqq.x > d01.x))
-                    //    & (d02.ValidMove & (Distance(qqq, d02) < 2) & Distance(d01, d02) == 1)
-                    // select d01;
-                
-                    //(d0.ValidMove & (d0.x>d1.x & d0.x<=d2.x))
-
-            var pat1 = from Dot d in this
-                       where d.Own == Owner
-                             && this[d.x, d.y].IndexRelation == this[d.x + 2, d.y - 1].IndexRelation
-                             && this[d.x + 2, d.y - 1].Own == Owner && this[d.x + 2, d.y - 1].Blocked == false
-                             && this[d.x + 1, d.y - 1].Own == 0 && this[d.x + 1, d.y - 1].Blocked == false
-                             && this[d.x + 1, d.y].Own == 0 && this[d.x + 1, d.y].Blocked == false
-                       select d;
+                            );
             AddToList(ld, pat1, 1, 0);
             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             foreach (Dot d in ld)
@@ -2343,177 +2390,83 @@ namespace DotsGame
             return ld;
         }
 
-        public List<Dot> CheckPattern2Move_old(int Owner) //проверка хода на гарантированное окружение(когда точки находятся через две клетки) 
+        public List<Dot> CheckPattern2Move2(int Owner) //проверка хода на гарантированное окружение(когда точки находятся через две клетки) 
         {
             List<Dot> ld = new List<Dot>();
             iNumberPattern = 1;
-            var pat1 = from Dot d in this
-                       where d.Own == Owner
-                             && this[d.x, d.y].IndexRelation == this[d.x + 2, d.y - 1].IndexRelation
-                             && this[d.x + 2, d.y - 1].Own == Owner && this[d.x + 2, d.y - 1].Blocked == false
-                             && this[d.x + 1, d.y - 1].Own == 0 && this[d.x + 1, d.y - 1].Blocked == false
-                             && this[d.x + 1, d.y].Own == 0 && this[d.x + 1, d.y].Blocked == false
-                       select d;
-            AddToList(ld, pat1, 1, 0);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 2;
-            var pat2 = from Dot d in this
-                       where d.Own == Owner
-                            && d.IndexRelation == this[d.x + 2, d.y].IndexRelation
-                            && this[d.x + 2, d.y - 1].Own == Owner && this[d.x + 2, d.y].Blocked == false
-                            && this[d.x + 1, d.y - 1].Own == 0 && this[d.x + 1, d.y - 1].Blocked == false
-                            && this[d.x + 1, d.y].Own == 0 && this[d.x + 1, d.y].Blocked == false
-                       select d;
-            AddToList(ld, pat2, 1, 0);
-            //-----------------------------------------------------------------------------
-            var pat3 = from Dot d in this
-                       where d.Own == Owner
-                            && d.IndexRelation == this[d.x + 2, d.y].IndexRelation
-                            && this[d.x + 2, d.y - 1].Own == Owner && this[d.x + 2, d.y - 1].Blocked == false
-                            && this[d.x + 1, d.y + 1].Own == 0 && this[d.x + 1, d.y + 1].Blocked == false
-                            && this[d.x + 1, d.y].Own == 0 && this[d.x + 1, d.y].Blocked == false
-                       select d;
-            AddToList(ld, pat3, 1, 0);
-            //-----------------------------------------------------------------------------
-            var pat4 = from Dot d in this
-                       where d.Own == Owner
-                            && d.IndexRelation == this[d.x + 2, d.y + 1].IndexRelation
-                            && this[d.x + 2, d.y + 1].Own == Owner && this[d.x + 2, d.y + 1].Blocked == false
-                            && this[d.x + 1, d.y].Own == 0 && this[d.x + 1, d.y].Blocked == false
-                            && this[d.x + 1, d.y + 1].Own == 0 && this[d.x + 1, d.y + 1].Blocked == false
-                       select d;
-            AddToList(ld, pat4, 1, 0);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 5;
-            var pat5 = from Dot d in this
-                       where d.Own == Owner
-                          && d.IndexRelation == this[d.x + 1, d.y + 2].IndexRelation
-                          && this[d.x + 1, d.y + 2].Own == Owner && this[d.x + 1, d.y + 2].Blocked == false
-                          && this[d.x, d.y + 1].Own == 0 && this[d.x, d.y + 1].Blocked == false
-                          && this[d.x + 1, d.y + 1].Own == 0 && this[d.x + 1, d.y + 1].Blocked == false
-                       select d;
-            AddToList(ld, pat5, 0, 1);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 6;
-            var pat6 = from Dot d in this
-                       where d.Own == Owner
-                          && d.IndexRelation == this[d.x, d.y + 2].IndexRelation
-                          && this[d.x, d.y + 2].Own == Owner && this[d.x, d.y + 2].Blocked == false
-                          && this[d.x, d.y + 1].Own == 0 && this[d.x, d.y + 1].Blocked == false
-                          && this[d.x + 1, d.y + 1].Own == 0 && this[d.x + 1, d.y + 1].Blocked == false
-                       select d;
-            AddToList(ld, pat6, 0, 1);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 7;
-            var pat7 = from Dot d in this
-                       where d.Own == Owner
-                          && d.IndexRelation == this[d.x, d.y + 2].IndexRelation
-                          && this[d.x, d.y + 2].Own == Owner && this[d.x, d.y + 2].Blocked == false
-                          && this[d.x, d.y + 1].Own == 0 && this[d.x, d.y + 1].Blocked == false
-                          && this[d.x - 1, d.y + 1].Own == 0 && this[d.x + 1, d.y + 1].Blocked == false
-                       select d;
-            AddToList(ld, pat7, 0, 1);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 8;
-            var pat8 = from Dot d in this
-                       where d.Own == Owner
-                          && d.IndexRelation == this[d.x - 1, d.y + 2].IndexRelation
-                          && this[d.x - 1, d.y + 2].Own == Owner && this[d.x - 1, d.y + 2].Blocked == false
-                          && this[d.x, d.y + 1].Own == 0 && this[d.x, d.y + 1].Blocked == false
-                          && this[d.x - 1, d.y + 1].Own == 0 && this[d.x - 1, d.y + 1].Blocked == false
-                       select d;
-            AddToList(ld, pat8, 0, 1);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 9;
-            var pat9 = from Dot d in this
-                       where d.Own == Owner
-                          && d.IndexRelation == this[d.x - 2, d.y + 1].IndexRelation
-                          && this[d.x - 2, d.y + 1].Own == Owner && this[d.x - 2, d.y + 1].Blocked == false
-                          && this[d.x - 1, d.y].Own == 0 && this[d.x - 1, d.y].Blocked == false
-                          && this[d.x - 1, d.y + 1].Own == 0 && this[d.x - 1, d.y + 1].Blocked == false
-                       select d;
-            AddToList(ld, pat9, -1, 0);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 10;
-            var pat10 = from Dot d in this
-                        where d.Own == Owner
-                           && d.IndexRelation == this[d.x - 2, d.y].IndexRelation
-                           && this[d.x - 2, d.y].Own == Owner && this[d.x - 2, d.y].Blocked == false
-                           && this[d.x - 1, d.y].Own == 0 && this[d.x - 1, d.y].Blocked == false
-                           && this[d.x - 1, d.y + 1].Own == 0 && this[d.x - 1, d.y + 1].Blocked == false
-                        select d;
-            AddToList(ld, pat10, -1, 0);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 11;
-            var pat11 = from Dot d in this
-                        where d.Own == Owner
-                           && d.IndexRelation == this[d.x - 2, d.y].IndexRelation
-                           && this[d.x - 2, d.y].Own == Owner && this[d.x - 2, d.y].Blocked == false
-                           && this[d.x - 1, d.y].Own == 0 && this[d.x - 1, d.y].Blocked == false
-                           && this[d.x - 1, d.y - 1].Own == 0 && this[d.x - 1, d.y - 1].Blocked == false
-                        select d;
-            AddToList(ld, pat11, -1, 0);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 12;
-            var pat12 = from Dot d in this
-                        where d.Own == Owner
-                        && d.IndexRelation == this[d.x - 2, d.y - 1].IndexRelation
-                        && this[d.x - 2, d.y - 1].Own == Owner && this[d.x - 2, d.y - 1].Blocked == false
-                        && this[d.x - 1, d.y].Own == 0 && this[d.x - 1, d.y].Blocked == false
-                        && this[d.x - 1, d.y - 1].Own == 0 && this[d.x - 1, d.y - 1].Blocked == false
-                        select d;
-            AddToList(ld, pat12, -1, 0);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 13;
-            var pat13 = from Dot d in this
-                        where d.Own == Owner
-                        && d.IndexRelation == this[d.x - 1, d.y - 2].IndexRelation
-                        && this[d.x - 1, d.y - 2].Own == Owner && this[d.x - 1, d.y - 2].Blocked == false
-                        && this[d.x, d.y - 1].Own == 0 && this[d.x, d.y - 1].Blocked == false
-                        && this[d.x - 1, d.y - 1].Own == 0 && this[d.x - 1, d.y - 1].Blocked == false
-                        select d;
-            AddToList(ld, pat13, 0, -1);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 14;
-            var pat14 = from Dot d in this
-                        where d.Own == Owner
-                        && d.IndexRelation == this[d.x, d.y - 2].IndexRelation
-                        && this[d.x, d.y - 2].Own == Owner && this[d.x, d.y - 2].Blocked == false
-                        && this[d.x, d.y - 1].Own == 0 && this[d.x, d.y - 1].Blocked == false
-                        && this[d.x - 1, d.y - 1].Own == 0 && this[d.x - 1, d.y - 1].Blocked == false
-                        select d;
-            AddToList(ld, pat14, 0, -1);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 15;
-            var pat15 = from Dot d in this
-                        where d.Own == Owner
-                        && d.IndexRelation == this[d.x, d.y - 2].IndexRelation
-                        && this[d.x, d.y - 2].Own == Owner && this[d.x, d.y - 2].Blocked == false
-                        && this[d.x, d.y - 1].Own == 0 && this[d.x, d.y - 1].Blocked == false
-                        && this[d.x + 1, d.y - 1].Own == 0 && this[d.x + 1, d.y - 1].Blocked == false
-                        select d;
-            AddToList(ld, pat15, 0, -1);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 16;
-            var pat16 = from Dot d in this
-                        where d.Own == Owner
-                           && d.IndexRelation == this[d.x + 1, d.y - 2].IndexRelation
-                           && this[d.x + 1, d.y - 2].Own == Owner && this[d.x + 1, d.y - 2].Blocked == false
-                           && this[d.x, d.y - 1].Own == 0 && this[d.x, d.y - 1].Blocked == false
-                           && this[d.x + 1, d.y - 1].Own == 0 && this[d.x + 1, d.y - 1].Blocked == false
-                        select d;
-            AddToList(ld, pat16, 0, -1);
-            //-----------------------------------------------------------------------------
-            iNumberPattern = 17;
-            var pat17 = from Dot d in this
-                        where d.Own == Owner
-                           && d.IndexRelation == this[d.x + 2, d.y - 1].IndexRelation
-                           && this[d.x + 2, d.y - 1].Own == Owner && this[d.x + 2, d.y - 1].Blocked == false
-                           && this[d.x + 1, d.y].Own == 0 && this[d.x + 1, d.y].Blocked == false
-                           && this[d.x + 1, d.y - 1].Own == 0 && this[d.x + 1, d.y - 1].Blocked == false
-                        select d;
-            AddToList(ld, pat17, 1, 0);
+            var pat1 = Board_AllNotBlockedDots.Where(d=>
+                            d.Own == Owner
+                            &&
+                            d.IndexRelation == this[d.x + 2, d.y - 1].IndexRelation
+                            & this[d.x + 1, d.y - 1].Own == 0
+                            & this[d.x + 1, d.y].Own == 0
+                            |
+                            d.IndexRelation == this[d.x + 2, d.y].IndexRelation
+                            & this[d.x + 1, d.y - 1].Own == 0
+                            & this[d.x + 1, d.y].Own == 0
+                            |
+                            d.IndexRelation == this[d.x + 2, d.y].IndexRelation
+                            & this[d.x + 1, d.y + 1].Own == 0
+                            & this[d.x + 1, d.y].Own == 0
+                            |
+                            d.IndexRelation == this[d.x + 2, d.y + 1].IndexRelation
+                            & this[d.x + 1, d.y].Own == 0
+                            & this[d.x + 1, d.y + 1].Own == 0
+                           |
+                           d.IndexRelation == this[d.x + 1, d.y + 2].IndexRelation
+                           & this[d.x, d.y + 1].Own == 0
+                           & this[d.x + 1, d.y + 1].Own == 0
+                           |
+                           d.IndexRelation == this[d.x, d.y + 2].IndexRelation
+                           & this[d.x, d.y + 1].Own == 0
+                           & this[d.x + 1, d.y + 1].Own == 0
+                           |
+                           d.IndexRelation == this[d.x, d.y + 2].IndexRelation
+                           & this[d.x, d.y + 1].Own == 0
+                           & this[d.x - 1, d.y + 1].Own == 0
+                           |
+                           d.IndexRelation == this[d.x - 1, d.y + 2].IndexRelation
+                           & this[d.x, d.y + 1].Own == 0
+                           & this[d.x - 1, d.y + 1].Own == 0
+                           |
+                           d.IndexRelation == this[d.x - 2, d.y + 1].IndexRelation
+                           & this[d.x - 1, d.y].Own == 0
+                           & this[d.x - 1, d.y + 1].Own == 0
+                           |
+                            d.IndexRelation == this[d.x - 2, d.y].IndexRelation
+                           & this[d.x - 1, d.y].Own == 0
+                           & this[d.x - 1, d.y + 1].Own == 0
+                           |
+                            d.IndexRelation == this[d.x - 2, d.y].IndexRelation
+                           & this[d.x - 1, d.y].Own == 0
+                           & this[d.x - 1, d.y - 1].Own == 0
+                           |
+                            d.IndexRelation == this[d.x - 2, d.y - 1].IndexRelation
+                            & this[d.x - 1, d.y].Own == 0
+                            & this[d.x - 1, d.y - 1].Own == 0
+                            |
+                            d.IndexRelation == this[d.x, d.y - 2].IndexRelation
+                            & this[d.x, d.y - 1].Own == 0
+                            & this[d.x - 1, d.y - 1].Own == 0
+                            |
+                            d.IndexRelation == this[d.x - 1, d.y - 2].IndexRelation
+                            & this[d.x, d.y - 1].Own == 0
+                            & this[d.x - 1, d.y - 1].Own == 0
+                            |
+                            d.IndexRelation == this[d.x, d.y - 2].IndexRelation
+                            & this[d.x, d.y - 1].Own == 0
+                            & this[d.x + 1, d.y - 1].Own == 0
+                            |
+                            d.IndexRelation == this[d.x + 1, d.y - 2].IndexRelation
+                            & this[d.x, d.y - 1].Own == 0
+                            & this[d.x + 1, d.y - 1].Own == 0
+                            |
+                            d.IndexRelation == this[d.x + 2, d.y - 1].IndexRelation
+                           & this[d.x + 1, d.y].Own == 0
+                           & this[d.x + 1, d.y - 1].Own == 0
 
+                            );
+            AddToList(ld, pat1, 1, 0);
             //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             foreach(Dot d in ld) 
             {
@@ -2712,7 +2665,7 @@ namespace DotsGame
 #region CheckPattern2Move проверяем ходы на два вперед
 
             List<Dot> ld_bm = CheckPattern2Move(pl2);//
-            if (bm != null)
+            if (ld_bm.Count>0)
             {
                 #region DEBUG
 #if DEBUG

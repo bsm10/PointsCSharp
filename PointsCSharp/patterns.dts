@@ -1,32 +1,1930 @@
-// +     +       
-//    d        
-// +     m       
 Begin
 1
-3,3 
 Dots
-  1, - 1, enemy
-- 1, - 1, enemy
-- 1,   1, enemy
-  1,   1, 0
-  1,   0, 0
-  0,   1, 0
+-1, 0, enemy
+0, -1, 0
+1, -1, enemy
 Result
-  1,   1
+0, -1
 End
-// +     +       
-//    d        
-// m     +       
 Begin
 2
-3,3
 Dots
-  1,- 1, enemy
-- 1,- 1, enemy
-  1, 1, enemy
-- 1, 0, 0
-0, 1, 0
-- 1,  1, 0
+0, -1, enemy
+-1, 0, 0
+-1, 1, enemy
 Result
-- 1, 1
+-1, 0
 End
+Begin
+3
+Dots
+0, -1, enemy
+1, 0, 0
+1, 1, enemy
+Result
+1, 0
+End
+Begin
+4
+Dots
+-1, 0, enemy
+0, 1, 0
+1, 1, enemy
+Result
+0, 1
+End
+Begin
+5
+Dots
+1, 0, enemy
+0, 1, 0
+-1, 1, enemy
+Result
+0, 1
+End
+Begin
+6
+Dots
+0, 1, enemy
+1, 0, 0
+1, -1, enemy
+Result
+1, 0
+End
+Begin
+7
+Dots
+0, 1, enemy
+-1, 0, 0
+-1, -1, enemy
+Result
+-1, 0
+End
+Begin
+8
+Dots
+1, 0, enemy
+0, -1, 0
+-1, -1, enemy
+Result
+0, -1
+End
+Begin
+9
+Dots
+-1, -1, enemy
+0, -1, enemy
+1, 0, enemy
+1, 1, enemy
+0, 1, 0
+-1, 1, 0
+-1, 0, 0
+0, 2, 0
+-2, 0, 0
+Result
+-1, 1
+End
+Begin
+10
+Dots
+-1, -1, enemy
+-1, 0, enemy
+0, 1, enemy
+1, 1, enemy
+1, 0, 0
+1, -1, 0
+0, -1, 0
+2, 0, 0
+0, -2, 0
+Result
+1, -1
+End
+Begin
+11
+Dots
+1, -1, enemy
+1, 0, enemy
+0, 1, enemy
+-1, 1, enemy
+-1, 0, 0
+-1, -1, 0
+0, -1, 0
+-2, 0, 0
+0, -2, 0
+Result
+-1, -1
+End
+Begin
+12
+Dots
+-1, 1, enemy
+0, 1, enemy
+1, 0, enemy
+1, -1, enemy
+0, -1, 0
+-1, -1, 0
+-1, 0, 0
+0, -2, 0
+-2, 0, 0
+Result
+-1, -1
+End
+Begin
+13
+Dots
+1, 1, enemy
+0, 1, enemy
+-1, 0, enemy
+-1, -1, enemy
+0, -1, 0
+1, -1, 0
+1, 0, 0
+0, -2, 0
+2, 0, 0
+Result
+1, -1
+End
+Begin
+14
+Dots
+1, 1, enemy
+1, 0, enemy
+0, -1, enemy
+-1, -1, enemy
+-1, 0, 0
+-1, 1, 0
+0, 1, 0
+-2, 0, 0
+0, 2, 0
+Result
+-1, 1
+End
+Begin
+15
+Dots
+-1, 1, enemy
+-1, 0, enemy
+0, -1, enemy
+1, -1, enemy
+1, 0, 0
+1, 1, 0
+0, 1, 0
+2, 0, 0
+0, 2, 0
+Result
+1, 1
+End
+Begin
+16
+Dots
+1, -1, enemy
+0, -1, enemy
+-1, 0, enemy
+-1, 1, enemy
+0, 1, 0
+1, 1, 0
+1, 0, 0
+0, 2, 0
+2, 0, 0
+Result
+1, 1
+End
+Begin
+17
+Dots
+0, -1, enemy
+0, 1, 0
+0, 2, enemy
+-1, 0, 0
+-1, 1, 0
+Result
+-1, 0
+End
+Begin
+18
+Dots
+-1, 0, enemy
+1, 0, 0
+2, 0, enemy
+0, -1, 0
+1, -1, 0
+Result
+0, -1
+End
+Begin
+19
+Dots
+1, 0, enemy
+-1, 0, 0
+-2, 0, enemy
+0, -1, 0
+-1, -1, 0
+Result
+0, -1
+End
+Begin
+20
+Dots
+0, 1, enemy
+0, -1, 0
+0, -2, enemy
+-1, 0, 0
+-1, -1, 0
+Result
+-1, 0
+End
+Begin
+21
+Dots
+0, 1, enemy
+0, -1, 0
+0, -2, enemy
+1, 0, 0
+1, -1, 0
+Result
+1, 0
+End
+Begin
+22
+Dots
+1, 0, enemy
+-1, 0, 0
+-2, 0, enemy
+0, 1, 0
+-1, 1, 0
+Result
+0, 1
+End
+Begin
+23
+Dots
+-1, 0, enemy
+1, 0, 0
+2, 0, enemy
+0, 1, 0
+1, 1, 0
+Result
+0, 1
+End
+Begin
+24
+Dots
+0, -1, enemy
+0, 1, 0
+0, 2, enemy
+1, 0, 0
+1, 1, 0
+Result
+1, 0
+End
+Begin
+25
+Dots
+1, -1, enemy
+1, 0, 0
+2, 0, 0
+2, -1, 0
+2, -2, owner
+Result
+2, 0
+End
+Begin
+26
+Dots
+-1, 1, enemy
+0, 1, 0
+0, 2, 0
+-1, 2, 0
+-2, 2, owner
+Result
+0, 2
+End
+Begin
+27
+Dots
+1, 1, enemy
+0, 1, 0
+0, 2, 0
+1, 2, 0
+2, 2, owner
+Result
+0, 2
+End
+Begin
+28
+Dots
+1, 1, enemy
+1, 0, 0
+2, 0, 0
+2, 1, 0
+2, 2, owner
+Result
+2, 0
+End
+Begin
+29
+Dots
+-1, 1, enemy
+-1, 0, 0
+-2, 0, 0
+-2, 1, 0
+-2, 2, owner
+Result
+-2, 0
+End
+Begin
+30
+Dots
+1, -1, enemy
+0, -1, 0
+0, -2, 0
+1, -2, 0
+2, -2, owner
+Result
+0, -2
+End
+Begin
+31
+Dots
+-1, -1, enemy
+0, -1, 0
+0, -2, 0
+-1, -2, 0
+-2, -2, owner
+Result
+0, -2
+End
+Begin
+32
+Dots
+-1, -1, enemy
+-1, 0, 0
+-2, 0, 0
+-2, -1, 0
+-2, -2, owner
+Result
+-2, 0
+End
+Begin
+9
+Dots
+-4, 1, owner
+-3, 1, 0
+-2, 1, 0
+-1, 1, 0
+0, 1, 0
+-1, 0, enemy
+-1, 2, 0
+-2, 2, 0
+-3, 2, 0
+Result
+-1, 1
+End
+Begin
+10
+Dots
+1, -4, owner
+1, -3, 0
+1, -2, 0
+1, -1, 0
+1, 0, 0
+0, -1, enemy
+2, -1, 0
+2, -2, 0
+2, -3, 0
+Result
+1, -1
+End
+Begin
+11
+Dots
+-1, -4, owner
+-1, -3, 0
+-1, -2, 0
+-1, -1, 0
+-1, 0, 0
+0, -1, enemy
+-2, -1, 0
+-2, -2, 0
+-2, -3, 0
+Result
+-1, -1
+End
+Begin
+12
+Dots
+-4, -1, owner
+-3, -1, 0
+-2, -1, 0
+-1, -1, 0
+0, -1, 0
+-1, 0, enemy
+-1, -2, 0
+-2, -2, 0
+-3, -2, 0
+Result
+-1, -1
+End
+Begin
+13
+Dots
+4, -1, owner
+3, -1, 0
+2, -1, 0
+1, -1, 0
+0, -1, 0
+1, 0, enemy
+1, -2, 0
+2, -2, 0
+3, -2, 0
+Result
+1, -1
+End
+Begin
+14
+Dots
+-1, 4, owner
+-1, 3, 0
+-1, 2, 0
+-1, 1, 0
+-1, 0, 0
+0, 1, enemy
+-2, 1, 0
+-2, 2, 0
+-2, 3, 0
+Result
+-1, 1
+End
+Begin
+15
+Dots
+1, 4, owner
+1, 3, 0
+1, 2, 0
+1, 1, 0
+1, 0, 0
+0, 1, enemy
+2, 1, 0
+2, 2, 0
+2, 3, 0
+Result
+1, 1
+End
+Begin
+16
+Dots
+4, 1, owner
+3, 1, 0
+2, 1, 0
+1, 1, 0
+0, 1, 0
+1, 0, enemy
+1, 2, 0
+2, 2, 0
+3, 2, 0
+Result
+1, 1
+End
+Begin
+17
+Dots
+1, 0, 0
+2, -1, 0
+3, -2, owner
+3, -1, 0
+2, 0, 0
+1, 1, 0
+Result
+2, 0
+End
+Begin
+18
+Dots
+0, 1, 0
+-1, 2, 0
+-2, 3, owner
+-1, 3, 0
+0, 2, 0
+1, 1, 0
+Result
+0, 2
+End
+Begin
+19
+Dots
+0, 1, 0
+1, 2, 0
+2, 3, owner
+1, 3, 0
+0, 2, 0
+-1, 1, 0
+Result
+0, 2
+End
+Begin
+20
+Dots
+1, 0, 0
+2, 1, 0
+3, 2, owner
+3, 1, 0
+2, 0, 0
+1, -1, 0
+Result
+2, 0
+End
+Begin
+21
+Dots
+-1, 0, 0
+-2, 1, 0
+-3, 2, owner
+-3, 1, 0
+-2, 0, 0
+-1, -1, 0
+Result
+-2, 0
+End
+Begin
+22
+Dots
+0, -1, 0
+1, -2, 0
+2, -3, owner
+1, -3, 0
+0, -2, 0
+-1, -1, 0
+Result
+0, -2
+End
+Begin
+23
+Dots
+0, -1, 0
+-1, -2, 0
+-2, -3, owner
+-1, -3, 0
+0, -2, 0
+1, -1, 0
+Result
+0, -2
+End
+Begin
+24
+Dots
+-1, 0, 0
+-2, -1, 0
+-3, -2, owner
+-3, -1, 0
+-2, 0, 0
+-1, 1, 0
+Result
+-2, 0
+End
+Begin
+25
+Dots
+-1, -3, enemy
+-1, -2, 0
+-1, -1, 0
+-1, 0, 0
+-1, 1, 0
+0, 1, enemy
+0, -1, != enemy
+0, -2, != enemy
+Result
+-1, 0
+End
+Begin
+26
+Dots
+-3, -1, enemy
+-2, -1, 0
+-1, -1, 0
+0, -1, 0
+1, -1, 0
+1, 0, enemy
+-1, 0, != enemy
+-2, 0, != enemy
+Result
+0, -1
+End
+Begin
+27
+Dots
+3, -1, enemy
+2, -1, 0
+1, -1, 0
+0, -1, 0
+-1, -1, 0
+-1, 0, enemy
+1, 0, != enemy
+2, 0, != enemy
+Result
+0, -1
+End
+Begin
+28
+Dots
+-1, 3, enemy
+-1, 2, 0
+-1, 1, 0
+-1, 0, 0
+-1, -1, 0
+0, -1, enemy
+0, 1, != enemy
+0, 2, != enemy
+Result
+-1, 0
+End
+Begin
+29
+Dots
+1, 3, enemy
+1, 2, 0
+1, 1, 0
+1, 0, 0
+1, -1, 0
+0, -1, enemy
+0, 1, != enemy
+0, 2, != enemy
+Result
+1, 0
+End
+Begin
+30
+Dots
+3, 1, enemy
+2, 1, 0
+1, 1, 0
+0, 1, 0
+-1, 1, 0
+-1, 0, enemy
+1, 0, != enemy
+2, 0, != enemy
+Result
+0, 1
+End
+Begin
+31
+Dots
+-3, 1, enemy
+-2, 1, 0
+-1, 1, 0
+0, 1, 0
+1, 1, 0
+1, 0, enemy
+-1, 0, != enemy
+-2, 0, != enemy
+Result
+0, 1
+End
+Begin
+32
+Dots
+1, -3, enemy
+1, -2, 0
+1, -1, 0
+1, 0, 0
+1, 1, 0
+0, 1, enemy
+0, -1, != enemy
+0, -2, != enemy
+Result
+1, 0
+End
+Begin
+33
+Dots
+-2, 0, enemy
+2, 1, enemy
+-1, 0, 0
+-1, 1, 0
+1, 0, 0
+1, 1, 0
+0, 1, 0
+Result
+0, 1
+End
+Begin
+34
+Dots
+0, -2, enemy
+1, 2, enemy
+0, -1, 0
+1, -1, 0
+0, 1, 0
+1, 1, 0
+1, 0, 0
+Result
+1, 0
+End
+Begin
+35
+Dots
+0, -2, enemy
+-1, 2, enemy
+0, -1, 0
+-1, -1, 0
+0, 1, 0
+-1, 1, 0
+-1, 0, 0
+Result
+-1, 0
+End
+Begin
+36
+Dots
+-2, 0, enemy
+2, -1, enemy
+-1, 0, 0
+-1, -1, 0
+1, 0, 0
+1, -1, 0
+0, -1, 0
+Result
+0, -1
+End
+Begin
+37
+Dots
+2, 0, enemy
+-2, -1, enemy
+1, 0, 0
+1, -1, 0
+-1, 0, 0
+-1, -1, 0
+0, -1, 0
+Result
+0, -1
+End
+Begin
+38
+Dots
+0, 2, enemy
+-1, -2, enemy
+0, 1, 0
+-1, 1, 0
+0, -1, 0
+-1, -1, 0
+-1, 0, 0
+Result
+-1, 0
+End
+Begin
+39
+Dots
+0, 2, enemy
+1, -2, enemy
+0, 1, 0
+1, 1, 0
+0, -1, 0
+1, -1, 0
+1, 0, 0
+Result
+1, 0
+End
+Begin
+40
+Dots
+2, 0, enemy
+-2, 1, enemy
+1, 0, 0
+1, 1, 0
+-1, 0, 0
+-1, 1, 0
+0, 1, 0
+Result
+0, 1
+End
+Begin
+41
+Dots
+-2, 0, enemy
+-1, 1, 0
+0, 2, enemy
+0, 1, != enemy
+-1, 0, != enemy
+Result
+-1, 1
+End
+Begin
+42
+Dots
+0, -2, enemy
+1, -1, 0
+2, 0, enemy
+1, 0, != enemy
+0, -1, != enemy
+Result
+1, -1
+End
+Begin
+43
+Dots
+0, -2, enemy
+-1, -1, 0
+-2, 0, enemy
+-1, 0, != enemy
+0, -1, != enemy
+Result
+-1, -1
+End
+Begin
+44
+Dots
+-2, 0, enemy
+-1, -1, 0
+0, -2, enemy
+0, -1, != enemy
+-1, 0, != enemy
+Result
+-1, -1
+End
+Begin
+45
+Dots
+2, 0, enemy
+1, -1, 0
+0, -2, enemy
+0, -1, != enemy
+1, 0, != enemy
+Result
+1, -1
+End
+Begin
+46
+Dots
+0, 2, enemy
+-1, 1, 0
+-2, 0, enemy
+-1, 0, != enemy
+0, 1, != enemy
+Result
+-1, 1
+End
+Begin
+47
+Dots
+0, 2, enemy
+1, 1, 0
+2, 0, enemy
+1, 0, != enemy
+0, 1, != enemy
+Result
+1, 1
+End
+Begin
+48
+Dots
+2, 0, enemy
+1, 1, 0
+0, 2, enemy
+0, 1, != enemy
+1, 0, != enemy
+Result
+1, 1
+End
+Begin
+49
+Dots
+-1, 1, enemy
+1, -1, enemy
+-1, 0, 0
+-1, -1, 0
+0, -1, 0
+Result
+-1, -1
+End
+Begin
+50
+Dots
+1, -1, enemy
+-1, 1, enemy
+0, -1, 0
+-1, -1, 0
+-1, 0, 0
+Result
+-1, -1
+End
+Begin
+51
+Dots
+-1, -1, enemy
+1, 1, enemy
+0, -1, 0
+1, -1, 0
+1, 0, 0
+Result
+1, -1
+End
+Begin
+52
+Dots
+-1, -1, enemy
+1, 1, enemy
+-1, 0, 0
+-1, 1, 0
+0, 1, 0
+Result
+-1, 1
+End
+Begin
+53
+Dots
+1, -1, enemy
+-1, 1, enemy
+1, 0, 0
+1, 1, 0
+0, 1, 0
+Result
+1, 1
+End
+Begin
+54
+Dots
+-1, 1, enemy
+1, -1, enemy
+0, 1, 0
+1, 1, 0
+1, 0, 0
+Result
+1, 1
+End
+Begin
+55
+Dots
+1, 1, enemy
+-1, -1, enemy
+0, 1, 0
+-1, 1, 0
+-1, 0, 0
+Result
+-1, 1
+End
+Begin
+56
+Dots
+1, 1, enemy
+-1, -1, enemy
+1, 0, 0
+1, -1, 0
+0, -1, 0
+Result
+1, -1
+End
+Begin
+57
+Dots
+-3, 0, owner
+-2, 0, 0
+-1, 0, enemy
+-2, -1, 0
+-1, -1, 0
+Result
+-1, -1
+End
+Begin
+58
+Dots
+0, -3, owner
+0, -2, 0
+0, -1, enemy
+-1, -2, 0
+-1, -1, 0
+Result
+-1, -1
+End
+Begin
+59
+Dots
+0, -3, owner
+0, -2, 0
+0, -1, enemy
+1, -2, 0
+1, -1, 0
+Result
+1, -1
+End
+Begin
+60
+Dots
+-3, 0, owner
+-2, 0, 0
+-1, 0, enemy
+-2, 1, 0
+-1, 1, 0
+Result
+-1, 1
+End
+Begin
+61
+Dots
+3, 0, owner
+2, 0, 0
+1, 0, enemy
+2, 1, 0
+1, 1, 0
+Result
+1, 1
+End
+Begin
+62
+Dots
+0, 3, owner
+0, 2, 0
+0, 1, enemy
+1, 2, 0
+1, 1, 0
+Result
+1, 1
+End
+Begin
+63
+Dots
+0, 3, owner
+0, 2, 0
+0, 1, enemy
+-1, 2, 0
+-1, 1, 0
+Result
+-1, 1
+End
+Begin
+64
+Dots
+3, 0, owner
+2, 0, 0
+1, 0, enemy
+2, -1, 0
+1, -1, 0
+Result
+1, -1
+End
+Begin
+65
+Dots
+0, 1, enemy
+1, 0, enemy
+1, 1, 0
+-1, 1, 0
+-1, 0, 0
+-1, -1, 0
+0, -1, 0
+1, -1, 0
+2, -1, 0
+2, 0, 0
+2, 1, 0
+2, 2, 0
+1, 2, 0
+0, 2, 0
+-1, 2, 0
+Result
+1, 1
+End
+Begin
+66
+Dots
+1, 0, enemy
+0, 1, enemy
+1, 1, 0
+1, -1, 0
+0, -1, 0
+-1, -1, 0
+-1, 0, 0
+-1, 1, 0
+-1, 2, 0
+0, 2, 0
+1, 2, 0
+2, 2, 0
+2, 1, 0
+2, 0, 0
+2, -1, 0
+Result
+1, 1
+End
+Begin
+67
+Dots
+-1, 0, enemy
+0, 1, enemy
+-1, 1, 0
+-1, -1, 0
+0, -1, 0
+1, -1, 0
+1, 0, 0
+1, 1, 0
+1, 2, 0
+0, 2, 0
+-1, 2, 0
+-2, 2, 0
+-2, 1, 0
+-2, 0, 0
+-2, -1, 0
+Result
+-1, 1
+End
+Begin
+68
+Dots
+0, -1, enemy
+1, 0, enemy
+1, -1, 0
+-1, -1, 0
+-1, 0, 0
+-1, 1, 0
+0, 1, 0
+1, 1, 0
+2, 1, 0
+2, 0, 0
+2, -1, 0
+2, -2, 0
+1, -2, 0
+0, -2, 0
+-1, -2, 0
+Result
+1, -1
+End
+Begin
+69
+Dots
+0, -1, enemy
+-1, 0, enemy
+-1, -1, 0
+1, -1, 0
+1, 0, 0
+1, 1, 0
+0, 1, 0
+-1, 1, 0
+-2, 1, 0
+-2, 0, 0
+-2, -1, 0
+-2, -2, 0
+-1, -2, 0
+0, -2, 0
+1, -2, 0
+Result
+-1, -1
+End
+Begin
+70
+Dots
+-1, 0, enemy
+0, -1, enemy
+-1, -1, 0
+-1, 1, 0
+0, 1, 0
+1, 1, 0
+1, 0, 0
+1, -1, 0
+1, -2, 0
+0, -2, 0
+-1, -2, 0
+-2, -2, 0
+-2, -1, 0
+-2, 0, 0
+-2, 1, 0
+Result
+-1, -1
+End
+Begin
+71
+Dots
+1, 0, enemy
+0, -1, enemy
+1, -1, 0
+1, 1, 0
+0, 1, 0
+-1, 1, 0
+-1, 0, 0
+-1, -1, 0
+-1, -2, 0
+0, -2, 0
+1, -2, 0
+2, -2, 0
+2, -1, 0
+2, 0, 0
+2, 1, 0
+Result
+1, -1
+End
+Begin
+72
+Dots
+0, 1, enemy
+-1, 0, enemy
+-1, 1, 0
+1, 1, 0
+1, 0, 0
+1, -1, 0
+0, -1, 0
+-1, -1, 0
+-2, -1, 0
+-2, 0, 0
+-2, 1, 0
+-2, 2, 0
+-1, 2, 0
+0, 2, 0
+1, 2, 0
+Result
+-1, 1
+End
+Begin
+73
+Dots
+-1, 0, owner
+0, 1, enemy
+1, 0, enemy
+1, 1, 0
+-1, 1, 0
+0, -1, enemy
+1, -1, 0
+2, 0, 0
+2, 1, 0
+-1, 2, 0
+0, 2, 0
+1, 2, 0
+Result
+1, 1
+End
+Begin
+74
+Dots
+0, -1, owner
+1, 0, enemy
+0, 1, enemy
+1, 1, 0
+1, -1, 0
+-1, 0, enemy
+-1, 1, 0
+0, 2, 0
+1, 2, 0
+2, -1, 0
+2, 0, 0
+2, 1, 0
+Result
+1, 1
+End
+Begin
+75
+Dots
+0, -1, owner
+-1, 0, enemy
+0, 1, enemy
+-1, 1, 0
+-1, -1, 0
+1, 0, enemy
+1, 1, 0
+0, 2, 0
+-1, 2, 0
+-2, -1, 0
+-2, 0, 0
+-2, 1, 0
+Result
+-1, 1
+End
+Begin
+76
+Dots
+-1, 0, owner
+0, -1, enemy
+1, 0, enemy
+1, -1, 0
+-1, -1, 0
+0, 1, enemy
+1, 1, 0
+2, 0, 0
+2, -1, 0
+-1, -2, 0
+0, -2, 0
+1, -2, 0
+Result
+1, -1
+End
+Begin
+77
+Dots
+1, 0, owner
+0, -1, enemy
+-1, 0, enemy
+-1, -1, 0
+1, -1, 0
+0, 1, enemy
+-1, 1, 0
+-2, 0, 0
+-2, -1, 0
+1, -2, 0
+0, -2, 0
+-1, -2, 0
+Result
+-1, -1
+End
+Begin
+78
+Dots
+0, 1, owner
+-1, 0, enemy
+0, -1, enemy
+-1, -1, 0
+-1, 1, 0
+1, 0, enemy
+1, -1, 0
+0, -2, 0
+-1, -2, 0
+-2, 1, 0
+-2, 0, 0
+-2, -1, 0
+Result
+-1, -1
+End
+Begin
+79
+Dots
+0, 1, owner
+1, 0, enemy
+0, -1, enemy
+1, -1, 0
+1, 1, 0
+-1, 0, enemy
+-1, -1, 0
+0, -2, 0
+1, -2, 0
+2, 1, 0
+2, 0, 0
+2, -1, 0
+Result
+1, -1
+End
+Begin
+80
+Dots
+1, 0, owner
+0, 1, enemy
+-1, 0, enemy
+-1, 1, 0
+1, 1, 0
+0, -1, enemy
+-1, -1, 0
+-2, 0, 0
+-2, 1, 0
+1, 2, 0
+0, 2, 0
+-1, 2, 0
+Result
+-1, 1
+End
+Begin
+81
+Dots
+1, 2, enemy
+1, 1, 0
+1, 0, 0
+1, -1, 0
+0, -1, 0
+-1, -1, enemy
+2, 1, 0
+2, 0, 0
+2, -1, 0
+1, -2, 0
+0, -2, 0
+Result
+1, -1
+End
+Begin
+82
+Dots
+2, 1, enemy
+1, 1, 0
+0, 1, 0
+-1, 1, 0
+-1, 0, 0
+-1, -1, enemy
+1, 2, 0
+0, 2, 0
+-1, 2, 0
+-2, 1, 0
+-2, 0, 0
+Result
+-1, 1
+End
+Begin
+83
+Dots
+-2, 1, enemy
+-1, 1, 0
+0, 1, 0
+1, 1, 0
+1, 0, 0
+1, -1, enemy
+-1, 2, 0
+0, 2, 0
+1, 2, 0
+2, 1, 0
+2, 0, 0
+Result
+1, 1
+End
+Begin
+84
+Dots
+1, -2, enemy
+1, -1, 0
+1, 0, 0
+1, 1, 0
+0, 1, 0
+-1, 1, enemy
+2, -1, 0
+2, 0, 0
+2, 1, 0
+1, 2, 0
+0, 2, 0
+Result
+1, 1
+End
+Begin
+85
+Dots
+-1, -2, enemy
+-1, -1, 0
+-1, 0, 0
+-1, 1, 0
+0, 1, 0
+1, 1, enemy
+-2, -1, 0
+-2, 0, 0
+-2, 1, 0
+-1, 2, 0
+0, 2, 0
+Result
+-1, 1
+End
+Begin
+86
+Dots
+-2, -1, enemy
+-1, -1, 0
+0, -1, 0
+1, -1, 0
+1, 0, 0
+1, 1, enemy
+-1, -2, 0
+0, -2, 0
+1, -2, 0
+2, -1, 0
+2, 0, 0
+Result
+1, -1
+End
+Begin
+87
+Dots
+2, -1, enemy
+1, -1, 0
+0, -1, 0
+-1, -1, 0
+-1, 0, 0
+-1, 1, enemy
+1, -2, 0
+0, -2, 0
+-1, -2, 0
+-2, -1, 0
+-2, 0, 0
+Result
+-1, -1
+End
+Begin
+88
+Dots
+-1, 2, enemy
+-1, 1, 0
+-1, 0, 0
+-1, -1, 0
+0, -1, 0
+1, -1, enemy
+-2, 1, 0
+-2, 0, 0
+-2, -1, 0
+-1, -2, 0
+0, -2, 0
+Result
+-1, -1
+End
+
+Begin
+89
+Dots
+1, -1, enemy
+1, 0, 0
+1, 1, enemy
+2, -1, != enemy
+2, 0, != enemy
+2, 1, != enemy
+Result
+1, 0
+End
+Begin
+90
+Dots
+-1, 1, enemy
+0, 1, 0
+1, 1, enemy
+-1, 2, != enemy
+0, 2, != enemy
+1, 2, != enemy
+Result
+0, 1
+End
+Begin
+91
+Dots
+1, 1, enemy
+0, 1, 0
+-1, 1, enemy
+1, 2, != enemy
+0, 2, != enemy
+-1, 2, != enemy
+Result
+0, 1
+End
+Begin
+92
+Dots
+1, 1, enemy
+1, 0, 0
+1, -1, enemy
+2, 1, != enemy
+2, 0, != enemy
+2, -1, != enemy
+Result
+1, 0
+End
+Begin
+93
+Dots
+-1, 1, enemy
+-1, 0, 0
+-1, -1, enemy
+-2, 1, != enemy
+-2, 0, != enemy
+-2, -1, != enemy
+Result
+-1, 0
+End
+Begin
+94
+Dots
+1, -1, enemy
+0, -1, 0
+-1, -1, enemy
+1, -2, != enemy
+0, -2, != enemy
+-1, -2, != enemy
+Result
+0, -1
+End
+Begin
+95
+Dots
+-1, -1, enemy
+0, -1, 0
+1, -1, enemy
+-1, -2, != enemy
+0, -2, != enemy
+1, -2, != enemy
+Result
+0, -1
+End
+
+Begin
+96
+Dots
+0, -1, enemy
+1, -1, 0
+1, 0, 0
+0, 1, 0
+0, 2, 0
+1, 1, 0
+-1, 2, enemy
+1, 2, 0
+2, 1, 0
+2, 0, 0
+Result
+1, 1
+End
+Begin
+97
+Dots
+-1, 0, enemy
+-1, 1, 0
+0, 1, 0
+1, 0, 0
+2, 0, 0
+1, 1, 0
+2, -1, enemy
+2, 1, 0
+1, 2, 0
+0, 2, 0
+Result
+1, 1
+End
+Begin
+98
+Dots
+1, 0, enemy
+1, 1, 0
+0, 1, 0
+-1, 0, 0
+-2, 0, 0
+-1, 1, 0
+-2, -1, enemy
+-2, 1, 0
+-1, 2, 0
+0, 2, 0
+Result
+-1, 1
+End
+Begin
+99
+Dots
+0, 1, enemy
+1, 1, 0
+1, 0, 0
+0, -1, 0
+0, -2, 0
+1, -1, 0
+-1, -2, enemy
+1, -2, 0
+2, -1, 0
+2, 0, 0
+Result
+1, -1
+End
+Begin
+100
+Dots
+0, 1, enemy
+-1, 1, 0
+-1, 0, 0
+0, -1, 0
+0, -2, 0
+-1, -1, 0
+1, -2, enemy
+-1, -2, 0
+-2, -1, 0
+-2, 0, 0
+Result
+-1, -1
+End
+Begin
+101
+Dots
+1, 0, enemy
+1, -1, 0
+0, -1, 0
+-1, 0, 0
+-2, 0, 0
+-1, -1, 0
+-2, 1, enemy
+-2, -1, 0
+-1, -2, 0
+0, -2, 0
+Result
+-1, -1
+End
+Begin
+102
+Dots
+-1, 0, enemy
+-1, -1, 0
+0, -1, 0
+1, 0, 0
+2, 0, 0
+1, -1, 0
+2, 1, enemy
+2, -1, 0
+1, -2, 0
+0, -2, 0
+Result
+1, -1
+End
+Begin
+103
+Dots
+0, -1, enemy
+-1, -1, 0
+-1, 0, 0
+0, 1, 0
+0, 2, 0
+-1, 1, 0
+1, 2, enemy
+-1, 2, 0
+-2, 1, 0
+-2, 0, 0
+Result
+-1, 1
+End
+104
+Dots
+0, -2, enemy
+0, -1, enemy
+1, 0, enemy
+1, -1, 0
+1, -2, owner
+Result
+1, -1
+End
+Begin
+105
+Dots
+-2, 0, enemy
+-1, 0, enemy
+0, 1, enemy
+-1, 1, 0
+-2, 1, owner
+Result
+-1, 1
+End
+Begin
+106
+Dots
+2, 0, enemy
+1, 0, enemy
+0, 1, enemy
+1, 1, 0
+2, 1, owner
+Result
+1, 1
+End
+Begin
+107
+Dots
+0, 2, enemy
+0, 1, enemy
+1, 0, enemy
+1, 1, 0
+1, 2, owner
+Result
+1, 1
+End
+Begin
+108
+Dots
+0, 2, enemy
+0, 1, enemy
+-1, 0, enemy
+-1, 1, 0
+-1, 2, owner
+Result
+-1, 1
+End
+Begin
+109
+Dots
+2, 0, enemy
+1, 0, enemy
+0, -1, enemy
+1, -1, 0
+2, -1, owner
+Result
+1, -1
+End
+Begin
+110
+Dots
+-2, 0, enemy
+-1, 0, enemy
+0, -1, enemy
+-1, -1, 0
+-2, -1, owner
+Result
+-1, -1
+End
+Begin
+111
+Dots
+0, -2, enemy
+0, -1, enemy
+-1, 0, enemy
+-1, -1, 0
+-1, -2, owner
+Result
+-1, -1
+End
+Begin
+112
+Dots
+2, -2, owner
+1, 0, != enemy
+2, -1, != enemy
+1, -2, != enemy
+0, -1, != enemy
+1, -1, 0
+Result
+1, -1
+End
+Begin
+113
+Dots
+0, 0, enemy
+2, -2, enemy
+0, -1, != enemy
+1, -2, != enemy
+2, -1, != enemy
+1, 0, != enemy
+1, -1, 0
+Result
+1, -1
+End
+Begin
+114
+Dots
+0, 0, enemy
+-2, 2, enemy
+-1, 0, != enemy
+-2, 1, != enemy
+-1, 2, != enemy
+0, 1, != enemy
+-1, 1, 0
+Result
+-1, 1
+End
+Begin
+115
+Dots
+0, 0, enemy
+2, 2, enemy
+1, 0, != enemy
+2, 1, != enemy
+1, 2, != enemy
+0, 1, != enemy
+1, 1, 0
+Result
+1, 1
+End
+Begin
+116
+Dots
+0, 0, enemy
+2, 2, enemy
+0, 1, != enemy
+1, 2, != enemy
+2, 1, != enemy
+1, 0, != enemy
+1, 1, 0
+Result
+1, 1
+End
+Begin
+117
+Dots
+0, 0, enemy
+-2, 2, enemy
+0, 1, != enemy
+-1, 2, != enemy
+-2, 1, != enemy
+-1, 0, != enemy
+-1, 1, 0
+Result
+-1, 1
+End
+Begin
+118
+Dots
+0, 0, enemy
+2, -2, enemy
+1, 0, != enemy
+2, -1, != enemy
+1, -2, != enemy
+0, -1, != enemy
+1, -1, 0
+Result
+1, -1
+End
+Begin
+119
+Dots
+0, 0, enemy
+-2, -2, enemy
+-1, 0, != enemy
+-2, -1, != enemy
+-1, -2, != enemy
+0, -1, != enemy
+-1, -1, 0
+Result
+-1, -1
+End
+Begin
+120
+Dots
+0, 0, enemy
+-2, -2, enemy
+0, -1, != enemy
+-1, -2, != enemy
+-2, -1, != enemy
+-1, 0, != enemy
+-1, -1, 0
+Result
+-1, -1
+End
+
