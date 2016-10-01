@@ -2308,16 +2308,17 @@ namespace DotsGame
                             d.IndexRelation == this[d.x + 3, d.y - 1].IndexRelation
                             & this[d.x + 1, d.y - 1].Own == 0
                             & this[d.x + 1, d.y].Own == 0
-                            & this[d.x + 2, d.y-1].Own == 0
+                            & this[d.x + 2, d.y - 1].Own == 0
                             |
                             d.IndexRelation == this[d.x + 3, d.y - 1].IndexRelation
                             & this[d.x + 1, d.y - 1].Own == 0
                             & this[d.x + 1, d.y].Own == 0
                             & this[d.x + 2, d.y].Own == 0
                             |
-                            d.IndexRelation == this[d.x + 2, d.y].IndexRelation
+                            d.IndexRelation == this[d.x + 3, d.y].IndexRelation
                             & this[d.x + 1, d.y - 1].Own == 0
                             & this[d.x + 1, d.y].Own == 0
+                            & this[d.x + 2, d.y].Own == 0
                             |
                             d.IndexRelation == this[d.x + 2, d.y].IndexRelation
                             & this[d.x + 1, d.y + 1].Own == 0
@@ -2475,8 +2476,6 @@ namespace DotsGame
             }
             return ld;
         }
-
-        
         public Dot PickComputerMove(Dot enemy_move)
         {
 #region если первый ход выбираем произвольную соседнюю точку
@@ -2662,34 +2661,34 @@ namespace DotsGame
 #endif
 #endregion
 #endregion
-#region CheckPattern2Move проверяем ходы на два вперед
+//#region CheckPattern2Move проверяем ходы на два вперед
 
-            List<Dot> ld_bm = CheckPattern2Move(pl2);//
-            if (ld_bm.Count>0)
-            {
-                #region DEBUG
-#if DEBUG
-                {
-                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern2Move!");
-                }
-#endif
-                #endregion
-                moves.AddRange(ld_bm);
-            }
-            #region DEBUG
-#if DEBUG
-            sW2.Stop();
-            strDebug = strDebug + "\r\nCheckPattern2Move(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
-            f.txtBestMove.Text = strDebug;
-            sW2.Reset();
-            sW2.Start();
-            f.lblBestMove.Text = "CheckPatternVilkaNextMove...";
-            Application.DoEvents();
-#endif
+//            List<Dot> ld_bm = CheckPattern2Move(pl2);//
+//            if (ld_bm.Count>0)
+//            {
+//                #region DEBUG
+//#if DEBUG
+//                {
+//                    ld_bm.ForEach(d=>f.lstDbg2.Items.Add(d + " player" + pl2 + " -CheckPattern2Move!")); // bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern2Move!");
+//                }
+//#endif
+//                #endregion
+//                moves.AddRange(ld_bm);
+//            }
+//            #region DEBUG
+//#if DEBUG
+//            sW2.Stop();
+//            strDebug = strDebug + "\r\nCheckPattern2Move(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
+//            f.txtBestMove.Text = strDebug;
+//            sW2.Reset();
+//            sW2.Start();
+//            f.lblBestMove.Text = "CheckPatternVilkaNextMove...";
+//            Application.DoEvents();
+//#endif
 
-            #endregion
-#endregion
-            #region CheckPatternVilkaNextMove
+//            #endregion
+//#endregion
+#region CheckPatternVilkaNextMove
             bm = CheckPatternVilkaNextMove(pl2);
             if (DotIndexCheck(bm))
             {
@@ -2886,8 +2885,6 @@ namespace DotsGame
                                        "\r\n время поиска " + stopWatch.ElapsedMilliseconds;
 #endif
 #endregion
-                    //отменить ход
-                    //UndoMove(move);
                     //теперь ходит другой игрок ===========================================================================
 
                     int result = Play(player2, player1);
@@ -2951,137 +2948,6 @@ namespace DotsGame
             return PLAYER_NONE;
         }//----------------------------Play-----------------------------------------------------
 
-//        private int Play(ref Dot best_move, Dot move1, Dot move2, int player1, int player2, ref int count_moves,
-//                               ref int recursion_depth, Dot lastmove, ref int counter_root)//возвращает Owner кто побеждает в результате хода
-//        {
-//            #region Debug Skill
-//            #endregion
-//            recursion_depth++;
-//            if (recursion_depth >= 8)//SkillDepth)
-//            {
-//                return 0;
-//            }
-//            Dot enemy_move = null;
-//#if DEBUG
-//            sW_BM.Start();
-//#endif
-
-//            //проверяем ход который ведет сразу к окружению и паттерны
-//            best_move = BestMove(player1, player2);
-
-//#if DEBUG
-//            sW_BM.Stop();
-//            f.lblBestMove.Text = "BestMove player" + player1 + " -" + sW_BM.Elapsed.Milliseconds.ToString();
-//            Application.DoEvents();
-//            sW_BM.Reset();
-//#endif
-
-//            if (best_move != null && best_move.iNumberPattern == 777)
-//            {
-//                return PLAYER_COMPUTER;
-//            }
-//            else if (best_move != null && best_move.iNumberPattern == 666)
-//            {
-//                return PLAYER_HUMAN;
-//            }
-//            else if (best_move != null)
-//            {
-//                if (CheckDot(best_move, player2)) best_move = null;
-//                if (best_move != null) return PLAYER_COMPUTER;
-//            }
-
-//            var qry = from Dot d in Dots
-//                      where d.Own == PLAYER_NONE & d.Blocked == false & Math.Abs(d.x - lastmove.x) < SkillNumSq
-//                                                                    & Math.Abs(d.y - lastmove.y) < SkillNumSq
-//                      orderby Math.Sqrt(Math.Pow(Math.Abs(d.x - lastmove.x), 2) + Math.Pow(Math.Abs(d.y - lastmove.y), 2))
-//                      select d;
-//            Dot[] ad = qry.ToArray();
-//            int i = ad.Length;
-//            if (i != 0)
-//            {
-//                string sfoo = "";
-//                #region Cycle
-//                foreach (Dot d in ad)
-//                {
-//                    Application.DoEvents();
-//                    //player2=1;
-//                    player2 = player1 == PLAYER_HUMAN ? PLAYER_COMPUTER : PLAYER_HUMAN;
-//                    //if (count_moves>SkillLevel) break;
-//                    //**************делаем ход***********************************
-//                    res_last_move = MakeMove(new Dot(d.x, d.y, player2));
-//                    count_moves++;
-//                    #region проверка на окружение
-
-//                    if (win_player == PLAYER_COMPUTER)
-//                    {
-//                        best_move = d;
-//                        UndoMove(d);
-//                        return PLAYER_COMPUTER;
-//                    }
-
-//                    //если ход в заведомо окруженный регион -пропускаем такой ход
-//                    if (win_player == PLAYER_HUMAN)
-//                    {
-//                        UndoMove(d);
-//                        continue;
-//                    }
-
-//                    #endregion
-//                    #region проверяем ход чтобы точку не окружили на следующем ходу
-//                    sfoo = "CheckMove player" + player1;
-//                    best_move = CheckMove(player1);
-//                    if (best_move == null)
-//                    {
-//                        sfoo = "next move win player" + player2;
-//                        best_move = CheckMove(player2);
-//                        if (best_move != null)
-//                        {
-//                            best_move = d;
-//                            UndoMove(d);
-//                            return player2;
-//                        }
-//                    }
-//                    else
-//                    {
-//                        UndoMove(d);
-//                        continue;
-//                    }
-//                    #endregion
-//                    #region Debug statistic
-//#if DEBUG
-//                    if (f.chkMove.Checked) Pause(); //делает паузу если значение поля pause>0
-//                    f.lstDbg1.Items.Add(d.Own + " -" + d.x + ":" + d.y);
-//                    f.txtDebug.Text = "Общее число ходов: " + count_moves.ToString() +
-//                                       "\r\n Глубина просчета: " + recursion_depth.ToString() +
-//                                       "\r\n проверка вокруг точки " + lastmove +
-//                                       "\r\n move1 " + move1 +
-//                                       "\r\n move2 " + move2 +
-//                                       "\r\n время поиска " + stopWatch.ElapsedMilliseconds;
-//#endif
-//                    #endregion
-//                    //теперь ходит другой игрок ===========================================================================
-//                    int result = Play(ref enemy_move, move1, move2, player2, player1, ref count_moves, ref recursion_depth, lastmove, ref counter_root);
-//                    //отменить ход
-//                    UndoMove(d);
-//                    recursion_depth--;
-//#if DEBUG
-//                    if (f.lstDbg1.Items.Count > 0) f.lstDbg1.Items.RemoveAt(f.lstDbg1.Items.Count - 1);
-//#endif
-//                    if (count_moves > 8)//SkillLevel)
-//                        return PLAYER_NONE;
-//                    if (result != 0)
-//                    {
-//                        //best_move = enemy_move;
-//                        best_move = d;
-//                        return result;
-//                    }
-//                    //это конец тела цикла
-//                }
-//                #endregion
-//            }
-//            return PLAYER_NONE;
-//        }
-        
         private int FindMove(ref Dot move, Dot last_mv)//возвращает Owner кто побеждает в результате хода
         {
             int depth = 0, counter = 0, counter_root = 1000, own;
