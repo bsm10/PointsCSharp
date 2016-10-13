@@ -383,6 +383,10 @@ namespace DotsGame
             return (x >= 0 && x < BoardWidth &&
                     y >= 0 && y < BoardHeight);
         }
+        /// <summary>
+        /// Проверка, находится ли точка на игровой доске
+        /// </summary>
+        /// <returns></returns>
         public bool DotIndexCheck(Dot dot)
         {
             return dot==null? false : (dot.x >= 0 && dot.x < BoardWidth &&
@@ -2584,7 +2588,6 @@ namespace DotsGame
                 }
 #endif
 #endregion
-
                 bm.iNumberPattern = 777; //777-ход в результате которого получается окружение -компьютер побеждает
                 moves.Add(bm);
                 //return bm;
@@ -2599,7 +2602,6 @@ namespace DotsGame
                 }
 #endif
                 #endregion
-
                 bm.iNumberPattern = 666; //666-ход в результате которого получается окружение -компьютер проигрывает
                 //return bm;
                 moves.Add(bm);
