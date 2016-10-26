@@ -883,7 +883,7 @@ namespace DotsGame
                          this[d.x - 1, d.y - 1].Own == Owner & this[d.x + 1, d.y - 1].Own == Owner &
                          this[d.x, d.y - 1].Own != Owner
 
-                         //    +    
+                                //    +    
                                 //    d   
                                 //    +   
                           | this[d.x, d.y + 1].Blocked == false & this[d.x, d.y - 1].Blocked == false &
@@ -898,7 +898,7 @@ namespace DotsGame
                             this[d.x, d.y + 1].Own != Owner &
                             this[d.x, d.y - 1].Own != Owner
 
-                              //+        
+                                //+        
                                 //   d     
                                 //      +   
                           | this[d.x - 1, d.y - 1].Blocked == false & this[d.x + 1, d.y + 1].Blocked == false &
@@ -917,7 +917,7 @@ namespace DotsGame
                           this[d.x + 1, d.y].Own != Owner &
                           this[d.x - 1, d.y].Own != Owner
 
-                               //      +
+                                //      +
                                 //+  d
                         | this[d.x - 1, d.y].Blocked == false & this[d.x + 1, d.y - 1].Blocked == false &
                           this[d.x - 1, d.y].Own == Owner & this[d.x + 1, d.y - 1].Own == Owner &
@@ -927,8 +927,8 @@ namespace DotsGame
                          this[d.x + 1, d.y + 1].Own != Owner &
                           this[d.x, d.y + 1].Own != Owner
 
-                                //+  d
-                                //      +
+                                // +  d
+                                //       +
                         | this[d.x - 1, d.y].Blocked == false & this[d.x + 1, d.y + 1].Blocked == false &
                           this[d.x - 1, d.y].Own == Owner & this[d.x + 1, d.y + 1].Own == Owner &
                           this[d.x, d.y + 1].Own != Owner &
@@ -937,17 +937,17 @@ namespace DotsGame
                           this[d.x + 1, d.y - 1].Own != Owner &
                           this[d.x, d.y - 1].Own != Owner
 
-                              //+
+                                //+
                                 //   d  +       
                         | this[d.x + 1, d.y].Blocked == false & this[d.x - 1, d.y - 1].Blocked == false &
                          this[d.x + 1, d.y].Own == Owner & this[d.x - 1, d.y - 1].Own == Owner &
                          this[d.x, d.y - 1].Own != Owner &
                          this[d.x - 1, d.y + 1].Own != Owner &
                          this[d.x - 1, d.y].Own != Owner &
-                         this[d.x + 1, d.y - 1].Own != Owner &
-                          this[d.x, d.y + 1].Own != Owner
+                         this[d.x + 1, d.y - 1].Own != Owner 
+                          //& this[d.x, d.y + 1].Own != Owner
 
-                               //   d  +       
+                                //   d  +       
                                 //+
                         | this[d.x + 1, d.y].Blocked == false & this[d.x - 1, d.y + 1].Blocked == false &
                          this[d.x + 1, d.y].Own == Owner & this[d.x - 1, d.y + 1].Own == Owner &
@@ -965,10 +965,10 @@ namespace DotsGame
                          this[d.x - 1, d.y].Own != Owner &
                          this[d.x - 1, d.y + 1].Own != Owner &
                          this[d.x, d.y - 1].Own != Owner &
-                         this[d.x + 1, d.y - 1].Own != Owner &
-                          this[d.x + 1, d.y].Own != Owner
+                         this[d.x + 1, d.y - 1].Own != Owner 
+                          //& this[d.x + 1, d.y].Own != Owner
 
-                               //   +
+                                //   +
                                 //   d          
                                 //+   
                         | this[d.x, d.y - 1].Blocked == false & this[d.x - 1, d.y + 1].Blocked == false &
@@ -979,7 +979,7 @@ namespace DotsGame
                         this[d.x + 1, d.y + 1].Own != Owner &
                         this[d.x, d.y + 1].Own != Owner
 
-                               //   +
+                                //   +
                                 //   d          
                                 //      +
                         | this[d.x, d.y - 1].Blocked == false & this[d.x + 1, d.y + 1].Blocked == false &
