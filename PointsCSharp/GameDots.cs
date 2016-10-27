@@ -848,7 +848,11 @@ namespace DotsGame
             //return lstDots;
         }
         //==============================================================================================
-        //проверяет ход в результате которого окружение.Возвращает ход который завершает окружение
+        /// <summary>
+        /// проверяет ход в результате которого окружение.
+        /// </summary>
+        /// <param name="Owner">владелец проверянмых точек</param>
+        /// <returns>Возвращает ход(точку) который завершает окружение</returns>
         public Dot CheckMove(int Owner)
         {
             List<Dot> happy_dots = new List<Dot>();
@@ -887,85 +891,95 @@ namespace DotsGame
                                 //    d   
                                 //    +   
                           | this[d.x, d.y + 1].Blocked == false & this[d.x, d.y - 1].Blocked == false &
-                              this[d.x, d.y - 1].Own == Owner & this[d.x, d.y + 1].Own == Owner &
-                              this[d.x + 1, d.y].Own != Owner &
-                              this[d.x - 1, d.y].Own != Owner
+                              this[d.x, d.y - 1].Own == Owner & this[d.x, d.y + 1].Own == Owner 
+                              //&
+                              //this[d.x + 1, d.y].Own != Owner |
+                              //this[d.x - 1, d.y].Own != Owner
                                 //        
                                 //+   d   +  
                                 //       
                           | this[d.x - 1, d.y].Blocked == false & this[d.x + 1, d.y].Blocked == false &
-                            this[d.x - 1, d.y].Own == Owner & this[d.x + 1, d.y].Own == Owner &
-                            this[d.x, d.y + 1].Own != Owner &
-                            this[d.x, d.y - 1].Own != Owner
+                            this[d.x - 1, d.y].Own == Owner & this[d.x + 1, d.y].Own == Owner 
+                            //&
+                            //this[d.x, d.y + 1].Own != Owner &
+                            //this[d.x, d.y - 1].Own != Owner
 
                                 //+        
                                 //   d     
                                 //      +   
                           | this[d.x - 1, d.y - 1].Blocked == false & this[d.x + 1, d.y + 1].Blocked == false &
-                          this[d.x - 1, d.y - 1].Own == Owner & this[d.x + 1, d.y + 1].Own == Owner &
-                          this[d.x, d.y - 1].Own != Owner &
-                          this[d.x, d.y + 1].Own != Owner &
-                          this[d.x + 1, d.y].Own != Owner &
-                          this[d.x - 1, d.y].Own != Owner
+                          this[d.x - 1, d.y - 1].Own == Owner & this[d.x + 1, d.y + 1].Own == Owner 
+                          //&
+                          //this[d.x, d.y - 1].Own != Owner &
+                          //this[d.x, d.y + 1].Own != Owner &
+                          //this[d.x + 1, d.y].Own != Owner &
+                          //this[d.x - 1, d.y].Own != Owner
                                 //      +  
                                 //   d     
                                 //+        
                           | this[d.x - 1, d.y + 1].Blocked == false & this[d.x + 1, d.y - 1].Blocked == false &
-                          this[d.x - 1, d.y + 1].Own == Owner & this[d.x + 1, d.y - 1].Own == Owner &
-                          this[d.x, d.y - 1].Own != Owner &
-                          this[d.x, d.y + 1].Own != Owner &
-                          this[d.x + 1, d.y].Own != Owner &
-                          this[d.x - 1, d.y].Own != Owner
+                          this[d.x - 1, d.y + 1].Own == Owner & this[d.x + 1, d.y - 1].Own == Owner
+                          //&
+                          //this[d.x, d.y - 1].Own != Owner &
+                          //this[d.x, d.y + 1].Own != Owner &
+                          //this[d.x + 1, d.y].Own != Owner &
+                          //this[d.x - 1, d.y].Own != Owner
 
                                 //      +
                                 //+  d
                         | this[d.x - 1, d.y].Blocked == false & this[d.x + 1, d.y - 1].Blocked == false &
-                          this[d.x - 1, d.y].Own == Owner & this[d.x + 1, d.y - 1].Own == Owner &
-                         this[d.x, d.y - 1].Own != Owner &
-                         this[d.x + 1, d.y].Own != Owner &
-                         this[d.x - 1, d.y - 1].Own != Owner &
-                         this[d.x + 1, d.y + 1].Own != Owner &
-                          this[d.x, d.y + 1].Own != Owner
+                          this[d.x - 1, d.y].Own == Owner & this[d.x + 1, d.y - 1].Own == Owner
+                          &
+                         this[d.x, d.y - 1].Own != Owner 
 
-                                // +  d
-                                //       +
+                         //& this[d.x + 1, d.y].Own != Owner &
+                         //this[d.x - 1, d.y - 1].Own != Owner &
+                         //this[d.x + 1, d.y + 1].Own != Owner &
+                         // this[d.x, d.y + 1].Own != Owner
+
+                        // +  d
+                        //       +
                         | this[d.x - 1, d.y].Blocked == false & this[d.x + 1, d.y + 1].Blocked == false &
-                          this[d.x - 1, d.y].Own == Owner & this[d.x + 1, d.y + 1].Own == Owner &
-                          this[d.x, d.y + 1].Own != Owner &
-                         this[d.x + 1, d.y].Own != Owner &
-                         this[d.x - 1, d.y + 1].Own != Owner &
-                          this[d.x + 1, d.y - 1].Own != Owner &
-                          this[d.x, d.y - 1].Own != Owner
+                          this[d.x - 1, d.y].Own == Owner & this[d.x + 1, d.y + 1].Own == Owner 
+                          &
+                          this[d.x, d.y + 1].Own != Owner 
+                          //& this[d.x + 1, d.y].Own != Owner &
+                          //this[d.x - 1, d.y + 1].Own != Owner &
+                          //this[d.x + 1, d.y - 1].Own != Owner &
+                          //this[d.x, d.y - 1].Own != Owner
 
                                 //+
                                 //   d  +       
                         | this[d.x + 1, d.y].Blocked == false & this[d.x - 1, d.y - 1].Blocked == false &
                          this[d.x + 1, d.y].Own == Owner & this[d.x - 1, d.y - 1].Own == Owner &
-                         this[d.x, d.y - 1].Own != Owner &
-                         this[d.x - 1, d.y + 1].Own != Owner &
-                         this[d.x - 1, d.y].Own != Owner &
-                         this[d.x + 1, d.y - 1].Own != Owner 
+                         this[d.x, d.y - 1].Own != Owner 
+
+                         //& this[d.x - 1, d.y + 1].Own != Owner &
+                         //this[d.x - 1, d.y].Own != Owner &
+                         //this[d.x + 1, d.y - 1].Own != Owner 
                           //& this[d.x, d.y + 1].Own != Owner
 
                                 //   d  +       
                                 //+
                         | this[d.x + 1, d.y].Blocked == false & this[d.x - 1, d.y + 1].Blocked == false &
                          this[d.x + 1, d.y].Own == Owner & this[d.x - 1, d.y + 1].Own == Owner &
-                         this[d.x, d.y + 1].Own != Owner &
-                         this[d.x + 1, d.y + 1].Own != Owner &
-                         this[d.x - 1, d.y].Own != Owner &
-                         this[d.x - 1, d.y - 1].Own != Owner &
-                          this[d.x, d.y - 1].Own != Owner
+                         this[d.x, d.y + 1].Own != Owner 
+                         //&
+                         //this[d.x + 1, d.y + 1].Own != Owner &
+                         //this[d.x - 1, d.y].Own != Owner &
+                         //this[d.x - 1, d.y - 1].Own != Owner &
+                         // this[d.x, d.y - 1].Own != Owner
 
-                               //+   
+                                //+   
                                 //   d          
                                 //   +
                         | this[d.x, d.y + 1].Blocked == false & this[d.x - 1, d.y - 1].Blocked == false &
                          this[d.x, d.y + 1].Own == Owner & this[d.x - 1, d.y - 1].Own == Owner &
-                         this[d.x - 1, d.y].Own != Owner &
-                         this[d.x - 1, d.y + 1].Own != Owner &
-                         this[d.x, d.y - 1].Own != Owner &
-                         this[d.x + 1, d.y - 1].Own != Owner 
+                         this[d.x - 1, d.y].Own != Owner
+                         //&
+                         //this[d.x - 1, d.y + 1].Own != Owner &
+                         //this[d.x, d.y - 1].Own != Owner &
+                         //this[d.x + 1, d.y - 1].Own != Owner 
                           //& this[d.x + 1, d.y].Own != Owner
 
                                 //   +
@@ -973,33 +987,36 @@ namespace DotsGame
                                 //+   
                         | this[d.x, d.y - 1].Blocked == false & this[d.x - 1, d.y + 1].Blocked == false &
                         this[d.x, d.y - 1].Own == Owner & this[d.x - 1, d.y + 1].Own == Owner &
-                        this[d.x - 1, d.y].Own != Owner &
-                        this[d.x - 1, d.y - 1].Own != Owner &
-                        this[d.x + 1, d.y].Own != Owner &
-                        this[d.x + 1, d.y + 1].Own != Owner &
-                        this[d.x, d.y + 1].Own != Owner
+                        this[d.x - 1, d.y].Own != Owner 
+                        //&
+                        //this[d.x - 1, d.y - 1].Own != Owner &
+                        //this[d.x + 1, d.y].Own != Owner &
+                        //this[d.x + 1, d.y + 1].Own != Owner &
+                        //this[d.x, d.y + 1].Own != Owner
 
                                 //   +
                                 //   d          
                                 //      +
                         | this[d.x, d.y - 1].Blocked == false & this[d.x + 1, d.y + 1].Blocked == false &
                         this[d.x, d.y - 1].Own == Owner & this[d.x + 1, d.y + 1].Own == Owner &
-                        this[d.x + 1, d.y].Own != Owner &
-                        this[d.x, d.y + 1].Own != Owner &
-                        this[d.x - 1, d.y + 1].Own != Owner &
-                        this[d.x - 1, d.y].Own != Owner &
-                        this[d.x + 1, d.y - 1].Own != Owner
+                        this[d.x + 1, d.y].Own != Owner 
+                        //&
+                        //this[d.x, d.y + 1].Own != Owner &
+                        //this[d.x - 1, d.y + 1].Own != Owner &
+                        //this[d.x - 1, d.y].Own != Owner &
+                        //this[d.x + 1, d.y - 1].Own != Owner
 
                                 //      +
                                 //   d          
                                 //   +   
                         | this[d.x, d.y + 1].Blocked == false & this[d.x + 1, d.y - 1].Blocked == false &
                         this[d.x, d.y + 1].Own == Owner & this[d.x + 1, d.y - 1].Own == Owner &
-                        this[d.x - 1, d.y - 1].Own != Owner &
-                        this[d.x, d.y - 1].Own != Owner &
-                        this[d.x + 1, d.y].Own != Owner &
-                        this[d.x + 1, d.y + 1].Own != Owner &
-                        this[d.x - 1, d.y].Own != Owner
+                        this[d.x + 1, d.y].Own != Owner 
+                        //&
+                        //this[d.x - 1, d.y - 1].Own != Owner &
+                        //this[d.x, d.y - 1].Own != Owner &
+                        //this[d.x + 1, d.y + 1].Own != Owner &
+                        //this[d.x - 1, d.y].Own != Owner
 #endregion
 );
 #if DEBUG
