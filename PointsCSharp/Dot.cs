@@ -210,6 +210,9 @@ namespace DotsGame
                 }
             }
         private List<Dot> _NeiborDots = new List<Dot>();
+        /// <summary>
+        /// Точки по соседству с єтой точкой
+        /// </summary>
         public List<Dot> NeiborDots
         {
             get
@@ -282,22 +285,23 @@ namespace DotsGame
         }
         public int iNumberPattern { get; set; }
 
-        public Dot(int x, int y, int Owner = 0, int NumberPattern = 0)
+        public Dot(int x, int y, int Owner = 0, int NumberPattern = 0, int Rating = 0)
         {
             this.x = x;
             this.y = y;
             _BlokingDots = new List<Dot>();
             Own = Owner;
             iNumberPattern = NumberPattern;
+            this.Rating = Rating;
             //IndexRelation = IndexDot;
         }
         public void UnmarkDot()
         {
-            this.Marked = false;
-            this.PatternsFirstDot = false;
-            this.PatternsMoveDot = false;
-            this.PatternsAnyDot = false;
-            this.PatternsEmptyDot = false;
+            Marked = false;
+            PatternsFirstDot = false;
+            PatternsMoveDot = false;
+            PatternsAnyDot = false;
+            PatternsEmptyDot = false;
         }
         /// <summary>
         /// Удаляем метки паттернов
