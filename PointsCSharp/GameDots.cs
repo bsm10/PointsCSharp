@@ -2319,183 +2319,81 @@ namespace DotsGame
             //=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
             return null;//если никаких паттернов не найдено возвращаем нуль
         }
-        public List<Dot> CheckPattern2Move(int Owner) //проверка хода на гарантированное окружение(когда точки находятся через две клетки) 
+        /// <summary>
+        /// проверка хода на гарантированное окружение(когда точки находятся через две клетки) 
+        /// </summary>
+        /// <param name="Owner"></param>
+        /// <returns></returns>
+        //public List<Dot> CheckPattern2Move(int Owner) 
+        //{
+        //    var qry = from Dot d1 in this
+        //              where d1.Own == Owner && !d1.Blocked
+        //              from Dot d2 in this
+        //              where d2.Own == Owner && !d2.Blocked && Distance(d1, d2) < 3.5f & Distance(d1, d2) >= 3
+        //              from Dot de1 in this
+        //              where de1.ValidMove & Distance(d1, de1) == 1 
+        //              from Dot de2 in this
+        //              where de2.ValidMove & Distance(de1, de2) == 1 & Distance(d1, de2) < 2
+        //              from Dot de3 in this
+        //              where de3.ValidMove & Distance(d2, de3) < 2 & Distance(de2, de3) == 1 
+        //                 || de3.ValidMove & Distance(d2, de3) < 2 & Distance(de1, de3) == 1
+        //              select new Dot(de3.x,de3.y, NumberPattern: 777);
+        //    return qry.Distinct(new DotEq()).ToList();
+        //}
+        public List<Dot> CheckPattern2Move(int Owner, bool IndexRelation)
         {
-            List<Dot> ld = new List<Dot>();
-            iNumberPattern = 1;
-            var pat1 = Board_AllNotBlockedDots.Where(d =>
-                            d.Own == Owner
-                            &&
-                            d.IndexRelation == this[d.x + 3, d.y - 1].IndexRelation
-                            & this[d.x + 1, d.y - 1].Own == 0
-                            & this[d.x + 1, d.y].Own == 0
-                            & this[d.x + 2, d.y - 1].Own == 0
-                            |
-                            d.IndexRelation == this[d.x + 3, d.y - 1].IndexRelation
-                            & this[d.x + 1, d.y - 1].Own == 0
-                            & this[d.x + 1, d.y].Own == 0
-                            & this[d.x + 2, d.y].Own == 0
-                            |
-                            d.IndexRelation == this[d.x + 3, d.y].IndexRelation
-                            & this[d.x + 1, d.y - 1].Own == 0
-                            & this[d.x + 1, d.y].Own == 0
-                            & this[d.x + 2, d.y].Own == 0
-                            |
-                            d.IndexRelation == this[d.x + 2, d.y].IndexRelation
-                            & this[d.x + 1, d.y + 1].Own == 0
-                            & this[d.x + 1, d.y].Own == 0
-                            |
-                            d.IndexRelation == this[d.x + 2, d.y + 1].IndexRelation
-                            & this[d.x + 1, d.y].Own == 0
-                            & this[d.x + 1, d.y + 1].Own == 0
-                           |
-                           d.IndexRelation == this[d.x + 1, d.y + 2].IndexRelation
-                           & this[d.x, d.y + 1].Own == 0
-                           & this[d.x + 1, d.y + 1].Own == 0
-                           |
-                           d.IndexRelation == this[d.x, d.y + 2].IndexRelation
-                           & this[d.x, d.y + 1].Own == 0
-                           & this[d.x + 1, d.y + 1].Own == 0
-                           |
-                           d.IndexRelation == this[d.x, d.y + 2].IndexRelation
-                           & this[d.x, d.y + 1].Own == 0
-                           & this[d.x - 1, d.y + 1].Own == 0
-                           |
-                           d.IndexRelation == this[d.x - 1, d.y + 2].IndexRelation
-                           & this[d.x, d.y + 1].Own == 0
-                           & this[d.x - 1, d.y + 1].Own == 0
-                           |
-                           d.IndexRelation == this[d.x - 2, d.y + 1].IndexRelation
-                           & this[d.x - 1, d.y].Own == 0
-                           & this[d.x - 1, d.y + 1].Own == 0
-                           |
-                            d.IndexRelation == this[d.x - 2, d.y].IndexRelation
-                           & this[d.x - 1, d.y].Own == 0
-                           & this[d.x - 1, d.y + 1].Own == 0
-                           |
-                            d.IndexRelation == this[d.x - 2, d.y].IndexRelation
-                           & this[d.x - 1, d.y].Own == 0
-                           & this[d.x - 1, d.y - 1].Own == 0
-                           |
-                            d.IndexRelation == this[d.x - 2, d.y - 1].IndexRelation
-                            & this[d.x - 1, d.y].Own == 0
-                            & this[d.x - 1, d.y - 1].Own == 0
-                            |
-                            d.IndexRelation == this[d.x, d.y - 2].IndexRelation
-                            & this[d.x, d.y - 1].Own == 0
-                            & this[d.x - 1, d.y - 1].Own == 0
-                            |
-                            d.IndexRelation == this[d.x - 1, d.y - 2].IndexRelation
-                            & this[d.x, d.y - 1].Own == 0
-                            & this[d.x - 1, d.y - 1].Own == 0
-                            |
-                            d.IndexRelation == this[d.x, d.y - 2].IndexRelation
-                            & this[d.x, d.y - 1].Own == 0
-                            & this[d.x + 1, d.y - 1].Own == 0
-                            |
-                            d.IndexRelation == this[d.x + 1, d.y - 2].IndexRelation
-                            & this[d.x, d.y - 1].Own == 0
-                            & this[d.x + 1, d.y - 1].Own == 0
-                            |
-                            d.IndexRelation == this[d.x + 2, d.y - 1].IndexRelation
-                           & this[d.x + 1, d.y].Own == 0
-                           & this[d.x + 1, d.y - 1].Own == 0
-
-                            );
-            AddToList(ld, pat1, 1, 0);
-            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            foreach (Dot d in ld)
+            IEnumerable<Dot> qry;
+            if (IndexRelation)
             {
-                d.iNumberPattern = 777;
-                //d.Rating=1;
+                qry = from Dot d1 in this
+                          where d1.Own == Owner && !d1.Blocked
+                          from Dot d2 in this
+                          where d2.IndexRelation == d1.IndexRelation && !d2.Blocked && Distance(d1, d2) < 3.5f & Distance(d1, d2) >= 3
+                          from Dot de1 in this
+                          where de1.ValidMove & Distance(d1, de1) == 1
+                          from Dot de2 in this
+                          where de2.ValidMove & Distance(de1, de2) == 1 & Distance(d1, de2) < 2
+                          from Dot de3 in this
+                          where de3.ValidMove & Distance(d2, de3) < 2 & Distance(de2, de3) == 1
+                             || de3.ValidMove & Distance(d2, de3) < 2 & Distance(de1, de3) == 1
+                          select new Dot(de3.x, de3.y, NumberPattern: 777);
             }
-            return ld;
+            else
+            {
+                qry = from Dot d1 in this
+                          where d1.Own == Owner && !d1.Blocked
+                          from Dot d2 in this
+                          where d2.Own == Owner && !d2.Blocked && Distance(d1, d2) < 3.5f & Distance(d1, d2) >= 3
+                          from Dot de1 in this
+                          where de1.ValidMove & Distance(d1, de1) == 1
+                          from Dot de2 in this
+                          where de2.ValidMove & Distance(de1, de2) == 1 & Distance(d1, de2) < 2
+                          from Dot de3 in this
+                          where de3.ValidMove & Distance(d2, de3) < 2 & Distance(de2, de3) == 1
+                             || de3.ValidMove & Distance(d2, de3) < 2 & Distance(de1, de3) == 1
+                          select de3;
+
+            }
+
+            return qry.Distinct(new DotEq()).ToList();
         }
 
-        public List<Dot> CheckPattern2Move2(int Owner) //проверка хода на гарантированное окружение(когда точки находятся через две клетки) 
-        {
-            List<Dot> ld = new List<Dot>();
-            iNumberPattern = 1;
-            var pat1 = Board_AllNotBlockedDots.Where(d=>
-                            d.Own == Owner
-                            &&
-                            d.IndexRelation == this[d.x + 2, d.y - 1].IndexRelation
-                            & this[d.x + 1, d.y - 1].Own == 0
-                            & this[d.x + 1, d.y].Own == 0
-                            |
-                            d.IndexRelation == this[d.x + 2, d.y].IndexRelation
-                            & this[d.x + 1, d.y - 1].Own == 0
-                            & this[d.x + 1, d.y].Own == 0
-                            |
-                            d.IndexRelation == this[d.x + 2, d.y].IndexRelation
-                            & this[d.x + 1, d.y + 1].Own == 0
-                            & this[d.x + 1, d.y].Own == 0
-                            |
-                            d.IndexRelation == this[d.x + 2, d.y + 1].IndexRelation
-                            & this[d.x + 1, d.y].Own == 0
-                            & this[d.x + 1, d.y + 1].Own == 0
-                           |
-                           d.IndexRelation == this[d.x + 1, d.y + 2].IndexRelation
-                           & this[d.x, d.y + 1].Own == 0
-                           & this[d.x + 1, d.y + 1].Own == 0
-                           |
-                           d.IndexRelation == this[d.x, d.y + 2].IndexRelation
-                           & this[d.x, d.y + 1].Own == 0
-                           & this[d.x + 1, d.y + 1].Own == 0
-                           |
-                           d.IndexRelation == this[d.x, d.y + 2].IndexRelation
-                           & this[d.x, d.y + 1].Own == 0
-                           & this[d.x - 1, d.y + 1].Own == 0
-                           |
-                           d.IndexRelation == this[d.x - 1, d.y + 2].IndexRelation
-                           & this[d.x, d.y + 1].Own == 0
-                           & this[d.x - 1, d.y + 1].Own == 0
-                           |
-                           d.IndexRelation == this[d.x - 2, d.y + 1].IndexRelation
-                           & this[d.x - 1, d.y].Own == 0
-                           & this[d.x - 1, d.y + 1].Own == 0
-                           |
-                            d.IndexRelation == this[d.x - 2, d.y].IndexRelation
-                           & this[d.x - 1, d.y].Own == 0
-                           & this[d.x - 1, d.y + 1].Own == 0
-                           |
-                            d.IndexRelation == this[d.x - 2, d.y].IndexRelation
-                           & this[d.x - 1, d.y].Own == 0
-                           & this[d.x - 1, d.y - 1].Own == 0
-                           |
-                            d.IndexRelation == this[d.x - 2, d.y - 1].IndexRelation
-                            & this[d.x - 1, d.y].Own == 0
-                            & this[d.x - 1, d.y - 1].Own == 0
-                            |
-                            d.IndexRelation == this[d.x, d.y - 2].IndexRelation
-                            & this[d.x, d.y - 1].Own == 0
-                            & this[d.x - 1, d.y - 1].Own == 0
-                            |
-                            d.IndexRelation == this[d.x - 1, d.y - 2].IndexRelation
-                            & this[d.x, d.y - 1].Own == 0
-                            & this[d.x - 1, d.y - 1].Own == 0
-                            |
-                            d.IndexRelation == this[d.x, d.y - 2].IndexRelation
-                            & this[d.x, d.y - 1].Own == 0
-                            & this[d.x + 1, d.y - 1].Own == 0
-                            |
-                            d.IndexRelation == this[d.x + 1, d.y - 2].IndexRelation
-                            & this[d.x, d.y - 1].Own == 0
-                            & this[d.x + 1, d.y - 1].Own == 0
-                            |
-                            d.IndexRelation == this[d.x + 2, d.y - 1].IndexRelation
-                           & this[d.x + 1, d.y].Own == 0
-                           & this[d.x + 1, d.y - 1].Own == 0
 
-                            );
-            AddToList(ld, pat1, 1, 0);
-            //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            foreach(Dot d in ld) 
-            {
-                d.iNumberPattern=777;
-                //d.Rating=1;
-            }
-            return ld;
+        public List<Dot> CheckPatternVilka2x2(int Owner) //проверка хода на гарантированное окружение(когда точки находятся через две клетки) 
+        {
+            var qry = from Dot d1 in this
+                      where d1.Own == Owner && !d1.Blocked
+                      from Dot d2 in this
+                      where d2.Own == Owner && !d2.Blocked && Distance(d1, d2) < 5 & Distance(d1, d2) >= 4
+                      from Dot de1 in this
+                      where de1.ValidMove & Distance(d1, de1) == 1
+                      from Dot de2 in this
+                      where de2.ValidMove & Distance(de1, de2) == 1 & Distance(d1, de2) < 2
+                      from Dot de3 in this
+                      where de3.ValidMove & Distance(d2, de3) < 2 & Distance(de2, de3) == 1
+                         || de3.ValidMove & Distance(d2, de3) < 2 & Distance(de1, de3) == 1
+                      select new Dot(de3.x, de3.y, NumberPattern: 777);
+            return qry.Distinct(new DotEq()).ToList();
         }
         public Dot PickComputerMove(Dot enemy_move)
         {
@@ -2678,36 +2576,36 @@ namespace DotsGame
 
             Application.DoEvents();
 #endif
-#endregion
-#endregion
-//#region CheckPattern2Move проверяем ходы на два вперед
+            #endregion
+            #endregion
+            #region CheckPattern2Move проверяем ходы на два вперед на гарантированное окружение
 
-//            List<Dot> ld_bm = CheckPattern2Move(pl2);//
-//            if (ld_bm.Count>0)
-//            {
-//                #region DEBUG
-//#if DEBUG
-//                {
-//                    ld_bm.ForEach(d=>f.lstDbg2.Items.Add(d + " player" + pl2 + " -CheckPattern2Move!")); // bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern2Move!");
-//                }
-//#endif
-//                #endregion
-//                moves.AddRange(ld_bm);
-//            }
-//            #region DEBUG
-//#if DEBUG
-//            sW2.Stop();
-//            strDebug = strDebug + "\r\nCheckPattern2Move(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
-//            f.txtBestMove.Text = strDebug;
-//            sW2.Reset();
-//            sW2.Start();
-//            f.lblBestMove.Text = "CheckPatternVilkaNextMove...";
-//            Application.DoEvents();
-//#endif
+            List<Dot> ld_bm = CheckPattern2Move(pl2, true);//
+            if (ld_bm.Count > 0)
+            {
+                #region DEBUG
+#if DEBUG
+                {
+                    ld_bm.ForEach(d => f.lstDbg2.Items.Add(d + " player" + pl2 + " -CheckPattern2Move!")); // bm.x + ":" + bm.y + " player" + pl2 + " -CheckPattern2Move!");
+                }
+#endif
+                #endregion
+                moves.AddRange(ld_bm);
+            }
+            #region DEBUG
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern2Move(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            sW2.Reset();
+            sW2.Start();
+            f.lblBestMove.Text = "CheckPatternVilkaNextMove...";
+            Application.DoEvents();
+#endif
 
-//            #endregion
-//#endregion
-#region CheckPatternVilkaNextMove
+            #endregion
+            #endregion
+            #region CheckPatternVilkaNextMove
             bm = CheckPatternVilkaNextMove(pl2);
             if (DotIndexCheck(bm))
             {
@@ -2735,7 +2633,6 @@ namespace DotsGame
 #endregion
 #region CheckPattern
             
-            //bm = CheckPattern(pl2);
             foreach (Dot dt in CheckPattern(pl2))
             {    
                 if (DotIndexCheck(dt))
@@ -2825,7 +2722,7 @@ namespace DotsGame
 
 #endregion
             var result = moves.Distinct(new DotEq());
-            return result.ToList<Dot>();
+            return result.ToList();
         }
         //==================================================================================================================
         

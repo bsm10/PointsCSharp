@@ -274,7 +274,7 @@ namespace DotsGame
         {
             get
             {
-                return (Dot)this.MemberwiseClone();
+                return (Dot)MemberwiseClone();
                 //Dot d = new Dot(x,y,Own);
                 //d.Blocked=Blocked;
                 //return d;
@@ -282,12 +282,13 @@ namespace DotsGame
         }
         public int iNumberPattern { get; set; }
 
-        public Dot(int x, int y, int Owner = 0)
+        public Dot(int x, int y, int Owner = 0, int NumberPattern = 0)
         {
             this.x = x;
             this.y = y;
             _BlokingDots = new List<Dot>();
             Own = Owner;
+            iNumberPattern = NumberPattern;
             //IndexRelation = IndexDot;
         }
         public void UnmarkDot()
