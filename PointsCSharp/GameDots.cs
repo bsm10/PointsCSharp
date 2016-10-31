@@ -1049,39 +1049,41 @@ namespace DotsGame
         }
         public Dot CheckPatternVilkaNextMove(int Owner)
         {
-            var qry = Board_NotEmptyNonBlockedDots.Where(dt => dt.Own == Owner);
-            Dot dot_ptn;
-            if (qry.Count() != 0)
-            {
-                foreach (Dot d in qry)
-                {
-                    foreach (Dot dot_move in NeiborDotsAll(d))
-                    {
-                        if (dot_move.ValidMove)
-                        {
-                            //делаем ход
-                            int result_last_move = MakeMove(dot_move, Owner);
-                            int pl = Owner == 2 ? 1 : 2;
-                            Dot dt = CheckMove(pl); // проверка чтобы не попасть в капкан
-                            if (dt != null)
-                            {
-                                UndoMove(dot_move);
-                                continue;
-                            }
-                            dot_ptn = CheckPattern_vilochka(d.Own);
-                            //-----------------------------------
-                            if (dot_ptn != null & result_last_move == 0)
-                            {
-                                UndoMove(dot_move);
-                                return dot_move;
-                            }
-                            UndoMove(dot_move);
-                        }
-                    }
-                }
-            }
+            //var qry = Board_NotEmptyNonBlockedDots.Where(dt => dt.Own == Owner);
+            //Dot dot_ptn;
+            //if (qry.Count() != 0)
+            //{
+            //    foreach (Dot d in qry)
+            //    {
+            //        foreach (Dot dot_move in NeiborDotsAll(d))
+            //        {
+            //            if (dot_move.ValidMove)
+            //            {
+            //                //делаем ход
+            //                int result_last_move = MakeMove(dot_move, Owner);
+            //                int pl = Owner == 2 ? 1 : 2;
+            //                Dot dt = CheckMove(pl); // проверка чтобы не попасть в капкан
+            //                if (dt != null)
+            //                {
+            //                    UndoMove(dot_move);
+            //                    continue;
+            //                }
+            //                dot_ptn = CheckPattern_vilochka(d.Own);
+            //                //-----------------------------------
+            //                if (dot_ptn != null & result_last_move == 0)
+            //                {
+            //                    UndoMove(dot_move);
+            //                    return dot_move;
+            //                }
+            //                UndoMove(dot_move);
+            //            }
+            //        }
+            //    }
+            //}
             return null;
         }
+
+
         public int iNumberPattern;
         public Dot CheckPattern_vilochka(int Owner)
         {
@@ -2617,7 +2619,6 @@ namespace DotsGame
             List<Dot> ld_bm = CheckPattern2Move(pl2, true);
             ld_bm.AddRange(CheckPatternVilka2x2(pl2, true));
             ld_bm.AddRange(CheckPatternVilka2x2(pl2, false));
-
             ld_bm.AddRange(CheckPattern2Move(pl1, true));
             ld_bm.AddRange(CheckPatternVilka2x2(pl1, true));
             ld_bm.AddRange(CheckPatternVilka2x2(pl1, false));
