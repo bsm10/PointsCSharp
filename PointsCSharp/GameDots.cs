@@ -1055,7 +1055,7 @@ namespace DotsGame
             {
                 foreach (Dot d in qry)
                 {
-                    foreach (Dot dot_move in NeiborDotsSNWE(d))
+                    foreach (Dot dot_move in NeiborDotsAll(d))
                     {
                         if (dot_move.ValidMove)
                         {
@@ -2359,9 +2359,12 @@ namespace DotsGame
 
             return qry.Distinct(new DotEq()).ToList();
         }
-        public List<Dot> CheckPatternVilka2x2(int Owner) //проверка хода на гарантированное окружение(когда точки находятся через 4 клетки) 
+        public List<Dot> CheckPatternVilka2x2(int Owner, bool IndexRelation) //проверка хода на гарантированное окружение(когда точки находятся через 4 клетки) 
         {
-            var qry = from Dot d1 in this
+            IEnumerable<Dot> qry;
+            if (IndexRelation)
+            {
+                qry = from Dot d1 in this
                       where d1.Own == Owner && !d1.Blocked
 
                       from Dot d2 in this
@@ -2389,6 +2392,38 @@ namespace DotsGame
                                           & Distance(d2, de3) >= 2
 
                       select new Dot(de3.x, de3.y, NumberPattern: 777, Rating: 1);
+            }
+            else
+            {
+                qry = from Dot d1 in this
+                      where d1.Own == Owner && !d1.Blocked
+
+                      from Dot d2 in this
+                      where d2.Own == d1.Own && !d2.Blocked && Distance(d1, d2) < 4.5f & Distance(d1, d2) >= 2.5f
+
+                      from Dot de1 in this
+                      where de1.ValidMove & Distance(d1, de1) == 1
+
+                      from Dot de2 in this
+                      where de2.ValidMove & Distance(d2, de2) == 1
+
+                      from Dot de1_1 in this
+                      where de1_1.ValidMove & Distance(de1_1, de1) == 1 & Distance(de1_1, d1) < 2
+
+                      from Dot de2_1 in this
+                      where de2_1.ValidMove & Distance(de2_1, de2) == 1 & Distance(de2_1, d2) < 2
+
+
+                      from Dot de3 in this
+                      where de3.ValidMove & Distance(de1, de3) < 2
+                                          & Distance(de2, de3) < 2
+                                          & Distance(de1_1, de3) < 2
+                                          & Distance(de2_1, de3) < 2
+                                          & Distance(d1, de3) >= 2
+                                          & Distance(d2, de3) >= 2
+
+                      select new Dot(de3.x, de3.y, NumberPattern: 777, Rating: 2);
+            }
             return qry.Distinct(new DotEq()).ToList();
         }
         public Dot PickComputerMove(Dot enemy_move)
@@ -2580,9 +2615,12 @@ namespace DotsGame
             #region CheckPattern2Move проверяем ходы на два вперед на гарантированное окружение
 
             List<Dot> ld_bm = CheckPattern2Move(pl2, true);
-            ld_bm.AddRange(CheckPatternVilka2x2(pl2));
+            ld_bm.AddRange(CheckPatternVilka2x2(pl2, true));
+            ld_bm.AddRange(CheckPatternVilka2x2(pl2, false));
+
             ld_bm.AddRange(CheckPattern2Move(pl1, true));
-            ld_bm.AddRange(CheckPatternVilka2x2(pl1));
+            ld_bm.AddRange(CheckPatternVilka2x2(pl1, true));
+            ld_bm.AddRange(CheckPatternVilka2x2(pl1, false));
             if (ld_bm.Count > 0)
             {
                 #region DEBUG
@@ -2608,18 +2646,18 @@ namespace DotsGame
             #endregion
             #endregion
             #region CheckPatternVilkaNextMove
-            //            bm = CheckPatternVilkaNextMove(pl2);
-            //            if (DotIndexCheck(bm))
-            //            {
-            //#region DEBUG
-            //#if DEBUG
-            //                {
-            //                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
-            //                }
-            //#endif
-            //#endregion
-            //                moves.Add(bm); //return bm;
-            //            }
+            bm = CheckPatternVilkaNextMove(pl2);
+            if (DotIndexCheck(bm))
+            {
+                #region DEBUG
+#if DEBUG
+                {
+                    f.lstDbg2.Items.Add(bm.x + ":" + bm.y + " player" + pl2 + "CheckPatternVilkaNextMove " + iNumberPattern);
+                }
+#endif
+                #endregion
+                moves.Add(bm); //return bm;
+            }
             #region DEBUG
 
 #if DEBUG
@@ -2635,46 +2673,45 @@ namespace DotsGame
             #endregion
             #region CheckPattern
 
-//            foreach (Dot dt in CheckPattern(pl2))
-//            {
-//                if (DotIndexCheck(dt))
-//                {
-//                    #region DEBUG
-//#if DEBUG
-//                    {
-//                        f.lstDbg2.Items.Add(dt.x + ":" + dt.y + " player" + pl2 + " - CheckPattern " + dt.iNumberPattern);
-//                    }
-//#endif
-//                    #endregion
-//                    if (CheckDot(dt, pl2) == false) moves.Add(dt);
-//                }
-//            }
-//            #region Debug
-//#if DEBUG
-//            sW2.Stop();
-//            strDebug = strDebug + "\r\nCheckPattern(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
-//            f.txtBestMove.Text = strDebug;
-//            sW2.Reset();
-//            sW2.Start();
-//            f.lblBestMove.Text = "CheckPattern(pl1)...";
-//            Application.DoEvents();
-//#endif
-//            #endregion
-//            foreach (Dot dt in CheckPattern(pl1))
-//            {
-//                if (DotIndexCheck(dt))
-//                {
-//                    #region DEBUG
-//#if DEBUG
-//                    {
-//                        f.lstDbg2.Items.Add(dt.x + ":" + dt.y + " player" + pl1 + " - CheckPattern " + dt.iNumberPattern);
-//                    }
-//#endif
-//                    #endregion
-//                    if (CheckDot(dt, pl2) == false) moves.Add(dt);
-//                }
-//            }
-            //            }
+            foreach (Dot dt in CheckPattern(pl2))
+            {
+                if (DotIndexCheck(dt))
+                {
+                    #region DEBUG
+#if DEBUG
+                    {
+                        f.lstDbg2.Items.Add(dt.x + ":" + dt.y + " player" + pl2 + " - CheckPattern " + dt.iNumberPattern);
+                    }
+#endif
+                    #endregion
+                    if (CheckDot(dt, pl2) == false) moves.Add(dt);
+                }
+            }
+            #region Debug
+#if DEBUG
+            sW2.Stop();
+            strDebug = strDebug + "\r\nCheckPattern(pl2) -" + sW2.Elapsed.Milliseconds.ToString();
+            f.txtBestMove.Text = strDebug;
+            sW2.Reset();
+            sW2.Start();
+            f.lblBestMove.Text = "CheckPattern(pl1)...";
+            Application.DoEvents();
+#endif
+            #endregion
+            foreach (Dot dt in CheckPattern(pl1))
+            {
+                if (DotIndexCheck(dt))
+                {
+                    #region DEBUG
+#if DEBUG
+                    {
+                        f.lstDbg2.Items.Add(dt.x + ":" + dt.y + " player" + pl1 + " - CheckPattern " + dt.iNumberPattern);
+                    }
+#endif
+                    #endregion
+                    if (CheckDot(dt, pl2) == false) moves.Add(dt);
+                }
+            }
             #region DEBUG
 #if DEBUG
             sW2.Stop();
