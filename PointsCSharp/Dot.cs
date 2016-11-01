@@ -179,7 +179,6 @@ namespace DotsGame
         public int x, y;
         private int _Own;
         private bool _Blocked; 
-
         public bool Blocked 
         { 
             get {return _Blocked;}
@@ -257,6 +256,18 @@ namespace DotsGame
         }
         public bool Marked { get; set; }
 
+        public string _Tag = string.Empty;
+        public string Tag
+        {
+            get
+            {
+                return _Tag;
+            }
+            set
+            {
+                _Tag = value;
+            }
+        }
         public int _IndexDot;
         public int IndexDot
         {
@@ -270,6 +281,7 @@ namespace DotsGame
                 _IndexRel = _IndexDot;
             }
         }
+
         public bool BonusDot { get; set; }
         public Dot DotCopy
         {
@@ -316,27 +328,15 @@ namespace DotsGame
         public bool PatternsAnyDot { get; set; }
         public bool PatternsEmptyDot { get; set; }
 
-        //public PE_XYminmax PE_XY = new PE_XYminmax();
-
-
-        //public class PE_XYminmax
-        //{
-        //    public int minX { get; set; }
-        //    public int maxX { get; set; }
-        //    public int minY { get; set; }
-        //    public int maxY { get; set; }
-        //}
-
         public override string ToString()
-            {
+        {
             string s;
             if (Own == 1) s = " Player";
             else if (Own == 2) s = " Computer";
             else s = " None";
-            
-            s = Blocked ? x + ":" + y + s + " Blocked" : x + ":" + y + s;
-                return s;
-            }
+            s = Blocked ? x + ":" + y + s + " Blocked" : x + ":" + y + s + " Rating: " + Rating;
+            return s;
+        }
         public bool Equals(Dot dot)//Проверяет равенство точек по координатам
         {
             return (x == dot.x) & (y == dot.y);

@@ -75,7 +75,7 @@
             this.lstDbg1.HorizontalScrollbar = true;
             this.lstDbg1.ItemHeight = 16;
             this.lstDbg1.Location = new System.Drawing.Point(16, 37);
-            this.lstDbg1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstDbg1.Margin = new System.Windows.Forms.Padding(4);
             this.lstDbg1.Name = "lstDbg1";
             this.lstDbg1.Size = new System.Drawing.Size(340, 132);
             this.lstDbg1.TabIndex = 0;
@@ -89,10 +89,10 @@
             this.lstDbg2.FormattingEnabled = true;
             this.lstDbg2.HorizontalScrollbar = true;
             this.lstDbg2.ItemHeight = 16;
-            this.lstDbg2.Location = new System.Drawing.Point(123, 37);
-            this.lstDbg2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstDbg2.Location = new System.Drawing.Point(143, 37);
+            this.lstDbg2.Margin = new System.Windows.Forms.Padding(4);
             this.lstDbg2.Name = "lstDbg2";
-            this.lstDbg2.Size = new System.Drawing.Size(233, 132);
+            this.lstDbg2.Size = new System.Drawing.Size(463, 132);
             this.lstDbg2.TabIndex = 2;
             // 
             // txtDebug
@@ -132,7 +132,7 @@
             this.rbtnAuto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.rbtnAuto.AutoSize = true;
             this.rbtnAuto.Location = new System.Drawing.Point(456, 185);
-            this.rbtnAuto.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rbtnAuto.Margin = new System.Windows.Forms.Padding(4);
             this.rbtnAuto.Name = "rbtnAuto";
             this.rbtnAuto.Size = new System.Drawing.Size(60, 21);
             this.rbtnAuto.TabIndex = 27;
@@ -145,7 +145,7 @@
             this.rbtnHand.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.rbtnHand.AutoSize = true;
             this.rbtnHand.Location = new System.Drawing.Point(366, 185);
-            this.rbtnHand.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rbtnHand.Margin = new System.Windows.Forms.Padding(4);
             this.rbtnHand.Name = "rbtnHand";
             this.rbtnHand.Size = new System.Drawing.Size(77, 21);
             this.rbtnHand.TabIndex = 26;
@@ -160,7 +160,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label4.ForeColor = System.Drawing.Color.Green;
-            this.label4.Location = new System.Drawing.Point(445, 97);
+            this.label4.Location = new System.Drawing.Point(691, 87);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(88, 18);
@@ -174,7 +174,7 @@
             this.numericUpDown3.CausesValidation = false;
             this.numericUpDown3.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.numericUpDown3.Location = new System.Drawing.Point(365, 39);
+            this.numericUpDown3.Location = new System.Drawing.Point(611, 29);
             this.numericUpDown3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             10000,
@@ -203,7 +203,7 @@
             this.numericUpDown2.CausesValidation = false;
             this.numericUpDown2.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.numericUpDown2.Location = new System.Drawing.Point(365, 66);
+            this.numericUpDown2.Location = new System.Drawing.Point(611, 56);
             this.numericUpDown2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown2.Maximum = new decimal(new int[] {
             1000,
@@ -231,7 +231,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(363, 126);
+            this.label1.Location = new System.Drawing.Point(609, 116);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(89, 20);
@@ -250,7 +250,7 @@
             0,
             0,
             0});
-            this.numericUpDown1.Location = new System.Drawing.Point(367, 149);
+            this.numericUpDown1.Location = new System.Drawing.Point(613, 139);
             this.numericUpDown1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown1.Maximum = new decimal(new int[] {
             5000,
@@ -273,7 +273,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.label2.Location = new System.Drawing.Point(433, 69);
+            this.label2.Location = new System.Drawing.Point(679, 59);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(136, 17);
@@ -286,7 +286,7 @@
             this.chkMove.AutoSize = true;
             this.chkMove.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.chkMove.ForeColor = System.Drawing.Color.Navy;
-            this.chkMove.Location = new System.Drawing.Point(445, 150);
+            this.chkMove.Location = new System.Drawing.Point(691, 140);
             this.chkMove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkMove.Name = "chkMove";
             this.chkMove.Size = new System.Drawing.Size(71, 24);
@@ -300,7 +300,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.label3.Location = new System.Drawing.Point(433, 41);
+            this.label3.Location = new System.Drawing.Point(679, 31);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(88, 18);
@@ -314,7 +314,7 @@
             this.numericUpDown4.CausesValidation = false;
             this.numericUpDown4.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.numericUpDown4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.numericUpDown4.Location = new System.Drawing.Point(367, 96);
+            this.numericUpDown4.Location = new System.Drawing.Point(613, 86);
             this.numericUpDown4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.numericUpDown4.Minimum = new decimal(new int[] {
             2,
@@ -354,7 +354,7 @@
             this.lstMoves.FormattingEnabled = true;
             this.lstMoves.ItemHeight = 18;
             this.lstMoves.Location = new System.Drawing.Point(364, 213);
-            this.lstMoves.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstMoves.Margin = new System.Windows.Forms.Padding(4);
             this.lstMoves.Name = "lstMoves";
             this.lstMoves.Size = new System.Drawing.Size(172, 126);
             this.lstMoves.TabIndex = 28;
@@ -476,7 +476,7 @@
             this.txtPattern.AcceptsReturn = true;
             this.txtPattern.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPattern.Location = new System.Drawing.Point(523, 286);
-            this.txtPattern.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPattern.Margin = new System.Windows.Forms.Padding(4);
             this.txtPattern.Multiline = true;
             this.txtPattern.Name = "txtPattern";
             this.txtPattern.Size = new System.Drawing.Size(307, 263);
@@ -495,7 +495,7 @@
             // btnDrawPattern
             // 
             this.btnDrawPattern.Location = new System.Drawing.Point(588, 254);
-            this.btnDrawPattern.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnDrawPattern.Margin = new System.Windows.Forms.Padding(4);
             this.btnDrawPattern.Name = "btnDrawPattern";
             this.btnDrawPattern.Size = new System.Drawing.Size(105, 28);
             this.btnDrawPattern.TabIndex = 35;
@@ -531,7 +531,7 @@
             this.Controls.Add(this.txtDebug);
             this.Controls.Add(this.lstDbg2);
             this.Controls.Add(this.lstDbg1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DebugForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Debug";
