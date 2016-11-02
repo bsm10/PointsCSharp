@@ -57,38 +57,11 @@ namespace DotsGame
         }
 
 
-        //public float CostLink
-        //{
-        //    get
-        //    {
-        //        return cost;
-        //    }
-        //    set
-        //    {
-        //        cost = value;
-        //    }
-        //}
-        //public int LinksDistance (Links link)
-        //{
-        //    decimal d1, d2;
-        //    d1 = Math.Round((decimal)(Dot1.x + link.Dot1.x + Dot2.x + link.Dot2.x) / 4);
-        //    d2 = Math.Round((decimal)(Dot1.y + link.Dot1.y + Dot2.y + link.Dot2.y) / 4);
-        //    return (int)Math.Round((d1+d2)/4);
-        //}
-
         public Links(Dot Dot1, Dot Dot2)
         {
             this.Dot1 = Dot1;
             this.Dot2 = Dot2;
-            
-            //if (Math.Abs(Dot1.x - Dot2.x) + Math.Abs(Dot1.y - Dot2.y) < 2)
-            //{
-            //    cost = 1;
-            //}
-            //else
-            //{
-            //    cost = 2;
-            //}
+           
         }
 
         public Links(int x1, int y1, int x2, int y2)
@@ -337,19 +310,19 @@ namespace DotsGame
             s = Blocked ? x + ":" + y + s + " Blocked" : x + ":" + y + s + " Rating: " + Rating;
             return s;
         }
-        public bool Equals(Dot dot)//Проверяет равенство точек по координатам
+        public bool Equals(Dot dot)//Проверяет равенство точек по координатам - это для реализации  IEquatable<Dot>
         {
             return (x == dot.x) & (y == dot.y);
         }
-        public bool IsNeiborDots(Dot dot)//возвращает истину если соседние точки рядом. 
-        {
-            if (dot.Blocked | dot.Blocked | dot.Own != Own)
-            {
-                return false;
-            }
-            return Math.Abs(x -dot.x) <= 1 & Math.Abs(y -dot.y) <= 1;
+        //public bool IsNeiborDots(Dot dot)//возвращает истину если соседние точки рядом. 
+        //{
+        //    if (dot.Blocked | dot.Blocked | dot.Own != Own)
+        //    {
+        //        return false;
+        //    }
+        //    return Math.Abs(x -dot.x) <= 1 & Math.Abs(y -dot.y) <= 1;
 
-        }
+        //}
         private int _IndexRel;
 
         public int IndexRelation
