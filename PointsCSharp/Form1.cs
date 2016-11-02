@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+
 namespace DotsGame
 {
     public partial class Form1 : Form
@@ -355,12 +357,16 @@ namespace DotsGame
             while (autoplay);
             return;
         }
+
+        CancellationTokenSource tokenSource = new CancellationTokenSource();
+        CancellationToken ct;
+
         private int MoveGamer(int Player, Dot pl_move=null)
         {
             toolStripStatusLabel2.ForeColor = Player == 1 ? game.colorGamer1 : game.colorGamer2;
             toolStripStatusLabel2.Text = "Ход игрока" + Player + "...";
             Application.DoEvents();
-            if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove);
+            if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove, ct);
             if (pl_move == null)
             {
                 MessageBox.Show("Сдаюсь! \r\n" + game.Statistic());

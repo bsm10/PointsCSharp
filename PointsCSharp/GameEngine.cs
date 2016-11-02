@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 
 namespace DotsGame
@@ -98,9 +96,9 @@ namespace DotsGame
 
         
 
-        public Dot PickComputerMove(Dot LastMove)
+        public Dot PickComputerMove(Dot LastMove, CancellationToken? cancellationToken)
         {
-            return gameDots.PickComputerMove(LastMove);
+            return gameDots.PickComputerMove(LastMove, cancellationToken);
         }
         public int MakeMove(Dot MoveDot)
         {
@@ -136,7 +134,7 @@ namespace DotsGame
         {
             //if (gameDots!=null && DebugWindow!=0)
 
-            _gameDots = new GameDots(boardWidth,boardHeigth, DebugWindow); 
+            _gameDots = new GameDots(boardWidth,boardHeigth); 
             lstDotsInPattern = new List<Dot>();
             startX = -0.5f;
             startY = -0.5f;

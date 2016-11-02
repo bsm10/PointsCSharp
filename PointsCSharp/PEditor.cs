@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
+using DotsGame;
 
 namespace DotsGame
 {
@@ -96,8 +97,8 @@ namespace DotsGame
             // Append new text to an existing file.
             // The using statement automatically flushes AND CLOSES the stream and calls 
             // IDisposable.Dispose on the stream object.
-            using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(Path_PatternData, true))
+            using (StreamWriter file =
+                new StreamWriter(Path_PatternData, true))
             {
 
                 foreach (string s in lines) file.WriteLine(s);
