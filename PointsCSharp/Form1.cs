@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace DotsGame
 {
@@ -13,6 +14,10 @@ namespace DotsGame
     {
         public GameEngine game;
         private Point t;
+        CancellationTokenSource tokenSource = new CancellationTokenSource();
+        CancellationToken ct;
+
+
         public Form1()
         {
             InitializeComponent();
@@ -45,7 +50,7 @@ namespace DotsGame
         }
         private int player_move;//переменная хранит значение игрока который делает ход
         private bool autoplay;
-        private void pbxBoard_MouseClick(object sender, MouseEventArgs e)
+        private async void pbxBoard_MouseClick(object sender, MouseEventArgs e)
         {
             game.MousePos = game.TranslateCoordinates(e.Location);
             Dot dot = new Dot(game.MousePos.X, game.MousePos.Y);
@@ -88,7 +93,7 @@ namespace DotsGame
                             else if (!PE_EmptyDot & !PE_FirstDot & !PE_MoveDot & !PE_AnyDot)
                             //расстановка точек в режиме редактирования паттернов
                             {
-                                MoveGamer(PE_Player, new Dot(game.MousePos.X, game.MousePos.Y, 1));
+                                await MoveGamer(PE_Player, ct, new Dot(game.MousePos.X, game.MousePos.Y, 1));
                                 break;
                             }
                             break;
@@ -100,14 +105,14 @@ namespace DotsGame
                         if (player_move == 2 | player_move == 0)
                         {
                         #if DEBUG
-                            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift | game.Autoplay )
+                            if ((ModifierKeys & Keys.Shift) == Keys.Shift | game.Autoplay )
                             {
-                                MoveGamer(1, new Dot(game.MousePos.X, game.MousePos.Y, 1));
+                                await MoveGamer(1, ct, new Dot(game.MousePos.X, game.MousePos.Y, 1));
                                 break;
                             }
                         #endif
                             if (!game.DOT(dot).ValidMove) return;
-                            if (MoveGamer(1, dot) > 0) break;
+                            if (await MoveGamer(1, ct, dot) > 0) break;
                             player_move = 1;
                             //Application.DoEvents();
                         }
@@ -115,7 +120,7 @@ namespace DotsGame
                         if (player_move == 1)
                         {
                             game.Redraw = false;
-                            if (MoveGamer(2) > 0) break;
+                            if (await MoveGamer(2, ct) > 0) break;
                             //if (MoveGamer(2) > 0) break;
                             game.Redraw=true;
                             player_move = 2;
@@ -129,7 +134,7 @@ namespace DotsGame
                             break;
                         }
                         //============Ход компьютера  в ручном режиме=================
-                        MoveGamer(2, new Dot(dot.x, dot.y, 2));
+                        await MoveGamer(2, ct,  new Dot(dot.x, dot.y, 2));
                         break;
                     case MouseButtons.Middle:
                         if (game.EditMode == true)
@@ -334,7 +339,7 @@ namespace DotsGame
         {
             openFileDialog1.ShowDialog();
         }
-        private void autoplayToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void autoplayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(autoplayToolStripMenuItem.Checked) 
             {
@@ -350,43 +355,45 @@ namespace DotsGame
             do
             {
                 Application.DoEvents();
-                if (MoveGamer(1) > 0) break;
+                if (await MoveGamer(1, ct) > 0) break;
                 Application.DoEvents();
-                if (MoveGamer(2) > 0) break;
+                if (await MoveGamer(2, ct) > 0) break;
             }
             while (autoplay);
             return;
         }
 
-        CancellationTokenSource tokenSource = new CancellationTokenSource();
-        CancellationToken ct;
-
-        private int MoveGamer(int Player, Dot pl_move=null)
+        public async Task<int> MoveGamer(int player, CancellationToken? cancellationToken, Dot pl_move = null)
         {
-            toolStripStatusLabel2.ForeColor = Player == 1 ? game.colorGamer1 : game.colorGamer2;
-            toolStripStatusLabel2.Text = "Ход игрока" + Player + "...";
-            Application.DoEvents();
-            if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove, ct);
-            if (pl_move == null)
-            {
-                MessageBox.Show("Сдаюсь! \r\n" + game.Statistic());
-                game.NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
-                return 1;
-            } 
-            pl_move.Own=Player;
-            game.MakeMove(pl_move);
-            pbxBoard.Invalidate();
-            statusStrip1.Refresh();
-            int pl = Player == 1 ? 2 : 1;
-            toolStripStatusLabel2.ForeColor = pl == 1 ? game.colorGamer1 : game.colorGamer2;
-            toolStripStatusLabel2.Text = "Ход игрока" + pl + "...";
-            if (game.GameOver())
-            {
-                MessageBox.Show("Game over! \r\n" + game.Statistic());
-                return 1;
-            }
-            return 0;
+            return await game.gameDots.Move(player, cancellationToken, pl_move);
         }
+
+        //private int MoveGamer(int Player, Dot pl_move=null)
+        //{
+        //    toolStripStatusLabel2.ForeColor = Player == 1 ? game.colorGamer1 : game.colorGamer2;
+        //    toolStripStatusLabel2.Text = "Ход игрока" + Player + "...";
+        //    Application.DoEvents();
+        //    if (pl_move== null) pl_move = game.PickComputerMove(game.LastMove, ct);
+        //    if (pl_move == null)
+        //    {
+        //        MessageBox.Show("Сдаюсь! \r\n" + game.Statistic());
+        //        game.NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
+        //        return 1;
+        //    } 
+        //    pl_move.Own=Player;
+        //    game.MakeMove(pl_move);
+        //    pbxBoard.Invalidate();
+        //    statusStrip1.Refresh();
+        //    int pl = Player == 1 ? 2 : 1;
+        //    toolStripStatusLabel2.ForeColor = pl == 1 ? game.colorGamer1 : game.colorGamer2;
+        //    toolStripStatusLabel2.Text = "Ход игрока" + pl + "...";
+        //    if (game.GameOver())
+        //    {
+        //        MessageBox.Show("Game over! \r\n" + game.Statistic());
+        //        return 1;
+        //    }
+        //    return 0;
+        //}
         private void Form1_MouseEnter(object sender, EventArgs e)
         {
            Activate();

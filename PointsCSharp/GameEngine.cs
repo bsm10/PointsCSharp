@@ -96,17 +96,17 @@ namespace DotsGame
 
         
 
-        public Dot PickComputerMove(Dot LastMove, CancellationToken? cancellationToken)
-        {
-            return gameDots.PickComputerMove(LastMove, cancellationToken);
-        }
+        //public Dot PickComputerMove(Dot LastMove, CancellationToken? cancellationToken)
+        //{
+        //    return gameDots.PickComputerMove(LastMove, cancellationToken);
+        //}
         public int MakeMove(Dot MoveDot)
         {
             return gameDots.MakeMove(MoveDot);
         }
         public bool GameOver()
         {
-            return gameDots.Board_ValidMoves.Count == 0;
+            return gameDots.IsGameOver;
         }
 
         public string Statistic()
@@ -138,7 +138,7 @@ namespace DotsGame
             lstDotsInPattern = new List<Dot>();
             startX = -0.5f;
             startY = -0.5f;
-            gameDots.SetLevel(Properties.Settings.Default.Level);
+            //gameDots.SetLevel(Properties.Settings.Default.Level);
             Redraw=true;
             pbxBoard.Invalidate();
         }
@@ -162,21 +162,21 @@ namespace DotsGame
         {
             List<List<Dot>> lstlstPat = new List<List<Dot>>();
             
-            lstlstPat.Add(listPat);
-            listPat = _gameDots.Rotate90(listPat);
-            lstlstPat.Add(listPat);
-            listPat = _gameDots.Rotate_Mirror_Horizontal(listPat);
-            lstlstPat.Add(listPat);
-            listPat = _gameDots.Rotate90(listPat);
-            lstlstPat.Add(listPat);
-            listPat = _gameDots.Rotate_Mirror_Horizontal(listPat);
-            lstlstPat.Add(listPat);
-            listPat = _gameDots.Rotate90(listPat);
-            lstlstPat.Add(listPat);
-            listPat = _gameDots.Rotate_Mirror_Horizontal(listPat);
-            lstlstPat.Add(listPat);
-            listPat = _gameDots.Rotate90(listPat);
-            lstlstPat.Add(listPat);
+            //lstlstPat.Add(listPat);
+            //listPat = _gameDots.Rotate90(listPat);
+            //lstlstPat.Add(listPat);
+            //listPat = _gameDots.Rotate_Mirror_Horizontal(listPat);
+            //lstlstPat.Add(listPat);
+            //listPat = _gameDots.Rotate90(listPat);
+            //lstlstPat.Add(listPat);
+            //listPat = _gameDots.Rotate_Mirror_Horizontal(listPat);
+            //lstlstPat.Add(listPat);
+            //listPat = _gameDots.Rotate90(listPat);
+            //lstlstPat.Add(listPat);
+            //listPat = _gameDots.Rotate_Mirror_Horizontal(listPat);
+            //lstlstPat.Add(listPat);
+            //listPat = _gameDots.Rotate90(listPat);
+            //lstlstPat.Add(listPat);
 
             return lstlstPat;
         }
@@ -377,7 +377,7 @@ namespace DotsGame
         }
         public void DrawPoints(Graphics gr)//рисуем поставленные точки
         {
-            List<Dot> lstDotsForDraw = EditMode ? gameDots.Dots : gameDots.ListMoves;
+            IList<Dot> lstDotsForDraw = EditMode ? gameDots.Dots : gameDots.ListMoves;
             //отрисовываем поставленные точки
             foreach (Dot p in lstDotsForDraw)
             {
