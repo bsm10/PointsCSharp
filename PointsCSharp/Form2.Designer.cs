@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DebugForm));
             this.lstDbg1 = new System.Windows.Forms.ListBox();
             this.lstDbg2 = new System.Windows.Forms.ListBox();
+            this.debugInfoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.txtDebug = new System.Windows.Forms.TextBox();
             this.txtDotStatus = new System.Windows.Forms.TextBox();
             this.rbtnAuto = new System.Windows.Forms.RadioButton();
@@ -58,11 +60,14 @@
             this.txtPattern = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnDrawPattern = new System.Windows.Forms.Button();
+            this.debugInfoBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.debugInfoBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.debugInfoBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // lstDbg1
@@ -77,7 +82,7 @@
             this.lstDbg1.Location = new System.Drawing.Point(16, 37);
             this.lstDbg1.Margin = new System.Windows.Forms.Padding(4);
             this.lstDbg1.Name = "lstDbg1";
-            this.lstDbg1.Size = new System.Drawing.Size(340, 132);
+            this.lstDbg1.Size = new System.Drawing.Size(127, 132);
             this.lstDbg1.TabIndex = 0;
             // 
             // lstDbg2
@@ -94,6 +99,10 @@
             this.lstDbg2.Name = "lstDbg2";
             this.lstDbg2.Size = new System.Drawing.Size(463, 132);
             this.lstDbg2.TabIndex = 2;
+            // 
+            // debugInfoBindingSource
+            // 
+            this.debugInfoBindingSource.DataSource = typeof(DotsGame.DebugInfo);
             // 
             // txtDebug
             // 
@@ -503,6 +512,10 @@
             this.btnDrawPattern.UseVisualStyleBackColor = true;
             this.btnDrawPattern.Click += new System.EventHandler(this.btnDrawPattern_Click);
             // 
+            // debugInfoBindingSource1
+            // 
+            this.debugInfoBindingSource1.DataSource = typeof(DotsGame.DebugInfo);
+            // 
             // DebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -537,12 +550,14 @@
             this.Text = "Debug";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.MouseEnter += new System.EventHandler(this.Form2_MouseEnter);
+            ((System.ComponentModel.ISupportInitialize)(this.debugInfoBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.debugInfoBindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -579,5 +594,7 @@
         private System.Windows.Forms.Button btnDrawPattern;
         private System.Windows.Forms.ToolStripButton tlsMakePattern;
         public System.Windows.Forms.TextBox txtPattern;
+        private System.Windows.Forms.BindingSource debugInfoBindingSource;
+        private System.Windows.Forms.BindingSource debugInfoBindingSource1;
     }
 }

@@ -3,7 +3,6 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +14,9 @@ namespace DotsGame
         public GameEngine game;
         private Point t;
         CancellationTokenSource tokenSource = new CancellationTokenSource();
-        CancellationToken ct;
+        CancellationToken ct ;
+        //public DebugForm form_debug = new DebugForm();
+
 
 
         public Form1()
@@ -35,14 +36,12 @@ namespace DotsGame
             toolStripStatusLabel2.Text = "Ход игрока";
 
             scl_coef = (float)pbxBoard.ClientSize.Height/ pbxBoard.ClientSize.Width;
-            //Properties.Settings.Default.BoardHeight = (int)Math.Round(Properties.Settings.Default.BoardWidth * (double)scl_coef);
 
             toolStripTextBox1.Text = game.gameDots.BoardWidth.ToString();
             toolStripTextBox2.Text = game.gameDots.BoardHeight.ToString();
 
-            //if (Properties.Settings.Default.Level==0) легкоToolStripMenuItem.Checked=true;
-            //if (Properties.Settings.Default.Level == 1) среднеToolStripMenuItem.Checked = true;
-            //if (Properties.Settings.Default.Level == 2) тяжелоToolStripMenuItem.Checked = true;
+            //f.Show();
+
         }
         private void pbxBoard_Paint(object sender, PaintEventArgs e)
         {
@@ -108,22 +107,32 @@ namespace DotsGame
                             if ((ModifierKeys & Keys.Shift) == Keys.Shift | game.Autoplay )
                             {
                                 await MoveGamer(1, ct, new Dot(game.MousePos.X, game.MousePos.Y, 1));
+                                pbxBoard.Invalidate();
                                 break;
                             }
                         #endif
                             if (!game.DOT(dot).ValidMove) return;
                             if (await MoveGamer(1, ct, dot) > 0) break;
+                            pbxBoard.Invalidate();
                             player_move = 1;
-                            //Application.DoEvents();
                         }
                         //============Ход компьютера=================
                         if (player_move == 1)
                         {
-                            game.Redraw = false;
+                            //game.Redraw = false;
                             if (await MoveGamer(2, ct) > 0) break;
-                            //if (MoveGamer(2) > 0) break;
-                            game.Redraw=true;
+                            pbxBoard.Invalidate();
+                            game.DebugWindow.lstDbg1.DataSource = null;
+                            game.DebugWindow.lstDbg1.DataSource = DebugInfo.lstDBG1;
+                            
+                            game.DebugWindow.lstDbg2.DataSource = null;
+                            game.DebugWindow.lstDbg2.DataSource = DebugInfo.lstDBG2;
+                            
+                            game.DebugWindow.txtDebug.Text = DebugInfo.textDBG;
+                            game.DebugWindow.txtBestMove.Text = DebugInfo.textDBG1;
+                            //game.Redraw=true;
                             player_move = 2;
+
                         }
                         #endregion
                         break;
@@ -135,6 +144,7 @@ namespace DotsGame
                         }
                         //============Ход компьютера  в ручном режиме=================
                         await MoveGamer(2, ct,  new Dot(dot.x, dot.y, 2));
+                        pbxBoard.Invalidate();
                         break;
                     case MouseButtons.Middle:
                         if (game.EditMode == true)
@@ -143,6 +153,7 @@ namespace DotsGame
                             game[dot].PatternsRemove();
                         }
                         game.UndoDot(dot);
+                        pbxBoard.Invalidate();
                         break;
                  #endif
                 }
@@ -192,7 +203,7 @@ namespace DotsGame
                
 #endif
             toolStripStatusLabel1.Text = p.X + " : " + p.Y + "; " + "IndexDot " + game[p.X,p.Y].IndexDot;
-            if (game.Redraw) pbxBoard.Invalidate();
+            //if (game.Redraw) pbxBoard.Invalidate();
         }
         private void pbxBoard_MouseDown(object sender, MouseEventArgs e)
         {
@@ -258,6 +269,7 @@ namespace DotsGame
         private void создатьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             game.NewGame(game.gameDots.BoardWidth, game.gameDots.BoardHeight);
+            pbxBoard.Invalidate();
         }
         private void антиалToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -354,9 +366,9 @@ namespace DotsGame
 
             do
             {
-                Application.DoEvents();
+                //Application.DoEvents();
                 if (await MoveGamer(1, ct) > 0) break;
-                Application.DoEvents();
+                //Application.DoEvents();
                 if (await MoveGamer(2, ct) > 0) break;
             }
             while (autoplay);
@@ -438,11 +450,13 @@ namespace DotsGame
         {
             game.path_savegame = Application.CommonAppDataPath + @"\dots.dts";
             game.LoadGame();
+            pbxBoard.Invalidate();
         }
         private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             game.path_savegame = openFileDialog1.FileName;
             game.LoadGame();
+            pbxBoard.Invalidate();
         }
         private void редакторПаттерновToolStripMenuItem_Click(object sender, EventArgs e)
         {

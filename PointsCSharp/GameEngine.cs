@@ -91,6 +91,7 @@ namespace DotsGame
             pbxBoard = CanvasGame;
             NewGame(Properties.Settings.Default.BoardWidth, Properties.Settings.Default.BoardHeight);
             LoadPattern();
+            DebugWindow.Show();
         }
         //  ************************************************
 
@@ -132,13 +133,10 @@ namespace DotsGame
         }
         public void NewGame(int boardWidth, int boardHeigth)
         {
-            //if (gameDots!=null && DebugWindow!=0)
-
             _gameDots = new GameDots(boardWidth,boardHeigth); 
             lstDotsInPattern = new List<Dot>();
             startX = -0.5f;
             startY = -0.5f;
-            //gameDots.SetLevel(Properties.Settings.Default.Level);
             Redraw=true;
             pbxBoard.Invalidate();
         }
@@ -288,7 +286,7 @@ namespace DotsGame
                 while (reader.PeekChar() > -1)
                 {
                     d = new Dot((int)reader.ReadByte(), (int)reader.ReadByte(), (int)reader.ReadByte());
-                    _gameDots.MakeMove(d);
+                    _gameDots.MakeMove(d, addForDraw: true);
                 }
                 reader.Close();
             }
@@ -311,7 +309,7 @@ namespace DotsGame
         public void DrawGame(Graphics gr)//отрисовка хода игры
         {
             _gr = gr;
-            gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            gr.SmoothingMode = SmoothingMode.AntiAlias;
             //Устанавливаем масштаб
             SetScale(gr, pbxBoard.ClientSize.Width, pbxBoard.ClientSize.Height,
                 startX, startX + gameDots.BoardWidth, startY, gameDots.BoardHeight + startY);

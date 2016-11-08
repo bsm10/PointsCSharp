@@ -154,7 +154,9 @@
     <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\DebugInfo.datasource" />
     <None Include="Properties\DataSources\Game.datasource" />
+    <None Include="Properties\DataSources\GameDots.GameMessages.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
